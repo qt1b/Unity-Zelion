@@ -37,7 +37,6 @@ public class MovePlayer : MonoBehaviour
         if (change != Vector3.zero) {
             MoveCharacter();
         }
-
         if(Input.GetKey(KeyCode.LeftShift) && canDash==true)
         {
             StartCoroutine(Dash());
