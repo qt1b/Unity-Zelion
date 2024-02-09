@@ -25,7 +25,7 @@ public class MovePlayer : MonoBehaviour
     }
 
     // Update is called once per frame 
-    void Update()
+    void FixedUpdate()
     {
         if(isDashing){return;}
     
@@ -35,10 +35,9 @@ public class MovePlayer : MonoBehaviour
         change.Normalize();
         
         UpdateAnimationAndMove();
-        // condition for dashing
+        // conditions for dashing
         if(Input.GetKey(KeyCode.LeftShift) && canDash==true)
         {
-            // what is a coroutine ?
             StartCoroutine(Dash());
         }
         Debug.Log(change);
