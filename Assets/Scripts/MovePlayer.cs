@@ -7,6 +7,7 @@ public class MovePlayer : MonoBehaviour
     public float speed;
     private Rigidbody2D myRigidBody;
     private Vector3 change;
+    private Animator animator;
 
     //variables pour le dash
     private bool canDash = true;
@@ -19,11 +20,11 @@ public class MovePlayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
         myRigidBody = GetComponent<Rigidbody2D>(); 
     }
 
-    // Update is called once per frame
-    // 
+    // Update is called once per frame 
     void Update()
     {
         if(isDashing){return;}
@@ -36,6 +37,8 @@ public class MovePlayer : MonoBehaviour
         // Debug.Log(change);
         if (change != Vector3.zero) {
             MoveCharacter();
+            animator.SetFloat("moveX", change.x);
+            animator.SetFloat("moveY", change.y);
         }
         if(Input.GetKey(KeyCode.LeftShift) && canDash==true)
         {
