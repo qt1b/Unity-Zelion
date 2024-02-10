@@ -35,25 +35,24 @@ public class MovePlayer : MonoBehaviour
         change.Normalize();
         
         UpdateAnimationAndMove();
-        // condition for dashing
+        // conditions for dashing
         if(Input.GetKey(KeyCode.LeftShift) && canDash==true)
         {
-            // what is a coroutine ?
             StartCoroutine(Dash());
         }
-        Debug.Log(change);
+        // Debug.Log(change);
 
     }
 
     void UpdateAnimationAndMove() {
         if (change != Vector3.zero) {
             MoveCharacter();
-            animator.SetFloat("moveX", change.x);
-            animator.SetFloat("moveY", change.y);
-            animator.SetBool("moving",true);
+            animator.SetFloat("MoveX", change.x);
+            animator.SetFloat("MoveY", change.y);
+            animator.SetBool("IsMoving",true);
         }
         else {
-            animator.SetBool("moving",false);
+            animator.SetBool("IsMoving",false);
         }
     }
 

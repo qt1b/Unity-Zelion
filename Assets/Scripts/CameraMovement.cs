@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraMovoment : MonoBehaviour
+public class CameraMovement : MonoBehaviour
 {
-    // camera smoothing
+    // camera smoothness
     public Transform target;
-    public float smoothing;
+    // public float smoothValue;
+    // the higher it is, more time it will take to follow the player
+    public float smoothTime;
+    private Vector3 velocity = Vector3.zero;
     // camera bounding
     public Vector2 maxPosition;
     public Vector2 minPosition;
@@ -21,13 +24,13 @@ public class CameraMovoment : MonoBehaviour
     void LateUpdate()
     {
         if (transform.position != target.position) {
-            Vector3 targetPosition = new Vector3(target.position.x, target.position.y, transform.position.z);
+            Vector3 desiredPosition = new Vector3(target.position.x, target.position.y, transform.position.z);
 
             // forces the position to be between these two limits
-            targetPosition.x = Mathf.Clamp(targetPosition.x, minPosition.x, maxPosition.x);
-            targetPosition.y = Mathf.Clamp(targetPosition.y, minPosition.y, maxPosition.y);
+            desiredPosition.x = Mathf.Clamp(desiredPosition.x, minPosition.x, maxPosition.x);
+            desiredPosition.y = Mathf.Clamp(desiredPosition.y, minPosition.y, maxPosition.y);
 
-            transform.position = Vector3.Lerp(transform.position, targetPosition, smoothing);
+            transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothTime);
         }
     }
 }
