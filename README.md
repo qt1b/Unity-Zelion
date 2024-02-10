@@ -38,3 +38,7 @@ not implemented yet
 
 ### network
 to implement it, it think we should make 1 to 3 inactive players, that become active when someone joins the game.
+
+
+### mabye
+use interpolation and extrapolation for running on lower-end machines ? idk if it really changes something
