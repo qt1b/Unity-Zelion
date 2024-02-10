@@ -40,7 +40,7 @@ public class MovePlayer : MonoBehaviour
         {
             StartCoroutine(Dash());
         }
-        Debug.Log(change);
+        // Debug.Log(change);
 
     }
 
