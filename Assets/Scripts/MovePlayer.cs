@@ -9,12 +9,26 @@ public class MovePlayer : MonoBehaviour
     private Vector3 change;
     private Animator animator;
 
-    //variables pour le dash
+    // variables controlling the attack system
+    // is our player already doing smthg
+    // public as we will make ennemies / etc that make the player enter this state
+    public bool isBusy = false;
+    
+
+    // capacities avalability
+    private bool canSwordAttack = true;
     private bool canDash = true;
-    private bool isDashing = false;
-    private float dashPower = 5f;
+
+    // cooldown timers
+    private float SwordAttackCooldown = 1.2f;
+    private float dashCooldown = 2.4f;
+
+    // 'animation' timers
     private float dashTime = 0.2f;
-    private float dashCooldown = 2f;
+    private float swordTime = 0.4f;
+
+    //variables pour le dash
+    private float dashPower = 5f;
 
 
     // Start is called before the first frame update
@@ -26,20 +40,28 @@ public class MovePlayer : MonoBehaviour
 
     // Update is called once per frame 
     void Update()
-    {
-        if(isDashing){return;}
-    
+    {    
+        // if (isBusy) return;
+
+        // basic movement
         change = Vector3.zero;
         change.x = Input.GetAxisRaw("Horizontal");
         change.y = Input.GetAxisRaw("Vertical");
-        change.Normalize();
-        
+        change.Normalize();        
         UpdateAnimationAndMove();
-        // conditions for dashing
-        if(Input.GetKey(KeyCode.LeftShift) && canDash==true)
-        {
-            StartCoroutine(Dash());
+        
+        // one attack / 'normal' ability at a time
+        if (!isBusy) {
+            if (Input.GetKeyDown(KeyCode.Space) && canSwordAttack==true) {
+                StartCoroutine(SwordAttack());
+            } 
+            else if(Input.GetKeyDown(KeyCode.LeftShift) && canDash==true){
+                StartCoroutine(Dash());
+            }
         }
+
+        // time-related capacities should be an exception
+
         // Debug.Log(change);
 
     }
@@ -56,6 +78,8 @@ public class MovePlayer : MonoBehaviour
         }
     }
 
+    
+
     void MoveCharacter()
     {
         if(Input.GetKey(KeyCode.LeftControl))
@@ -69,18 +93,29 @@ public class MovePlayer : MonoBehaviour
 
     }
 
+    private IEnumerator SwordAttack() {
+        canSwordAttack = false;
+        isBusy = true;
+        //animator.ResetTrigger("SwordAttack"); breaks the animation if actived ?
+        animator.SetTrigger("SwordAttack");
+        yield return new WaitForSeconds(swordTime);
+        isBusy = false;
+        yield return new WaitForSeconds(SwordAttackCooldown);
+        canSwordAttack = true;
+    }
+
     // on ne peut pas dash vers le haut, probleme si on appuie plusieurs fois rapidements pour dash
     private IEnumerator Dash(){
-        canDash = false;
-        isDashing = true;
-        if(change.y != 0 || change.x != 0)
-        {
+        // does not execute the dash if the player is not moving
+        if(change.y != 0 || change.x != 0) {
+            canDash = false;
+            isBusy = true;
             myRigidBody.MovePosition(transform.position + change * dashPower);
+            yield return new WaitForSeconds(dashTime);
+            isBusy = false;
+            yield return new WaitForSeconds(dashCooldown);
+            canDash = true;
         }
-        yield return new WaitForSeconds(dashTime);
-        isDashing = false;
-        yield return new WaitForSeconds(dashCooldown);
-        canDash = true;
     }
 
 }

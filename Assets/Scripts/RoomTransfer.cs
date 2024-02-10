@@ -8,7 +8,10 @@ public class RoomTranfer : MonoBehaviour
     public Vector2 cameraChangemin;
     public Vector2 cameraChangemax;
     public Vector3 playerChange;
+
+    // script imports
     private CameraMovement cam;
+
     public bool needText;
     public string placeName;
     public GameObject text;
