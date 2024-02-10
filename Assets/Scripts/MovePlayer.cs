@@ -25,7 +25,7 @@ public class MovePlayer : MonoBehaviour
     }
 
     // Update is called once per frame 
-    void FixedUpdate()
+    void Update()
     {
         if(isDashing){return;}
     
@@ -47,12 +47,12 @@ public class MovePlayer : MonoBehaviour
     void UpdateAnimationAndMove() {
         if (change != Vector3.zero) {
             MoveCharacter();
-            animator.SetFloat("moveX", change.x);
-            animator.SetFloat("moveY", change.y);
-            animator.SetBool("moving",true);
+            animator.SetFloat("MoveX", change.x);
+            animator.SetFloat("MoveY", change.y);
+            animator.SetBool("IsMoving",true);
         }
         else {
-            animator.SetBool("moving",false);
+            animator.SetBool("IsMoving",false);
         }
     }
 

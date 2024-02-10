@@ -6,7 +6,10 @@ public class CameraMovoment : MonoBehaviour
 {
     // camera smoothness
     public Transform target;
-    public float smoothValue;
+    // public float smoothValue;
+    // the higher it is, more time it will take to follow the player
+    public float smoothTime;
+    private Vector3 velocity = Vector3.zero;
     // camera bounding
     public Vector2 maxPosition;
     public Vector2 minPosition;
@@ -25,9 +28,9 @@ public class CameraMovoment : MonoBehaviour
 
             // forces the position to be between these two limits
             desiredPosition.x = Mathf.Clamp(desiredPosition.x, minPosition.x, maxPosition.x);
-            desiredPosition.y = Mathf.Clamp(desiredPosition.x, minPosition.y, maxPosition.y);
+            desiredPosition.y = Mathf.Clamp(desiredPosition.y, minPosition.y, maxPosition.y);
 
-            transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothValue);
+            transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothTime);
         }
     }
 }
