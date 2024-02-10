@@ -13,6 +13,7 @@ issues :
 - able to get inside colisions, and to get stuck (due to player going too fast and having a small collisionbox ? )
 - camera smoothness: the player and camera going in the same direction make a jittery/stuttery effect
 - cloning the repo does not clone all unity settings, etc. need to find a way to make these settings reproducible
+- after dashing, the player cannot move for half a sec
 
 todo : 
 - tilemaps 
