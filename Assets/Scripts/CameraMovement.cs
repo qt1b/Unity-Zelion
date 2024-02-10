@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraMovoment : MonoBehaviour
+public class CameraMovement : MonoBehaviour
 {
     // camera smoothness
     public Transform target;
