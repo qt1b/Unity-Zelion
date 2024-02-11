@@ -7,7 +7,10 @@ public class MovePlayer : MonoBehaviour
     public float speed;
     private Rigidbody2D myRigidBody;
     private Vector3 change;
+
+    // display variables
     private Animator animator;
+    public bool questionMarkActive = false;
 
     // variables controlling the attack system
     // is our player already doing smthg
@@ -59,6 +62,11 @@ public class MovePlayer : MonoBehaviour
                 StartCoroutine(Dash());
             }
         }
+
+        if {questionMarkActive} (
+            // idk how to activate the question mark, it surely is needed to import it with a variable
+            print("questionMarkActive");
+        )
 
         // time-related capacities should be an exception
 
