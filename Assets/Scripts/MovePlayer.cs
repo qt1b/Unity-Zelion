@@ -63,10 +63,10 @@ public class MovePlayer : MonoBehaviour
             }
         }
 
-        if {questionMarkActive} (
+        if (questionMarkActive) {
             // idk how to activate the question mark, it surely is needed to import it with a variable
             print("questionMarkActive");
-        )
+        }
 
         // time-related capacities should be an exception
 
@@ -126,4 +126,5 @@ public class MovePlayer : MonoBehaviour
         }
     }
 
+    
 }
