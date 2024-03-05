@@ -707,7 +707,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 2124478493}
-  smoothTime: 1
+  smoothTime: 0.4
   maxPosition: {x: 5, y: 2}
   minPosition: {x: -3, y: -2}
 --- !u!1 &619394800
@@ -6986,8 +6986,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7264cb44262fb6e7ea7d1e02784a72e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8
-  isBusy: 0
+  inititialSpeed: 7
+  questionMarkActive: 0
 --- !u!50 &2124478495
 Rigidbody2D:
   serializedVersion: 4
@@ -7254,6 +7254,18 @@ PrefabInstance:
     - target: {fileID: 5708972196261795217, guid: 24f6d0e1842311fe99a4c4be03a3e729, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6650855851672633517, guid: 24f6d0e1842311fe99a4c4be03a3e729, type: 3}
+      propertyPath: m_Size.y
+      value: 0.94341755
+      objectReference: {fileID: 0}
+    - target: {fileID: 6650855851672633517, guid: 24f6d0e1842311fe99a4c4be03a3e729, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6650855851672633517, guid: 24f6d0e1842311fe99a4c4be03a3e729, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.0011839867
       objectReference: {fileID: 0}
     - target: {fileID: 8707677640345627609, guid: 24f6d0e1842311fe99a4c4be03a3e729, type: 3}
       propertyPath: dialogBox

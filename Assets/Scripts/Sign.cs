@@ -45,7 +45,7 @@ public class Sign : MonoBehaviour
         if (other.CompareTag("Player")) {
             playerInRange = true;
             playerControl.questionMarkActive = true;
-            playerControl.isBusy = true; // may not be THAT great of an idea
+            // playerControl.isBusy = true; // may not be THAT great of an idea
         }
     }
 
@@ -54,7 +54,7 @@ public class Sign : MonoBehaviour
             playerInRange = false;
             dialogBox.SetActive(false);
             playerControl.questionMarkActive = false;
-            playerControl.isBusy = false;
+            // playerControl.isBusy = false;
         }
     }
 }
