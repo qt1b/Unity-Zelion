@@ -2,12 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* public enum PlayerState {
+    walk,
+    attack,
+    interact
+} */
+
 public class MovePlayer : MonoBehaviour
 {
     public float inititialSpeed;
     private Rigidbody2D myRigidBody;
     private Vector3 change;
     private float currentSpeed;
+
+    // public PlayerState currentState;
 
     // display variables
     private Animator animator;
@@ -22,15 +30,16 @@ public class MovePlayer : MonoBehaviour
     private bool isDashing = false;
 
     // cooldown timers
-    private float SwordAttackCooldown = 1.2f;
+    private float SwordAttackCooldown = 0.6f;
     private float dashCooldown = 2.4f;
 
     // 'animation' timers
-    private float dashTime = 0.2f;
+    private float dashTime = 0.1f;
     private float swordTime = 0.4f;
 
     //variables pour le dash
-    private float dashPower = 8f;
+    private float dashPower = 10f;
+    private float attackSpeedNerf = 0.65f;
 
 
     // Start is called before the first frame update
@@ -48,10 +57,10 @@ public class MovePlayer : MonoBehaviour
 
         // basic movement
         if (!isDashing) {
-        change = Vector3.zero;
-        change.x = Input.GetAxisRaw("Horizontal");
-        change.y = Input.GetAxisRaw("Vertical");
-        change.Normalize();   
+            change = Vector3.zero;
+            change.x = Input.GetAxisRaw("Horizontal");
+            change.y = Input.GetAxisRaw("Vertical");
+            change.Normalize();   
         }     
         UpdateAnimationAndMove();
         
@@ -86,8 +95,6 @@ public class MovePlayer : MonoBehaviour
         }
     }
 
-    
-
     void MoveCharacter()
     {
         if(Input.GetKey(KeyCode.LeftControl))
@@ -105,7 +112,9 @@ public class MovePlayer : MonoBehaviour
         canSwordAttack = false;
         //animator.ResetTrigger("SwordAttack"); breaks the animation if actived ?
         animator.SetTrigger("SwordAttack");
+        currentSpeed /= attackSpeedNerf;
         yield return new WaitForSeconds(swordTime);
+        currentSpeed = inititialSpeed;
         yield return new WaitForSeconds(SwordAttackCooldown);
         canSwordAttack = true;
     }

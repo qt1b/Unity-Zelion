@@ -12,12 +12,6 @@ public class Grass : MonoBehaviour
         anim = GetComponent<Animator>();   
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void Smash() {
         anim.SetBool("cut",true);
         StartCoroutine(delCollision());
