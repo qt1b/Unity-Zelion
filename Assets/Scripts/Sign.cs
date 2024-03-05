@@ -30,6 +30,7 @@ public class Sign : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) && playerInRange) {
+            playerControl.questionMarkActive = false;
             if (dialogBox.activeInHierarchy) {
                 dialogBox.SetActive(false);
             }
@@ -43,7 +44,8 @@ public class Sign : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
             playerInRange = true;
-            playerControl.isBusy = true; // may not be THAT great of an idea
+            playerControl.questionMarkActive = true;
+            // playerControl.isBusy = true; // may not be THAT great of an idea
         }
     }
 
@@ -51,7 +53,8 @@ public class Sign : MonoBehaviour
         if (other.CompareTag("Player")) {
             playerInRange = false;
             dialogBox.SetActive(false);
-            playerControl.isBusy = false;
+            playerControl.questionMarkActive = false;
+            // playerControl.isBusy = false;
         }
     }
 }

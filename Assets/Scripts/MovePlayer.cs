@@ -4,20 +4,22 @@ using UnityEngine;
 
 public class MovePlayer : MonoBehaviour
 {
-    public float speed;
+    public float inititialSpeed;
     private Rigidbody2D myRigidBody;
     private Vector3 change;
+    private float currentSpeed;
+
+    // display variables
     private Animator animator;
+    public bool questionMarkActive = false;
 
     // variables controlling the attack system
     // is our player already doing smthg
     // public as we will make ennemies / etc that make the player enter this state
-    public bool isBusy = false;
-    
-
     // capacities avalability
     private bool canSwordAttack = true;
     private bool canDash = true;
+    private bool isDashing = false;
 
     // cooldown timers
     private float SwordAttackCooldown = 1.2f;
@@ -28,12 +30,13 @@ public class MovePlayer : MonoBehaviour
     private float swordTime = 0.4f;
 
     //variables pour le dash
-    private float dashPower = 5f;
+    private float dashPower = 8f;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        currentSpeed = inititialSpeed;
         animator = GetComponent<Animator>();
         myRigidBody = GetComponent<Rigidbody2D>(); 
     }
@@ -44,20 +47,25 @@ public class MovePlayer : MonoBehaviour
         // if (isBusy) return;
 
         // basic movement
+        if (!isDashing) {
         change = Vector3.zero;
         change.x = Input.GetAxisRaw("Horizontal");
         change.y = Input.GetAxisRaw("Vertical");
-        change.Normalize();        
+        change.Normalize();   
+        }     
         UpdateAnimationAndMove();
         
         // one attack / 'normal' ability at a time
-        if (!isBusy) {
-            if (Input.GetKeyDown(KeyCode.Space) && canSwordAttack==true) {
+            if (canSwordAttack && Input.GetKeyDown(KeyCode.Space)) {
                 StartCoroutine(SwordAttack());
             } 
-            else if(Input.GetKeyDown(KeyCode.LeftShift) && canDash==true){
+            else if(canDash && Input.GetKeyDown(KeyCode.LeftShift)){
                 StartCoroutine(Dash());
             }
+
+        if (questionMarkActive) {
+            // idk how to activate the question mark, it surely is needed to import it with a variable
+            print("questionMarkActive");
         }
 
         // time-related capacities should be an exception
@@ -84,38 +92,38 @@ public class MovePlayer : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.LeftControl))
         {
-            myRigidBody.MovePosition(transform.position + change * (speed*2) * Time.deltaTime);
+            myRigidBody.MovePosition(transform.position + change * (currentSpeed*2) * Time.deltaTime);
         }
         else
         {
-            myRigidBody.MovePosition(transform.position + change * speed * Time.deltaTime);
+            myRigidBody.MovePosition(transform.position + change * currentSpeed * Time.deltaTime);
         }
 
     }
 
     private IEnumerator SwordAttack() {
         canSwordAttack = false;
-        isBusy = true;
         //animator.ResetTrigger("SwordAttack"); breaks the animation if actived ?
         animator.SetTrigger("SwordAttack");
         yield return new WaitForSeconds(swordTime);
-        isBusy = false;
         yield return new WaitForSeconds(SwordAttackCooldown);
         canSwordAttack = true;
     }
 
-    // on ne peut pas dash vers le haut, probleme si on appuie plusieurs fois rapidements pour dash
+    // dash should be
     private IEnumerator Dash(){
         // does not execute the dash if the player is not moving
         if(change.y != 0 || change.x != 0) {
             canDash = false;
-            isBusy = true;
-            myRigidBody.MovePosition(transform.position + change * dashPower);
+            isDashing = true;
+            currentSpeed *= dashPower;
             yield return new WaitForSeconds(dashTime);
-            isBusy = false;
+            currentSpeed = inititialSpeed;
+            isDashing = false;
             yield return new WaitForSeconds(dashCooldown);
             canDash = true;
         }
     }
 
+    
 }
