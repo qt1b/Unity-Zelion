@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 14400342}
   - component: {fileID: 14400343}
   m_Layer: 0
-  m_Name: P1_light
+  m_Name: PlayerLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -170,9 +170,9 @@ MonoBehaviour:
   m_ComponentVersion: 1
   m_LightType: 1
   m_BlendStyleIndex: 0
-  m_FalloffIntensity: 0.5
+  m_FalloffIntensity: 0.85
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.7
+  m_Intensity: 0.8
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 000000000bf91b3603f3476555fdcd28698c8212
@@ -189,8 +189,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 0.00014996529, y: 0.00020003319, z: 0}
-    m_Extent: {x: 3.99805, y: 3.9988, z: 0}
+    m_Center: {x: -0.0014500618, y: -0.00069999695, z: 0}
+    m_Extent: {x: 6.49865, y: 6.5003, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -198,7 +198,7 @@ MonoBehaviour:
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1
-  m_ShapeLightFalloffSize: 3.5
+  m_ShapeLightFalloffSize: 6
   m_ShapeLightFalloffOffset: {x: 0, y: 0}
   m_ShapePath:
   - {x: 0.5, y: 0, z: 0}
@@ -967,7 +967,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 2124478493}
-  smoothing: 0.2
+  smoothTime: 0.8
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -6941,7 +6941,7 @@ Transform:
   m_GameObject: {fileID: 2124478491}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.97, y: 0.1, z: 0}
+  m_LocalPosition: {x: -1.11, y: 0.73, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    // [SerializeField] 
-    public int hp = 1;
+    public int hp;
+    public float deathDuration;
     int maxHP;
     // bool isDead = false;
     Animator animator;
@@ -23,9 +23,8 @@ public class Health : MonoBehaviour
     }
 
     void Die(){
-        // isDead = true;
-        animator.SetBool("isDead", true);
-        Destroy(gameObject,0.7f);
+        animator.SetTrigger("Death");
+        Destroy(gameObject, deathDuration);
     }
 
     //called from 'die' animation
