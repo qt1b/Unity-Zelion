@@ -4,22 +4,10 @@ using UnityEngine;
 
 public class PlayerHit : MonoBehaviour
 {
-    int swordDamage = 1;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    int swordDamage = 3;
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag("breakable")) {
+        if (other.CompareTag("Damageable")) {
             other.GetComponent<Health>().TakeDamage(swordDamage);
         }
     }

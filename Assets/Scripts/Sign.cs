@@ -6,15 +6,12 @@ using UnityEngine.UI;
 public class Sign : MonoBehaviour
 {
     public GameObject dialogBox;
+    public GameObject questionMark;
     public Text dialogText;
     public string dialog;
-    private bool dialogActive;
     private bool playerInRange = false;
 
     // script imports, for the player not being able to attack when in front of a sign
-    public GameObject playerRef;
-    private MovePlayer playerControl;
-
     // TODO : render the sign behind the player when y coordinates of the player are behind,
     // and in front of the player when the player is behind.
 
@@ -23,20 +20,23 @@ public class Sign : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerControl = playerRef.GetComponent<MovePlayer>();
+        Instantiate(questionMark);
+        // QuestionMark questionMark = gameObject.AddComponent<QuestionMark>() as QuestionMark;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && playerInRange) {
-            playerControl.questionMarkActive = false;
+        if (Input.GetKeyDown(KeyCode.F) && playerInRange) {
+            // playerControl.questionMarkActive = false;
             if (dialogBox.activeInHierarchy) {
                 dialogBox.SetActive(false);
+                questionMark.SetActive(true);
             }
             else {
                 dialogBox.SetActive(true);
                 dialogText.text = dialog;
+                questionMark.SetActive(false);
             }
         }
     }
@@ -44,7 +44,8 @@ public class Sign : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
             playerInRange = true;
-            playerControl.questionMarkActive = true;
+            questionMark.SetActive(true);
+            // playerControl.questionMarkActive = true;
             // playerControl.isBusy = true; // may not be THAT great of an idea
         }
     }
@@ -53,7 +54,8 @@ public class Sign : MonoBehaviour
         if (other.CompareTag("Player")) {
             playerInRange = false;
             dialogBox.SetActive(false);
-            playerControl.questionMarkActive = false;
+            questionMark.SetActive(false);
+            // playerControl.questionMarkActive = false;
             // playerControl.isBusy = false;
         }
     }

@@ -4,7 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - breakable
+  - Damageable
+  - Projectile
   layers:
   - Default
   - TransparentFX
@@ -42,13 +43,13 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Signs
+  - name: Bellow
     uniqueID: 907802891
     locked: 0
   - name: Player
     uniqueID: 1699214083
     locked: 0
-  - name: Top
+  - name: OnTop
     uniqueID: 684588373
     locked: 0
   - name: UI

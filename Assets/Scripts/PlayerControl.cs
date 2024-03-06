@@ -8,18 +8,15 @@ using UnityEngine;
     interact
 } */
 
-public class MovePlayer : MonoBehaviour
+public class PlayerControl : MonoBehaviour
 {
     public float inititialSpeed;
+    private float currentSpeed;
     private Rigidbody2D myRigidBody;
     private Vector3 change;
-    private float currentSpeed;
-
-    // public PlayerState currentState;
 
     // display variables
     private Animator animator;
-    public bool questionMarkActive = false;
 
     // variables controlling the attack system
     // is our player already doing smthg
@@ -27,20 +24,28 @@ public class MovePlayer : MonoBehaviour
     // capacities avalability
     private bool canSwordAttack = true;
     private bool canDash = true;
+    private bool canShootArrow = true;
     private bool isDashing = false;
 
+    // time control, to enable time effects
+    // bc some bosses will slow down our controls, so this var has to be public
+    public float TimeControl = 1f;
+
     // cooldown timers
+    // should be used later to instanciate timers for capacities, 
+    // allowing to see how much time we have before being able to use the capacity again
     private float SwordAttackCooldown = 0.6f;
     private float dashCooldown = 2.4f;
+    private float bowCooldown = 0.8f;
 
     // 'animation' timers
-    private float dashTime = 0.1f;
+    private float dashTime = 0.18f;
     private float swordTime = 0.4f;
+    private float bowTime = 0.2f;
 
-    //variables pour le dash
-    private float dashPower = 10f;
+    // variables for attack settings
+    private float dashPower = 6f;
     private float attackSpeedNerf = 0.65f;
-
 
     // Start is called before the first frame update
     void Start()
@@ -71,11 +76,9 @@ public class MovePlayer : MonoBehaviour
             else if(canDash && Input.GetKeyDown(KeyCode.LeftShift)){
                 StartCoroutine(Dash());
             }
-
-        if (questionMarkActive) {
-            // idk how to activate the question mark, it surely is needed to import it with a variable
-            print("questionMarkActive");
-        }
+            else if (canShootArrow && Input.GetKeyDown(KeyCode.LeftControl)) {
+                StartCoroutine(ShootArrow());
+            }
 
         // time-related capacities should be an exception
 
@@ -97,14 +100,12 @@ public class MovePlayer : MonoBehaviour
 
     void MoveCharacter()
     {
-        if(Input.GetKey(KeyCode.LeftControl))
+        /*if(Input.GetKey(KeyCode.LeftControl))
         {
             myRigidBody.MovePosition(transform.position + change * (currentSpeed*2) * Time.deltaTime);
         }
-        else
-        {
-            myRigidBody.MovePosition(transform.position + change * currentSpeed * Time.deltaTime);
-        }
+        else*/
+        myRigidBody.MovePosition(transform.position + change * currentSpeed * Time.deltaTime * TimeControl );
 
     }
 
@@ -113,26 +114,34 @@ public class MovePlayer : MonoBehaviour
         //animator.ResetTrigger("SwordAttack"); breaks the animation if actived ?
         animator.SetTrigger("SwordAttack");
         currentSpeed /= attackSpeedNerf;
-        yield return new WaitForSeconds(swordTime);
+        yield return new WaitForSeconds( TimeControl * swordTime );
         currentSpeed = inititialSpeed;
-        yield return new WaitForSeconds(SwordAttackCooldown);
+        yield return new WaitForSeconds( TimeControl * SwordAttackCooldown );
         canSwordAttack = true;
+    }
+
+    private IEnumerator ShootArrow() {
+        canShootArrow = false;
+        animator.SetTrigger("BowAttack");
+        currentSpeed /= attackSpeedNerf;
+        yield return new WaitForSeconds( TimeControl * bowCooldown );
+        currentSpeed = inititialSpeed;
+        yield return new WaitForSeconds( TimeControl * bowCooldown );
+        canShootArrow = true;
     }
 
     // dash should be
     private IEnumerator Dash(){
         // does not execute the dash if the player is not moving
-        if(change.y != 0 || change.x != 0) {
+        // if(change.y != 0 || change.x != 0) {
             canDash = false;
             isDashing = true;
             currentSpeed *= dashPower;
-            yield return new WaitForSeconds(dashTime);
+            yield return new WaitForSeconds( TimeControl * dashTime);
             currentSpeed = inititialSpeed;
             isDashing = false;
-            yield return new WaitForSeconds(dashCooldown);
+            yield return new WaitForSeconds( TimeControl * dashCooldown);
             canDash = true;
-        }
+        // }
     }
-
-    
 }
