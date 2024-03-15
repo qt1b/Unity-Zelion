@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Damageable
   - Projectile
+  - breakable
   layers:
   - Default
   - TransparentFX
@@ -40,18 +41,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 907802891
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Bellow
-    uniqueID: 907802891
-    locked: 0
-  - name: Player
-    uniqueID: 1699214083
-    locked: 0
-  - name: OnTop
-    uniqueID: 684588373
-    locked: 0
   - name: UI
     uniqueID: 310545513
+    locked: 0
+  - name: Top
+    uniqueID: 3284944863
+    locked: 0
+  - name: Bottom
+    uniqueID: 3594028523
     locked: 0
