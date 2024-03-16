@@ -6,34 +6,34 @@ public class Player : MonoBehaviour
 {
     // putting all the player variables and all useful methods for ennemies here
 
-     int swordDamage = 3;
-     int bowDammage = 2;
+    int swordDamage = 3;
+    int bowDammage = 2;
     // POISON bomb, damage by 0.5 sec
-     int bombDamage = 2;
+    int bombDamage = 2;
 
     // time variablse
-     float inititialSpeed = 7f;
-     float playerSpeed = 1f;
-     float ennemySpeed = 1f;
+    float inititialSpeed = 7f;
+    float playerSpeed = 1f;
+    float ennemySpeed = 1f;
 
     public GameObject Arrow;
 
-     Rigidbody2D myRigidBody;
-     Vector3 change;
-     float currentSpeed;
+    Rigidbody2D myRigidBody;
+    Vector3 change;
+    float currentSpeed;
 
 
     // display variables
-     Animator animator;
+    Animator animator;
 
     // variables controlling the attack system
     // is our player already doing smthg
     // public as we will make ennemies / etc that make the player enter this state
     // capacities avalability
-     bool canSwordAttack = true;
-     bool canDash = true;
-     bool canShootArrow = true;
-     bool isDashing = false;
+    bool canSwordAttack = true;
+    bool canDash = true;
+    bool canShootArrow = true;
+    bool isDashing = false;
 
     // time control, to enable time effects
     // bc some bosses will slow down our controls, so this var has to be public
@@ -42,17 +42,17 @@ public class Player : MonoBehaviour
     // cooldown timers
     // should be used later to instanciate timers for capacities, 
     // allowing to see how much time we have before being able to use the capacity again
-     float SwordAttackCooldown = 0.4f;
-     float dashCooldown = 1f;
-     float bowCooldown = 0.8f;
+    float SwordAttackCooldown = 0.4f;
+    float dashCooldown = 1f;
+    float bowCooldown = 0.8f;
 
     // 'animation' timers
-     float dashTime = 0.12f;
-     float swordTime = 0.4f;
+    float dashTime = 0.12f;
+    float swordTime = 0.4f;
 
     // variables for attack settings
-     float dashPower = 6f;
-     float attackSpeedNerf = 0.65f;
+    float dashPower = 6f;
+    float attackSpeedNerf = 0.65f;
 
     // Start is called before the first frame update
     void Start()
@@ -129,7 +129,7 @@ public class Player : MonoBehaviour
         animator.SetFloat("AnimationSpeed",newSpeedControl);
     }
 
-     IEnumerator SwordAttack() {
+    IEnumerator SwordAttack() {
         canSwordAttack = false;
         //animator.ResetTrigger("SwordAttack"); breaks the animation if actived ?
         animator.SetTrigger("SwordAttack");
@@ -143,7 +143,6 @@ public class Player : MonoBehaviour
      Quaternion GetMouseDirection() {
         Vector3 mousePosition = Input.mousePosition;
         mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-
         Vector3 direction = new Vector3(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y, 0f);
         return Quaternion.LookRotation(transform.position, direction);
         // transform.up = direction;

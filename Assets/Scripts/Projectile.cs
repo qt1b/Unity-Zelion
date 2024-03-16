@@ -12,7 +12,7 @@ public class Projectile : MonoBehaviour
     // should initialize this with the right speed and direction
     private Vector2 change;
 
-/*
+
     void Awake() {
         Vector3 mousePosition = Input.mousePosition;
         mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
@@ -21,7 +21,7 @@ public class Projectile : MonoBehaviour
         change = direction;
         gameObject.transform.up = direction;
         // transform.Rotate(Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"), 0);
-    } */
+    } 
 
     // Start is called before the first frame update
     /*void Awake() {
@@ -34,7 +34,7 @@ public class Projectile : MonoBehaviour
     }*/
 
     void Update() {
-        gameObject.transform.position = change * speed;
+        transform.position = change * speed;
     }
 
 }
