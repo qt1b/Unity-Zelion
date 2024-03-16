@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6256067291665057170}
   m_Layer: 0
   m_Name: Grass
-  m_TagString: breakable
+  m_TagString: Damageable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 684588373
+  m_SortingLayerID: -700938773
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -978760717, guid: 8ff5ad4dd2bfb5e009f5b18a8458fa8e, type: 3}

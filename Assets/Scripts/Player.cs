@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Player : MonoBehaviour
 {
@@ -130,7 +131,7 @@ public class Player : MonoBehaviour
     }
 
     IEnumerator SwordAttack() {
-        canSwordAttack = false;
+        canSwordAttack = false;GetMouseDirection();
         //animator.ResetTrigger("SwordAttack"); breaks the animation if actived ?
         animator.SetTrigger("SwordAttack");
         currentSpeed *= attackSpeedNerf;
@@ -140,18 +141,24 @@ public class Player : MonoBehaviour
         canSwordAttack = true;
     }
 
-     Quaternion GetMouseDirection() {
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        Vector3 direction = new Vector3(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y, 0f);
-        return Quaternion.LookRotation(transform.position, direction);
+     (Vector3, Quaternion) GetMouseDirection() {
+        //Vector3 mousePosition = Input.mousePosition;
+        //mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        // var teta = Mathf.Atan((mousePosition.y - transform.position.y) / (mousePosition.x - transform.position.x));
+        var y = (Input.mousePosition.y - Screen.height / 2);
+        var x = (Input.mousePosition.x - Screen.width / 2);
+        var teta = Mathf.Atan(y / x);
+        return (new Vector3(x, y, 0f), Quaternion.Euler(0f,0f,teta * 180 / Mathf.PI - (Input.mousePosition.x > Screen.width / 2 ? 90 : -90)));//Quaternion.Euler(transform.position, direction);
         // transform.up = direction;
         // transform.Rotate(Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"), 0);
     }
 
      IEnumerator ShootArrow() {
         canShootArrow = false;
-        Instantiate(Arrow, transform.position, GetMouseDirection());
+        (Vector3 pos, Quaternion rot) = GetMouseDirection();
+        GameObject arr = Instantiate(Arrow, transform.position, rot);
+        pos.Normalize();
+        arr.GetComponent<Projectile>().SetSpeedVector(pos);
         yield return new WaitForSeconds( playerSpeed * bowCooldown );
         canShootArrow = true;
     }

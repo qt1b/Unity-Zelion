@@ -6,7 +6,6 @@ TagManager:
   tags:
   - Damageable
   - Projectile
-  - breakable
   layers:
   - Default
   - TransparentFX

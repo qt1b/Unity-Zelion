@@ -4,37 +4,34 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    // the only variable
-    public float speed;
-    public string hitTag;
-    // private GameObject gameObject; 
+    public float speed = 5f;
+    public Vector3 vecSpeed = new Vector3();
+    public float playerSpeed = 1f;
+    public string hitTag = "Damageable";
+    public int damage = 3; 
+    Rigidbody2D myRigidBody;
+
     
-    // should initialize this with the right speed and direction
-    private Vector2 change;
-
-
     void Awake() {
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-
-        Vector3 direction = new Vector3(mousePosition.x - gameObject.transform.position.x, mousePosition.y - gameObject.transform.position.y, 0f);
-        change = direction;
-        gameObject.transform.up = direction;
-        // transform.Rotate(Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"), 0);
-    } 
-
-    // Start is called before the first frame update
-    /*void Awake() {
-        Vector2 mousePosition = Input.mousePosition;
-        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        // change = Vector3.zero;
-        change.x = mousePosition.x - transform.position.x;
-        change.y = mousePosition.y - transform.position.y;
-        change.Normalize();
-    }*/
-
-    void Update() {
-        transform.position = change * speed;
+        myRigidBody = GetComponent<Rigidbody2D>();
+        Destroy(gameObject,5f);
     }
 
+    public void SetSpeedVector(Vector3 vec) {
+        vecSpeed = vec * speed;
+    }
+
+    void Update() {
+        myRigidBody.MovePosition(transform.position + vecSpeed * Time.deltaTime * playerSpeed);
+        // transform.position += vecSpeed * Time.deltaTime * playerSpeed;
+    }
+
+    void OnTriggerEnter2D(Collider2D other) {
+        if (other.CompareTag(hitTag)) {
+            other.GetComponent<Health>().TakeDamage(damage);
+            Destroy(gameObject);
+        } else if (other.CompareTag("Collision")) {
+            Destroy(gameObject);
+        }
+    }
 }
