@@ -3,10 +3,8 @@
         color: #b0b0b0;
         background-color: #101010;
         font-family: verdana;
+        background-image: url('images/Background.webp');
     }
-  h1 {
-    background-color: blue;
-    } 
 /*}
 
 @media (prefer-color-scheme: light) {
@@ -25,16 +23,25 @@ nav {
 
 h1 {
   text-align: center;
-  border: 1px solid black;
+  text-shadow: 4px 4px 4px black, 4px 4px 4px black, 4px 4px 5px black;
+  /*border: 1px solid black;
+  background-color: gray; 
   margin-left: 80px;
   margin-right: 80px;
   margin-bottom: 20px;
-  /*background:url('favicon-32x32.png');*/
+  background:url('favicon-32x32.png');*/
 }
 
 p {
   margin-left:8%;
   margin-right:8%;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
 
 /* Three image containers (use 25% for four, and 50% for two, etc) */
@@ -74,7 +81,7 @@ a.right {
 }
 
 .topbar a.active {
-  background-image: url('logo_text.png');
+  background-image: url("images/ZelionLogo.png");
   background-color: #333;
   color: white;
 }
