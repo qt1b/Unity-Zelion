@@ -17,7 +17,8 @@ public class Projectile : MonoBehaviour
         Destroy(gameObject,5f);
     }
 
-    public void SetSpeedVector(Vector3 vec) {
+    public void SetSpeedVector(/*float sp,*/ Vector3 vec) {
+        // speed = sp;
         vecSpeed = vec * speed;
     }
 
@@ -30,8 +31,9 @@ public class Projectile : MonoBehaviour
         if (other.CompareTag(hitTag)) {
             other.GetComponent<Health>().TakeDamage(damage);
             Destroy(gameObject);
-        } else if (other.CompareTag("Collision")) {
+        // error : collision is not defined
+        } /*else if (other.CompareTag("Collision")) {
             Destroy(gameObject);
-        }
+        } */
     }
 }
