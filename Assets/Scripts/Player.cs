@@ -5,6 +5,13 @@ using System;
 
 public class Player : MonoBehaviour
 {
+    /*
+    Notes : Player CANNOT be damageable, only ennemies and breakable objects should be tagged as "damageable"
+
+
+    */
+
+
     // putting all the player variables and all useful methods for ennemies here
 
     int swordDamage = 3;
@@ -15,13 +22,15 @@ public class Player : MonoBehaviour
     // time variablse
     public float inititialSpeed = 7f;
     float currentSpeed;
+    float inititialWithControl;
 
     // variables related to time control : player speed should be modified by external functions
-    public float playerControlSpeed = 1f;
+    public float controlSpeed = 1f;
     // float ennemySpeed = 1f; should not be used 
 
     // would be better to get them by script
     public GameObject ArrowRef;
+    public GameObject ArrowPreviewRef;
     public GameObject PoisonBombRef;
     public GameObject PoisonZoneRef;
     public GameObject PoisonZonePreviewRef;
@@ -42,12 +51,11 @@ public class Player : MonoBehaviour
     bool canShootArrow = true;
     bool canThrowPoisonBomb = true;
     
-    bool isDashing = false;
+    public bool isDashing { get; private set; } = false; // so the stamina bar can use it
     bool isAiming = false;
 
     // time control, to enable time effects
     // bc some bosses will slow down our controls, so this var has to be public
-    // public float playerControlSpeed = 1f;
 
     // cooldown timers
     // should be used later to instanciate timers for capacities, 
@@ -55,7 +63,7 @@ public class Player : MonoBehaviour
     float SwordAttackCooldown = 0.4f;
     float dashCooldown = 1f;
     float bowCooldown = 0.4f;
-    float poisonBombCooldown = 9f;
+    float poisonBombCooldown = 7f;
 
     // 'animation' timers
     float dashTime = 0.12f;
@@ -69,10 +77,11 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentSpeed = inititialSpeed;
+        inititialWithControl = inititialSpeed * controlSpeed;
+        currentSpeed = inititialWithControl;
         animator = GetComponent<Animator>();
         myRigidBody = GetComponent<Rigidbody2D>();
-        animator.speed = playerControlSpeed;
+        animator.speed = controlSpeed ;
     }
 
     // Update is called once per frame 
@@ -94,13 +103,16 @@ public class Player : MonoBehaviour
                 else if (Input.GetKeyDown(KeyCode.LeftControl)) {
                     animator.SetBool("UsingBow",true);
                     isAiming = true;
-                    currentSpeed *= attackSpeedNerf;
+                    currentSpeed = inititialWithControl * attackSpeedNerf;
+                    ArrowPreviewRef.SetActive(true);
+                    PoisonZonePreviewRef.SetActive(true);
+                    PlaceAimingElts();
+                    // ArrowPreviewRef.transform.position = transform.position;
                 }
             }
             else 
             {
-                animator.SetFloat("MouseX",Input.mousePosition.x - Screen.width / 2);
-                animator.SetFloat("MouseY",Input.mousePosition.y - Screen.height / 2);
+                PlaceAimingElts();
                 if ( canShootArrow && Input.GetKeyDown(KeyCode.Mouse0)) {
                     StartCoroutine(ShootArrow());
                 }
@@ -110,16 +122,34 @@ public class Player : MonoBehaviour
                 if (Input.GetKeyUp(KeyCode.LeftControl)) {
                     animator.SetBool("UsingBow",false);
                     isAiming = false;
-                    currentSpeed = inititialSpeed * playerControlSpeed;
+                    currentSpeed = inititialWithControl ;
+                    ArrowPreviewRef.SetActive(false);
+                    PoisonZonePreviewRef.SetActive(false);
                 }
             }
         }
         UpdateAnimationAndMove();
     }
 
+    void PlaceAimingElts() {
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        var y = (mousePosition.y - transform.position.y);
+        var x = (mousePosition.x - transform.position.x);
+        animator.SetFloat("MouseX",x);
+        animator.SetFloat("MouseY",y);
+
+        PoisonZonePreviewRef.transform.position = new Vector3(mousePosition.x, mousePosition.y, 0f);
+
+        Vector3 pos = new Vector3(x,y,0f);
+        ArrowPreviewRef.transform.position = transform.position + pos.normalized;
+        var teta = Mathf.Atan(y / x) * 180 / Mathf.PI - (Input.mousePosition.x > Screen.width / 2 ? 90 : -90);
+        ArrowPreviewRef.transform.eulerAngles = new Vector3(0f,0f,teta);
+    }
+
     void UpdateAnimationAndMove() {
         if (change != Vector3.zero) {
-            MoveCharacter();
+            myRigidBody.MovePosition(transform.position + change * currentSpeed * Time.deltaTime); // moveCharacter();
             animator.SetFloat("MoveX", change.x);
             animator.SetFloat("MoveY", change.y);
             animator.SetBool("IsMoving",true);
@@ -129,16 +159,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    void MoveCharacter()
-    {
-        myRigidBody.MovePosition(transform.position + change * currentSpeed * Time.deltaTime * playerControlSpeed);
-    }
-
-    public void ChangePlayerControlSpeedControl(float newSpeedControl) {
-        playerControlSpeed = newSpeedControl;
-        currentSpeed = playerControlSpeed * currentSpeed;
+    public void ChangeControlSpeed (float newSpeedControl) {
+        controlSpeed  = newSpeedControl;
+        inititialWithControl = inititialSpeed * controlSpeed;
+        currentSpeed = inititialWithControl;
         // should change the speed of all the other players too, by calling this very same function
-        animator.speed = playerControlSpeed;
+        animator.speed = controlSpeed;
     }
 
     public void ChangeEltSpeedControl(float newSpeedControl) {
@@ -150,9 +176,9 @@ public class Player : MonoBehaviour
         //animator.ResetTrigger("SwordAttack"); breaks the animation if actived ?
         animator.SetTrigger("SwordAttack");
         currentSpeed *= attackSpeedNerf;
-        yield return new WaitForSeconds( swordTime / playerControlSpeed);
-        currentSpeed = inititialSpeed * playerControlSpeed;
-        yield return new WaitForSeconds( SwordAttackCooldown / playerControlSpeed );
+        yield return new WaitForSeconds( swordTime / controlSpeed );
+        currentSpeed = inititialSpeed * controlSpeed ;
+        yield return new WaitForSeconds( SwordAttackCooldown / controlSpeed  );
         canSwordAttack = true;
     }
 
@@ -174,21 +200,25 @@ public class Player : MonoBehaviour
     IEnumerator ShootArrow() {
         canShootArrow = false;
         (Vector3 pos, Quaternion rot) = GetMouseDirection();
+        pos.Normalize();
         //GameObject arr = Instantiate(Resources.Load("Prefabs"+"Arrow"), transform.position, rot);
-        GameObject arr = Instantiate(ArrowRef, transform.position, rot);
+        GameObject arr = Instantiate(ArrowRef, transform.position + pos, rot);
         // pos.Normalize();
         Projectile projectile= arr.GetComponent<Projectile>();
-        projectile.direction = pos.normalized;
-        projectile.controlSpeed = playerControlSpeed;
-        yield return new WaitForSeconds( bowCooldown / playerControlSpeed );
+        projectile.direction = pos;
+        projectile.controlSpeed = controlSpeed ;
+        yield return new WaitForSeconds( bowCooldown / controlSpeed  );
         canShootArrow = true;
     }
 
+    // first throws the bomb, and then instanciates the poison bomb
     IEnumerator ThrowPoisonBomb() {
         canThrowPoisonBomb = false;
-        (Vector3 pos, Quaternion rot) = GetMouseDirection();
-        GameObject pBomb = Instantiate(PoisonBombRef, transform.position, rot);
-        yield return new WaitForSeconds( poisonBombCooldown / playerControlSpeed );
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        mousePosition.z = 0f;
+        GameObject pZone = Instantiate(PoisonZoneRef, mousePosition, new Quaternion());
+        yield return new WaitForSeconds( poisonBombCooldown / controlSpeed  );
         canThrowPoisonBomb = true;
     }
 
@@ -198,10 +228,10 @@ public class Player : MonoBehaviour
             canDash = false;
             isDashing = true;
             currentSpeed *= dashPower;
-            yield return new WaitForSeconds( dashTime / playerControlSpeed );
-            currentSpeed = inititialSpeed * playerControlSpeed;
+            yield return new WaitForSeconds( dashTime / controlSpeed  );
+            currentSpeed = inititialSpeed * controlSpeed ;
             isDashing = false;
-            yield return new WaitForSeconds( dashCooldown / playerControlSpeed );
+            yield return new WaitForSeconds( dashCooldown / controlSpeed  );
             canDash = true;
         }
     }

@@ -14,7 +14,7 @@ public class Projectile : MonoBehaviour
     
     void Awake() {
         myRigidBody = GetComponent<Rigidbody2D>();
-        Destroy(gameObject,5f);
+        Destroy(gameObject,3f);
     }
 
     void Update() {
@@ -27,8 +27,9 @@ public class Projectile : MonoBehaviour
             other.GetComponent<Health>().TakeDamage(damage);
             Destroy(gameObject);
         // error : collision is not defined
-        } /*else if (other.CompareTag("Collision")) {
+        } 
+        else {
             Destroy(gameObject);
-        } */
+        }
     }
 }

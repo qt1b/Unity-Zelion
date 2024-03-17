@@ -24,6 +24,7 @@ public class Health : MonoBehaviour
 
     void Die(){
         animator.SetTrigger("Death");
+        gameObject.GetComponent<Collider2D>().enabled = false;
         Destroy(gameObject, deathDuration);
     }
 
