@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
 
     // time variablse
     public float inititialSpeed = 7f;
-    float currentSpeed;
+    public float currentSpeed;
 
     // variables related to time control : player speed should be modified by external functions
     public float playerControlSpeed = 1f;
@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
     public GameObject PoisonZonePreviewRef;
 
     Rigidbody2D myRigidBody;
-    Vector3 change;
+    public Vector3 change;
 
 
     // display variables
@@ -131,7 +131,7 @@ public class Player : MonoBehaviour
 
     void MoveCharacter()
     {
-        myRigidBody.MovePosition(transform.position + change * currentSpeed * Time.deltaTime * playerControlSpeed);
+        myRigidBody.MovePosition(transform.position + change * (currentSpeed * Time.deltaTime * playerControlSpeed));
     }
 
     public void ChangePlayerControlSpeedControl(float newSpeedControl) {
@@ -145,6 +145,7 @@ public class Player : MonoBehaviour
         // modifies all the IEltSpeed interfaces
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     IEnumerator SwordAttack() {
         canSwordAttack = false;GetMouseDirection();
         //animator.ResetTrigger("SwordAttack"); breaks the animation if actived ?
@@ -168,7 +169,8 @@ public class Player : MonoBehaviour
         var x = (Input.mousePosition.x - Screen.width / 2);
         var teta = Mathf.Atan(y / x);
         */
-        return (new Vector3(x, y, 0f), Quaternion.Euler(0f,0f,teta * 180 / Mathf.PI - (Input.mousePosition.x > Screen.width / 2 ? 90 : -90)));   
+        return (new Vector3(x, y, 0f),
+            Quaternion.Euler(0f, 0f, teta * 180 / Mathf.PI - (Input.mousePosition.x > Screen.width / 2 ? 90 : -90)));   
     }
 
     IEnumerator ShootArrow() {

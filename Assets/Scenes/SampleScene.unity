@@ -189,8 +189,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 0.00044989586, y: -0.00014996529, z: 0}
-    m_Extent: {x: 5.4991503, y: 5.49975, z: 0}
+    m_Center: {x: -0.00020003319, y: -0.00034999847, z: 0}
+    m_Extent: {x: 5.498, y: 5.49955, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -899,8 +899,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11f397db0116073858fd0ee9ebd39259, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 2124478493}
-  smoothTime: 0.4
+  smoothTime: 0.55
+  playerDistance: 2
 --- !u!1001 &571016215
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7647,10 +7647,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b68a1beb8fdbdd265bb88f62518cc437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inititialSpeed: 7
+  inititialSpeed: 20
+  currentSpeed: 0
   playerControlSpeed: 1
   ArrowRef: {fileID: 1893994839326115280, guid: ad816b496d7cad7d1ac102f28f447180, type: 3}
   PoisonBombRef: {fileID: 1178728438484469522, guid: f183f3bb7ce05faefb4d2a320c79bcec, type: 3}
+  PoisonZoneRef: {fileID: 0}
+  PoisonZonePreviewRef: {fileID: 0}
+  change: {x: 0, y: 0, z: 0}
 --- !u!1001 &3926166276550800906
 PrefabInstance:
   m_ObjectHideFlags: 0
