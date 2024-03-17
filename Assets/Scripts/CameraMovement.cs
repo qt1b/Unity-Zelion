@@ -5,26 +5,39 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     // camera smoothness
-    public Transform target;
+    private GameObject target;
     // public float smoothValue;
     // the higher it is, more time it will take to follow the player
     public float smoothTime;
     private Vector3 velocity = Vector3.zero;
+
+    public float playerDistance;
+
+    private Player _tarVelo;
     // camera bounding
     // public Vector2 maxPosition;
     // public Vector2 minPosition;
 
     // LastUpdate is called once per frame, after all updates were executed
+    private void Start()
+    {
+        target = GameObject.FindGameObjectWithTag("Player");
+        _tarVelo = target.GetComponent<Player>();
+    }
+
     void LateUpdate()
     {
-        if (transform.position != target.position) {
-            Vector3 desiredPosition = new Vector3(target.position.x, target.position.y, transform.position.z);
+        var position = target.transform.position;
+        var position1 = transform.position;
+        if (position1 == position) return;
+        Vector3 desiredPosition = new Vector3(position.x + _tarVelo.change.x * playerDistance, 
+            position.y + _tarVelo.change.y * playerDistance, position1.z);
 
-            // forces the position to be between these two limits
-            // desiredPosition.x = /*Mathf.Clamp(*/desiredPosition.x;//, minPosition.x, maxPosition.x);
-            // desiredPosition.y = /*Mathf.Clamp(*/desiredPosition.y;//, minPosition.y, maxPosition.y);
+        // forces the position to be between these two limits
+        // desiredPosition.x = /*Mathf.Clamp(*/desiredPosition.x;//, minPosition.x, maxPosition.x);
+        // desiredPosition.y = /*Mathf.Clamp(*/desiredPosition.y;//, minPosition.y, maxPosition.y);
 
-            transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothTime);
-        }
+        position1 = Vector3.SmoothDamp(position1, desiredPosition, ref velocity, smoothTime);
+        transform.position = position1;
     }
 }
