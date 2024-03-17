@@ -8,21 +8,23 @@ public class Player : MonoBehaviour
     // putting all the player variables and all useful methods for ennemies here
 
     int swordDamage = 3;
-    int bowDammage = 2;
+    int arrowDammage = 2;
     // POISON bomb, damage by 0.5 sec
-    int bombDamage = 2;
+    int bombDamage = 1;
 
     // time variablse
-    float inititialSpeed = 7f;
+    public float inititialSpeed = 7f;
     float currentSpeed;
 
     // variables related to time control : player speed should be modified by external functions
-    public float playerSpeed = 1f;
+    public float playerControlSpeed = 1f;
     // float ennemySpeed = 1f; should not be used 
 
     // would be better to get them by script
     public GameObject ArrowRef;
     public GameObject PoisonBombRef;
+    public GameObject PoisonZoneRef;
+    public GameObject PoisonZonePreviewRef;
 
     Rigidbody2D myRigidBody;
     Vector3 change;
@@ -45,7 +47,7 @@ public class Player : MonoBehaviour
 
     // time control, to enable time effects
     // bc some bosses will slow down our controls, so this var has to be public
-    // public float playerSpeed = 1f;
+    // public float playerControlSpeed = 1f;
 
     // cooldown timers
     // should be used later to instanciate timers for capacities, 
@@ -69,7 +71,8 @@ public class Player : MonoBehaviour
     {
         currentSpeed = inititialSpeed;
         animator = GetComponent<Animator>();
-        myRigidBody = GetComponent<Rigidbody2D>(); 
+        myRigidBody = GetComponent<Rigidbody2D>();
+        animator.speed = playerControlSpeed;
     }
 
     // Update is called once per frame 
@@ -80,11 +83,7 @@ public class Player : MonoBehaviour
             change.x = Input.GetAxisRaw("Horizontal");
             change.y = Input.GetAxisRaw("Vertical");
             change.Normalize();
-            change *= currentSpeed;
-        }     
-        UpdateAnimationAndMove();
-        
-        // one attack / 'normal' ability at a time
+            // one attack / 'normal' ability at a time
             if (!isAiming) {
                 if (canSwordAttack && Input.GetKeyDown(KeyCode.Space)) {
                     StartCoroutine(SwordAttack());
@@ -111,14 +110,11 @@ public class Player : MonoBehaviour
                 if (Input.GetKeyUp(KeyCode.LeftControl)) {
                     animator.SetBool("UsingBow",false);
                     isAiming = false;
-                    currentSpeed = inititialSpeed * playerSpeed;
+                    currentSpeed = inititialSpeed * playerControlSpeed;
                 }
             }
-
-        // time-related capacities should be an exception
-
-        // Debug.Log(change);
-
+        }
+        UpdateAnimationAndMove();
     }
 
     void UpdateAnimationAndMove() {
@@ -135,14 +131,14 @@ public class Player : MonoBehaviour
 
     void MoveCharacter()
     {
-        myRigidBody.MovePosition(transform.position + change * Time.deltaTime * playerSpeed);
+        myRigidBody.MovePosition(transform.position + change * currentSpeed * Time.deltaTime * playerControlSpeed);
     }
 
-    public void ChangePlayerSpeedControl(float newSpeedControl) {
-        playerSpeed = newSpeedControl;
-        currentSpeed = playerSpeed * currentSpeed;
+    public void ChangePlayerControlSpeedControl(float newSpeedControl) {
+        playerControlSpeed = newSpeedControl;
+        currentSpeed = playerControlSpeed * currentSpeed;
         // should change the speed of all the other players too, by calling this very same function
-        animator.SetFloat("AnimationSpeed",playerSpeed);
+        animator.speed = playerControlSpeed;
     }
 
     public void ChangeEltSpeedControl(float newSpeedControl) {
@@ -154,9 +150,9 @@ public class Player : MonoBehaviour
         //animator.ResetTrigger("SwordAttack"); breaks the animation if actived ?
         animator.SetTrigger("SwordAttack");
         currentSpeed *= attackSpeedNerf;
-        yield return new WaitForSeconds( swordTime / playerSpeed);
-        currentSpeed = inititialSpeed;
-        yield return new WaitForSeconds( SwordAttackCooldown / playerSpeed );
+        yield return new WaitForSeconds( swordTime / playerControlSpeed);
+        currentSpeed = inititialSpeed * playerControlSpeed;
+        yield return new WaitForSeconds( SwordAttackCooldown / playerControlSpeed );
         canSwordAttack = true;
     }
 
@@ -181,8 +177,10 @@ public class Player : MonoBehaviour
         //GameObject arr = Instantiate(Resources.Load("Prefabs"+"Arrow"), transform.position, rot);
         GameObject arr = Instantiate(ArrowRef, transform.position, rot);
         // pos.Normalize();
-        arr.GetComponent<Projectile>().SetSpeedVector(pos.normalized);
-        yield return new WaitForSeconds( bowCooldown / playerSpeed );
+        Projectile projectile= arr.GetComponent<Projectile>();
+        projectile.direction = pos.normalized;
+        projectile.controlSpeed = playerControlSpeed;
+        yield return new WaitForSeconds( bowCooldown / playerControlSpeed );
         canShootArrow = true;
     }
 
@@ -190,21 +188,20 @@ public class Player : MonoBehaviour
         canThrowPoisonBomb = false;
         (Vector3 pos, Quaternion rot) = GetMouseDirection();
         GameObject pBomb = Instantiate(PoisonBombRef, transform.position, rot);
-        yield return new WaitForSeconds( poisonBombCooldown / playerSpeed );
+        yield return new WaitForSeconds( poisonBombCooldown / playerControlSpeed );
         canThrowPoisonBomb = true;
     }
 
-    // dash should be
-     IEnumerator Dash(){
+    IEnumerator Dash(){
         // does not execute the dash if the player is not moving
         if (change.y != 0 || change.x != 0) {
             canDash = false;
             isDashing = true;
             currentSpeed *= dashPower;
-            yield return new WaitForSeconds( playerSpeed * dashTime);
-            currentSpeed = inititialSpeed;
+            yield return new WaitForSeconds( dashTime / playerControlSpeed );
+            currentSpeed = inititialSpeed * playerControlSpeed;
             isDashing = false;
-            yield return new WaitForSeconds( playerSpeed * dashCooldown);
+            yield return new WaitForSeconds( dashCooldown / playerControlSpeed );
             canDash = true;
         }
     }

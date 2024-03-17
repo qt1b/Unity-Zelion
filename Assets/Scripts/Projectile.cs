@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public float speed = 5f;
-    public Vector3 vecSpeed = new Vector3();
-    public float playerSpeed = 1f;
+    public float speed = 30f;
+    public Vector3 direction {get; set;} = Vector3.zero;
+    public float controlSpeed {get; set;} = 1f;
     public string hitTag = "Damageable";
     public int damage = 3; 
     Rigidbody2D myRigidBody;
@@ -17,14 +17,9 @@ public class Projectile : MonoBehaviour
         Destroy(gameObject,5f);
     }
 
-    public void SetSpeedVector(/*float sp,*/ Vector3 vec) {
-        // speed = sp;
-        vecSpeed = vec * speed;
-    }
-
     void Update() {
-        myRigidBody.MovePosition(transform.position + vecSpeed * Time.deltaTime * playerSpeed);
-        // transform.position += vecSpeed * Time.deltaTime * playerSpeed;
+        myRigidBody.MovePosition(transform.position + direction * speed * Time.deltaTime * controlSpeed);
+        // transform.position += vecSpeed * Time.deltaTime * controlSpeed;
     }
 
     void OnTriggerEnter2D(Collider2D other) {
