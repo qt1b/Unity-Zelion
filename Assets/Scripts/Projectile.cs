@@ -17,26 +17,21 @@ public class Projectile : MonoBehaviour
         Destroy(gameObject,3f);
     }
 
-    public void SetVelocity(Vector3 givenDirection, float givenControlSpeed)
-    {
+
+    public void SetVelocity(Vector3 givenDirection, float givenControlSpeed) {
         direction = givenDirection;
         controlSpeed = givenControlSpeed;
         myRigidBody.velocity = direction * (speed * 0.2f * controlSpeed);
     }
 
-    void Update() {
-        // myRigidBody.MovePosition(transform.position + direction * (speed * Time.deltaTime * controlSpeed));
-        // transform.position += vecSpeed * Time.deltaTime * controlSpeed;
-    }
-
     void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag(hitTag)) {
             other.GetComponent<Health>().TakeDamage(damage);
-            Destroy(gameObject);
-        // error : collision is not defined
-        } 
-        else {
-            Destroy(gameObject);
+            Destroy(gameObject,0.3f);
+            myRigidBody.velocity = Vector3.zero;
+        } else {
+            Destroy(gameObject,0.3f);
+            myRigidBody.velocity = Vector3.zero;
         }
     }
 }

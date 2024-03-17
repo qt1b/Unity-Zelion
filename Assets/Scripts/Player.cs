@@ -14,10 +14,12 @@ public class Player : MonoBehaviour
 
     // putting all the player variables and all useful methods for ennemies here
 
+    /*
     int swordDamage = 3;
     int arrowDammage = 2;
     // POISON bomb, damage by 0.5 sec
     int bombDamage = 1;
+    */
 
     // time variablse
     public float inititialSpeed = 7f;
@@ -51,7 +53,7 @@ public class Player : MonoBehaviour
     bool canShootArrow = true;
     bool canThrowPoisonBomb = true;
     
-    public bool isDashing { get; private set; } = false; // so the stamina bar can use it
+    static public bool isDashing { get; private set; } = false; // so the stamina bar can use it
     bool isAimingArrow = false;
     bool isAimingBomb = false;
 
@@ -172,12 +174,13 @@ public class Player : MonoBehaviour
 
     void UpdateAnimationAndMove() {
         if (change != Vector3.zero) {
-            myRigidBody.MovePosition(transform.position + change * currentSpeed * Time.deltaTime); // moveCharacter();
+            myRigidBody.velocity = (change * ( 0.2f * currentSpeed * controlSpeed));
             animator.SetFloat("MoveX", change.x);
             animator.SetFloat("MoveY", change.y);
             animator.SetBool("IsMoving",true);
         }
         else {
+            myRigidBody.velocity = Vector3.zero;
             animator.SetBool("IsMoving",false);
         }
     }
@@ -230,8 +233,9 @@ public class Player : MonoBehaviour
         GameObject arr = Instantiate(ArrowRef, transform.position + pos, rot);
         // pos.Normalize();
         Projectile projectile= arr.GetComponent<Projectile>();
-        projectile.direction = pos;
-        projectile.controlSpeed = controlSpeed ;
+        projectile.SetVelocity(pos.normalized, controlSpeed);
+        // projectile.direction = pos.normalized;
+        // projectile.controlSpeed = playerControlSpeed;
         yield return new WaitForSeconds( bowCooldown / controlSpeed  );
         canShootArrow = true;
     }
