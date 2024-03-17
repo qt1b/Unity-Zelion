@@ -118,6 +118,7 @@ public class Player : MonoBehaviour
     }
 
     void UpdateAnimationAndMove() {
+        MoveCharacter();
         if (change != Vector3.zero) {
             MoveCharacter();
             animator.SetFloat("MoveX", change.x);
@@ -131,7 +132,7 @@ public class Player : MonoBehaviour
 
     void MoveCharacter()
     {
-        myRigidBody.MovePosition(transform.position + change * (currentSpeed * Time.deltaTime * playerControlSpeed));
+        myRigidBody.velocity = (change * ( 0.2f * currentSpeed * playerControlSpeed));
     }
 
     public void ChangePlayerControlSpeedControl(float newSpeedControl) {
@@ -180,8 +181,9 @@ public class Player : MonoBehaviour
         GameObject arr = Instantiate(ArrowRef, transform.position, rot);
         // pos.Normalize();
         Projectile projectile= arr.GetComponent<Projectile>();
-        projectile.direction = pos.normalized;
-        projectile.controlSpeed = playerControlSpeed;
+        projectile.SetVelocity(pos.normalized, playerControlSpeed);
+        // projectile.direction = pos.normalized;
+        // projectile.controlSpeed = playerControlSpeed;
         yield return new WaitForSeconds( bowCooldown / playerControlSpeed );
         canShootArrow = true;
     }

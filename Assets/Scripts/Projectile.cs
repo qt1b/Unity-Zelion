@@ -17,8 +17,15 @@ public class Projectile : MonoBehaviour
         Destroy(gameObject,5f);
     }
 
+    public void SetVelocity(Vector3 givenDirection, float givenControlSpeed)
+    {
+        direction = givenDirection;
+        controlSpeed = givenControlSpeed;
+        myRigidBody.velocity = direction * (speed * 0.2f * controlSpeed);
+    }
+
     void Update() {
-        myRigidBody.MovePosition(transform.position + direction * speed * Time.deltaTime * controlSpeed);
+        // myRigidBody.MovePosition(transform.position + direction * (speed * Time.deltaTime * controlSpeed));
         // transform.position += vecSpeed * Time.deltaTime * controlSpeed;
     }
 
