@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
 
     // time variablse
     public float inititialSpeed = 7f;
-    float currentSpeed;
+    public float currentSpeed;
     float inititialWithControl;
 
     // variables related to time control : player speed should be modified by external functions
@@ -52,7 +52,8 @@ public class Player : MonoBehaviour
     bool canThrowPoisonBomb = true;
     
     public bool isDashing { get; private set; } = false; // so the stamina bar can use it
-    bool isAiming = false;
+    bool isAimingArrow = false;
+    bool isAimingBomb = false;
 
     // time control, to enable time effects
     // bc some bosses will slow down our controls, so this var has to be public
@@ -72,7 +73,7 @@ public class Player : MonoBehaviour
     // variables for attack settings
     float dashPower = 6f;
     float attackSpeedNerf = 0.65f;
-    float maxBombDist = 4f;
+    float maxBombDist = 7f;
 
     // Start is called before the first frame update
     void Start()
@@ -93,59 +94,81 @@ public class Player : MonoBehaviour
             change.y = Input.GetAxisRaw("Vertical");
             change.Normalize();
             // one attack / 'normal' ability at a time
-            if (!isAiming) {
+            if (isAimingArrow) {
+                PlacePreviewArrow();
+                if(Input.GetKeyUp(KeyCode.Mouse0)){
+                    if ( canShootArrow ) StartCoroutine(ShootArrow());
+                    isAimingArrow = false;
+                    currentSpeed = inititialWithControl;
+                    ArrowPreviewRef.SetActive(false);
+                    animator.SetBool("AimingBow",false);
+                }
+            }
+            else if (isAimingBomb) {
+                PlacePreviewZone();
+                if (Input.GetKeyUp(KeyCode.Mouse1)) {
+                    if ( canThrowPoisonBomb ) StartCoroutine(ThrowPoisonBomb());
+                    isAimingBomb = false;
+                    currentSpeed = inititialWithControl;
+                    animator.SetBool("AimingBomb",false);
+                    PoisonZonePreviewRef.SetActive(false);
+                }
+            }
+            else {
                 if (canSwordAttack && Input.GetKeyDown(KeyCode.Space)) {
                     StartCoroutine(SwordAttack());
                 } 
                 else if(canDash && Input.GetKeyDown(KeyCode.LeftShift)){
                     StartCoroutine(Dash());
                 }
-                else if (Input.GetKeyDown(KeyCode.LeftControl)) {
-                    animator.SetBool("UsingBow",true);
-                    isAiming = true;
+                else if (Input.GetKeyDown(KeyCode.Mouse0)) {
+                    animator.SetBool("AimingBow",true);
+                    isAimingArrow = true;
                     currentSpeed = inititialWithControl * attackSpeedNerf;
                     ArrowPreviewRef.SetActive(true);
-                    PoisonZonePreviewRef.SetActive(true);
-                    PlaceAimingElts();
+                    // PoisonZonePreviewRef.SetActive(true);
+                    PlacePreviewArrow();
                     // ArrowPreviewRef.transform.position = transform.position;
                 }
-            }
-            else 
-            {
-                PlaceAimingElts();
-                if ( canShootArrow && Input.GetKeyDown(KeyCode.Mouse0)) {
-                    StartCoroutine(ShootArrow());
-                }
-                else if (canThrowPoisonBomb & Input.GetKeyDown(KeyCode.Mouse1)) {
-                    StartCoroutine(ThrowPoisonBomb());
-                }
-                if (Input.GetKeyUp(KeyCode.LeftControl)) {
-                    animator.SetBool("UsingBow",false);
-                    isAiming = false;
-                    currentSpeed = inititialWithControl ;
-                    ArrowPreviewRef.SetActive(false);
-                    PoisonZonePreviewRef.SetActive(false);
+                else if (Input.GetKeyDown(KeyCode.Mouse1)) {
+                    animator.SetBool("AimingBomb",true);
+                    isAimingBomb = true;
+                    currentSpeed = inititialWithControl * attackSpeedNerf;
+                    PoisonZonePreviewRef.SetActive(true);
+                    PlacePreviewZone();
                 }
             }
         }
         UpdateAnimationAndMove();
     }
 
-    void PlaceAimingElts() {
+    void PlacePreviewArrow() {
         Vector3 mousePosition = Input.mousePosition;
         mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        var y = (mousePosition.y - transform.position.y);
-        var x = (mousePosition.x - transform.position.x);
+        float y = (mousePosition.y - transform.position.y);
+        float x = (mousePosition.x - transform.position.x);
         animator.SetFloat("MouseX",x);
         animator.SetFloat("MouseY",y);
-
-        PoisonZonePreviewRef.transform.position = new Vector3(mousePosition.x, mousePosition.y, 0f);
-
         Vector3 pos = new Vector3(x,y,0f);
         ArrowPreviewRef.transform.position = transform.position + pos.normalized;
-        var teta = Mathf.Atan(y / x) * 180 / Mathf.PI - (Input.mousePosition.x > Screen.width / 2 ? 90 : -90);
+        float teta = Mathf.Atan(y / x) * 180 / Mathf.PI - (Input.mousePosition.x > Screen.width / 2 ? 90 : -90);
         ArrowPreviewRef.transform.eulerAngles = new Vector3(0f,0f,teta);
     }
+
+    void PlacePreviewZone() {
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        float y = (mousePosition.y - transform.position.y);
+        float x = (mousePosition.x - transform.position.x);
+        Vector3 pos = new Vector3(x,y,0f);
+        if (Vector3.Distance(pos, Vector3.zero) > maxBombDist) {
+            pos = maxBombDist * pos.normalized;
+        }
+        animator.SetFloat("MouseX",pos.x);
+        animator.SetFloat("MouseY",pos.y);
+        PoisonZonePreviewRef.transform.position = new Vector3(transform.position.x + pos.x, transform.position.y + pos.y, 0f);
+    }
+
 
     void UpdateAnimationAndMove() {
         if (change != Vector3.zero) {
@@ -216,8 +239,13 @@ public class Player : MonoBehaviour
         canThrowPoisonBomb = false;
         Vector3 mousePosition = Input.mousePosition;
         mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        mousePosition.z = 0f;
-        GameObject pZone = Instantiate(PoisonZoneRef, mousePosition, new Quaternion());
+        float y = (mousePosition.y - transform.position.y);
+        float x = (mousePosition.x - transform.position.x);
+        Vector3 pos = new Vector3(x,y,0f);
+        if (Vector3.Distance(pos, Vector3.zero) > maxBombDist) {
+            pos = maxBombDist * pos.normalized;
+        }
+        GameObject pZone = Instantiate(PoisonZoneRef, new Vector3(transform.position.x + pos.x, transform.position.y + pos.y,0f) , new Quaternion() );
         yield return new WaitForSeconds( poisonBombCooldown / controlSpeed  );
         canThrowPoisonBomb = true;
     }

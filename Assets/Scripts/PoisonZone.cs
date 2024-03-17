@@ -21,11 +21,10 @@ public class PoisonZone : MonoBehaviour
     {
         currentTime += Time.deltaTime * controlSpeed;
         duration -= Time.deltaTime * controlSpeed;
-        print(currentTime);
         if (duration < 0) Destroy(gameObject);
     }
 
-    void OnTriggerEnter2D(Collider2D other) {
+    void OnTriggerStay2D(Collider2D other) {
         print("detected Collision");
         if (currentTime >= timeBetweenHits && other.CompareTag(hitTag)) {
             other.GetComponent<Health>().TakeDamage(damage);
