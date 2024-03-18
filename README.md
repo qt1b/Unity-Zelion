@@ -18,8 +18,15 @@ now doing most things without following a series
 - UI : healthbar
 
 ### todo:
+### marcus :
+- have (sword) swing, bow aiming and bomb aiming animations
+### louis
+- AI
 - network
+### adrien
 - UI : menus
+- healthbar merged
+### quentin / everyone
 - time-related capacities
 
 ### network

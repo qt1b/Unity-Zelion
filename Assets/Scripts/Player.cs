@@ -39,10 +39,10 @@ public class Player : MonoBehaviour
 
     Rigidbody2D myRigidBody;
     public Vector3 change;
+    public Vector3 notNullChange;
 
 
-    // display variables
-    Animator animator;
+
 
     // variables controlling the attack system
     // is our player already doing smthg
@@ -76,8 +76,13 @@ public class Player : MonoBehaviour
     float dashPower = 6f;
     float attackSpeedNerf = 0.65f;
     float maxBombDist = 7f;
+    float swordDist = 0.7f;
 
-    // Start is called before the first frame update
+
+    // display variables
+    Animator animator;
+    GameObject _swordHitzone;
+
     void Start()
     {
         inititialWithControl = inititialSpeed * controlSpeed;
@@ -85,6 +90,8 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();
         myRigidBody = GetComponent<Rigidbody2D>();
         animator.speed = controlSpeed ;
+        _swordHitzone = transform.GetChild(0).gameObject;
+        _swordHitzone.SetActive(false);
     }
 
     // Update is called once per frame 
@@ -95,6 +102,7 @@ public class Player : MonoBehaviour
             change.x = Input.GetAxisRaw("Horizontal");
             change.y = Input.GetAxisRaw("Vertical");
             change.Normalize();
+            if (change != Vector3.zero) notNullChange = change;
             // one attack / 'normal' ability at a time
             if (isAimingArrow) {
                 PlacePreviewArrow();
@@ -199,13 +207,17 @@ public class Player : MonoBehaviour
 
     // ReSharper disable Unity.PerformanceAnalysis
     IEnumerator SwordAttack() {
-        canSwordAttack = false;GetMouseDirection();
-        //animator.ResetTrigger("SwordAttack"); breaks the animation if actived ?
-        animator.SetTrigger("SwordAttack");
+        canSwordAttack = false;
+        _swordHitzone.SetActive(true);
+        float teta = Mathf.Atan(notNullChange.y / notNullChange.x) * 180 / Mathf.PI + (notNullChange.x >= 0 ? 0 : 180);
+        _swordHitzone.transform.eulerAngles = new Vector3(0f,0f,teta);
+        _swordHitzone.transform.position += notNullChange * swordDist;
         currentSpeed *= attackSpeedNerf;
         yield return new WaitForSeconds( swordTime / controlSpeed );
-        currentSpeed = inititialSpeed * controlSpeed ;
-        yield return new WaitForSeconds( SwordAttackCooldown / controlSpeed  );
+        _swordHitzone.transform.position = transform.position;
+        _swordHitzone.SetActive(false);
+        currentSpeed = inititialWithControl ;
+        yield return new WaitForSeconds( SwordAttackCooldown / controlSpeed );
         canSwordAttack = true;
     }
 
