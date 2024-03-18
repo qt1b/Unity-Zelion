@@ -3,7 +3,6 @@
         color: #c0c0c0;
         background-color: #101010;
         font-family: verdana;
-        background-image: url('images/Background.webp');
     }
 /*}
 
@@ -19,7 +18,17 @@
 
 nav {
   margin:0;
+  overflow: auto;
 }
+
+#backgroundimage {
+background-image: url("images/Background.webp");
+width: 99vw;
+height: 100vh; 
+background-size: 100% 100%;
+background-repeat: no-repeat;
+position: relative;
+} 
 
 h1 {
   text-align: center;
@@ -82,8 +91,14 @@ a.right {
 }
 
 .topbar a.active {
-  background-image: url("images/ZelionLogo.png");
-  background-color: #333;
+  /*background-image: url("images/favicon_64.png");*/
+  background-color: #4b3a77 ; /*#888; */
+  color: white;
+}
+
+.topbar a.download {
+  /*background-image: url("images/favicon_64.png");*/
+  background-color: #3a4877 ; /*#888; */
   color: white;
 }
       
