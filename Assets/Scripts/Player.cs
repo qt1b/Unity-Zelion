@@ -65,10 +65,12 @@ public class Player : MonoBehaviour
     float dashPower = 6f;
     float attackSpeedNerf = 0.65f;
     float maxBombDist = 4f;
+    private Camera _camera;
 
     // Start is called before the first frame update
     void Start()
     {
+        _camera = Camera.main;
         currentSpeed = inititialSpeed;
         animator = GetComponent<Animator>();
         myRigidBody = GetComponent<Rigidbody2D>();
@@ -148,7 +150,7 @@ public class Player : MonoBehaviour
 
     // ReSharper disable Unity.PerformanceAnalysis
     IEnumerator SwordAttack() {
-        canSwordAttack = false;GetMouseDirection();
+        canSwordAttack = false;
         //animator.ResetTrigger("SwordAttack"); breaks the animation if actived ?
         animator.SetTrigger("SwordAttack");
         currentSpeed *= attackSpeedNerf;
@@ -161,29 +163,21 @@ public class Player : MonoBehaviour
     (Vector3, Quaternion) GetMouseDirection() {
         /* version taking the player's position */
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        var y = (mousePosition.y - transform.position.y);
-        var x = (mousePosition.x - transform.position.x);
-        var teta = Mathf.Atan(y / x);        
-        /* version taking the middle of the screen as reference
-        var y = (Input.mousePosition.y - Screen.height / 2);
-        var x = (Input.mousePosition.x - Screen.width / 2);
+        mousePosition = _camera.ScreenToWorldPoint(mousePosition);
+        var position = transform.position;
+        var y = (mousePosition.y - position.y);
+        var x = (mousePosition.x - position.x);
         var teta = Mathf.Atan(y / x);
-        */
         return (new Vector3(x, y, 0f),
-            Quaternion.Euler(0f, 0f, teta * 180 / Mathf.PI - (Input.mousePosition.x > Screen.width / 2 ? 90 : -90)));   
+            Quaternion.Euler(0f, 0f, teta * 180 / Mathf.PI - (Input.mousePosition.x > position.x ? 90 : -90)));   
     }
 
     IEnumerator ShootArrow() {
         canShootArrow = false;
         (Vector3 pos, Quaternion rot) = GetMouseDirection();
-        //GameObject arr = Instantiate(Resources.Load("Prefabs"+"Arrow"), transform.position, rot);
         GameObject arr = Instantiate(ArrowRef, transform.position, rot);
-        // pos.Normalize();
         Projectile projectile= arr.GetComponent<Projectile>();
         projectile.SetVelocity(pos.normalized, playerControlSpeed);
-        // projectile.direction = pos.normalized;
-        // projectile.controlSpeed = playerControlSpeed;
         yield return new WaitForSeconds( bowCooldown / playerControlSpeed );
         canShootArrow = true;
     }

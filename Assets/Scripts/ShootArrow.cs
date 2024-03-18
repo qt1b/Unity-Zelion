@@ -1,0 +1,20 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ShootArrow : MonoBehaviour
+{
+    public List<GameObject> ArrowRef;
+    public float ArrowSpeed;
+    
+    // Start is called before the first frame update
+    public void Shoot(int arrowIndex, Vector3 initialPos, Vector3 direction)
+    {
+        var rot = Quaternion.Euler(0f, 0f, 
+            Mathf.Atan(direction.y / direction.x) * 180 / Mathf.PI + (direction.x > 0 ? 90 : -90));
+        var arr = Instantiate(ArrowRef[arrowIndex], initialPos, rot);
+        var projectile = arr.GetComponent<Projectile>();
+        projectile.SetVelocity(-direction, ArrowSpeed);
+    }
+}
