@@ -233,7 +233,7 @@ public class Player : MonoBehaviour
         canSwordAttack = false;
         isWielding = true;
         _swordHitzone.SetActive(true);
-        float currentSwordRot = Mathf.Atan(notNullChange.y / notNullChange.x) * 180 / Mathf.PI + (notNullChange.x >= 0 ? 0 : 180) + 50;
+        float currentSwordRot = Mathf.Atan(notNullChange.y / notNullChange.x) * 180 / Mathf.PI + (notNullChange.x >= 0 ? 0 : 180);
         _swordHitzone.transform.eulerAngles = new Vector3(0f,0f,currentSwordRot);
         _swordHitzone.transform.position = transform.position + notNullChange * swordDist;
         currentSpeed *= attackSpeedNerf;

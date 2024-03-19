@@ -1381,8 +1381,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.0000500679, y: 0.00029993057, z: 0}
-    m_Extent: {x: 5.49815, y: 5.4983, z: 0}
+    m_Center: {x: -0.0011999607, y: 0.00034999847, z: 0}
+    m_Extent: {x: 5.4989996, y: 5.49755, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -1764,7 +1764,7 @@ GameObject:
   - component: {fileID: 1019675162}
   - component: {fileID: 1019675163}
   - component: {fileID: 1019675165}
-  - component: {fileID: 1019675164}
+  - component: {fileID: 1019675166}
   m_Layer: 0
   m_Name: SwordHitzone
   m_TagString: Untagged
@@ -1801,51 +1801,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitTag: Damageable
   damage: 7
---- !u!61 &1019675164
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1019675161}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.070274115, y: -0.03785187}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.75, y: 0.375}
-    newSize: {x: 0.375, y: 0.75}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.2360187, y: 0.4089328}
-  m_EdgeRadius: 0
 --- !u!212 &1019675165
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1898,6 +1853,59 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &1019675166
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019675161}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.75, y: 0.375}
+    newSize: {x: 0.375, y: 0.75}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.4811802, y: 0.52586645}
+      - {x: 0.13657951, y: 0.6704324}
+      - {x: -0.0042152405, y: 0.15132582}
+      - {x: -0.008735657, y: -0.23723948}
+      - {x: 0.08332062, y: -0.75512457}
+      - {x: 0.44800568, y: -0.6748748}
+      - {x: 0.64134026, y: -0.36365542}
+      - {x: 0.6494446, y: 0.18380088}
+  m_UseDelaunayMesh: 0
 --- !u!1001 &1236110919
 PrefabInstance:
   m_ObjectHideFlags: 0
