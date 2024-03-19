@@ -39,10 +39,10 @@ public class Player : MonoBehaviour
 
     Rigidbody2D myRigidBody;
     public Vector3 change;
+    public Vector3 notNullChange;
 
 
-    // display variables
-    Animator animator;
+
 
     // variables controlling the attack system
     // is our player already doing smthg
@@ -54,6 +54,7 @@ public class Player : MonoBehaviour
     bool canThrowPoisonBomb = true;
     
     static public bool isDashing { get; private set; } = false; // so the stamina bar can use it
+    bool isWielding = false;
     bool isAimingArrow = false;
     bool isAimingBomb = false;
 
@@ -63,21 +64,31 @@ public class Player : MonoBehaviour
     // cooldown timers
     // should be used later to instanciate timers for capacities, 
     // allowing to see how much time we have before being able to use the capacity again
-    float SwordAttackCooldown = 0.4f;
+    float swordTime = 0.4f;
+    float _swordAttackCooldown = 0.4f;
+    float _currentSwordTime;
+    float currentSwordRot;
+    float totalSwordRot = 100f;
+
     float dashCooldown = 1f;
     float bowCooldown = 0.4f;
     float poisonBombCooldown = 7f;
 
     // 'animation' timers
     float dashTime = 0.12f;
-    float swordTime = 0.4f;
+
 
     // variables for attack settings
     float dashPower = 6f;
     float attackSpeedNerf = 0.65f;
     float maxBombDist = 7f;
+    float swordDist = 0.7f;
 
-    // Start is called before the first frame update
+
+    // display variables
+    Animator animator;
+    GameObject _swordHitzone;
+
     void Start()
     {
         inititialWithControl = inititialSpeed * controlSpeed;
@@ -85,6 +96,9 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();
         myRigidBody = GetComponent<Rigidbody2D>();
         animator.speed = controlSpeed ;
+        _swordHitzone = transform.GetChild(0).gameObject;
+        _swordHitzone.SetActive(false);
+        _currentSwordTime = swordTime;
     }
 
     // Update is called once per frame 
@@ -95,6 +109,7 @@ public class Player : MonoBehaviour
             change.x = Input.GetAxisRaw("Horizontal");
             change.y = Input.GetAxisRaw("Vertical");
             change.Normalize();
+            if (change != Vector3.zero) notNullChange = change;
             // one attack / 'normal' ability at a time
             if (isAimingArrow) {
                 PlacePreviewArrow();
@@ -141,7 +156,16 @@ public class Player : MonoBehaviour
                 }
             }
         }
+        if (isWielding) SwordController();
         UpdateAnimationAndMove();
+    }
+
+    Vector3 GetMouseRelativePos() {
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        float y = (mousePosition.y - transform.position.y);
+        float x = (mousePosition.x - transform.position.x);
+        return new Vector3(x,y,0f).normalized;
     }
 
     void PlacePreviewArrow() {
@@ -197,45 +221,38 @@ public class Player : MonoBehaviour
         // modifies all the IEltSpeed interfaces
     }
 
+    void SwordController() {
+        /* _currentSwordTime += 
+        currentSwordRot -= (Time.Delta * )
+        _swordHitzone.transform.eulerAngles(); */
+    } 
+
     // ReSharper disable Unity.PerformanceAnalysis
     IEnumerator SwordAttack() {
-        canSwordAttack = false;GetMouseDirection();
-        //animator.ResetTrigger("SwordAttack"); breaks the animation if actived ?
-        animator.SetTrigger("SwordAttack");
+        // wielding for 100 degrees
+        canSwordAttack = false;
+        isWielding = true;
+        _swordHitzone.SetActive(true);
+        float currentSwordRot = Mathf.Atan(notNullChange.y / notNullChange.x) * 180 / Mathf.PI + (notNullChange.x >= 0 ? 0 : 180);
+        _swordHitzone.transform.eulerAngles = new Vector3(0f,0f,currentSwordRot);
+        _swordHitzone.transform.position = transform.position + notNullChange * swordDist;
         currentSpeed *= attackSpeedNerf;
         yield return new WaitForSeconds( swordTime / controlSpeed );
-        currentSpeed = inititialSpeed * controlSpeed ;
-        yield return new WaitForSeconds( SwordAttackCooldown / controlSpeed  );
+        _swordHitzone.SetActive(false);
+        isWielding = false;
+        currentSpeed = inititialWithControl ;
+        yield return new WaitForSeconds( _swordAttackCooldown / controlSpeed );
         canSwordAttack = true;
-    }
-
-    (Vector3, Quaternion) GetMouseDirection() {
-        /* version taking the player's position */
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        var y = (mousePosition.y - transform.position.y);
-        var x = (mousePosition.x - transform.position.x);
-        var teta = Mathf.Atan(y / x);        
-        /* version taking the middle of the screen as reference
-        var y = (Input.mousePosition.y - Screen.height / 2);
-        var x = (Input.mousePosition.x - Screen.width / 2);
-        var teta = Mathf.Atan(y / x);
-        */
-        return (new Vector3(x, y, 0f),
-            Quaternion.Euler(0f, 0f, teta * 180 / Mathf.PI - (Input.mousePosition.x > Screen.width / 2 ? 90 : -90)));   
     }
 
     IEnumerator ShootArrow() {
         canShootArrow = false;
-        (Vector3 pos, Quaternion rot) = GetMouseDirection();
-        pos.Normalize();
-        //GameObject arr = Instantiate(Resources.Load("Prefabs"+"Arrow"), transform.position, rot);
+        Vector3 pos = GetMouseRelativePos();
+        float teta = Mathf.Atan( pos.y / pos.x ) * 180 / Mathf.PI - (Input.mousePosition.x > Screen.width / 2 ? 90 : -90);
+        Quaternion rot = Quaternion.Euler(0f,0f,teta);
         GameObject arr = Instantiate(ArrowRef, transform.position + pos, rot);
-        // pos.Normalize();
         Projectile projectile= arr.GetComponent<Projectile>();
-        projectile.SetVelocity(pos.normalized, controlSpeed);
-        // projectile.direction = pos.normalized;
-        // projectile.controlSpeed = playerControlSpeed;
+        projectile.SetVelocity(pos, controlSpeed);
         yield return new WaitForSeconds( bowCooldown / controlSpeed  );
         canShootArrow = true;
     }
