@@ -189,8 +189,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.0010499954, y: 0.00069999695, z: 0}
-    m_Extent: {x: 5.49775, y: 5.4994, z: 0}
+    m_Center: {x: -0.00045013428, y: -0.00055003166, z: 0}
+    m_Extent: {x: 5.49865, y: 5.49835, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -1223,7 +1223,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -1562,8 +1562,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.00075006485, y: -0.00040006638, z: 0}
-    m_Extent: {x: 5.49895, y: 5.4999, z: 0}
+    m_Center: {x: 0.00055003166, y: 0.0010499954, z: 0}
+    m_Extent: {x: 5.4991503, y: 5.49945, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
