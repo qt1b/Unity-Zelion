@@ -88,11 +88,13 @@ public class Player : MonoBehaviour
     // display variables
     Animator animator;
     GameObject _swordHitzone;
+    private Camera _camera;
 
     void Start()
     {
         inititialWithControl = inititialSpeed * controlSpeed;
         currentSpeed = inititialWithControl;
+        _camera = Camera.main;
         animator = GetComponent<Animator>();
         myRigidBody = GetComponent<Rigidbody2D>();
         animator.speed = controlSpeed ;
