@@ -7,7 +7,7 @@ using UnityEngine;
 public class HealthBar : AbstractBar
 {
 
-        // Update is called once per frame
+    // Update is called once per frame
     new void Update() 
     {
         base.Update(); // utilise l'update de la abstract class
