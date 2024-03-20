@@ -10,11 +10,13 @@ public class Projectile : MonoBehaviour
     public string hitTag = "Damageable";
     public int damage = 3; 
     Rigidbody2D myRigidBody;
+    private HealthBar _healthBar;
 
     
     void Awake() {
         myRigidBody = GetComponent<Rigidbody2D>();
         Destroy(gameObject,3f);
+        _healthBar = GameObject.FindGameObjectWithTag($"PlayerHealth").GetComponent<HealthBar>();
     }
 
 
@@ -32,6 +34,11 @@ public class Projectile : MonoBehaviour
             Destroy(gameObject,0.3f);
             myRigidBody.velocity = Vector3.zero;
         } else if (other.CompareTag($"Obstacle")) {
+            Destroy(gameObject,0.3f);
+            myRigidBody.velocity = Vector3.zero;
+        } else if (other.CompareTag($"Player"))
+        {
+            _healthBar.TakeDamages(20);
             Destroy(gameObject,0.3f);
             myRigidBody.velocity = Vector3.zero;
         }
