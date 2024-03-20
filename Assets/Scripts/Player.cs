@@ -52,7 +52,7 @@ public class Player : MonoBehaviour
     bool canDash = true;
     bool canShootArrow = true;
     bool canThrowPoisonBomb = true;
-    
+
     static public bool isDashing { get; private set; } = false; // so the stamina bar can use it
     bool isWielding = false;
     bool isAimingArrow = false;
@@ -164,7 +164,7 @@ public class Player : MonoBehaviour
 
     Vector3 GetMouseRelativePos() {
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        mousePosition = _camera.ScreenToWorldPoint(mousePosition);
         float y = (mousePosition.y - transform.position.y);
         float x = (mousePosition.x - transform.position.x);
         return new Vector3(x,y,0f).normalized;
@@ -172,29 +172,31 @@ public class Player : MonoBehaviour
 
     void PlacePreviewArrow() {
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        float y = (mousePosition.y - transform.position.y);
-        float x = (mousePosition.x - transform.position.x);
+        mousePosition = _camera.ScreenToWorldPoint(mousePosition);
+        var position = transform.position;
+        float y = (mousePosition.y - position.y);
+        float x = (mousePosition.x - position.x);
         animator.SetFloat("MouseX",x);
         animator.SetFloat("MouseY",y);
         Vector3 pos = new Vector3(x,y,0f);
-        ArrowPreviewRef.transform.position = transform.position + pos.normalized;
-        float teta = Mathf.Atan(y / x) * 180 / Mathf.PI - (Input.mousePosition.x > Screen.width / 2 ? 90 : -90);
+        ArrowPreviewRef.transform.position = position + pos.normalized;
+        float teta = Mathf.Atan(y / x) * 180 / Mathf.PI - (Input.mousePosition.x > position.x ? 90 : -90);
         ArrowPreviewRef.transform.eulerAngles = new Vector3(0f,0f,teta);
     }
 
     void PlacePreviewZone() {
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        float y = (mousePosition.y - transform.position.y);
-        float x = (mousePosition.x - transform.position.x);
+        mousePosition = _camera.ScreenToWorldPoint(mousePosition);
+        var position = transform.position;
+        float y = (mousePosition.y - position.y);
+        float x = (mousePosition.x - position.x);
         Vector3 pos = new Vector3(x,y,0f);
         if (Vector3.Distance(pos, Vector3.zero) > maxBombDist) {
             pos = maxBombDist * pos.normalized;
         }
         animator.SetFloat("MouseX",pos.x);
         animator.SetFloat("MouseY",pos.y);
-        PoisonZonePreviewRef.transform.position = new Vector3(transform.position.x + pos.x, transform.position.y + pos.y, 0f);
+        PoisonZonePreviewRef.transform.position = new Vector3(position.x + pos.x, position.y + pos.y, 0f);
     }
 
 
@@ -235,7 +237,7 @@ public class Player : MonoBehaviour
         canSwordAttack = false;
         isWielding = true;
         _swordHitzone.SetActive(true);
-        float currentSwordRot = Mathf.Atan(notNullChange.y / notNullChange.x) * 180 / Mathf.PI + (notNullChange.x >= 0 ? 0 : 180);
+        currentSwordRot = Mathf.Atan(notNullChange.y / notNullChange.x) * 180 / Mathf.PI + (notNullChange.x >= 0 ? 0 : 180);
         _swordHitzone.transform.eulerAngles = new Vector3(0f,0f,currentSwordRot);
         _swordHitzone.transform.position = transform.position + notNullChange * swordDist;
         currentSpeed *= attackSpeedNerf;
@@ -250,7 +252,7 @@ public class Player : MonoBehaviour
     IEnumerator ShootArrow() {
         canShootArrow = false;
         Vector3 pos = GetMouseRelativePos();
-        float teta = Mathf.Atan( pos.y / pos.x ) * 180 / Mathf.PI - (Input.mousePosition.x > Screen.width / 2 ? 90 : -90);
+        float teta = Mathf.Atan( pos.y / pos.x ) * 180 / Mathf.PI - (Input.mousePosition.x > transform.position.x ? 90 : -90);
         Quaternion rot = Quaternion.Euler(0f,0f,teta);
         GameObject arr = Instantiate(ArrowRef, transform.position + pos, rot);
         Projectile projectile= arr.GetComponent<Projectile>();
@@ -263,14 +265,15 @@ public class Player : MonoBehaviour
     IEnumerator ThrowPoisonBomb() {
         canThrowPoisonBomb = false;
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        float y = (mousePosition.y - transform.position.y);
-        float x = (mousePosition.x - transform.position.x);
+        mousePosition = _camera.ScreenToWorldPoint(mousePosition);
+        var position = transform.position;
+        float y = (mousePosition.y - position.y);
+        float x = (mousePosition.x - position.x);
         Vector3 pos = new Vector3(x,y,0f);
         if (Vector3.Distance(pos, Vector3.zero) > maxBombDist) {
             pos = maxBombDist * pos.normalized;
         }
-        GameObject pZone = Instantiate(PoisonZoneRef, new Vector3(transform.position.x + pos.x, transform.position.y + pos.y,0f) , new Quaternion() );
+        GameObject pZone = Instantiate(PoisonZoneRef, new Vector3(position.x + pos.x, position.y + pos.y,0f) , new Quaternion() );
         yield return new WaitForSeconds( poisonBombCooldown / controlSpeed  );
         canThrowPoisonBomb = true;
     }
