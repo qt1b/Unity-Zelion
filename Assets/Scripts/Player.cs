@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
     float totalSwordRot = 100f;
 
     float dashCooldown = 1f;
-    float bowCooldown = 0.4f;
+    public float bowCooldown = 0.4f;
     float poisonBombCooldown = 7f;
 
     // 'animation' timers
