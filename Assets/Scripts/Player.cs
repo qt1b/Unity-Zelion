@@ -234,7 +234,7 @@ public class Player : MonoBehaviour
         // wielding for 100 degrees
         canSwordAttack = false;
         _swordHitzone.SetActive(true);
-        currentSwordRot = Mathf.Atan(notNullChange.y / notNullChange.x) * 180 / Mathf.PI + (notNullChange.x >= 0 ? 0 : 180);
+        var currentSwordRot = Mathf.Atan(notNullChange.y / notNullChange.x) * 180 / Mathf.PI + (notNullChange.x >= 0 ? 0 : 180);
         _swordHitzone.transform.eulerAngles = new Vector3(0f,0f,currentSwordRot);
         _swordHitzone.transform.position = transform.position + notNullChange * swordDist;
         // _swordHitzoneCollider.enabled = true;
