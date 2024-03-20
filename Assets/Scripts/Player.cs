@@ -32,10 +32,10 @@ public class Player : MonoBehaviour
 
     // would be better to get them by script
     public GameObject ArrowRef;
-    public GameObject ArrowPreviewRef;
+    private GameObject ArrowPreviewRef;
     public GameObject PoisonBombRef;
     public GameObject PoisonZoneRef;
-    public GameObject PoisonZonePreviewRef;
+    private GameObject PoisonZonePreviewRef;
 
     Rigidbody2D myRigidBody;
     public Vector3 change;
@@ -102,6 +102,8 @@ public class Player : MonoBehaviour
         _swordHitzoneCollider = _swordHitzone.GetComponent<Collider2D>();
         _swordHitzoneAnimator = _swordHitzone.GetComponent<Animator>();
         _swordHitzone.SetActive(false);
+        ArrowPreviewRef = transform.GetChild(1).gameObject;
+        PoisonZonePreviewRef = transform.GetChild(2).gameObject;
     }
 
     // Update is called once per frame 
@@ -115,6 +117,7 @@ public class Player : MonoBehaviour
             if (change != Vector3.zero) notNullChange = change;
             // one attack / 'normal' ability at a time
             if (isAimingArrow) {
+                if (!ArrowPreviewRef.activeSelf && canShootArrow ) ArrowPreviewRef.SetActive(true);
                 PlacePreviewArrow();
                 if(Input.GetKeyUp(KeyCode.Mouse0)){
                     if ( canShootArrow ) StartCoroutine(ShootArrow());
@@ -125,6 +128,7 @@ public class Player : MonoBehaviour
                 }
             }
             else if (isAimingBomb) {
+                if (!PoisonZonePreviewRef.activeSelf && canThrowPoisonBomb ) PoisonZonePreviewRef.SetActive(true);
                 PlacePreviewZone();
                 if (Input.GetKeyUp(KeyCode.Mouse1)) {
                     if ( canThrowPoisonBomb ) StartCoroutine(ThrowPoisonBomb());
@@ -145,7 +149,7 @@ public class Player : MonoBehaviour
                     animator.SetBool("AimingBow",true);
                     isAimingArrow = true;
                     currentSpeed = inititialWithControl * attackSpeedNerf;
-                    ArrowPreviewRef.SetActive(true);
+                    if ( canShootArrow ) ArrowPreviewRef.SetActive(true);
                     // PoisonZonePreviewRef.SetActive(true);
                     PlacePreviewArrow();
                     // ArrowPreviewRef.transform.position = transform.position;
@@ -154,7 +158,7 @@ public class Player : MonoBehaviour
                     animator.SetBool("AimingBomb",true);
                     isAimingBomb = true;
                     currentSpeed = inititialWithControl * attackSpeedNerf;
-                    PoisonZonePreviewRef.SetActive(true);        isWielding = true;
+                    if ( canThrowPoisonBomb ) PoisonZonePreviewRef.SetActive(true);
                     PlacePreviewZone();
                 }
             }
@@ -175,6 +179,7 @@ public class Player : MonoBehaviour
     }
 
     void PlacePreviewArrow() {
+        if (canShootArrow) {
         Vector3 mousePosition = Input.mousePosition;
         mousePosition = _camera.ScreenToWorldPoint(mousePosition);
         var position = transform.position;
@@ -186,6 +191,7 @@ public class Player : MonoBehaviour
         ArrowPreviewRef.transform.position = position + pos.normalized;
         float teta = Mathf.Atan(y / x) * 180 / Mathf.PI - (mousePosition.x > position.x ? 90 : -90);
         ArrowPreviewRef.transform.eulerAngles = new Vector3(0f,0f,teta);
+        }
     }
 
     void PlacePreviewZone() {
