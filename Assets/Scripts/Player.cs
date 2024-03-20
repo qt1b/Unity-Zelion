@@ -109,6 +109,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame 
     void Update()
     {    
+        if(PauseMenu.GameIsPaused){
+            return;
+        }
         if (!isDashing) {
             change = Vector3.zero;
             change.x = Input.GetAxisRaw("Horizontal");
