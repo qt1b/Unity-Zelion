@@ -64,10 +64,8 @@ public class Player : MonoBehaviour
     // cooldown timers
     // should be used later to instanciate timers for capacities, 
     // allowing to see how much time we have before being able to use the capacity again
-    float swordTime = 0.4f;
+    float swordTime = 0.2f;
     float _swordAttackCooldown = 0.4f;
-    float _currentSwordTime;
-    float currentSwordRot;
     float totalSwordRot = 100f;
 
     float dashCooldown = 1f;
@@ -82,12 +80,14 @@ public class Player : MonoBehaviour
     float dashPower = 6f;
     float attackSpeedNerf = 0.65f;
     float maxBombDist = 7f;
-    float swordDist = 0.7f;
+    float swordDist = 0.3f;
 
 
     // display variables
     Animator animator;
     GameObject _swordHitzone;
+    Collider2D _swordHitzoneCollider;
+    Animator _swordHitzoneAnimator;
     private Camera _camera;
 
     void Start()
@@ -99,8 +99,9 @@ public class Player : MonoBehaviour
         myRigidBody = GetComponent<Rigidbody2D>();
         animator.speed = controlSpeed ;
         _swordHitzone = transform.GetChild(0).gameObject;
+        _swordHitzoneCollider = _swordHitzone.GetComponent<Collider2D>();
+        _swordHitzoneAnimator = _swordHitzone.GetComponent<Animator>();
         _swordHitzone.SetActive(false);
-        _currentSwordTime = swordTime;
     }
 
     // Update is called once per frame 
@@ -153,12 +154,15 @@ public class Player : MonoBehaviour
                     animator.SetBool("AimingBomb",true);
                     isAimingBomb = true;
                     currentSpeed = inititialWithControl * attackSpeedNerf;
-                    PoisonZonePreviewRef.SetActive(true);
+                    PoisonZonePreviewRef.SetActive(true);        isWielding = true;
                     PlacePreviewZone();
                 }
             }
         }
-        if (isWielding) SwordController();
+        /* if (isWielding) {
+            _swordHitzoneCollider.enabled = false;
+            isWielding = false;
+        } */
         UpdateAnimationAndMove();
     }
 
@@ -225,25 +229,19 @@ public class Player : MonoBehaviour
         // modifies all the IEltSpeed interfaces
     }
 
-    void SwordController() {
-        /* _currentSwordTime += 
-        currentSwordRot -= (Time.Delta * )
-        _swordHitzone.transform.eulerAngles(); */
-    } 
-
     // ReSharper disable Unity.PerformanceAnalysis
     IEnumerator SwordAttack() {
         // wielding for 100 degrees
         canSwordAttack = false;
-        isWielding = true;
         _swordHitzone.SetActive(true);
         currentSwordRot = Mathf.Atan(notNullChange.y / notNullChange.x) * 180 / Mathf.PI + (notNullChange.x >= 0 ? 0 : 180);
         _swordHitzone.transform.eulerAngles = new Vector3(0f,0f,currentSwordRot);
         _swordHitzone.transform.position = transform.position + notNullChange * swordDist;
+        // _swordHitzoneCollider.enabled = true;
         currentSpeed *= attackSpeedNerf;
+        // isWielding = true;
         yield return new WaitForSeconds( swordTime / controlSpeed );
         _swordHitzone.SetActive(false);
-        isWielding = false;
         currentSpeed = inititialWithControl ;
         yield return new WaitForSeconds( _swordAttackCooldown / controlSpeed );
         canSwordAttack = true;
