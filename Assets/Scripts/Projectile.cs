@@ -25,11 +25,13 @@ public class Projectile : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag(hitTag)) {
+        if (other.CompareTag(hitTag))
+        {
+            print("hit " + other.name);
             other.GetComponent<Health>().TakeDamage(damage);
             Destroy(gameObject,0.3f);
             myRigidBody.velocity = Vector3.zero;
-        } else {
+        } else if (other.CompareTag($"Obstacle")) {
             Destroy(gameObject,0.3f);
             myRigidBody.velocity = Vector3.zero;
         }

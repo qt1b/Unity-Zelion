@@ -106,7 +106,7 @@ public class Player : MonoBehaviour
 
     // Update is called once per frame 
     void Update()
-    {    
+    {
         if (!isDashing) {
             change = Vector3.zero;
             change.x = Input.GetAxisRaw("Horizontal");
@@ -184,7 +184,7 @@ public class Player : MonoBehaviour
         animator.SetFloat("MouseY",y);
         Vector3 pos = new Vector3(x,y,0f);
         ArrowPreviewRef.transform.position = position + pos.normalized;
-        float teta = Mathf.Atan(y / x) * 180 / Mathf.PI - (Input.mousePosition.x > position.x ? 90 : -90);
+        float teta = Mathf.Atan(y / x) * 180 / Mathf.PI - (mousePosition.x > position.x ? 90 : -90);
         ArrowPreviewRef.transform.eulerAngles = new Vector3(0f,0f,teta);
     }
 
@@ -250,11 +250,13 @@ public class Player : MonoBehaviour
     IEnumerator ShootArrow() {
         canShootArrow = false;
         Vector3 pos = GetMouseRelativePos();
-        float teta = Mathf.Atan( pos.y / pos.x ) * 180 / Mathf.PI - (Input.mousePosition.x > transform.position.x ? 90 : -90);
+        float teta = Mathf.Atan( pos.y / pos.x ) * 180 / Mathf.PI - (pos.x > 0 ? 90 : -90);
         Quaternion rot = Quaternion.Euler(0f,0f,teta);
         GameObject arr = Instantiate(ArrowRef, transform.position + pos, rot);
         Projectile projectile= arr.GetComponent<Projectile>();
         projectile.SetVelocity(pos, controlSpeed);
+        print(pos);
+        print(controlSpeed);
         yield return new WaitForSeconds( bowCooldown / controlSpeed  );
         canShootArrow = true;
     }

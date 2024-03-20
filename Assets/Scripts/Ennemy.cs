@@ -33,7 +33,6 @@ public class Ennemy : MonoBehaviour
         
         _meleeAttack = GetComponent<MeleeAttack>();
         _isMelee = _meleeAttack is not null;
-        print(_isShooter);
         _player = GameObject.FindGameObjectWithTag("Player");
     }
 
@@ -47,7 +46,6 @@ public class Ennemy : MonoBehaviour
         //print(distance);
         if (_isShooter && distance >= shootRangeMin && distance <= shootRangeMax)
         {
-            print("World");
             if (_remainingShootingTime <= 0)
             {
                 _remainingShootingTime = shootFrequency;
