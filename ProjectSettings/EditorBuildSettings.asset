@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/TitleScene.unity
     guid: 290cdc10e02a5a0e594d23f18f220149
   - enabled: 1
-    path: Assets/Scenes/MainScene.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
+    path: Assets/Scenes/KintuScene.unity
+    guid: 7cc34d9d67eca48a4abec39bbdaa516d
   m_configObjects: {}
