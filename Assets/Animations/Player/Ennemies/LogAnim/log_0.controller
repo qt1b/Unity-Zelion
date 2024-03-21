@@ -92,10 +92,10 @@ AnimatorStateMachine:
     m_Position: {x: 200, y: 0, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5209376586126843358}
-    m_Position: {x: 235, y: 65, z: 0}
+    m_Position: {x: 480, y: -140, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6618984555841463643}
-    m_Position: {x: 270, y: 130, z: 0}
+    m_Position: {x: 500, y: -80, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1681790906149604100}
     m_Position: {x: 305, y: 195, z: 0}
@@ -149,7 +149,13 @@ AnimatorController:
   m_PrefabAsset: {fileID: 0}
   m_Name: log_0
   serializedVersion: 5
-  m_AnimatorParameters: []
+  m_AnimatorParameters:
+  - m_Name: IsMoving
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
