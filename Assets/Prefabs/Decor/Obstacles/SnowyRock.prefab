@@ -10,7 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6485453793443502064, guid: 8cc214c615e6b8b4db1d7842a813becc, type: 3}
       propertyPath: m_Name
-      value: snow-expansionSprites_5 Variant
+      value: SnowyRock
+      objectReference: {fileID: 0}
+    - target: {fileID: 6485453793443502064, guid: 8cc214c615e6b8b4db1d7842a813becc, type: 3}
+      propertyPath: m_TagString
+      value: Obstacle
       objectReference: {fileID: 0}
     - target: {fileID: 7071011995670331036, guid: 8cc214c615e6b8b4db1d7842a813becc, type: 3}
       propertyPath: m_LocalPosition.x
