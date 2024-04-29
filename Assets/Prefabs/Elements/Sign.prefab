@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2360545710683571091}
   - component: {fileID: 6650855851672633517}
   - component: {fileID: 3657417930718525852}
+  - component: {fileID: 3288643447822608552}
   m_Layer: 0
   m_Name: Sign
   m_TagString: Obstacle
@@ -190,6 +191,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogBox: {fileID: 0}
-  questionMark: {fileID: 0}
+  questionMark: {fileID: 1178728438484469522, guid: f183f3bb7ce05faefb4d2a320c79bcec, type: 3}
   dialogText: {fileID: 0}
-  dialog: Sign text
+  dialog: This is another example
+--- !u!114 &3288643447822608552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9166482606284595452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: 00000000

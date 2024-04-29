@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.Netcode;
 
-public class Player : MonoBehaviour
+public class Player : NetworkBehaviour
 {
     /*
     Notes : Player CANNOT be damageable, only ennemies and breakable objects should be tagged as "damageable"
@@ -21,16 +22,18 @@ public class Player : MonoBehaviour
     int bombDamage = 1;
     */
 
-    // time variablse
+    [Header("Speed")]
     public float inititialSpeed = 7f;
     public float currentSpeed;
     float inititialWithControl;
 
     // variables related to time control : player speed should be modified by external functions
+    [Header("Time Control")]
     public float controlSpeed = 1f;
     // float ennemySpeed = 1f; should not be used 
 
     // would be better to get them by script
+    [Header("Projectiles")]
     public GameObject ArrowRef;
     private GameObject ArrowPreviewRef;
     public GameObject PoisonBombRef;
@@ -88,13 +91,19 @@ public class Player : MonoBehaviour
     GameObject _swordHitzone;
     Collider2D _swordHitzoneCollider;
     Animator _swordHitzoneAnimator;
-    private Camera _camera;
+    public Camera Camera;
 
+    public override void OnNetworkSpawn()
+    {
+        if (!IsOwner)
+        {
+            enabled = false;
+        }
+    }
     void Start()
     {
         inititialWithControl = inititialSpeed * controlSpeed;
         currentSpeed = inititialWithControl;
-        _camera = Camera.main;
         animator = GetComponent<Animator>();
         myRigidBody = GetComponent<Rigidbody2D>();
         animator.speed = controlSpeed ;
@@ -175,7 +184,7 @@ public class Player : MonoBehaviour
 
     Vector3 GetMouseRelativePos() {
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition = _camera.ScreenToWorldPoint(mousePosition);
+        mousePosition = Camera.ScreenToWorldPoint(mousePosition);
         float y = (mousePosition.y - transform.position.y);
         float x = (mousePosition.x - transform.position.x);
         return new Vector3(x,y,0f).normalized;
@@ -184,7 +193,7 @@ public class Player : MonoBehaviour
     void PlacePreviewArrow() {
         if (canShootArrow) {
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition = _camera.ScreenToWorldPoint(mousePosition);
+        mousePosition = Camera.ScreenToWorldPoint(mousePosition);
         var position = transform.position;
         float y = (mousePosition.y - position.y);
         float x = (mousePosition.x - position.x);
@@ -199,7 +208,7 @@ public class Player : MonoBehaviour
 
     void PlacePreviewZone() {
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition = _camera.ScreenToWorldPoint(mousePosition);
+        mousePosition = Camera.ScreenToWorldPoint(mousePosition);
         var position = transform.position;
         float y = (mousePosition.y - position.y);
         float x = (mousePosition.x - position.x);
@@ -258,23 +267,36 @@ public class Player : MonoBehaviour
 
     IEnumerator ShootArrow() {
         canShootArrow = false;
-        Vector3 pos = GetMouseRelativePos();
-        float teta = Mathf.Atan( pos.y / pos.x ) * 180 / Mathf.PI - (pos.x > 0 ? 90 : -90);
-        Quaternion rot = Quaternion.Euler(0f,0f,teta);
-        GameObject arr = Instantiate(ArrowRef, transform.position + pos, rot);
-        Projectile projectile= arr.GetComponent<Projectile>();
-        projectile.SetVelocity(pos, controlSpeed);
-        print(pos);
-        print(controlSpeed);
+        if (IsServer)
+            SpawnArrowServer(GetMouseRelativePos());
+        else
+            SpawnArrowServerRPC(GetMouseRelativePos());
         yield return new WaitForSeconds( bowCooldown / controlSpeed  );
         canShootArrow = true;
     }
+
+    void SpawnArrowServer(Vector3 mousePos)
+    {
+        Vector3 pos = mousePos;
+        float teta = Mathf.Atan( pos.y / pos.x ) * 180 / Mathf.PI - (pos.x > 0 ? 90 : -90);
+        Quaternion rot = Quaternion.Euler(0f,0f,teta);
+        var obj = Instantiate(ArrowRef, transform.position + pos, rot);
+        obj.GetComponent<Projectile>().SetVelocity(pos, controlSpeed);
+        obj.GetComponent<NetworkObject>().Spawn(true);
+    }
+    
+    [ServerRpc]
+    void SpawnArrowServerRPC(Vector3 mousePos)
+    {
+        SpawnArrowServer(mousePos);
+    }
+    
 
     // first throws the bomb, and then instanciates the poison bomb
     IEnumerator ThrowPoisonBomb() {
         canThrowPoisonBomb = false;
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition = _camera.ScreenToWorldPoint(mousePosition);
+        mousePosition = Camera.ScreenToWorldPoint(mousePosition);
         var position = transform.position;
         float y = (mousePosition.y - position.y);
         float x = (mousePosition.x - position.x);

@@ -1,9 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Ennemy : MonoBehaviour
+public class Ennemy : NetworkBehaviour
 {
     private bool _isShooter;
     private bool _isMelee;
@@ -13,7 +18,7 @@ public class Ennemy : MonoBehaviour
     
     public float Speed;
 
-    private GameObject _player;
+    private List<GameObject> _player;
     
     public float shootFrequency;
     public float meleeFrequency;
@@ -28,19 +33,47 @@ public class Ennemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _shooter = GetComponent<ShootArrow>();
-        _isShooter = _shooter is not null;
+        if (IsServer)
+        {
+            _shooter = GetComponent<ShootArrow>();
+            _isShooter = _shooter is not null;
+
+            _meleeAttack = GetComponent<MeleeAttack>();
+            _isMelee = _meleeAttack is not null;
+            _player = new List<GameObject>(GameObject.FindGameObjectsWithTag("Player"));
+            NetworkManager.Singleton.OnClientConnectedCallback += ClientConnected;
+            NetworkManager.Singleton.OnClientDisconnectCallback += ClientDisconnected;
+        }
+        else
+            enabled = false;
+    }
+
+    public override void OnNetworkSpawn()
+    {
         
-        _meleeAttack = GetComponent<MeleeAttack>();
-        _isMelee = _meleeAttack is not null;
-        _player = GameObject.FindGameObjectWithTag("Player");
+    }
+
+    private void ClientConnected(ulong u)
+    {
+        _player = new List<GameObject>(GameObject.FindGameObjectsWithTag("Player"));
+    }
+
+    private async void ClientDisconnected(ulong u)
+    {
+        await Task.Yield();
+        _player = new List<GameObject>(GameObject.FindGameObjectsWithTag("Player"));
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (_player.Count == 0)
+            return;
         var pos = transform.position;
-        var playerPos = _player.transform.position;
+        _player.Sort((g1, g2) => 
+            Mathf.Abs((g1.transform.position - pos).magnitude) - 
+                  Mathf.Abs((g2.transform.position - pos).magnitude) >= 0f ? 1 : -1);
+        var playerPos = _player[0].transform.position;
         var direction = (pos - playerPos);
         var distance = Mathf.Abs(direction.magnitude);
         //print(distance);

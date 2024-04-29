@@ -25,7 +25,6 @@ public class PoisonZone : MonoBehaviour
     }
 
     void OnTriggerStay2D(Collider2D other) {
-        print("detected Collision");
         if (currentTime >= timeBetweenHits && other.CompareTag(hitTag)) {
             other.GetComponent<Health>().TakeDamage(damage);
             currentTime = 0f;
