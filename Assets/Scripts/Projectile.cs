@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour
     public Vector3 direction {get; set;} = Vector3.zero;
     public float controlSpeed {get; set;} = 1f;
     public string hitTag = "Damageable";
-    public int damage = 3; 
+    public uint damage = 3; 
     Rigidbody2D myRigidBody;
     private HealthBar _healthBar;
 

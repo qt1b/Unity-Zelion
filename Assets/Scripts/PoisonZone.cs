@@ -2,34 +2,56 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoisonZone : MonoBehaviour
+public class PoisonZone : MonoBehaviour , ITimeControl
 {
-    public string hitTag = "Damageable";
-    public int damage = 1; 
-    public float controlSpeed {get; set;} = 1f;
-    // Rigidbody2D myRigidBody;
+    public uint damage = 1;
+    public float radius = 1.3f; // is 2.5 but the poison zone's scale is 2
+
     public float timeBetweenHits = .5f;
-    float currentTime = 0f;
     public float duration = 5f;
+    float remaining;
+    float currentRemaining;
+    float currentTimeBetweenHits;
 
-    void Start() {
-        // may not be the best way to do it, as it does not resist well to time changes
-        // Destroy(gameObject,duration);
+
+    void Awake() {
+        remaining = duration;
+        ChangeTimeControl(1f);
+        StartCoroutine(Main());
     }
 
-    void Update()
+    private IEnumerator Main()
     {
-        currentTime += Time.deltaTime * controlSpeed;
-        duration -= Time.deltaTime * controlSpeed;
-        if (duration < 0) Destroy(gameObject);
+        while (currentRemaining >= 0)
+        {
+            yield return new WaitForSeconds(currentTimeBetweenHits);
+            currentRemaining -= currentTimeBetweenHits;
+            DamageObjects();
+        }
+        DestroyObject();
     }
 
-    void OnTriggerStay2D(Collider2D other) {
-        print("detected Collision");
-        if (currentTime >= timeBetweenHits && other.CompareTag(hitTag)) {
-            other.GetComponent<Health>().TakeDamage(damage);
-            currentTime = 0f;
-            print("inflict dammage");
+    // should be synced over network
+    private void DamageObjects()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(gameObject.transform.position, radius);
+        foreach(Collider2D col in colliders)
+        {
+            if (col.TryGetComponent(out Health health))
+                health.TakeDamage(damage);
         }
+    }
+
+    // to be synced
+    private void DestroyObject()
+    {
+        Destroy(gameObject);
+    }
+
+    // to by synced ? or maybe not ?
+    public void ChangeTimeControl(float timeControl)
+    {
+        currentRemaining = remaining / timeControl;
+        currentTimeBetweenHits = timeBetweenHits / timeControl;
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class InflictDammage : MonoBehaviour
 {
     public string hitTag = "Damageable";
-    public int damage = 3; 
+    public uint damage = 3; 
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag(hitTag)) {
