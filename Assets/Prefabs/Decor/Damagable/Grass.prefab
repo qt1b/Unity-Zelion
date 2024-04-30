@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6256067291665057170}
   m_Layer: 0
   m_Name: Grass
-  m_TagString: Damageable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -165,5 +165,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d66d93700ccbfe3dabfc4a1e09a05238, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 1
+  MaxHealth: 1
   deathDuration: 0.7

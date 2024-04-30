@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3050182033715234899}
   m_Layer: 0
   m_Name: Pot
-  m_TagString: Damageable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d66d93700ccbfe3dabfc4a1e09a05238, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 4
+  MaxHealth: 5
   deathDuration: 0.5
 --- !u!95 &4190601855909373096
 Animator:
