@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Sign : MonoBehaviour
 {
     public GameObject dialogBox;
-    public GameObject questionMark;
     public Text dialogText;
     public string dialog;
     private bool playerInRange = false;
+    private GameObject questionMark = new GameObject();
 
     // script imports, for the player not being able to attack when in front of a sign
     // TODO : render the sign behind the player when y coordinates of the player are behind,
@@ -44,6 +45,7 @@ public class Sign : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
             playerInRange = true;
+            questionMark = other.transform.GetChild(3).gameObject;
             questionMark.SetActive(true);
             // playerControl.questionMarkActive = true;
             // playerControl.isBusy = true; // may not be THAT great of an idea
