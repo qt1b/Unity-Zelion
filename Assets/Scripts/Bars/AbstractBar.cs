@@ -12,15 +12,27 @@ public abstract class AbstractBar : MonoBehaviour, IHealth
     public Slider slider;
     public Slider damageBar;
     public float speed = 0.0125f;
-    public uint maxValue = 100;
-    protected uint curValue;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        curValue = maxValue;
+    public uint maxValue {
+        get => maxValue;
+        set {
+            if (value < maxValue) {
+                curValue = Math.Clamp(curValue, 0, value);
+                maxValue = value;
+            }
+        }
     }
+    protected uint curValue {
+        get => curValue;
+        set {
+            slider.value = value;
+            curValue = value;
+        }
+    }
+
+    public AbstractBar(uint maxvalue) {
+        maxValue = maxValue;
+    }
+    
 
     // Update is called once per frame
     public void Update()
@@ -28,8 +40,7 @@ public abstract class AbstractBar : MonoBehaviour, IHealth
         /* if(curValue < 0) { // not needed anymore
             curValue = 0;
         } */
-        slider.value = curValue;
-        
+        // slider.value = curValue;
         if(Math.Abs(slider.value - damageBar.value) > 0.01){
             damageBar.value = Mathf.Lerp(damageBar.value, curValue, speed);
         }
@@ -57,7 +68,6 @@ public abstract class AbstractBar : MonoBehaviour, IHealth
         if (damages >= curValue)
             curValue = 0;
         else curValue -= damages;
-        print($"curvalue={curValue}");
     }
 
     public void Heal(uint heal) {

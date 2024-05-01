@@ -7,6 +7,8 @@ using UnityEngine;
 public class HealthBar : AbstractBar
 {
 
+    HealthBar() : base(20) { }
+
     // Update is called once per frame
     new void Update() 
     {
@@ -17,4 +19,15 @@ public class HealthBar : AbstractBar
             TakeDamages(10);
         }
     }
+    
+    // custom takeDamages to call the gameover
+    public new void TakeDamages(uint damages){
+        if (damages >= curValue) {
+            curValue = 0;
+            print("gameOver");
+            throw new NotImplementedException("GameOver Codition Reached");
+        }
+        else curValue -= damages;
+    }
+   
 }

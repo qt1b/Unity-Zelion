@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using Unity.Netcode;
 
-public class Player : NetworkBehaviour, ITimeControl
+public class Player : NetworkBehaviour, ITimeControl, IHealth
 {
     // PLAYER MOVEMENT
     
@@ -336,5 +336,13 @@ public class Player : NetworkBehaviour, ITimeControl
             yield return new WaitForSeconds( dashCooldown / controlSpeed  );
             canDash = true;
         }
+    }
+    
+    public void TakeDamages(uint damage) {
+        _healthBar.TakeDamages(damage);
+    }
+
+    public void Heal(uint heal) {
+        _healthBar.Heal(heal);
     }
 }

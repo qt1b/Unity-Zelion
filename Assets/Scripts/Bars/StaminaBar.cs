@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class StaminaBar : AbstractBar
 {
+    StaminaBar() : base(40) { }
     bool gain = true;
-    public new float maxValue = 40;
 
     new void Update()
     {
@@ -21,6 +21,4 @@ public class StaminaBar : AbstractBar
         yield return new WaitForSeconds(0.5f);
         gain = true;
     }
-
-
 }
