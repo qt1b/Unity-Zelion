@@ -1,11 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ManaBar : AbstractBar {
     
-    ManaBar() : base(40) { }
     private bool gain;
+
+    private void Start() {
+        maxValue = 40;
+        gain = true;
+    }
+
     new void Update() 
     {
         base.Update();

@@ -29,9 +29,10 @@ public abstract class AbstractBar : MonoBehaviour, IHealth
         }
     }
 
-    public AbstractBar(uint maxvalue) {
+    // may be what causes unity to crash ??? but why ??
+    /* public AbstractBar(uint maxvalue) {
         maxValue = maxValue;
-    }
+    } */
     
 
     // Update is called once per frame

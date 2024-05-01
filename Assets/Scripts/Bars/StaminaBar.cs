@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StaminaBar : AbstractBar
-{
-    StaminaBar() : base(40) { }
-    bool gain = true;
+public class StaminaBar : AbstractBar {
+    private bool gain = true;
+    void Start() {
+        maxValue = 40;
+    }
 
     new void Update()
     {
