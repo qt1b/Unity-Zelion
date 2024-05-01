@@ -38,7 +38,7 @@ public class PoisonZone : MonoBehaviour , ITimeControl
         foreach(Collider2D col in colliders)
         {
             if (col.TryGetComponent(out Health health))
-                health.TakeDamage(damage);
+                health.TakeDamages(damage);
         }
     }
 

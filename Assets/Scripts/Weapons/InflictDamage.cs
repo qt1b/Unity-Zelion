@@ -9,7 +9,7 @@ public class InflictDammage : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag(hitTag)) {
-            other.GetComponent<Health>().TakeDamage(damage);
+            other.GetComponent<Health>().TakeDamages(damage);
             // gameObject.SetActive(false);
         }
     }

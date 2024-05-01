@@ -13,7 +13,7 @@ public class Health : MonoBehaviour, IHealth
         hp = MaxHealth;
     }
 
-    public void TakeDamage(uint damage){
+    public void TakeDamages(uint damage){
         if (damage >= hp)
             StartCoroutine(Die());
         else hp -= damage;

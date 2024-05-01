@@ -12,8 +12,6 @@ public class Projectile : NetworkBehaviour
     public string hitTag = "Damageable";
     public uint damage = 3; 
     Rigidbody2D myRigidBody;
-    private HealthBar _healthBar;
-
     
     void Awake() {
         myRigidBody = GetComponent<Rigidbody2D>();
@@ -22,7 +20,7 @@ public class Projectile : NetworkBehaviour
             myRigidBody.Sleep();
             Destroy(gameObject, 3f);
         }
-        _healthBar = GameObject.FindGameObjectWithTag($"PlayerHealth").GetComponent<HealthBar>();
+        // _healthBar = GameObject.FindGameObjectWithTag($"PlayerHealth").GetComponent<HealthBar>();
     }
     
     public void SetVelocity(Vector3 givenDirection, float givenControlSpeed) {
@@ -34,7 +32,7 @@ public class Projectile : NetworkBehaviour
     void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag(hitTag))
         {
-            other.GetComponent<Health>().TakeDamage(damage);
+            other.GetComponent<Health>().TakeDamages(damage);
             Destroy(gameObject,0.3f);
             myRigidBody.velocity = Vector3.zero;
         } else if (other.CompareTag($"Obstacle")) {
@@ -42,8 +40,8 @@ public class Projectile : NetworkBehaviour
             myRigidBody.velocity = Vector3.zero;
         } else if (other.CompareTag($"Player"))
         {
-            if (other.gameObject.GetComponent<Player>().IsOwner)
-                _healthBar.TakeDamages(20);
+            /*if (other.gameObject.GetComponent<Player>().IsOwner)
+                _healthBar.TakeDamagess(20); // should be moved the the player's health script */
             Destroy(gameObject,0.3f);
             myRigidBody.velocity = Vector3.zero;
         }
