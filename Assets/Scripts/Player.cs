@@ -74,7 +74,7 @@ public class Player : NetworkBehaviour, ITimeControl
     float totalSwordRot = 100f;
 
     float dashCooldown = 1f;
-    public float bowCooldown = 0.4f;
+    float bowCooldown = 0.2f;
     float poisonBombCooldown = 7f;
 
     // 'animation' timers

@@ -46,7 +46,7 @@ public abstract class AbstractBar : MonoBehaviour, IHealth
     // same
     public bool TryTakeDamages(uint damages) {
         if (damages <= curValue) {
-            TakeDamages(curValue);
+            TakeDamages(damages);
             return true;
         }
         else return false;

@@ -5,6 +5,7 @@ using UnityEngine;
 public class StaminaBar : AbstractBar
 {
     bool gain = true;
+    public new float maxValue = 40;
 
     new void Update()
     {
