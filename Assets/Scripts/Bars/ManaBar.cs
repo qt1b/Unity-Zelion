@@ -8,7 +8,8 @@ public class ManaBar : AbstractBar {
     private bool gain;
 
     private void Start() {
-        maxValue = 40;
+        base.Start();
+        // maxValue = 40;
         gain = true;
     }
 

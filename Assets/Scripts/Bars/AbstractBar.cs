@@ -12,17 +12,20 @@ public abstract class AbstractBar : MonoBehaviour, IHealth
     public Slider slider;
     public Slider damageBar;
     public float speed = 0.0125f;
-    private bool hasChanged = true;
-
-    public uint maxValue;
-
+    private bool hasChanged;
+    protected uint maxValue;
     protected uint curValue;
 
     // may be what causes unity to crash ??? but why ??
     /* public AbstractBar(uint maxvalue) {
         maxValue = maxValue;
     } */
-    
+
+    public void Start() {
+        maxValue = (uint)slider.maxValue;
+        curValue = maxValue;
+        hasChanged = true;
+    }
 
     // Update is called once per frame
     public void Update()
@@ -77,5 +80,7 @@ public abstract class AbstractBar : MonoBehaviour, IHealth
             hasChanged = true;
         }
         maxValue = newMax;
+        slider.maxValue = maxValue;
+        damageBar.maxValue = maxValue;
     }
 }

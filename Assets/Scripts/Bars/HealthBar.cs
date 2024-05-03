@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class HealthBar : AbstractBar {
-    private void Start() { 
-        maxValue = 20;
+    private void Start() {
+        base.Start();
     }
 
 // Update is called once per frame
