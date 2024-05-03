@@ -98,6 +98,7 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
     private HealthBar _healthBar;
     private StaminaBar _staminaBar;
     private ManaBar _manaBar;
+    private SpriteRenderer _spriteRenderer;
     // public uint staminaLevel
     // the best should be that StaminaBar manages stamina,
     // healthbar manages health and manabar manages mana
@@ -126,6 +127,7 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
         _healthBar = FindObjectOfType<HealthBar>();
         _staminaBar = FindObjectOfType<StaminaBar>();
         _manaBar = FindObjectOfType<ManaBar>();
+        _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame 
@@ -340,9 +342,22 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
     
     public void TakeDamages(uint damage) {
         _healthBar.TakeDamages(damage);
+        StartCoroutine(ChangeColorWait(new Color(255, 0, 0, 100), 0.5f));
     }
 
     public void Heal(uint heal) {
-        _healthBar.Heal(heal);
+        _healthBar.Heal(heal);       
+        StartCoroutine(ChangeColorWait(new Color(0, 255, 0, 100), 0.5f));
+    }
+    IEnumerator ChangeColorWait(Color color, float time) {
+        Color baseColor = _spriteRenderer.color;
+        ChangeColor(color);
+        yield return new WaitForSeconds(time);
+        ChangeColor(baseColor);
+    }
+    
+    // to be synced over network
+    void ChangeColor(Color color) {
+        _spriteRenderer.color = color;
     }
 }
