@@ -4,8 +4,10 @@ using UnityEngine;
 using System;
 using Unity.Netcode;
 
-public class Player : NetworkBehaviour
+public class Player : NetworkBehaviour, ITimeControl, IHealth
 {
+    // PLAYER MOVEMENT
+    
     /*
     Notes : Player CANNOT be damageable, only ennemies and breakable objects should be tagged as "damageable"
 
@@ -41,8 +43,8 @@ public class Player : NetworkBehaviour
     private GameObject PoisonZonePreviewRef;
 
     Rigidbody2D myRigidBody;
-    public Vector3 change;
-    public Vector3 notNullChange;
+    public Vector3 change = Vector3.zero;
+    public Vector3 notNullChange = new Vector3(0,1,0);
 
 
 
@@ -56,7 +58,7 @@ public class Player : NetworkBehaviour
     bool canShootArrow = true;
     bool canThrowPoisonBomb = true;
 
-    static public bool isDashing { get; private set; } = false; // so the stamina bar can use it
+    static public bool isDashing = false; // so the stamina bar can use it
     bool isWielding = false;
     bool isAimingArrow = false;
     bool isAimingBomb = false;
@@ -72,7 +74,7 @@ public class Player : NetworkBehaviour
     float totalSwordRot = 100f;
 
     float dashCooldown = 1f;
-    public float bowCooldown = 0.4f;
+    float bowCooldown = 0.2f;
     float poisonBombCooldown = 7f;
 
     // 'animation' timers
@@ -92,6 +94,15 @@ public class Player : NetworkBehaviour
     Collider2D _swordHitzoneCollider;
     Animator _swordHitzoneAnimator;
     public Camera Camera;
+
+    private HealthBar _healthBar;
+    private StaminaBar _staminaBar;
+    private ManaBar _manaBar;
+    private SpriteRenderer _spriteRenderer;
+    // public uint staminaLevel
+    // the best should be that StaminaBar manages stamina,
+    // healthbar manages health and manabar manages mana
+    
 
     public override void OnNetworkSpawn()
     {
@@ -113,6 +124,10 @@ public class Player : NetworkBehaviour
         _swordHitzone.SetActive(false);
         ArrowPreviewRef = transform.GetChild(1).gameObject;
         PoisonZonePreviewRef = transform.GetChild(2).gameObject;
+        _healthBar = FindObjectOfType<HealthBar>();
+        _staminaBar = FindObjectOfType<StaminaBar>();
+        _manaBar = FindObjectOfType<ManaBar>();
+        _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame 
@@ -129,10 +144,10 @@ public class Player : NetworkBehaviour
             if (change != Vector3.zero) notNullChange = change;
             // one attack / 'normal' ability at a time
             if (isAimingArrow) {
-                if (!ArrowPreviewRef.activeSelf && canShootArrow ) ArrowPreviewRef.SetActive(true);
+                if (!ArrowPreviewRef.activeSelf && canShootArrow /* &&  _staminaBar.CanTakeDamages(2) */ ) ArrowPreviewRef.SetActive(true);
                 PlacePreviewArrow();
                 if(Input.GetKeyUp(KeyCode.Mouse0)){
-                    if ( canShootArrow ) StartCoroutine(ShootArrow());
+                    if ( canShootArrow && _staminaBar.TryTakeDamages(2) ) StartCoroutine(ShootArrow());
                     isAimingArrow = false;
                     currentSpeed = inititialWithControl;
                     ArrowPreviewRef.SetActive(false);
@@ -140,10 +155,10 @@ public class Player : NetworkBehaviour
                 }
             }
             else if (isAimingBomb) {
-                if (!PoisonZonePreviewRef.activeSelf && canThrowPoisonBomb ) PoisonZonePreviewRef.SetActive(true);
+                if (!PoisonZonePreviewRef.activeSelf && canThrowPoisonBomb && _manaBar.CanTakeDamages(10) ) PoisonZonePreviewRef.SetActive(true);
                 PlacePreviewZone();
-                if (Input.GetKeyUp(KeyCode.Mouse1)) {
-                    if ( canThrowPoisonBomb ) StartCoroutine(ThrowPoisonBomb());
+                if (Input.GetKeyUp(KeyCode.Mouse1) ) {
+                    if ( canThrowPoisonBomb && _manaBar.TryTakeDamages(10) ) StartCoroutine(ThrowPoisonBomb());
                     isAimingBomb = false;
                     currentSpeed = inititialWithControl;
                     animator.SetBool("AimingBomb",false);
@@ -151,10 +166,11 @@ public class Player : NetworkBehaviour
                 }
             }
             else {
+                // no cost in stamina for the sword
                 if (canSwordAttack && Input.GetKeyDown(KeyCode.Space)) {
                     StartCoroutine(SwordAttack());
                 } 
-                else if(canDash && Input.GetKeyDown(KeyCode.LeftShift)){
+                else if(canDash && Input.GetKeyDown(KeyCode.LeftShift) && _staminaBar.TryTakeDamages(10)){
                     StartCoroutine(Dash());
                 }
                 else if (Input.GetKeyDown(KeyCode.Mouse0)) {
@@ -235,7 +251,7 @@ public class Player : NetworkBehaviour
         }
     }
 
-    public void ChangeControlSpeed (float newSpeedControl) {
+    public void ChangeControlSpeed(float newSpeedControl) {
         controlSpeed  = newSpeedControl;
         inititialWithControl = inititialSpeed * controlSpeed;
         currentSpeed = inititialWithControl;
@@ -243,7 +259,7 @@ public class Player : NetworkBehaviour
         animator.speed = controlSpeed;
     }
 
-    public void ChangeEltSpeedControl(float newSpeedControl) {
+    public void ChangeTimeControl(float newSpeedControl) {
         // modifies all the IEltSpeed interfaces
     }
 
@@ -252,7 +268,8 @@ public class Player : NetworkBehaviour
         // wielding for 100 degrees
         canSwordAttack = false;
         _swordHitzone.SetActive(true);
-        var currentSwordRot = Mathf.Atan(notNullChange.y / notNullChange.x) * 180 / Mathf.PI + (notNullChange.x >= 0 ? 0 : 180);
+        // does not seem to work when the player has not yet moved
+        float currentSwordRot = Mathf.Atan(notNullChange.y / notNullChange.x) * 180 / Mathf.PI + (notNullChange.x >= 0 ? 0 : 180);
         _swordHitzone.transform.eulerAngles = new Vector3(0f,0f,currentSwordRot);
         _swordHitzone.transform.position = transform.position + notNullChange * swordDist;
         // _swordHitzoneCollider.enabled = true;
@@ -321,5 +338,26 @@ public class Player : NetworkBehaviour
             yield return new WaitForSeconds( dashCooldown / controlSpeed  );
             canDash = true;
         }
+    }
+    
+    public void TakeDamages(uint damage) {
+        _healthBar.TakeDamages(damage);
+        StartCoroutine(ChangeColorWait(new Color(255, 0, 0, 100), 0.5f));
+    }
+
+    public void Heal(uint heal) {
+        _healthBar.Heal(heal);       
+        StartCoroutine(ChangeColorWait(new Color(0, 255, 0, 100), 0.5f));
+    }
+    IEnumerator ChangeColorWait(Color color, float time) {
+        Color baseColor = _spriteRenderer.color;
+        ChangeColor(color);
+        yield return new WaitForSeconds(time);
+        ChangeColor(baseColor);
+    }
+    
+    // to be synced over network
+    void ChangeColor(Color color) {
+        _spriteRenderer.color = color;
     }
 }

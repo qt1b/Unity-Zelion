@@ -10,7 +10,7 @@ public class Sign : MonoBehaviour
     public Text dialogText;
     public string dialog;
     private bool playerInRange = false;
-    private GameObject questionMark = new GameObject();
+    private GameObject questionMark;
 
     // script imports, for the player not being able to attack when in front of a sign
     // TODO : render the sign behind the player when y coordinates of the player are behind,
@@ -21,6 +21,7 @@ public class Sign : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        questionMark = new GameObject();
         // Instantiate(questionMark);
         // QuestionMark questionMark = gameObject.AddComponent<QuestionMark>() as QuestionMark;
     }
