@@ -8,6 +8,7 @@ TagManager:
   - Projectile
   - Obstacle
   - PlayerHealth
+  - Ennemy
   layers:
   - Default
   - TransparentFX

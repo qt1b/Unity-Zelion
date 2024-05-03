@@ -4,10 +4,12 @@ using System.Collections.Generic;
 // using UnityEditor.PackageManager; // can't compile with it (for now)
 using UnityEngine;
 
-public class HealthBar : AbstractBar
-{
+public class HealthBar : AbstractBar {
+    private void Start() {
+        base.Start();
+    }
 
-    // Update is called once per frame
+// Update is called once per frame
     new void Update() 
     {
         base.Update(); // utilise l'update de la abstract class
@@ -17,4 +19,15 @@ public class HealthBar : AbstractBar
             TakeDamages(10);
         }
     }
+    // custom takeDamages to call the gameover
+    public new void TakeDamages(uint damages){
+        if (damages >= curValue) {
+            curValue = 0;
+            print("gameOver");
+            // Application.Quit(); // WARNING : To remove !!!
+            throw new NotImplementedException("GameOver Condition Reached");
+        }
+        else curValue -= damages;
+    }
+   
 }

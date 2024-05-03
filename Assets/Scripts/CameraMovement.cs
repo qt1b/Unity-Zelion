@@ -1,34 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class CameraMovement : MonoBehaviour
+public class CameraMovement : NetworkBehaviour
 {
-    // camera smoothness
-    private GameObject target;
-    // public float smoothValue;
     // the higher it is, more time it will take to follow the player
     public float smoothTime;
     private Vector3 velocity = Vector3.zero;
 
     public float playerDistance;
 
-    private Player _tarVelo;
-    // camera bounding
-    // public Vector2 maxPosition;
-    // public Vector2 minPosition;
+    public GameObject CameraHolder;
 
-    // LastUpdate is called once per frame, after all updates were executed
+    private Player _tarVelo;
+    
+    public override void OnNetworkSpawn()
+    {
+        if (!IsOwner)
+        {
+            CameraHolder.SetActive(false);
+        }
+    }
     private void Start()
     {
-        target = GameObject.FindGameObjectWithTag("Player");
-        _tarVelo = target.GetComponent<Player>();
+        
+        _tarVelo = GetComponent<Player>();
     }
 
     void LateUpdate()
     {
-        var position = target.transform.position;
-        var position1 = transform.position;
+        var position = transform.position;
+        var position1 = CameraHolder.transform.position;
         if (position1 == position) return;
         Vector3 desiredPosition = new Vector3(position.x + _tarVelo.change.x * playerDistance, 
             position.y + _tarVelo.change.y * playerDistance, position1.z);
@@ -38,6 +41,6 @@ public class CameraMovement : MonoBehaviour
         // desiredPosition.y = /*Mathf.Clamp(*/desiredPosition.y;//, minPosition.y, maxPosition.y);
 
         position1 = Vector3.SmoothDamp(position1, desiredPosition, ref velocity, smoothTime);
-        transform.position = position1;
+        CameraHolder.transform.position = position1;
     }
 }

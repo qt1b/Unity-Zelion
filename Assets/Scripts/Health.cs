@@ -1,35 +1,63 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Timeline;
 
-public class Health : MonoBehaviour
+public class Health : MonoBehaviour, IHealth
 {
-    public int hp;
+    public uint MaxHealth;
+    private uint hp;
     public float deathDuration;
-    int maxHP;
-    // bool isDead = false;
-    Animator animator;
+    private SpriteRenderer _spriteRenderer; // to change color when hit
 
-    // Start is called before the first frame update
     void Start()
     {
-        animator = GetComponent<Animator>();
-        maxHP = hp;
+        hp = MaxHealth;
+        _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
 
-    public void TakeDamage(int amount){
-        hp -= amount;
-        if (hp <= 0) Die();
+    public void TakeDamages(uint damage){
+        if (damage >= hp)
+            StartCoroutine(Die());
+        else hp -= damage;
+        StartCoroutine(ChangeColorWait(new Color(255, 0, 0, 100), 0.5f)); // red with transparency
+        // must add here some code to change the color for some frames: that way we will see when we make damages to an enemy/object
     }
 
-    void Die(){
-        animator.SetTrigger("Death");
-        gameObject.GetComponent<Collider2D>().enabled = false;
-        Destroy(gameObject, deathDuration);
+    public void Heal(uint heal)
+    {
+        if (heal + hp >= MaxHealth)
+            hp = MaxHealth;
+        else hp += heal;
+        StartCoroutine(ChangeColorWait(new Color(0, 255, 0, 100), 0.5f)); // green with transparency
     }
 
-    //called from 'die' animation
-    /*void DestroyThisGameObject(){
+    IEnumerator Die() {
+        if (gameObject.TryGetComponent(out Collider2D collider))
+            collider.enabled = false;
+        if (gameObject.TryGetComponent(out Animator animator)) {
+            animator.SetTrigger("Death");
+            // int deathDuration = animator.GetInteger("DeathDuration");
+        }
+        yield return new WaitForSeconds(deathDuration);
+        DestroyGameObject();
+    }
+    // sync every function from the die function
+    void DestroyGameObject()
+    {
         Destroy(gameObject);
-    }*/
+    }
+
+    // UNTESTED, should change the color
+    IEnumerator ChangeColorWait(Color color, float time) {
+        Color baseColor = _spriteRenderer.color;
+        ChangeColor(color);
+        yield return new WaitForSeconds(time);
+        ChangeColor(baseColor);
+    }
+    
+    // to be synced over network
+    void ChangeColor(Color color) {
+        _spriteRenderer.color = color;
+    }
 }

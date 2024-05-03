@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.Netcode;
 
-public class Player : MonoBehaviour
+public class Player : NetworkBehaviour, ITimeControl, IHealth
 {
+    // PLAYER MOVEMENT
+    
     /*
     Notes : Player CANNOT be damageable, only ennemies and breakable objects should be tagged as "damageable"
 
@@ -21,16 +24,18 @@ public class Player : MonoBehaviour
     int bombDamage = 1;
     */
 
-    // time variablse
+    [Header("Speed")]
     public float inititialSpeed = 7f;
     public float currentSpeed;
     float inititialWithControl;
 
     // variables related to time control : player speed should be modified by external functions
+    [Header("Time Control")]
     public float controlSpeed = 1f;
     // float ennemySpeed = 1f; should not be used 
 
     // would be better to get them by script
+    [Header("Projectiles")]
     public GameObject ArrowRef;
     private GameObject ArrowPreviewRef;
     public GameObject PoisonBombRef;
@@ -38,8 +43,8 @@ public class Player : MonoBehaviour
     private GameObject PoisonZonePreviewRef;
 
     Rigidbody2D myRigidBody;
-    public Vector3 change;
-    public Vector3 notNullChange;
+    public Vector3 change = Vector3.zero;
+    public Vector3 notNullChange = new Vector3(0,1,0);
 
 
 
@@ -53,7 +58,7 @@ public class Player : MonoBehaviour
     bool canShootArrow = true;
     bool canThrowPoisonBomb = true;
 
-    static public bool isDashing { get; private set; } = false; // so the stamina bar can use it
+    static public bool isDashing = false; // so the stamina bar can use it
     bool isWielding = false;
     bool isAimingArrow = false;
     bool isAimingBomb = false;
@@ -69,7 +74,7 @@ public class Player : MonoBehaviour
     float totalSwordRot = 100f;
 
     float dashCooldown = 1f;
-    public float bowCooldown = 0.4f;
+    float bowCooldown = 0.2f;
     float poisonBombCooldown = 7f;
 
     // 'animation' timers
@@ -88,13 +93,28 @@ public class Player : MonoBehaviour
     GameObject _swordHitzone;
     Collider2D _swordHitzoneCollider;
     Animator _swordHitzoneAnimator;
-    private Camera _camera;
+    public Camera Camera;
 
+    private HealthBar _healthBar;
+    private StaminaBar _staminaBar;
+    private ManaBar _manaBar;
+    private SpriteRenderer _spriteRenderer;
+    // public uint staminaLevel
+    // the best should be that StaminaBar manages stamina,
+    // healthbar manages health and manabar manages mana
+    
+
+    public override void OnNetworkSpawn()
+    {
+        if (!IsOwner)
+        {
+            enabled = false;
+        }
+    }
     void Start()
     {
         inititialWithControl = inititialSpeed * controlSpeed;
         currentSpeed = inititialWithControl;
-        _camera = Camera.main;
         animator = GetComponent<Animator>();
         myRigidBody = GetComponent<Rigidbody2D>();
         animator.speed = controlSpeed ;
@@ -104,6 +124,10 @@ public class Player : MonoBehaviour
         _swordHitzone.SetActive(false);
         ArrowPreviewRef = transform.GetChild(1).gameObject;
         PoisonZonePreviewRef = transform.GetChild(2).gameObject;
+        _healthBar = FindObjectOfType<HealthBar>();
+        _staminaBar = FindObjectOfType<StaminaBar>();
+        _manaBar = FindObjectOfType<ManaBar>();
+        _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame 
@@ -120,10 +144,10 @@ public class Player : MonoBehaviour
             if (change != Vector3.zero) notNullChange = change;
             // one attack / 'normal' ability at a time
             if (isAimingArrow) {
-                if (!ArrowPreviewRef.activeSelf && canShootArrow ) ArrowPreviewRef.SetActive(true);
+                if (!ArrowPreviewRef.activeSelf && canShootArrow /* &&  _staminaBar.CanTakeDamages(2) */ ) ArrowPreviewRef.SetActive(true);
                 PlacePreviewArrow();
                 if(Input.GetKeyUp(KeyCode.Mouse0)){
-                    if ( canShootArrow ) StartCoroutine(ShootArrow());
+                    if ( canShootArrow && _staminaBar.TryTakeDamages(2) ) StartCoroutine(ShootArrow());
                     isAimingArrow = false;
                     currentSpeed = inititialWithControl;
                     ArrowPreviewRef.SetActive(false);
@@ -131,10 +155,10 @@ public class Player : MonoBehaviour
                 }
             }
             else if (isAimingBomb) {
-                if (!PoisonZonePreviewRef.activeSelf && canThrowPoisonBomb ) PoisonZonePreviewRef.SetActive(true);
+                if (!PoisonZonePreviewRef.activeSelf && canThrowPoisonBomb && _manaBar.CanTakeDamages(10) ) PoisonZonePreviewRef.SetActive(true);
                 PlacePreviewZone();
-                if (Input.GetKeyUp(KeyCode.Mouse1)) {
-                    if ( canThrowPoisonBomb ) StartCoroutine(ThrowPoisonBomb());
+                if (Input.GetKeyUp(KeyCode.Mouse1) ) {
+                    if ( canThrowPoisonBomb && _manaBar.TryTakeDamages(10) ) StartCoroutine(ThrowPoisonBomb());
                     isAimingBomb = false;
                     currentSpeed = inititialWithControl;
                     animator.SetBool("AimingBomb",false);
@@ -142,10 +166,11 @@ public class Player : MonoBehaviour
                 }
             }
             else {
+                // no cost in stamina for the sword
                 if (canSwordAttack && Input.GetKeyDown(KeyCode.Space)) {
                     StartCoroutine(SwordAttack());
                 } 
-                else if(canDash && Input.GetKeyDown(KeyCode.LeftShift)){
+                else if(canDash && Input.GetKeyDown(KeyCode.LeftShift) && _staminaBar.TryTakeDamages(10)){
                     StartCoroutine(Dash());
                 }
                 else if (Input.GetKeyDown(KeyCode.Mouse0)) {
@@ -175,7 +200,7 @@ public class Player : MonoBehaviour
 
     Vector3 GetMouseRelativePos() {
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition = _camera.ScreenToWorldPoint(mousePosition);
+        mousePosition = Camera.ScreenToWorldPoint(mousePosition);
         float y = (mousePosition.y - transform.position.y);
         float x = (mousePosition.x - transform.position.x);
         return new Vector3(x,y,0f).normalized;
@@ -184,7 +209,7 @@ public class Player : MonoBehaviour
     void PlacePreviewArrow() {
         if (canShootArrow) {
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition = _camera.ScreenToWorldPoint(mousePosition);
+        mousePosition = Camera.ScreenToWorldPoint(mousePosition);
         var position = transform.position;
         float y = (mousePosition.y - position.y);
         float x = (mousePosition.x - position.x);
@@ -199,7 +224,7 @@ public class Player : MonoBehaviour
 
     void PlacePreviewZone() {
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition = _camera.ScreenToWorldPoint(mousePosition);
+        mousePosition = Camera.ScreenToWorldPoint(mousePosition);
         var position = transform.position;
         float y = (mousePosition.y - position.y);
         float x = (mousePosition.x - position.x);
@@ -226,7 +251,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void ChangeControlSpeed (float newSpeedControl) {
+    public void ChangeControlSpeed(float newSpeedControl) {
         controlSpeed  = newSpeedControl;
         inititialWithControl = inititialSpeed * controlSpeed;
         currentSpeed = inititialWithControl;
@@ -234,7 +259,7 @@ public class Player : MonoBehaviour
         animator.speed = controlSpeed;
     }
 
-    public void ChangeEltSpeedControl(float newSpeedControl) {
+    public void ChangeTimeControl(float newSpeedControl) {
         // modifies all the IEltSpeed interfaces
     }
 
@@ -243,7 +268,8 @@ public class Player : MonoBehaviour
         // wielding for 100 degrees
         canSwordAttack = false;
         _swordHitzone.SetActive(true);
-        var currentSwordRot = Mathf.Atan(notNullChange.y / notNullChange.x) * 180 / Mathf.PI + (notNullChange.x >= 0 ? 0 : 180);
+        // does not seem to work when the player has not yet moved
+        float currentSwordRot = Mathf.Atan(notNullChange.y / notNullChange.x) * 180 / Mathf.PI + (notNullChange.x >= 0 ? 0 : 180);
         _swordHitzone.transform.eulerAngles = new Vector3(0f,0f,currentSwordRot);
         _swordHitzone.transform.position = transform.position + notNullChange * swordDist;
         // _swordHitzoneCollider.enabled = true;
@@ -258,23 +284,36 @@ public class Player : MonoBehaviour
 
     IEnumerator ShootArrow() {
         canShootArrow = false;
-        Vector3 pos = GetMouseRelativePos();
-        float teta = Mathf.Atan( pos.y / pos.x ) * 180 / Mathf.PI - (pos.x > 0 ? 90 : -90);
-        Quaternion rot = Quaternion.Euler(0f,0f,teta);
-        GameObject arr = Instantiate(ArrowRef, transform.position + pos, rot);
-        Projectile projectile= arr.GetComponent<Projectile>();
-        projectile.SetVelocity(pos, controlSpeed);
-        print(pos);
-        print(controlSpeed);
+        if (IsServer)
+            SpawnArrowServer(GetMouseRelativePos());
+        else
+            SpawnArrowServerRPC(GetMouseRelativePos());
         yield return new WaitForSeconds( bowCooldown / controlSpeed  );
         canShootArrow = true;
     }
+
+    void SpawnArrowServer(Vector3 mousePos)
+    {
+        Vector3 pos = mousePos;
+        float teta = Mathf.Atan( pos.y / pos.x ) * 180 / Mathf.PI - (pos.x > 0 ? 90 : -90);
+        Quaternion rot = Quaternion.Euler(0f,0f,teta);
+        var obj = Instantiate(ArrowRef, transform.position + pos, rot);
+        obj.GetComponent<Projectile>().SetVelocity(pos, controlSpeed);
+        obj.GetComponent<NetworkObject>().Spawn(true);
+    }
+    
+    [ServerRpc]
+    void SpawnArrowServerRPC(Vector3 mousePos)
+    {
+        SpawnArrowServer(mousePos);
+    }
+    
 
     // first throws the bomb, and then instanciates the poison bomb
     IEnumerator ThrowPoisonBomb() {
         canThrowPoisonBomb = false;
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition = _camera.ScreenToWorldPoint(mousePosition);
+        mousePosition = Camera.ScreenToWorldPoint(mousePosition);
         var position = transform.position;
         float y = (mousePosition.y - position.y);
         float x = (mousePosition.x - position.x);
@@ -299,5 +338,26 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds( dashCooldown / controlSpeed  );
             canDash = true;
         }
+    }
+    
+    public void TakeDamages(uint damage) {
+        _healthBar.TakeDamages(damage);
+        StartCoroutine(ChangeColorWait(new Color(255, 0, 0, 100), 0.5f));
+    }
+
+    public void Heal(uint heal) {
+        _healthBar.Heal(heal);       
+        StartCoroutine(ChangeColorWait(new Color(0, 255, 0, 100), 0.5f));
+    }
+    IEnumerator ChangeColorWait(Color color, float time) {
+        Color baseColor = _spriteRenderer.color;
+        ChangeColor(color);
+        yield return new WaitForSeconds(time);
+        ChangeColor(baseColor);
+    }
+    
+    // to be synced over network
+    void ChangeColor(Color color) {
+        _spriteRenderer.color = color;
     }
 }
