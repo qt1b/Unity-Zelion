@@ -12,22 +12,11 @@ public abstract class AbstractBar : MonoBehaviour, IHealth
     public Slider slider;
     public Slider damageBar;
     public float speed = 0.0125f;
-    public uint maxValue {
-        get => maxValue;
-        set {
-            if (value < maxValue) {
-                curValue = Math.Clamp(curValue, 0, value);
-                maxValue = value;
-            }
-        }
-    }
-    protected uint curValue {
-        get => curValue;
-        set {
-            slider.value = value;
-            curValue = value;
-        }
-    }
+    private bool hasChanged = true;
+
+    public uint maxValue;
+
+    protected uint curValue;
 
     // may be what causes unity to crash ??? but why ??
     /* public AbstractBar(uint maxvalue) {
@@ -41,7 +30,10 @@ public abstract class AbstractBar : MonoBehaviour, IHealth
         /* if(curValue < 0) { // not needed anymore
             curValue = 0;
         } */
-        // slider.value = curValue;
+        if (hasChanged) {
+            slider.value = curValue;
+            hasChanged = false;
+        }
         if(Math.Abs(slider.value - damageBar.value) > 0.01){
             damageBar.value = Mathf.Lerp(damageBar.value, curValue, speed);
         }
@@ -66,14 +58,24 @@ public abstract class AbstractBar : MonoBehaviour, IHealth
 
     public void TakeDamages(uint damages){
         // value should be checked to be positive, or else use a uint
+        hasChanged = true;
         if (damages >= curValue)
             curValue = 0;
         else curValue -= damages;
     }
 
     public void Heal(uint heal) {
+        hasChanged = true;
         if (heal + curValue >= maxValue)
             curValue = maxValue;
         else curValue += heal;
+    }
+
+    public void ChangeMaxValue(uint newMax) {
+        if (newMax < maxValue) {
+            curValue = Math.Clamp(curValue, 0, newMax);
+            hasChanged = true;
+        }
+        maxValue = newMax;
     }
 }

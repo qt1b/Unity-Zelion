@@ -6,12 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/TitleScene2.unity
-    guid: 89848f6dc550341b197ceaa3d1ceaa31
+    path: Assets/Scenes/Examscen.unity
+    guid: 8004264307f888b45ad62505bd13e8c0
   - enabled: 1
     path: Assets/Scenes/Quentin2.unity
     guid: a4d0b6aaf782a450396dfb93cfc1f643
-  - enabled: 1
-    path: Assets/Scenes/Examscen.unity
-    guid: 8004264307f888b45ad62505bd13e8c0
   m_configObjects: {}
