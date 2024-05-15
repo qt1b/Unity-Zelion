@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class StaminaBar : AbstractBar {
     private bool gain = true;
-    void Start() {
+    new void Start() {
         base.Start();
     }
 
     new void Update()
     {
         base.Update();
-        if(gain && curValue < maxValue){
+        if(gain && !IsMax){
             StartCoroutine(Gain());
         }
     }
     
     IEnumerator Gain(){
-        curValue += 1;
+        base.Heal(1);
         gain = false;
         yield return new WaitForSeconds(0.5f);
         gain = true;

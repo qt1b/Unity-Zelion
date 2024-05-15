@@ -20,7 +20,7 @@ public class Health : MonoBehaviour, IHealth
         if (damage >= hp)
             StartCoroutine(Die());
         else hp -= damage;
-        StartCoroutine(ChangeColorWait(new Color(255, 0, 0, 100), 0.5f)); // red with transparency
+        StartCoroutine(ChangeColorWait(new Color(1, 0.3f, 0.3f, 1), 0.5f)); // red with transparency
         // must add here some code to change the color for some frames: that way we will see when we make damages to an enemy/object
     }
 
@@ -29,7 +29,7 @@ public class Health : MonoBehaviour, IHealth
         if (heal + hp >= MaxHealth)
             hp = MaxHealth;
         else hp += heal;
-        StartCoroutine(ChangeColorWait(new Color(0, 255, 0, 100), 0.5f)); // green with transparency
+        StartCoroutine(ChangeColorWait(new Color(0.3f, 1, 0.3f, 1), 0.5f)); // green with transparency
     }
 
     IEnumerator Die() {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoisonZone : MonoBehaviour , ITimeControl
+public class PoisonZone : MonoBehaviour
 {
     public uint damage = 1;
     public float radius = 1.3f; // is 2.5 but the poison zone's scale is 2

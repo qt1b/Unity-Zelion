@@ -429,7 +429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3683995700
+  GlobalObjectIdHash: 882571247
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -543,7 +543,6 @@ MonoBehaviour:
   PoisonZoneRef: {fileID: 427320649032288252, guid: 42d668b7204f70e709f6f11d3c0f5b86, type: 3}
   change: {x: 0, y: 0, z: 0}
   notNullChange: {x: 0, y: 0, z: 0}
-  bowCooldown: 0.4
   Camera: {fileID: 3108032961735271307}
 --- !u!61 &5866050367752138856
 BoxCollider2D:
@@ -1376,7 +1375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3683995700
+  GlobalObjectIdHash: 3562182235
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 0
   ActiveSceneSynchronization: 0

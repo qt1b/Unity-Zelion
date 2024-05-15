@@ -7,7 +7,7 @@ public class ManaBar : AbstractBar {
     
     private bool gain;
 
-    private void Start() {
+    new void Start() {
         base.Start();
         // maxValue = 40;
         gain = true;
@@ -16,13 +16,13 @@ public class ManaBar : AbstractBar {
     new void Update() 
     {
         base.Update();
-        if(gain && curValue < maxValue){
+        if(gain && !IsMax){
             StartCoroutine(Gain());
         }
     }
     
     IEnumerator Gain(){
-        curValue += 1;
+        base.Heal(1);
         gain = false;
         yield return new WaitForSeconds(1f);
         gain = true;

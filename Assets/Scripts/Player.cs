@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using Unity.Netcode;
 
-public class Player : NetworkBehaviour, ITimeControl, IHealth
+public class Player : NetworkBehaviour, IHealth
 {
     // PLAYER MOVEMENT
     
@@ -27,13 +27,6 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
     [Header("Speed")]
     public float inititialSpeed = 7f;
     public float currentSpeed;
-    float inititialWithControl;
-
-    // variables related to time control : player speed should be modified by external functions
-    [Header("Time Control")]
-    public float controlSpeed = 1f;
-    // float ennemySpeed = 1f; should not be used 
-
     // would be better to get them by script
     [Header("Projectiles")]
     public GameObject ArrowRef;
@@ -95,15 +88,14 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
     Animator _swordHitzoneAnimator;
     public Camera Camera;
 
+    [Header("Bars")]
     private HealthBar _healthBar;
     private StaminaBar _staminaBar;
     private ManaBar _manaBar;
-    private SpriteRenderer _spriteRenderer;
+    private Renderer _renderer;
     // public uint staminaLevel
     // the best should be that StaminaBar manages stamina,
     // healthbar manages health and manabar manages mana
-    
-
     public override void OnNetworkSpawn()
     {
         if (!IsOwner)
@@ -113,11 +105,10 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
     }
     void Start()
     {
-        inititialWithControl = inititialSpeed * controlSpeed;
-        currentSpeed = inititialWithControl;
+        currentSpeed = inititialSpeed * Scripts.PlayerSpeed;
         animator = GetComponent<Animator>();
         myRigidBody = GetComponent<Rigidbody2D>();
-        animator.speed = controlSpeed ;
+        animator.speed = Scripts.PlayerSpeed ;
         _swordHitzone = transform.GetChild(0).gameObject;
         _swordHitzoneCollider = _swordHitzone.GetComponent<Collider2D>();
         _swordHitzoneAnimator = _swordHitzone.GetComponent<Animator>();
@@ -127,7 +118,7 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
         _healthBar = FindObjectOfType<HealthBar>();
         _staminaBar = FindObjectOfType<StaminaBar>();
         _manaBar = FindObjectOfType<ManaBar>();
-        _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        _renderer = gameObject.GetComponent<Renderer>();
     }
 
     // Update is called once per frame 
@@ -149,7 +140,7 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
                 if(Input.GetKeyUp(KeyCode.Mouse0)){
                     if ( canShootArrow && _staminaBar.TryTakeDamages(2) ) StartCoroutine(ShootArrow());
                     isAimingArrow = false;
-                    currentSpeed = inititialWithControl;
+                    currentSpeed = inititialSpeed * Scripts.PlayerSpeed;
                     ArrowPreviewRef.SetActive(false);
                     animator.SetBool("AimingBow",false);
                 }
@@ -160,7 +151,7 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
                 if (Input.GetKeyUp(KeyCode.Mouse1) ) {
                     if ( canThrowPoisonBomb && _manaBar.TryTakeDamages(10) ) StartCoroutine(ThrowPoisonBomb());
                     isAimingBomb = false;
-                    currentSpeed = inititialWithControl;
+                    currentSpeed = inititialSpeed * Scripts.PlayerSpeed;
                     animator.SetBool("AimingBomb",false);
                     PoisonZonePreviewRef.SetActive(false);
                 }
@@ -176,7 +167,7 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
                 else if (Input.GetKeyDown(KeyCode.Mouse0)) {
                     animator.SetBool("AimingBow",true);
                     isAimingArrow = true;
-                    currentSpeed = inititialWithControl * attackSpeedNerf;
+                    currentSpeed = Scripts.PlayerSpeed * attackSpeedNerf;
                     if ( canShootArrow ) ArrowPreviewRef.SetActive(true);
                     // PoisonZonePreviewRef.SetActive(true);
                     PlacePreviewArrow();
@@ -185,7 +176,7 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
                 else if (Input.GetKeyDown(KeyCode.Mouse1)) {
                     animator.SetBool("AimingBomb",true);
                     isAimingBomb = true;
-                    currentSpeed = inititialWithControl * attackSpeedNerf;
+                    currentSpeed = Scripts.PlayerSpeed * attackSpeedNerf;
                     if ( canThrowPoisonBomb ) PoisonZonePreviewRef.SetActive(true);
                     PlacePreviewZone();
                 }
@@ -240,7 +231,7 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
 
     void UpdateAnimationAndMove() {
         if (change != Vector3.zero) {
-            myRigidBody.velocity = (change * ( 0.2f * currentSpeed * controlSpeed));
+            myRigidBody.velocity = (change * ( 0.2f * currentSpeed * Scripts.PlayerSpeed));
             animator.SetFloat("MoveX", change.x);
             animator.SetFloat("MoveY", change.y);
             animator.SetBool("IsMoving",true);
@@ -251,16 +242,9 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
         }
     }
 
-    public void ChangeControlSpeed(float newSpeedControl) {
-        controlSpeed  = newSpeedControl;
-        inititialWithControl = inititialSpeed * controlSpeed;
-        currentSpeed = inititialWithControl;
-        // should change the speed of all the other players too, by calling this very same function
-        animator.speed = controlSpeed;
-    }
-
-    public void ChangeTimeControl(float newSpeedControl) {
-        // modifies all the IEltSpeed interfaces
+    public void ChangePlayerControlSpeed(float newSpeedControl) {
+        Scripts.PlayerSpeed  = newSpeedControl;
+        animator.speed = Scripts.PlayerSpeed;
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
@@ -275,10 +259,10 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
         // _swordHitzoneCollider.enabled = true;
         currentSpeed *= attackSpeedNerf;
         // isWielding = true;
-        yield return new WaitForSeconds( swordTime / controlSpeed );
+        yield return new WaitForSeconds( swordTime / Scripts.PlayerSpeed );
         _swordHitzone.SetActive(false);
-        currentSpeed = inititialWithControl ;
-        yield return new WaitForSeconds( _swordAttackCooldown / controlSpeed );
+        currentSpeed = inititialSpeed * Scripts.PlayerSpeed ;
+        yield return new WaitForSeconds( _swordAttackCooldown / Scripts.PlayerSpeed );
         canSwordAttack = true;
     }
 
@@ -288,7 +272,8 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
             SpawnArrowServer(GetMouseRelativePos());
         else
             SpawnArrowServerRPC(GetMouseRelativePos());
-        yield return new WaitForSeconds( bowCooldown / controlSpeed  );
+        //StartCoroutine(ChangeColorWait(new Color(1, 1, 0, 0.8f), 0.2f));
+        yield return new WaitForSeconds( bowCooldown / Scripts.PlayerSpeed );
         canShootArrow = true;
     }
 
@@ -298,7 +283,7 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
         float teta = Mathf.Atan( pos.y / pos.x ) * 180 / Mathf.PI - (pos.x > 0 ? 90 : -90);
         Quaternion rot = Quaternion.Euler(0f,0f,teta);
         var obj = Instantiate(ArrowRef, transform.position + pos, rot);
-        obj.GetComponent<Projectile>().SetVelocity(pos, controlSpeed);
+        obj.GetComponent<Projectile>().SetVelocity(pos, Scripts.PlayerSpeed);
         obj.GetComponent<NetworkObject>().Spawn(true);
     }
     
@@ -315,6 +300,7 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
         Vector3 mousePosition = Input.mousePosition;
         mousePosition = Camera.ScreenToWorldPoint(mousePosition);
         var position = transform.position;
+        StartCoroutine(ChangeColorWait(new Color(0.3f, 0.3f, 1, 0.8f), 0.2f));
         float y = (mousePosition.y - position.y);
         float x = (mousePosition.x - position.x);
         Vector3 pos = new Vector3(x,y,0f);
@@ -322,7 +308,7 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
             pos = maxBombDist * pos.normalized;
         }
         GameObject pZone = Instantiate(PoisonZoneRef, new Vector3(position.x + pos.x, position.y + pos.y,0f) , new Quaternion() );
-        yield return new WaitForSeconds( poisonBombCooldown / controlSpeed  );
+        yield return new WaitForSeconds( poisonBombCooldown / Scripts.PlayerSpeed  );
         canThrowPoisonBomb = true;
     }
 
@@ -332,25 +318,27 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
             canDash = false;
             isDashing = true;
             currentSpeed *= dashPower;
-            yield return new WaitForSeconds( dashTime / controlSpeed  );
-            currentSpeed = inititialSpeed * controlSpeed ;
+			StartCoroutine(ChangeColorWait(new Color(1, 1, 0.3f, 0.8f), 0.2f)); // yellow
+            yield return new WaitForSeconds( dashTime / Scripts.PlayerSpeed  );
+            currentSpeed = inititialSpeed * Scripts.PlayerSpeed ;
             isDashing = false;
-            yield return new WaitForSeconds( dashCooldown / controlSpeed  );
+            yield return new WaitForSeconds( dashCooldown / Scripts.PlayerSpeed  );
             canDash = true;
         }
     }
     
     public void TakeDamages(uint damage) {
         _healthBar.TakeDamages(damage);
-        StartCoroutine(ChangeColorWait(new Color(255, 0, 0, 100), 0.5f));
+        StartCoroutine(ChangeColorWait(new Color(1f, 0.3f, 0.3f, 0.8f), 0.2f));
     }
 
     public void Heal(uint heal) {
-        _healthBar.Heal(heal);       
-        StartCoroutine(ChangeColorWait(new Color(0, 255, 0, 100), 0.5f));
+        _healthBar.Heal(heal);
+        StartCoroutine(ChangeColorWait(new Color(0.3f, 1f, 0.3f, 0.8f), 0.2f));
     }
+
     IEnumerator ChangeColorWait(Color color, float time) {
-        Color baseColor = _spriteRenderer.color;
+        Color baseColor = _renderer.material.color;
         ChangeColor(color);
         yield return new WaitForSeconds(time);
         ChangeColor(baseColor);
@@ -358,6 +346,7 @@ public class Player : NetworkBehaviour, ITimeControl, IHealth
     
     // to be synced over network
     void ChangeColor(Color color) {
-        _spriteRenderer.color = color;
+        // cannot manage to make it an effect on top of the sprite
+        _renderer.material.SetColor("_Color",color);
     }
 }

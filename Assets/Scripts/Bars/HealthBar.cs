@@ -21,13 +21,10 @@ public class HealthBar : AbstractBar {
     }
     // custom takeDamages to call the gameover
     public new void TakeDamages(uint damages){
-        if (damages >= curValue) {
-            curValue = 0;
+        if (! TryTakeDamages(damages)) {
             print("gameOver");
             // Application.Quit(); // WARNING : To remove !!!
             throw new NotImplementedException("GameOver Condition Reached");
         }
-        else curValue -= damages;
     }
-   
 }
