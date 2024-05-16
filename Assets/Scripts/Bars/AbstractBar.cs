@@ -12,9 +12,9 @@ public abstract class AbstractBar : MonoBehaviour, IHealth
     public Slider slider;
     public Slider damageBar;
     public float speed = 0.0125f;
-    private bool hasChanged;
-    protected uint maxValue;
-    private uint curValue;
+    private bool _hasChanged;
+    protected uint MaxValue;
+    private uint _curValue;
 
     // may be what causes unity to crash ??? but why ??
     /* public AbstractBar(uint maxvalue) {
@@ -22,10 +22,10 @@ public abstract class AbstractBar : MonoBehaviour, IHealth
     } */
 
     public void Start() {
-        maxValue = (uint)slider.maxValue;
-        damageBar.maxValue = maxValue;
-        curValue = maxValue;
-        hasChanged = true;
+        MaxValue = (uint)slider.maxValue;
+        damageBar.maxValue = MaxValue;
+        _curValue = MaxValue;
+        _hasChanged = true;
     }
 
     // Update is called once per frame
@@ -34,26 +34,26 @@ public abstract class AbstractBar : MonoBehaviour, IHealth
         /* if(curValue < 0) { // not needed anymore
             curValue = 0;
         } */
-        if (hasChanged) {
-            slider.value = curValue;
-            hasChanged = false;
+        if (_hasChanged) {
+            slider.value = _curValue;
+            _hasChanged = false;
         }
         if(Math.Abs(slider.value - damageBar.value) > 0.01){
-            damageBar.value = Mathf.Lerp(damageBar.value, curValue, speed);
+            damageBar.value = Mathf.Lerp(damageBar.value, _curValue, speed);
         }
 
     }
 
     public uint GetValue() {
-        return curValue;
+        return _curValue;
     }
 
     // not to be used with health ! in this case, it should be a game over
-    public bool CanTakeDamages(uint damages) => damages <= curValue;
+    public bool CanTakeDamages(uint damages) => damages <= _curValue;
 
     // same
     public bool TryTakeDamages(uint damages) {
-        if (damages <= curValue) {
+        if (damages <= _curValue) {
             TakeDamages(damages);
             return true;
         }
@@ -62,28 +62,28 @@ public abstract class AbstractBar : MonoBehaviour, IHealth
 
     public void TakeDamages(uint damages){
         // value should be checked to be positive, or else use a uint
-        hasChanged = true;
-        if (damages >= curValue)
-            curValue = 0;
-        else curValue -= damages;
+        _hasChanged = true;
+        if (damages >= _curValue)
+            _curValue = 0;
+        else _curValue -= damages;
     }
 
     public void Heal(uint heal) {
-        hasChanged = true;
-        if (heal + curValue >= maxValue)
-            curValue = maxValue;
-        else curValue += heal;
+        _hasChanged = true;
+        if (heal + _curValue >= MaxValue)
+            _curValue = MaxValue;
+        else _curValue += heal;
     }
 
     public void ChangeMaxValue(uint newMax) {
-        if (newMax < maxValue) {
-            curValue = Math.Clamp(curValue, 0, newMax);
-            hasChanged = true;
+        if (newMax < MaxValue) {
+            _curValue = Math.Clamp(_curValue, 0, newMax);
+            _hasChanged = true;
         }
-        maxValue = newMax;
-        slider.maxValue = maxValue;
-        damageBar.maxValue = maxValue;
+        MaxValue = newMax;
+        slider.maxValue = MaxValue;
+        damageBar.maxValue = MaxValue;
     }
 
-    public bool IsMax => curValue == maxValue;
+    public bool IsMax => _curValue == MaxValue;
 }

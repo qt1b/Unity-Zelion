@@ -8,8 +8,8 @@ public class InflictDammage : MonoBehaviour
     public uint damage = 3; 
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag(hitTag)) {
-            other.GetComponent<Health>().TakeDamages(damage);
+        if (other.TryGetComponent(out Health health)) {
+            health.TakeDamages(damage);
             // gameObject.SetActive(false);
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Unity.Netcode;
+using UnityEngine.Serialization;
 
 public class Player : NetworkBehaviour, IHealth
 {
@@ -28,14 +29,14 @@ public class Player : NetworkBehaviour, IHealth
     public float inititialSpeed = 7f;
     public float currentSpeed;
     // would be better to get them by script
-    [Header("Projectiles")]
-    public GameObject ArrowRef;
-    private GameObject ArrowPreviewRef;
-    public GameObject PoisonBombRef;
-    public GameObject PoisonZoneRef;
-    private GameObject PoisonZonePreviewRef;
+    [FormerlySerializedAs("ArrowRef")] [Header("Projectiles")]
+    public GameObject arrowRef;
+    private GameObject _arrowPreviewRef;
+    [FormerlySerializedAs("PoisonBombRef")] public GameObject poisonBombRef;
+    [FormerlySerializedAs("PoisonZoneRef")] public GameObject poisonZoneRef;
+    private GameObject _poisonZonePreviewRef;
 
-    Rigidbody2D myRigidBody;
+    Rigidbody2D _myRigidBody;
     public Vector3 change = Vector3.zero;
     public Vector3 notNullChange = new Vector3(0,1,0);
 
@@ -46,47 +47,47 @@ public class Player : NetworkBehaviour, IHealth
     // is our player already doing smthg
     // public as we will make ennemies / etc that make the player enter this state
     // capacities avalability
-    bool canSwordAttack = true;
-    bool canDash = true;
-    bool canShootArrow = true;
-    bool canThrowPoisonBomb = true;
+    bool _canSwordAttack = true;
+    bool _canDash = true;
+    bool _canShootArrow = true;
+    bool _canThrowPoisonBomb = true;
 
-    static public bool isDashing = false; // so the stamina bar can use it
-    bool isWielding = false;
-    bool isAimingArrow = false;
-    bool isAimingBomb = false;
-
+    bool _isDashing = false; // so the stamina bar can use it
+    // bool isWielding = false;
+    bool _isAimingArrow = false;
+    bool _isAimingBomb = false;
+    private int _colorLvl;
     // time control, to enable time effects
     // bc some bosses will slow down our controls, so this var has to be public
 
     // cooldown timers
     // should be used later to instanciate timers for capacities, 
     // allowing to see how much time we have before being able to use the capacity again
-    float swordTime = 0.2f;
-    float _swordAttackCooldown = 0.4f;
-    float totalSwordRot = 100f;
+    float _swordTime = 0.2f;
+    private const float SwordAttackCooldown = 0.4f;
+    float _totalSwordRot = 100f;
 
-    float dashCooldown = 1f;
-    float bowCooldown = 0.2f;
-    float poisonBombCooldown = 7f;
+    float _dashCooldown = 1f;
+    float _bowCooldown = 0.2f;
+    float _poisonBombCooldown = 7f;
 
     // 'animation' timers
-    float dashTime = 0.12f;
+    float _dashTime = 0.12f;
 
 
     // variables for attack settings
-    float dashPower = 6f;
-    float attackSpeedNerf = 0.65f;
-    float maxBombDist = 7f;
-    float swordDist = 0.3f;
+    float _dashPower = 6f;
+    float _attackSpeedNerf = 0.65f;
+    float _maxBombDist = 7f;
+    float _swordDist = 0.3f;
 
 
     // display variables
-    Animator animator;
+    Animator _animator;
     GameObject _swordHitzone;
     Collider2D _swordHitzoneCollider;
     Animator _swordHitzoneAnimator;
-    public Camera Camera;
+    [FormerlySerializedAs("Camera")] public Camera camera;
 
     [Header("Bars")]
     private HealthBar _healthBar;
@@ -106,18 +107,19 @@ public class Player : NetworkBehaviour, IHealth
     void Start()
     {
         currentSpeed = inititialSpeed * Scripts.PlayerSpeed;
-        animator = GetComponent<Animator>();
-        myRigidBody = GetComponent<Rigidbody2D>();
-        animator.speed = Scripts.PlayerSpeed ;
+        _animator = GetComponent<Animator>();
+        _myRigidBody = GetComponent<Rigidbody2D>();
+        _animator.speed = Scripts.PlayerSpeed ;
         _swordHitzone = transform.GetChild(0).gameObject;
         _swordHitzoneCollider = _swordHitzone.GetComponent<Collider2D>();
         _swordHitzoneAnimator = _swordHitzone.GetComponent<Animator>();
         _swordHitzone.SetActive(false);
-        ArrowPreviewRef = transform.GetChild(1).gameObject;
-        PoisonZonePreviewRef = transform.GetChild(2).gameObject;
+        _arrowPreviewRef = transform.GetChild(1).gameObject;
+        _poisonZonePreviewRef = transform.GetChild(2).gameObject;
         _healthBar = FindObjectOfType<HealthBar>();
         _staminaBar = FindObjectOfType<StaminaBar>();
         _manaBar = FindObjectOfType<ManaBar>();
+        // 'color' effects
         _renderer = gameObject.GetComponent<Renderer>();
     }
 
@@ -127,57 +129,57 @@ public class Player : NetworkBehaviour, IHealth
         if(PauseMenu.GameIsPaused){
             return;
         }
-        if (!isDashing) {
+        if (!_isDashing) {
             change = Vector3.zero;
             change.x = Input.GetAxisRaw("Horizontal");
             change.y = Input.GetAxisRaw("Vertical");
             change.Normalize();
             if (change != Vector3.zero) notNullChange = change;
             // one attack / 'normal' ability at a time
-            if (isAimingArrow) {
-                if (!ArrowPreviewRef.activeSelf && canShootArrow /* &&  _staminaBar.CanTakeDamages(2) */ ) ArrowPreviewRef.SetActive(true);
+            if (_isAimingArrow) {
+                if (!_arrowPreviewRef.activeSelf && _canShootArrow /* &&  _staminaBar.CanTakeDamages(2) */ ) _arrowPreviewRef.SetActive(true);
                 PlacePreviewArrow();
                 if(Input.GetKeyUp(KeyCode.Mouse0)){
-                    if ( canShootArrow && _staminaBar.TryTakeDamages(2) ) StartCoroutine(ShootArrow());
-                    isAimingArrow = false;
+                    if ( _canShootArrow && _staminaBar.TryTakeDamages(2) ) StartCoroutine(ShootArrow());
+                    _isAimingArrow = false;
                     currentSpeed = inititialSpeed * Scripts.PlayerSpeed;
-                    ArrowPreviewRef.SetActive(false);
-                    animator.SetBool("AimingBow",false);
+                    _arrowPreviewRef.SetActive(false);
+                    _animator.SetBool("AimingBow",false);
                 }
             }
-            else if (isAimingBomb) {
-                if (!PoisonZonePreviewRef.activeSelf && canThrowPoisonBomb && _manaBar.CanTakeDamages(10) ) PoisonZonePreviewRef.SetActive(true);
+            else if (_isAimingBomb) {
+                if (!_poisonZonePreviewRef.activeSelf && _canThrowPoisonBomb && _manaBar.CanTakeDamages(10) ) _poisonZonePreviewRef.SetActive(true);
                 PlacePreviewZone();
                 if (Input.GetKeyUp(KeyCode.Mouse1) ) {
-                    if ( canThrowPoisonBomb && _manaBar.TryTakeDamages(10) ) StartCoroutine(ThrowPoisonBomb());
-                    isAimingBomb = false;
+                    if ( _canThrowPoisonBomb && _manaBar.TryTakeDamages(10) ) StartCoroutine(ThrowPoisonBomb());
+                    _isAimingBomb = false;
                     currentSpeed = inititialSpeed * Scripts.PlayerSpeed;
-                    animator.SetBool("AimingBomb",false);
-                    PoisonZonePreviewRef.SetActive(false);
+                    _animator.SetBool("AimingBomb",false);
+                    _poisonZonePreviewRef.SetActive(false);
                 }
             }
             else {
                 // no cost in stamina for the sword
-                if (canSwordAttack && Input.GetKeyDown(KeyCode.Space)) {
+                if (_canSwordAttack && Input.GetKeyDown(KeyCode.Space)) {
                     StartCoroutine(SwordAttack());
                 } 
-                else if(canDash && Input.GetKeyDown(KeyCode.LeftShift) && _staminaBar.TryTakeDamages(10)){
+                else if(_canDash && Input.GetKeyDown(KeyCode.LeftShift) && _staminaBar.TryTakeDamages(10)){
                     StartCoroutine(Dash());
                 }
                 else if (Input.GetKeyDown(KeyCode.Mouse0)) {
-                    animator.SetBool("AimingBow",true);
-                    isAimingArrow = true;
-                    currentSpeed = Scripts.PlayerSpeed * attackSpeedNerf;
-                    if ( canShootArrow ) ArrowPreviewRef.SetActive(true);
+                    _animator.SetBool("AimingBow",true);
+                    _isAimingArrow = true;
+                    currentSpeed = Scripts.PlayerSpeed * _attackSpeedNerf;
+                    if ( _canShootArrow ) _arrowPreviewRef.SetActive(true);
                     // PoisonZonePreviewRef.SetActive(true);
                     PlacePreviewArrow();
                     // ArrowPreviewRef.transform.position = transform.position;
                 }
                 else if (Input.GetKeyDown(KeyCode.Mouse1)) {
-                    animator.SetBool("AimingBomb",true);
-                    isAimingBomb = true;
-                    currentSpeed = Scripts.PlayerSpeed * attackSpeedNerf;
-                    if ( canThrowPoisonBomb ) PoisonZonePreviewRef.SetActive(true);
+                    _animator.SetBool("AimingBomb",true);
+                    _isAimingBomb = true;
+                    currentSpeed = Scripts.PlayerSpeed * _attackSpeedNerf;
+                    if ( _canThrowPoisonBomb ) _poisonZonePreviewRef.SetActive(true);
                     PlacePreviewZone();
                 }
             }
@@ -191,90 +193,90 @@ public class Player : NetworkBehaviour, IHealth
 
     Vector3 GetMouseRelativePos() {
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition = Camera.ScreenToWorldPoint(mousePosition);
+        mousePosition = camera.ScreenToWorldPoint(mousePosition);
         float y = (mousePosition.y - transform.position.y);
         float x = (mousePosition.x - transform.position.x);
         return new Vector3(x,y,0f).normalized;
     }
 
     void PlacePreviewArrow() {
-        if (canShootArrow) {
+        if (_canShootArrow) {
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition = Camera.ScreenToWorldPoint(mousePosition);
+        mousePosition = camera.ScreenToWorldPoint(mousePosition);
         var position = transform.position;
         float y = (mousePosition.y - position.y);
         float x = (mousePosition.x - position.x);
-        animator.SetFloat("MouseX",x);
-        animator.SetFloat("MouseY",y);
+        _animator.SetFloat("MouseX",x);
+        _animator.SetFloat("MouseY",y);
         Vector3 pos = new Vector3(x,y,0f);
-        ArrowPreviewRef.transform.position = position + pos.normalized;
+        _arrowPreviewRef.transform.position = position + pos.normalized;
         float teta = Mathf.Atan(y / x) * 180 / Mathf.PI - (mousePosition.x > position.x ? 90 : -90);
-        ArrowPreviewRef.transform.eulerAngles = new Vector3(0f,0f,teta);
+        _arrowPreviewRef.transform.eulerAngles = new Vector3(0f,0f,teta);
         }
     }
 
     void PlacePreviewZone() {
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition = Camera.ScreenToWorldPoint(mousePosition);
+        mousePosition = camera.ScreenToWorldPoint(mousePosition);
         var position = transform.position;
         float y = (mousePosition.y - position.y);
         float x = (mousePosition.x - position.x);
         Vector3 pos = new Vector3(x,y,0f);
-        if (Vector3.Distance(pos, Vector3.zero) > maxBombDist) {
-            pos = maxBombDist * pos.normalized;
+        if (Vector3.Distance(pos, Vector3.zero) > _maxBombDist) {
+            pos = _maxBombDist * pos.normalized;
         }
-        animator.SetFloat("MouseX",pos.x);
-        animator.SetFloat("MouseY",pos.y);
-        PoisonZonePreviewRef.transform.position = new Vector3(position.x + pos.x, position.y + pos.y, 0f);
+        _animator.SetFloat("MouseX",pos.x);
+        _animator.SetFloat("MouseY",pos.y);
+        _poisonZonePreviewRef.transform.position = new Vector3(position.x + pos.x, position.y + pos.y, 0f);
     }
 
 
     void UpdateAnimationAndMove() {
         if (change != Vector3.zero) {
-            myRigidBody.velocity = (change * ( 0.2f * currentSpeed * Scripts.PlayerSpeed));
-            animator.SetFloat("MoveX", change.x);
-            animator.SetFloat("MoveY", change.y);
-            animator.SetBool("IsMoving",true);
+            _myRigidBody.velocity = (change * ( 0.2f * currentSpeed * Scripts.PlayerSpeed));
+            _animator.SetFloat("MoveX", change.x);
+            _animator.SetFloat("MoveY", change.y);
+            _animator.SetBool("IsMoving",true);
         }
         else {
-            myRigidBody.velocity = Vector3.zero;
-            animator.SetBool("IsMoving",false);
+            _myRigidBody.velocity = Vector3.zero;
+            _animator.SetBool("IsMoving",false);
         }
     }
 
     public void ChangePlayerControlSpeed(float newSpeedControl) {
         Scripts.PlayerSpeed  = newSpeedControl;
-        animator.speed = Scripts.PlayerSpeed;
+        _animator.speed = Scripts.PlayerSpeed;
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
     IEnumerator SwordAttack() {
         // wielding for 100 degrees
-        canSwordAttack = false;
+        _canSwordAttack = false;
         _swordHitzone.SetActive(true);
         // does not seem to work when the player has not yet moved
         float currentSwordRot = Mathf.Atan(notNullChange.y / notNullChange.x) * 180 / Mathf.PI + (notNullChange.x >= 0 ? 0 : 180);
         _swordHitzone.transform.eulerAngles = new Vector3(0f,0f,currentSwordRot);
-        _swordHitzone.transform.position = transform.position + notNullChange * swordDist;
+        _swordHitzone.transform.position = transform.position + notNullChange * _swordDist;
         // _swordHitzoneCollider.enabled = true;
-        currentSpeed *= attackSpeedNerf;
+        currentSpeed *= _attackSpeedNerf;
         // isWielding = true;
-        yield return new WaitForSeconds( swordTime / Scripts.PlayerSpeed );
+        yield return new WaitForSeconds( _swordTime / Scripts.PlayerSpeed );
         _swordHitzone.SetActive(false);
         currentSpeed = inititialSpeed * Scripts.PlayerSpeed ;
-        yield return new WaitForSeconds( _swordAttackCooldown / Scripts.PlayerSpeed );
-        canSwordAttack = true;
+        yield return new WaitForSeconds( SwordAttackCooldown / Scripts.PlayerSpeed );
+        _canSwordAttack = true;
     }
 
     IEnumerator ShootArrow() {
-        canShootArrow = false;
+        _canShootArrow = false;
         if (IsServer)
             SpawnArrowServer(GetMouseRelativePos());
         else
             SpawnArrowServerRPC(GetMouseRelativePos());
         //StartCoroutine(ChangeColorWait(new Color(1, 1, 0, 0.8f), 0.2f));
-        yield return new WaitForSeconds( bowCooldown / Scripts.PlayerSpeed );
-        canShootArrow = true;
+        yield return new WaitForSeconds( _bowCooldown / Scripts.PlayerSpeed );
+        _canShootArrow = true;
     }
 
     void SpawnArrowServer(Vector3 mousePos)
@@ -282,7 +284,7 @@ public class Player : NetworkBehaviour, IHealth
         Vector3 pos = mousePos;
         float teta = Mathf.Atan( pos.y / pos.x ) * 180 / Mathf.PI - (pos.x > 0 ? 90 : -90);
         Quaternion rot = Quaternion.Euler(0f,0f,teta);
-        var obj = Instantiate(ArrowRef, transform.position + pos, rot);
+        var obj = Instantiate(arrowRef, transform.position + pos, rot);
         obj.GetComponent<Projectile>().SetVelocity(pos, Scripts.PlayerSpeed);
         obj.GetComponent<NetworkObject>().Spawn(true);
     }
@@ -296,37 +298,36 @@ public class Player : NetworkBehaviour, IHealth
 
     // first throws the bomb, and then instanciates the poison bomb
     IEnumerator ThrowPoisonBomb() {
-        canThrowPoisonBomb = false;
+        _canThrowPoisonBomb = false;
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition = Camera.ScreenToWorldPoint(mousePosition);
+        mousePosition = camera.ScreenToWorldPoint(mousePosition);
         var position = transform.position;
         StartCoroutine(ChangeColorWait(new Color(0.3f, 0.3f, 1, 0.8f), 0.2f));
         float y = (mousePosition.y - position.y);
         float x = (mousePosition.x - position.x);
         Vector3 pos = new Vector3(x,y,0f);
-        if (Vector3.Distance(pos, Vector3.zero) > maxBombDist) {
-            pos = maxBombDist * pos.normalized;
+        if (Vector3.Distance(pos, Vector3.zero) > _maxBombDist) {
+            pos = _maxBombDist * pos.normalized;
         }
-        GameObject pZone = Instantiate(PoisonZoneRef, new Vector3(position.x + pos.x, position.y + pos.y,0f) , new Quaternion() );
-        yield return new WaitForSeconds( poisonBombCooldown / Scripts.PlayerSpeed  );
-        canThrowPoisonBomb = true;
+        GameObject pZone = Instantiate(poisonZoneRef, new Vector3(position.x + pos.x, position.y + pos.y,0f) , new Quaternion() );
+        yield return new WaitForSeconds( _poisonBombCooldown / Scripts.PlayerSpeed  );
+        _canThrowPoisonBomb = true;
     }
 
     IEnumerator Dash(){
         // does not execute the dash if the player is not moving
         if (change.y != 0 || change.x != 0) {
-            canDash = false;
-            isDashing = true;
-            currentSpeed *= dashPower;
+            _canDash = false;
+            _isDashing = true;
+            currentSpeed *= _dashPower;
 			StartCoroutine(ChangeColorWait(new Color(1, 1, 0.3f, 0.8f), 0.2f)); // yellow
-            yield return new WaitForSeconds( dashTime / Scripts.PlayerSpeed  );
+            yield return new WaitForSeconds( _dashTime / Scripts.PlayerSpeed  );
             currentSpeed = inititialSpeed * Scripts.PlayerSpeed ;
-            isDashing = false;
-            yield return new WaitForSeconds( dashCooldown / Scripts.PlayerSpeed  );
-            canDash = true;
+            _isDashing = false;
+            yield return new WaitForSeconds( _dashCooldown / Scripts.PlayerSpeed  );
+            _canDash = true;
         }
     }
-    
     public void TakeDamages(uint damage) {
         _healthBar.TakeDamages(damage);
         StartCoroutine(ChangeColorWait(new Color(1f, 0.3f, 0.3f, 0.8f), 0.2f));
@@ -338,12 +339,14 @@ public class Player : NetworkBehaviour, IHealth
     }
 
     IEnumerator ChangeColorWait(Color color, float time) {
-        Color baseColor = _renderer.material.color;
+        _colorLvl += 1;
         ChangeColor(color);
         yield return new WaitForSeconds(time);
-        ChangeColor(baseColor);
+        _colorLvl -= 1;
+        if (_colorLvl == 0) {
+            ChangeColor(new Color(1,1,1,1));
+        }
     }
-    
     // to be synced over network
     void ChangeColor(Color color) {
         // cannot manage to make it an effect on top of the sprite

@@ -5,26 +5,26 @@ using UnityEngine;
 
 public class ManaBar : AbstractBar {
     
-    private bool gain;
+    private bool _gain;
 
     new void Start() {
         base.Start();
         // maxValue = 40;
-        gain = true;
+        _gain = true;
     }
 
     new void Update() 
     {
         base.Update();
-        if(gain && !IsMax){
+        if(_gain && !IsMax){
             StartCoroutine(Gain());
         }
     }
     
     IEnumerator Gain(){
         base.Heal(1);
-        gain = false;
+        _gain = false;
         yield return new WaitForSeconds(1f);
-        gain = true;
+        _gain = true;
     }
 }

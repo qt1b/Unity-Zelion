@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class BeatEnnemies : MonoBehaviour, IEvent{
     public IAction Action;
-    public float Radius = 10f;
+    [FormerlySerializedAs("Radius")] public float radius = 10f;
 
     // Start is called before the first frame update
     void Start() {
@@ -21,7 +22,7 @@ public class BeatEnnemies : MonoBehaviour, IEvent{
     }
 
     public bool CheckCond() {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(gameObject.transform.position, Radius);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(gameObject.transform.position, radius);
         foreach(Collider2D col in colliders)
         {
             if (col.CompareTag("Ennemy"))

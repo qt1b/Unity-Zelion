@@ -6,13 +6,14 @@ using UnityEngine;
 
 public class Projectile : NetworkBehaviour {
     public float speed = 30f;
-    public Vector3 direction { get; set; } = Vector3.zero;
-    public float controlSpeed { get; set; } = 1f;
+    public Vector3 Direction { get; set; } = Vector3.zero;
+    public float ControlSpeed { get; set; } = 1f;
     public uint damage = 3;
-    Rigidbody2D myRigidBody;
+    Rigidbody2D _myRigidBody;
 
+    // DOES NOT DESTROY CORRECTLY
     void Awake() {
-        myRigidBody = GetComponent<Rigidbody2D>();
+        _myRigidBody = GetComponent<Rigidbody2D>();
         // some arrows are not destroying ???
         DestroyAfterSecs(4f);
         /*
@@ -24,15 +25,15 @@ public class Projectile : NetworkBehaviour {
     }
 
     public void SetVelocity(Vector3 givenDirection, float givenControlSpeed) {
-        direction = givenDirection;
-        controlSpeed = givenControlSpeed;
-        myRigidBody.velocity = direction * (speed * 0.2f * controlSpeed);
+        Direction = givenDirection;
+        ControlSpeed = givenControlSpeed;
+        _myRigidBody.velocity = Direction * (speed * 0.2f * ControlSpeed);
     }
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.TryGetComponent(out IHealth health))
             health.TakeDamages(damage);
-        myRigidBody.velocity = Vector3.zero;
+        _myRigidBody.velocity = Vector3.zero;
         DestroyAfterSecs(.2f);
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StaminaBar : AbstractBar {
-    private bool gain = true;
+    private bool _gain = true;
     new void Start() {
         base.Start();
     }
@@ -11,15 +11,15 @@ public class StaminaBar : AbstractBar {
     new void Update()
     {
         base.Update();
-        if(gain && !IsMax){
+        if(_gain && !IsMax){
             StartCoroutine(Gain());
         }
     }
     
     IEnumerator Gain(){
         base.Heal(1);
-        gain = false;
+        _gain = false;
         yield return new WaitForSeconds(0.5f);
-        gain = true;
+        _gain = true;
     }
 }

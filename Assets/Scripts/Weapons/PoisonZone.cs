@@ -9,23 +9,23 @@ public class PoisonZone : MonoBehaviour
 
     public float timeBetweenHits = .5f;
     public float duration = 5f;
-    float remaining;
-    float currentRemaining;
-    float currentTimeBetweenHits;
+    float _remaining;
+    float _currentRemaining;
+    float _currentTimeBetweenHits;
 
 
     void Awake() {
-        remaining = duration;
+        _remaining = duration;
         ChangeTimeControl(1f);
         StartCoroutine(Main());
     }
 
     private IEnumerator Main()
     {
-        while (currentRemaining >= 0)
+        while (_currentRemaining >= 0)
         {
-            yield return new WaitForSeconds(currentTimeBetweenHits);
-            currentRemaining -= currentTimeBetweenHits;
+            yield return new WaitForSeconds(_currentTimeBetweenHits);
+            _currentRemaining -= _currentTimeBetweenHits;
             DamageObjects();
         }
         DestroyObject();
@@ -51,7 +51,7 @@ public class PoisonZone : MonoBehaviour
     // to by synced ? or maybe not ?
     public void ChangeTimeControl(float timeControl)
     {
-        currentRemaining = remaining / timeControl;
-        currentTimeBetweenHits = timeBetweenHits / timeControl;
+        _currentRemaining = _remaining / timeControl;
+        _currentTimeBetweenHits = timeBetweenHits / timeControl;
     }
 }

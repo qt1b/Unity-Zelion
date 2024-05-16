@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class PauseMenu : MonoBehaviour
 {
     static public bool GameIsPaused = false;
-    public GameObject GameObjectUI;
+    [FormerlySerializedAs("GameObjectUI")] public GameObject gameObjectUI;
     
 
     // Update is called once per frame
@@ -23,12 +24,12 @@ public class PauseMenu : MonoBehaviour
     }
 
     public void Resume(){
-        GameObjectUI.SetActive(false);
+        gameObjectUI.SetActive(false);
         Time.timeScale = 1f;
         GameIsPaused = false;
     }
     public void Pause(){
-        GameObjectUI.SetActive(true);
+        gameObjectUI.SetActive(true);
         Time.timeScale = 0f;
         GameIsPaused = true;
     }
@@ -38,7 +39,7 @@ public class PauseMenu : MonoBehaviour
         GameIsPaused = false;
     }
 
-    public void settings(){
+    public void Settings(){
         Debug.Log("settings ");
     }
 }

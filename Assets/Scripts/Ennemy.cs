@@ -16,7 +16,7 @@ public class Ennemy : NetworkBehaviour
     private ShootArrow _shooter;
     private MeleeAttack _meleeAttack;
     
-    public float Speed;
+    [FormerlySerializedAs("Speed")] public float speed;
 
     private List<GameObject> _player;
     
