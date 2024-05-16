@@ -2,28 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Bars;
 using Unity.Netcode;
 using UnityEngine.Serialization;
 
-public class Player : NetworkBehaviour, IHealth
-{
-    // PLAYER MOVEMENT
-    
-    /*
-    Notes : Player CANNOT be damageable, only ennemies and breakable objects should be tagged as "damageable"
-
-
-    */
-
-
+public class Player : NetworkBehaviour, IHealth {
+    // this file will be SPLITED into more files ! into the Player folder
     // putting all the player variables and all useful methods for ennemies here
-
-    /*
-    int swordDamage = 3;
-    int arrowDammage = 2;
-    // POISON bomb, damage by 0.5 sec
-    int bombDamage = 1;
-    */
 
     [Header("Speed")]
     public float inititialSpeed = 7f;
@@ -51,26 +36,30 @@ public class Player : NetworkBehaviour, IHealth
     bool _canDash = true;
     bool _canShootArrow = true;
     bool _canThrowPoisonBomb = true;
+    bool _canSlowDownTime = true;
 
     bool _isDashing = false; // so the stamina bar can use it
     // bool isWielding = false;
     bool _isAimingArrow = false;
     bool _isAimingBomb = false;
-    private int _colorLvl;
+    private int _colorAcc; // color accumulator, to know the number of instances started
+    private int _slowdownAcc; // same with slowdown
     // time control, to enable time effects
     // bc some bosses will slow down our controls, so this var has to be public
 
     // cooldown timers
-    // should be used later to instanciate timers for capacities, 
-    // allowing to see how much time we have before being able to use the capacity again
-    float _swordTime = 0.2f;
+    // the const property can be removed if we want to modify that stuff with the player's progression
+    // BETTER : may be removed if not needed
+    private const float SwordTime = 0.2f;
     private const float SwordAttackCooldown = 0.4f;
-    float _totalSwordRot = 100f;
-
+    // private const float SlowdownTimeDuration = 4f;
     float _dashCooldown = 1f;
     float _bowCooldown = 0.2f;
     float _poisonBombCooldown = 7f;
 
+
+    
+    private const float TotalSwordRot = 100f;
     // 'animation' timers
     float _dashTime = 0.12f;
 
@@ -106,10 +95,10 @@ public class Player : NetworkBehaviour, IHealth
     }
     void Start()
     {
-        currentSpeed = inititialSpeed * Scripts.PlayerSpeed;
+        currentSpeed = inititialSpeed * TimeVariables.PlayerSpeed;
         _animator = GetComponent<Animator>();
         _myRigidBody = GetComponent<Rigidbody2D>();
-        _animator.speed = Scripts.PlayerSpeed ;
+        _animator.speed = TimeVariables.PlayerSpeed ;
         _swordHitzone = transform.GetChild(0).gameObject;
         _swordHitzoneCollider = _swordHitzone.GetComponent<Collider2D>();
         _swordHitzoneAnimator = _swordHitzone.GetComponent<Animator>();
@@ -142,7 +131,7 @@ public class Player : NetworkBehaviour, IHealth
                 if(Input.GetKeyUp(KeyCode.Mouse0)){
                     if ( _canShootArrow && _staminaBar.TryTakeDamages(2) ) StartCoroutine(ShootArrow());
                     _isAimingArrow = false;
-                    currentSpeed = inititialSpeed * Scripts.PlayerSpeed;
+                    currentSpeed = inititialSpeed * TimeVariables.PlayerSpeed;
                     _arrowPreviewRef.SetActive(false);
                     _animator.SetBool("AimingBow",false);
                 }
@@ -153,7 +142,7 @@ public class Player : NetworkBehaviour, IHealth
                 if (Input.GetKeyUp(KeyCode.Mouse1) ) {
                     if ( _canThrowPoisonBomb && _manaBar.TryTakeDamages(10) ) StartCoroutine(ThrowPoisonBomb());
                     _isAimingBomb = false;
-                    currentSpeed = inititialSpeed * Scripts.PlayerSpeed;
+                    currentSpeed = inititialSpeed * TimeVariables.PlayerSpeed;
                     _animator.SetBool("AimingBomb",false);
                     _poisonZonePreviewRef.SetActive(false);
                 }
@@ -169,7 +158,7 @@ public class Player : NetworkBehaviour, IHealth
                 else if (Input.GetKeyDown(KeyCode.Mouse0)) {
                     _animator.SetBool("AimingBow",true);
                     _isAimingArrow = true;
-                    currentSpeed = Scripts.PlayerSpeed * _attackSpeedNerf;
+                    currentSpeed = TimeVariables.PlayerSpeed * _attackSpeedNerf;
                     if ( _canShootArrow ) _arrowPreviewRef.SetActive(true);
                     // PoisonZonePreviewRef.SetActive(true);
                     PlacePreviewArrow();
@@ -178,9 +167,15 @@ public class Player : NetworkBehaviour, IHealth
                 else if (Input.GetKeyDown(KeyCode.Mouse1)) {
                     _animator.SetBool("AimingBomb",true);
                     _isAimingBomb = true;
-                    currentSpeed = Scripts.PlayerSpeed * _attackSpeedNerf;
+                    currentSpeed = TimeVariables.PlayerSpeed * _attackSpeedNerf;
                     if ( _canThrowPoisonBomb ) _poisonZonePreviewRef.SetActive(true);
                     PlacePreviewZone();
+                }
+                else if (Input.GetKeyDown(KeyCode.LeftControl)) {
+                    if (_canSlowDownTime && _manaBar.TryTakeDamages(5)) {
+                        StartCoroutine(SlowDownTimeFor(4f));
+                    }
+                    // else some visual and/or audio feedback telling us that we can
                 }
             }
         }
@@ -189,6 +184,18 @@ public class Player : NetworkBehaviour, IHealth
             isWielding = false;
         } */
         UpdateAnimationAndMove();
+    }
+
+    IEnumerator SlowDownTimeFor(float duration) {
+        // will be ennemy speed, using player speed to test the property
+        // like color
+        TimeVariables.PlayerSpeed = 0.5f;
+        _slowdownAcc += 1;
+        yield return new WaitForSeconds(duration);
+        _slowdownAcc -= 1;
+        if (_slowdownAcc == 0) {
+            TimeVariables.PlayerSpeed = 1;
+        }
     }
 
     Vector3 GetMouseRelativePos() {
@@ -233,7 +240,7 @@ public class Player : NetworkBehaviour, IHealth
 
     void UpdateAnimationAndMove() {
         if (change != Vector3.zero) {
-            _myRigidBody.velocity = (change * ( 0.2f * currentSpeed * Scripts.PlayerSpeed));
+            _myRigidBody.velocity = (change * ( 0.2f * currentSpeed * TimeVariables.PlayerSpeed));
             _animator.SetFloat("MoveX", change.x);
             _animator.SetFloat("MoveY", change.y);
             _animator.SetBool("IsMoving",true);
@@ -245,8 +252,8 @@ public class Player : NetworkBehaviour, IHealth
     }
 
     public void ChangePlayerControlSpeed(float newSpeedControl) {
-        Scripts.PlayerSpeed  = newSpeedControl;
-        _animator.speed = Scripts.PlayerSpeed;
+        TimeVariables.PlayerSpeed  = newSpeedControl;
+        _animator.speed = TimeVariables.PlayerSpeed;
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
@@ -261,10 +268,10 @@ public class Player : NetworkBehaviour, IHealth
         // _swordHitzoneCollider.enabled = true;
         currentSpeed *= _attackSpeedNerf;
         // isWielding = true;
-        yield return new WaitForSeconds( _swordTime / Scripts.PlayerSpeed );
+        yield return new WaitForSeconds( SwordTime / TimeVariables.PlayerSpeed );
         _swordHitzone.SetActive(false);
-        currentSpeed = inititialSpeed * Scripts.PlayerSpeed ;
-        yield return new WaitForSeconds( SwordAttackCooldown / Scripts.PlayerSpeed );
+        currentSpeed = inititialSpeed * TimeVariables.PlayerSpeed ;
+        yield return new WaitForSeconds( SwordAttackCooldown / TimeVariables.PlayerSpeed );
         _canSwordAttack = true;
     }
 
@@ -275,7 +282,7 @@ public class Player : NetworkBehaviour, IHealth
         else
             SpawnArrowServerRPC(GetMouseRelativePos());
         //StartCoroutine(ChangeColorWait(new Color(1, 1, 0, 0.8f), 0.2f));
-        yield return new WaitForSeconds( _bowCooldown / Scripts.PlayerSpeed );
+        yield return new WaitForSeconds( _bowCooldown / TimeVariables.PlayerSpeed );
         _canShootArrow = true;
     }
 
@@ -285,7 +292,7 @@ public class Player : NetworkBehaviour, IHealth
         float teta = Mathf.Atan( pos.y / pos.x ) * 180 / Mathf.PI - (pos.x > 0 ? 90 : -90);
         Quaternion rot = Quaternion.Euler(0f,0f,teta);
         var obj = Instantiate(arrowRef, transform.position + pos, rot);
-        obj.GetComponent<Projectile>().SetVelocity(pos, Scripts.PlayerSpeed);
+        obj.GetComponent<Projectile>().SetVelocity(pos, TimeVariables.PlayerSpeed);
         obj.GetComponent<NetworkObject>().Spawn(true);
     }
     
@@ -310,7 +317,7 @@ public class Player : NetworkBehaviour, IHealth
             pos = _maxBombDist * pos.normalized;
         }
         GameObject pZone = Instantiate(poisonZoneRef, new Vector3(position.x + pos.x, position.y + pos.y,0f) , new Quaternion() );
-        yield return new WaitForSeconds( _poisonBombCooldown / Scripts.PlayerSpeed  );
+        yield return new WaitForSeconds( _poisonBombCooldown / TimeVariables.PlayerSpeed  );
         _canThrowPoisonBomb = true;
     }
 
@@ -321,10 +328,10 @@ public class Player : NetworkBehaviour, IHealth
             _isDashing = true;
             currentSpeed *= _dashPower;
 			StartCoroutine(ChangeColorWait(new Color(1, 1, 0.3f, 0.8f), 0.2f)); // yellow
-            yield return new WaitForSeconds( _dashTime / Scripts.PlayerSpeed  );
-            currentSpeed = inititialSpeed * Scripts.PlayerSpeed ;
+            yield return new WaitForSeconds( _dashTime / TimeVariables.PlayerSpeed  );
+            currentSpeed = inititialSpeed * TimeVariables.PlayerSpeed ;
             _isDashing = false;
-            yield return new WaitForSeconds( _dashCooldown / Scripts.PlayerSpeed  );
+            yield return new WaitForSeconds( _dashCooldown / TimeVariables.PlayerSpeed  );
             _canDash = true;
         }
     }
@@ -339,11 +346,11 @@ public class Player : NetworkBehaviour, IHealth
     }
 
     IEnumerator ChangeColorWait(Color color, float time) {
-        _colorLvl += 1;
+        _colorAcc += 1;
         ChangeColor(color);
         yield return new WaitForSeconds(time);
-        _colorLvl -= 1;
-        if (_colorLvl == 0) {
+        _colorAcc -= 1;
+        if (_colorAcc == 0) {
             ChangeColor(new Color(1,1,1,1));
         }
     }

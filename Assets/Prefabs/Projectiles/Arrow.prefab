@@ -66,8 +66,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.00054997206, y: 0.00055003166, z: 0}
-    m_Extent: {x: 1.50015, y: 1.24885, z: 0}
+    m_Center: {x: -0.0026500225, y: -0.0011499524, z: 0}
+    m_Extent: {x: 1.49555, y: 1.24565, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -205,7 +205,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.017245054, y: 0.38287053}
+  m_Offset: {x: -0.0051921457, y: 0.38287053}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -216,7 +216,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.4123206, y: 0.554259}
+  m_Size: {x: 0.21465325, y: 0.554259}
   m_EdgeRadius: 0
 --- !u!114 &-8919578710558767638
 MonoBehaviour:
@@ -230,7 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1547437402
+  GlobalObjectIdHash: 350844114
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -251,7 +251,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 90
-  hitTag: Damageable
   damage: 3
 --- !u!50 &8005479345053348494
 Rigidbody2D:
