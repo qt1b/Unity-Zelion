@@ -2,16 +2,17 @@ using System;
 using Unity.Netcode;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Collectibles {
     public class Hearts : NetworkBehaviour {
         [Header("Values")]
-        public uint HealValue;
+        public uint healValue;
         // private Collider2D _collider2D;
 
         private void OnTriggerEnter2D(Collider2D other) {
             if (other.gameObject.TryGetComponent(out Player.Player player)) {
-                player.Heal(HealValue);
+                player.Heal(healValue);
                 DestroyGameObj();
             }
         }
@@ -19,7 +20,7 @@ namespace Collectibles {
             if (IsServer) {
                 DestroyServer(time);
             }
-            else DestroyServerRPC(time);
+            else DestroyServerRpc(time);
         }
 
         private void DestroyServer(float time = 0f) {
@@ -27,7 +28,7 @@ namespace Collectibles {
         }
 
         [ServerRpc]
-        private void DestroyServerRPC(float time = 0f) {
+        private void DestroyServerRpc(float time = 0f) {
             DestroyServer(time);
         }
     }

@@ -3,6 +3,7 @@ using Bars;
 using Interfaces;
 using UI;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Weapons;
@@ -12,28 +13,19 @@ namespace Player {
         // this file will be SPLITED into more files ! into the Player folder
         // putting all the player variables and all useful methods for ennemies here
 
-        [Header("Speed")]
-        public float inititialSpeed = 7f;
-        public float currentSpeed;
+        [FormerlySerializedAs("inititialSpeed")] [Header("Speed")]
+        public float initialSpeed = 7f;
+        [DoNotSerialize] public float currentSpeed;
         // would be better to get them by script
-        [FormerlySerializedAs("ArrowRef")] [Header("Projectiles")]
-        public GameObject arrowRef;
+        private GameObject _arrowRef;
         private GameObject _arrowPreviewRef;
-        [FormerlySerializedAs("PoisonBombRef")] public GameObject poisonBombRef;
-        [FormerlySerializedAs("PoisonZoneRef")] public GameObject poisonZoneRef;
+        private GameObject _poisonZoneRef;
         private GameObject _poisonZonePreviewRef;
 
-        Rigidbody2D _myRigidBody;
-        public Vector3 change = Vector3.zero;
-        public Vector3 notNullChange = new Vector3(0,1,0);
-
-
-
-
-        // variables controlling the attack system
-        // is our player already doing smthg
-        // public as we will make ennemies / etc that make the player enter this state
-        // capacities avalability
+        private Rigidbody2D _myRigidBody;
+        [DoNotSerialize] public Vector3 change = Vector3.zero;
+        [DoNotSerialize] public Vector3 notNullChange = new Vector3(0,1,0);
+        // capacities availability
         bool _canSwordAttack = true;
         bool _canDash = true;
         bool _canShootArrow = true;
@@ -41,14 +33,11 @@ namespace Player {
         bool _canSlowDownTime = true;
 
         bool _isDashing;
-        // bool isWielding = false;
         bool _isAimingArrow;
         bool _isAimingBomb;
         private uint _colorAcc; // color accumulator, to know the number of instances started
         private uint _slowdownAcc; // same with slowdown
-        // time control, to enable time effects
-        // bc some bosses will slow down our controls, so this var has to be public
-
+        
         // cooldown timers
         // the const property can be removed if we want to modify that stuff with the player's progression
         // BETTER : may be removed if not needed
@@ -108,7 +97,7 @@ namespace Player {
         }
         void Start()
         {
-            currentSpeed = inititialSpeed * TimeVariables.PlayerSpeed.Value;
+            currentSpeed = initialSpeed * TimeVariables.PlayerSpeed.Value;
             _animator = GetComponent<Animator>();
             _myRigidBody = GetComponent<Rigidbody2D>();
             _animator.speed = TimeVariables.PlayerSpeed.Value;
@@ -116,6 +105,8 @@ namespace Player {
             _swordHitzoneCollider = _swordHitzone.GetComponent<Collider2D>();
             _swordHitzoneAnimator = _swordHitzone.GetComponent<Animator>();
             _swordHitzone.SetActive(false);
+            _arrowRef = Resources.Load<GameObject>("Prefabs/Projectiles/Arrow");
+            _poisonZoneRef = Resources.Load<GameObject>("Prefabs/Projectiles/PoisonZone");
             _arrowPreviewRef = transform.GetChild(1).gameObject;
             _poisonZonePreviewRef = transform.GetChild(2).gameObject;
             _healthBar = FindObjectOfType<HealthBar>();
@@ -146,7 +137,7 @@ namespace Player {
                     if(Input.GetKeyUp(KeyCode.Mouse0)){
                         if ( _canShootArrow && _staminaBar.TryTakeDamages(2) ) StartCoroutine(ShootArrow());
                         _isAimingArrow = false;
-                        currentSpeed = inititialSpeed * TimeVariables.PlayerSpeed.Value;
+                        currentSpeed = initialSpeed * TimeVariables.PlayerSpeed.Value;
                         _arrowPreviewRef.SetActive(false);
                         _animator.SetBool(AimingBow,false);
                     }
@@ -157,7 +148,7 @@ namespace Player {
                     if (Input.GetKeyUp(KeyCode.Mouse1) ) {
                         if ( _canThrowPoisonBomb && _manaBar.TryTakeDamages(10) ) StartCoroutine(ThrowPoisonBomb());
                         _isAimingBomb = false;
-                        currentSpeed = inititialSpeed * TimeVariables.PlayerSpeed.Value;
+                        currentSpeed = initialSpeed * TimeVariables.PlayerSpeed.Value;
                         _animator.SetBool(AimingBomb,false);
                         _poisonZonePreviewRef.SetActive(false);
                     }
@@ -288,7 +279,7 @@ namespace Player {
             // isWielding = true;
             yield return new WaitForSeconds( SwordTime / TimeVariables.PlayerSpeed.Value );
             _swordHitzone.SetActive(false);
-            currentSpeed = inititialSpeed * TimeVariables.PlayerSpeed.Value ;
+            currentSpeed = initialSpeed * TimeVariables.PlayerSpeed.Value ;
             yield return new WaitForSeconds( SwordAttackCooldown / TimeVariables.PlayerSpeed.Value );
             _canSwordAttack = true;
         }
@@ -309,7 +300,7 @@ namespace Player {
             Vector3 pos = mousePos;
             float teta = Mathf.Atan( pos.y / pos.x ) * 180 / Mathf.PI - (pos.x > 0 ? 90 : -90);
             Quaternion rot = Quaternion.Euler(0f,0f,teta);
-            var obj = Instantiate(arrowRef, transform.position + pos, rot);
+            var obj = Instantiate(_arrowRef, transform.position + pos, rot);
             obj.GetComponent<Projectile>().SetVelocity(pos, TimeVariables.PlayerSpeed.Value);
             obj.GetComponent<NetworkObject>().Spawn(true);
         }
@@ -334,7 +325,7 @@ namespace Player {
             if (Vector3.Distance(pos, Vector3.zero) > _maxBombDist) {
                 pos = _maxBombDist * pos.normalized;
             }
-            /*GameObject pZone =*/ Instantiate(poisonZoneRef, new Vector3(position.x + pos.x, position.y + pos.y,0f) , new Quaternion() );
+            /*GameObject pZone =*/ Instantiate(_poisonZoneRef, new Vector3(position.x + pos.x, position.y + pos.y,0f) , new Quaternion() );
             yield return new WaitForSeconds( _poisonBombCooldown / TimeVariables.PlayerSpeed.Value  );
             _canThrowPoisonBomb = true;
         }
@@ -347,7 +338,7 @@ namespace Player {
                 currentSpeed *= _dashPower;
                 StartCoroutine(ChangeColorWait(new Color(1, 1, 0.3f, 0.8f), 0.2f)); // yellow
                 yield return new WaitForSeconds( _dashTime / TimeVariables.PlayerSpeed.Value  );
-                currentSpeed = inititialSpeed * TimeVariables.PlayerSpeed.Value ;
+                currentSpeed = initialSpeed * TimeVariables.PlayerSpeed.Value ;
                 _isDashing = false;
                 yield return new WaitForSeconds( _dashCooldown / TimeVariables.PlayerSpeed.Value  );
                 _canDash = true;
@@ -387,16 +378,17 @@ namespace Player {
         IEnumerator ChangeColorWait(Color color, float time) {
             Color baseColor = _renderer.material.color;
             _colorAcc += 1;
-            ChangeColor(color);
+            ChangeColorClientRpc(color);
             yield return new WaitForSeconds(time);
             _colorAcc -= 1;
             if (_colorAcc == 0) {
-                ChangeColor(Color.white);
+                ChangeColorClientRpc(Color.white);
             }
-            else ChangeColor(baseColor);
+            else if (baseColor != Color.white) ChangeColorClientRpc(baseColor);
         }
         // to be synced over network
-        void ChangeColor(Color color) {
+        [ClientRpc]
+        void ChangeColorClientRpc(Color color) {
             // cannot manage to make it an effect on top of the sprite
             _renderer.material.SetColor(Color1,color);
         }
