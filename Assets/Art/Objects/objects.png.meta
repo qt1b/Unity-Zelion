@@ -858,7 +858,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: objects_41
+      name: heart_0
       rect:
         serializedVersion: 2
         x: 2
@@ -879,12 +879,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: objects_42
+      name: heart_1
       rect:
         serializedVersion: 2
-        x: 19
+        x: 18
         y: 258
-        width: 10
+        width: 11
         height: 11
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -921,12 +921,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: objects_44
+      name: heart_3
       rect:
         serializedVersion: 2
-        x: 51
+        x: 50
         y: 258
-        width: 10
+        width: 11
         height: 11
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -1367,8 +1367,8 @@ TextureImporter:
         serializedVersion: 2
         x: 16
         y: 226
-        width: 31
-        height: 11
+        width: 16
+        height: 10
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2685,12 +2685,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: objects_35
+      name: heart_2
       rect:
         serializedVersion: 2
-        x: 36
+        x: 34
         y: 258
-        width: 9
+        width: 11
         height: 11
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -2735,7 +2735,7 @@ TextureImporter:
         width: 32
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2756,7 +2756,7 @@ TextureImporter:
         width: 32
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2764,6 +2764,27 @@ TextureImporter:
       bones: []
       spriteID: 6e7876a8b7a8a50409749616993496b6
       internalID: 40167330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: objects_77
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 227
+        width: 14
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a203c60c8b1c47fbb3ead0f5fe6c149
+      internalID: 1811814446
       vertices: []
       indices: 
       edges: []
@@ -2779,6 +2800,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      heart_0: 1341413512
+      heart_1: 659628789
+      heart_2: -1824981689
+      heart_3: -194854365
       objects_0: 1558372120
       objects_1: -817939200
       objects_10: 323723995
@@ -2848,17 +2873,13 @@ TextureImporter:
       objects_32: -2058001651
       objects_33: 429705018
       objects_34: 215470035
-      objects_35: -1824981689
       objects_36: -1605878140
       objects_37: -102122358
       objects_38: -2105227429
       objects_39: 248210490
       objects_4: -147350593
       objects_40: -982643251
-      objects_41: 1341413512
-      objects_42: 659628789
       objects_43: 998620318
-      objects_44: -194854365
       objects_45: -1064047458
       objects_46: -1497988340
       objects_47: -720252967
@@ -2894,7 +2915,7 @@ TextureImporter:
       objects_74: 449136623
       objects_75: -279802636
       objects_76: -1159649513
-      objects_77: 362447476
+      objects_77: 1811814446
       objects_78: -1741421208
       objects_79: -1245793635
       objects_8: -1424410699

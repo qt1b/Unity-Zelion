@@ -1,3 +1,5 @@
-public interface IAction {
-    public void Activate();
+namespace Interfaces {
+    public interface IAction {
+        public void Activate();
+    }
 }

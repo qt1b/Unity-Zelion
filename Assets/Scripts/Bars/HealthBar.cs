@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Bars {
     public class HealthBar : AbstractBar {
-        private void Start() {
+        private new void Start() {
             base.Start();
         }
 
