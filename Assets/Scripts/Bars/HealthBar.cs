@@ -16,14 +16,13 @@ namespace Bars {
 
             // appuyer sur m en qwerty pour prendre des dégats (demo a modifier plus tard pour que ce soit avec les attaques ennemies)
             if (Input.GetKeyDown(KeyCode.M)) {
-                TakeDamages(10);
+                TakeDamages(2);
             }
         }
 
         // custom takeDamages to call the gameover
         public new void TakeDamages(uint damages) {
-            if (!TryTakeDamages(damages)) {
-                print("gameOver");
+            if (!base.TryTakeDamages(damages)) {
                 // Application.Quit(); // WARNING : To remove !!!
                 throw new NotImplementedException("GameOver Condition Reached");
             }

@@ -1,4 +1,7 @@
+using System;
 using System.Collections;
+using System.IO;
+using System.Linq;
 using Bars;
 using Interfaces;
 using UI;
@@ -13,6 +16,28 @@ namespace Player {
         // this file will be SPLITED into more files ! into the Player folder
         // putting all the player variables and all useful methods for ennemies here
 
+        /* The format of the lookup table
+         * 0 : X position (int)
+         * 1 : Y pos
+         * 2 : Life (max value, uint)
+         * 3 : Stamina
+         * 4 : Mana
+         * 5 : Sword is unlocked (bool, formatted as 0 for false, 1 for true)
+         * 6 : Bow
+         * 7 : Poison
+         * 8 : Dash
+         * 9 : Slowdown
+         * 10: TimeFreeze
+         */
+        // we will now list these variables here in the same order
+        // initial position is done by the teleport action
+        private bool _swordUnlocked;
+        private bool _bowUnlocked;
+        private bool _poisonUnlocked;
+        private bool _dashUnlocked;
+        private bool _slowdownUnlocked;
+        private bool _timeFreezeUnlocked;
+        
         [FormerlySerializedAs("inititialSpeed")] [Header("Speed")]
         public float initialSpeed = 7f;
         [DoNotSerialize] public float currentSpeed;
@@ -65,8 +90,8 @@ namespace Player {
         // display variables
         Animator _animator;
         GameObject _swordHitzone;
-        Collider2D _swordHitzoneCollider;
-        Animator _swordHitzoneAnimator;
+        // Collider2D _swordHitzoneCollider;
+        // Animator _swordHitzoneAnimator;
         [FormerlySerializedAs("Camera")] public new Camera camera;
 
         private HealthBar _healthBar;
@@ -102,8 +127,8 @@ namespace Player {
             _myRigidBody = GetComponent<Rigidbody2D>();
             _animator.speed = TimeVariables.PlayerSpeed.Value;
             _swordHitzone = transform.GetChild(0).gameObject;
-            _swordHitzoneCollider = _swordHitzone.GetComponent<Collider2D>();
-            _swordHitzoneAnimator = _swordHitzone.GetComponent<Animator>();
+            //_swordHitzoneCollider = _swordHitzone.GetComponent<Collider2D>();
+            //_swordHitzoneAnimator = _swordHitzone.GetComponent<Animator>();
             _swordHitzone.SetActive(false);
             _arrowRef = Resources.Load<GameObject>("Prefabs/Projectiles/Arrow");
             _poisonZoneRef = Resources.Load<GameObject>("Prefabs/Projectiles/PoisonZone");
@@ -114,7 +139,37 @@ namespace Player {
             _manaBar = FindObjectOfType<ManaBar>();
             // 'color' effects
             _renderer = gameObject.GetComponent<Renderer>();
+            
+            // initial values, if no save
+            // does not work ??
+            _healthBar.ChangeMaxValue(6);
+            _staminaBar.ChangeMaxValue(6);
+            _manaBar.ChangeMaxValue(6);
+
+
             // _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+            /*
+            // Reads from the save Id common to all instances
+            var lookupTable = File.ReadLines(SaveData.SaveLookupPath).Skip(1).ToArray();
+            if (lookupTable.Length >= SaveData.SaveId.Value) {
+                string[] args = lookupTable[SaveData.SaveId.Value].Split(';');
+                if (args.Length != 11) throw new ArgumentException("the save lookup table is not formatted as expected");
+                else {
+                    Actions.Teleport.Activate(gameObject, camera, new Vector3(int.Parse(args[0]), int.Parse(args[1])));
+                    _healthBar.ChangeMaxValue(uint.Parse(args[2]));
+                    _staminaBar.ChangeMaxValue(uint.Parse(args[3]));
+                    _manaBar.ChangeMaxValue(uint.Parse(args[4]));
+                    _swordUnlocked = args[5] == "1";
+                    _bowUnlocked = args[6] == "1";
+                    _poisonUnlocked = args[7] == "1";
+                    _dashUnlocked = args[8] == "1";
+                    _slowdownUnlocked = args[9] == "1";
+                    _timeFreezeUnlocked = args[10] == "1";
+                    print("read successfully ?");
+                }
+            }
+            else throw new NotImplementedException("unsupported save");
+            */
         }
 
         // Update is called once per frame
@@ -351,6 +406,7 @@ namespace Player {
             StartCoroutine(ChangeColorWait(new Color(1f, 0.3f, 0.3f, 0.8f), 0.2f));
         }
 
+        // healing collectibles are not healing and idk why
         public void Heal(uint heal) {
             _healthBar.Heal(heal);
             StartCoroutine(ChangeColorWait(new Color(0.3f, 1f, 0.3f, 0.8f), 0.2f));
@@ -386,6 +442,7 @@ namespace Player {
             }
             else if (baseColor != Color.white) ChangeColorClientRpc(baseColor);
         }
+        
         // to be synced over network
         [ClientRpc]
         void ChangeColorClientRpc(Color color) {

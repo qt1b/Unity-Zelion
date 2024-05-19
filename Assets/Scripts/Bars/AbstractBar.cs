@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Interfaces;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -49,10 +50,8 @@ namespace Bars {
             return _curValue;
         }
 
-        // not to be used with health ! in this case, it should be a game over
         public bool CanTakeDamages(uint damages) => damages <= _curValue;
 
-        // same
         public bool TryTakeDamages(uint damages) {
             if (damages <= _curValue) {
                 TakeDamages(damages);
@@ -71,7 +70,7 @@ namespace Bars {
 
         public void Heal(uint heal) {
             _hasChanged = true;
-            if (heal + _curValue >= MaxValue)
+            if (heal + _curValue > MaxValue)
                 _curValue = MaxValue;
             else _curValue += heal;
         }
@@ -81,7 +80,6 @@ namespace Bars {
                 _curValue = Math.Clamp(_curValue, 0, newMax);
                 _hasChanged = true;
             }
-
             MaxValue = newMax;
             slider.maxValue = MaxValue;
             damageBar.maxValue = MaxValue;
