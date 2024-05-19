@@ -382,8 +382,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -700938773
-  m_SortingLayer: -1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 491951556, guid: f764426dbcea6734fb6d3024eaaa5b58, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -429,7 +429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3683995700
+  GlobalObjectIdHash: 882571247
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -510,7 +510,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0028192997, y: -0.37743843}
+  m_Offset: {x: 0.0028192997, y: -0.25820515}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -521,7 +521,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.7244153, y: 0.28996766}
+  m_Size: {x: 0.7244153, y: 0.5284342}
   m_EdgeRadius: 0
 --- !u!114 &2229174817178501783
 MonoBehaviour:
@@ -537,14 +537,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inititialSpeed: 24
   currentSpeed: 0
-  controlSpeed: 1
-  ArrowRef: {fileID: 1893994839326115280, guid: ad816b496d7cad7d1ac102f28f447180, type: 3}
-  PoisonBombRef: {fileID: 1178728438484469522, guid: f183f3bb7ce05faefb4d2a320c79bcec, type: 3}
-  PoisonZoneRef: {fileID: 427320649032288252, guid: 42d668b7204f70e709f6f11d3c0f5b86, type: 3}
+  arrowRef: {fileID: 1893994839326115280, guid: ad816b496d7cad7d1ac102f28f447180, type: 3}
+  poisonBombRef: {fileID: 1178728438484469522, guid: f183f3bb7ce05faefb4d2a320c79bcec, type: 3}
+  poisonZoneRef: {fileID: 427320649032288252, guid: 42d668b7204f70e709f6f11d3c0f5b86, type: 3}
   change: {x: 0, y: 0, z: 0}
   notNullChange: {x: 0, y: 0, z: 0}
-  bowCooldown: 0.4
-  Camera: {fileID: 3108032961735271307}
+  camera: {fileID: 3108032961735271307}
 --- !u!61 &5866050367752138856
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -604,7 +602,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   smoothTime: 0.3
   playerDistance: 1
-  CameraHolder: {fileID: 3237325704450656979}
+  cameraHolder: {fileID: 3237325704450656979}
 --- !u!114 &1726673688918143089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -987,8 +985,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.0031499863, y: 0.00084996223, z: 0}
-    m_Extent: {x: 5.50075, y: 5.5021496, z: 0}
+    m_Center: {x: -0.0055499077, y: -0.00055003166, z: 0}
+    m_Extent: {x: 5.50095, y: 5.50815, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -1103,7 +1101,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 907802891
-  m_SortingLayer: -2
+  m_SortingLayer: -1
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 0a8b4f92a55ed5fd18f1875c724e9b67, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1376,7 +1374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3683995700
+  GlobalObjectIdHash: 3562182235
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 0
   ActiveSceneSynchronization: 0

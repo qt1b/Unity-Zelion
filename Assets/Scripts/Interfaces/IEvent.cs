@@ -1,3 +1,5 @@
-public interface IEvent {
-	public bool CheckCond();
+namespace Interfaces {
+	public interface IEvent {
+		public bool CheckCond();
+	}
 }

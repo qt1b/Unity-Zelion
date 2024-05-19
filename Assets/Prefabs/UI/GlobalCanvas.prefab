@@ -280,7 +280,7 @@ GameObject:
   - component: {fileID: 1345142396868781749}
   - component: {fileID: 1213998458358927056}
   m_Layer: 5
-  m_Name: Diagolg Box
+  m_Name: Dialog Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
