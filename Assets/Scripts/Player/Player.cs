@@ -56,12 +56,21 @@ namespace Player {
         bool _canShootArrow = true;
         bool _canThrowPoisonBomb = true;
         bool _canSlowDownTime = true;
+        bool _canTimeFreeze = true;
+        // getters
+        private bool CanSwordAttack => _swordUnlocked && _canSwordAttack;
+        private bool CanDash => _dashUnlocked && _canDash;
+        private bool CanShootArrow => _bowUnlocked && _canShootArrow;
+        private bool CanPoison => _poisonUnlocked && _canThrowPoisonBomb;
+        private bool CanSlowDownTime => _slowdownUnlocked &&  _canSlowDownTime;
+        private bool CanTimeFreeze => _timeFreezeUnlocked && _canTimeFreeze;
 
         bool _isDashing;
         bool _isAimingArrow;
         bool _isAimingBomb;
         private uint _colorAcc; // color accumulator, to know the number of instances started
         private uint _slowdownAcc; // same with slowdown
+        private uint _timeFreezeAcc;
         
         // cooldown timers
         // the const property can be removed if we want to modify that stuff with the player's progression
@@ -210,13 +219,13 @@ namespace Player {
                 }
                 else {
                     // no cost in stamina for the sword
-                    if (_canSwordAttack && Input.GetKeyDown(KeyCode.Space)) {
+                    if (CanSwordAttack && Input.GetKeyDown(KeyCode.Space)) {
                         StartCoroutine(SwordAttack());
                     } 
-                    else if(_canDash && Input.GetKeyDown(KeyCode.LeftShift) && _staminaBar.TryTakeDamages(10)){
+                    else if(CanDash && Input.GetKeyDown(KeyCode.LeftShift) && _staminaBar.TryTakeDamages(10)){
                         StartCoroutine(Dash());
                     }
-                    else if (Input.GetKeyDown(KeyCode.Mouse0)) {
+                    else if (_bowUnlocked && Input.GetKeyDown(KeyCode.Mouse0)) {
                         _animator.SetBool(AimingBow,true);
                         _isAimingArrow = true;
                         currentSpeed = TimeVariables.PlayerSpeed.Value * _attackSpeedNerf;
@@ -225,18 +234,23 @@ namespace Player {
                         PlacePreviewArrow();
                         // ArrowPreviewRef.transform.position = transform.position;
                     }
-                    else if (Input.GetKeyDown(KeyCode.Mouse1)) {
+                    else if (_poisonUnlocked && Input.GetKeyDown(KeyCode.Mouse1)) {
                         _animator.SetBool(AimingBomb,true);
                         _isAimingBomb = true;
                         currentSpeed = TimeVariables.PlayerSpeed.Value * _attackSpeedNerf;
                         if ( _canThrowPoisonBomb ) _poisonZonePreviewRef.SetActive(true);
                         PlacePreviewZone();
                     }
-                    else if (Input.GetKeyDown(KeyCode.LeftControl)) {
+                    else if (_slowdownUnlocked && Input.GetKeyDown(KeyCode.LeftControl)) {
                         if (_canSlowDownTime && _manaBar.TryTakeDamages(5)) {
                             StartCoroutine(SlowDownTimeFor(4f));
                         }
                         // else some visual and/or audio feedback telling us that we can
+                    }
+                    else if (_timeFreezeUnlocked && Input.GetKeyDown(KeyCode.V)) {
+                        if (_canTimeFreeze && _manaBar.TryTakeDamages(14)) {
+                            print("time freeze");
+                        }
                     }
                 }
             }
@@ -247,9 +261,11 @@ namespace Player {
             UpdateAnimationAndMove();
         }
 
+        // they may overlap
         IEnumerator SlowDownTimeFor(float duration) {
             // will be ennemy speed, using player speed to test the property
             // like color
+            // float oldVal = TimeVariables.PlayerSpeed.Value;
             TimeVariables.PlayerSpeed.Value = 0.5f;
             _animator.speed = TimeVariables.PlayerSpeed.Value; // to remove if only slowing down ennemies
             _slowdownAcc += 1;
@@ -258,6 +274,16 @@ namespace Player {
             if (_slowdownAcc == 0) {
                 TimeVariables.PlayerSpeed.Value = 1;
                 _animator.speed = 1;
+            }
+        }
+
+        IEnumerator TimeFreezeFor(float duration) {
+            _timeFreezeAcc += 1;
+            TimeVariables.PlayerSpeed.Value = 0f;
+            yield return new WaitForSeconds(duration);
+            _timeFreezeAcc -= 1;
+            if (_timeFreezeAcc == 0) {
+                TimeVariables.PlayerSpeed.Value = 1;
             }
         }
 
