@@ -5,8 +5,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Ennemies {
-    public class Ennemy : NetworkBehaviour
-    {
+    public class Ennemy : NetworkBehaviour {
         private bool _isShooter;
         private bool _isMelee;
 

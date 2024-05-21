@@ -1,4 +1,7 @@
+using System;
 using System.Collections;
+using System.IO;
+using System.Linq;
 using Bars;
 using Interfaces;
 using UI;
@@ -12,7 +15,6 @@ namespace Player {
     public class Player : NetworkBehaviour, IHealth {
         // this file will be SPLITED into more files ! into the Player folder
         // putting all the player variables and all useful methods for ennemies here
-
         /* The format of the lookup table
          * 0 : X position (int)
          * 1 : Y pos
@@ -37,7 +39,7 @@ namespace Player {
         
         [FormerlySerializedAs("inititialSpeed")] [Header("Speed")]
         public float initialSpeed = 7f;
-        [DoNotSerialize] public float currentSpeed;
+        [DoNotSerialize] public float speedModifier;
         // would be better to get them by script
         private GameObject _arrowRef;
         private GameObject _arrowPreviewRef;
@@ -45,8 +47,8 @@ namespace Player {
         private GameObject _poisonZonePreviewRef;
 
         private Rigidbody2D _myRigidBody;
-        [DoNotSerialize] public Vector3 change = Vector3.zero;
-        [DoNotSerialize] public Vector3 notNullChange = new Vector3(0,1,0);
+        [DoNotSerialize] public Vector2 change = Vector2.zero;
+        [DoNotSerialize] public Vector2 notNullChange = new Vector2(0,1);
         // capacities availability
         bool _canSwordAttack = true;
         bool _canDash = true;
@@ -68,6 +70,7 @@ namespace Player {
         private uint _colorAcc; // color accumulator, to know the number of instances started
         private uint _slowdownAcc; // same with slowdown
         private uint _timeFreezeAcc;
+        [DoNotSerialize] public byte saveID;
         
         // cooldown timers
         // the const property can be removed if we want to modify that stuff with the player's progression
@@ -128,7 +131,7 @@ namespace Player {
         }
         void Start()
         {
-            currentSpeed = initialSpeed * TimeVariables.PlayerSpeed.Value;
+            speedModifier = 1;
             _animator = GetComponent<Animator>();
             _myRigidBody = GetComponent<Rigidbody2D>();
             _animator.speed = TimeVariables.PlayerSpeed.Value;
@@ -145,21 +148,32 @@ namespace Player {
             _manaBar = FindObjectOfType<ManaBar>();
             // 'color' effects
             _renderer = gameObject.GetComponent<Renderer>();
-            // initial values, if no save
-            // does not work ??
-            _healthBar.ChangeMaxValue(10);
-            _staminaBar.ChangeMaxValue(14);
-            _manaBar.ChangeMaxValue(14);
-
             // _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-            /*
+            if (TimeVariables.PlayerList.Value.Count == 0) {
+                // find if save exists, if it does loads it
+                if (File.Exists("zelion.sav") && File.OpenRead("zelion.sav").ReadByte() is not -1 and/*is*/ {} readByte) {
+                    saveID = (byte)readByte;
+                }
+                // else saveID = 0;
+            }
+            else {
+                saveID = TimeVariables.PlayerList.Value.First().saveID;
+                // OVERWRITES THE LAST SAVE !
+            }
+
+            saveID = 1;
+            LoadSave();
+            TimeVariables.PlayerList.Value.Add(this);
+        }
+
+        public void LoadSave() {
             // Reads from the save Id common to all instances
             var lookupTable = File.ReadLines(SaveData.SaveLookupPath).Skip(1).ToArray();
-            if (lookupTable.Length >= SaveData.SaveId.Value) {
-                string[] args = lookupTable[SaveData.SaveId.Value].Split(';');
+            if (lookupTable.Length > saveID) {
+                string[] args = lookupTable[saveID].Split(';');
                 if (args.Length != 11) throw new ArgumentException("the save lookup table is not formatted as expected");
                 else {
-                    Actions.Teleport.Activate(gameObject, camera, new Vector3(int.Parse(args[0]), int.Parse(args[1])));
+                    Actions.Teleport.Activate(gameObject, new Vector3(int.Parse(args[0]), int.Parse(args[1]),0f));
                     _healthBar.ChangeMaxValue(uint.Parse(args[2]));
                     _staminaBar.ChangeMaxValue(uint.Parse(args[3]));
                     _manaBar.ChangeMaxValue(uint.Parse(args[4]));
@@ -173,13 +187,6 @@ namespace Player {
                 }
             }
             else throw new NotImplementedException("unsupported save");
-            */
-            _swordUnlocked = true;
-            _bowUnlocked = true;
-            _poisonUnlocked = true;
-            _dashUnlocked = true;
-            _slowdownUnlocked = true;
-            _timeFreezeUnlocked = true;
         }
 
         // Update is called once per frame
@@ -190,19 +197,19 @@ namespace Player {
                 return;
             }
             if (!_isDashing) {
-                change = Vector3.zero;
+                change = Vector2.zero;
                 change.x = Input.GetAxisRaw("Horizontal");
                 change.y = Input.GetAxisRaw("Vertical");
                 change.Normalize();
-                if (change != Vector3.zero) notNullChange = change;
+                if (change != Vector2.zero) notNullChange = change;
                 // one attack / 'normal' ability at a time
                 if (_isAimingArrow) {
-                    if (!_arrowPreviewRef.activeSelf && _canShootArrow /* &&  _staminaBar.CanTakeDamages(2) */ ) _arrowPreviewRef.SetActive(true);
+                    if (!_arrowPreviewRef.activeSelf && _canShootArrow &&  _staminaBar.CanTakeDamages(2) ) _arrowPreviewRef.SetActive(true);
                     PlacePreviewArrow();
                     if(Input.GetKeyUp(KeyCode.Mouse0)){
                         if ( _canShootArrow && _staminaBar.TryTakeDamages(2) ) StartCoroutine(ShootArrow());
                         _isAimingArrow = false;
-                        currentSpeed = initialSpeed * TimeVariables.PlayerSpeed.Value;
+                        speedModifier = 1;
                         _arrowPreviewRef.SetActive(false);
                         _animator.SetBool(AimingBow,false);
                     }
@@ -213,7 +220,7 @@ namespace Player {
                     if (Input.GetKeyUp(KeyCode.Mouse1) ) {
                         if ( _canThrowPoisonBomb && _manaBar.TryTakeDamages(10) ) StartCoroutine(ThrowPoisonBomb());
                         _isAimingBomb = false;
-                        currentSpeed = initialSpeed * TimeVariables.PlayerSpeed.Value;
+                        speedModifier = 1;
                         _animator.SetBool(AimingBomb,false);
                         _poisonZonePreviewRef.SetActive(false);
                     }
@@ -230,7 +237,7 @@ namespace Player {
                         _animator.SetBool(AimingBow,true);
                         // bow aiming audio effect
                         _isAimingArrow = true;
-                        currentSpeed = TimeVariables.PlayerSpeed.Value * _attackSpeedNerf;
+                        speedModifier = _attackSpeedNerf;
                         if ( _canShootArrow ) _arrowPreviewRef.SetActive(true);
                         // PoisonZonePreviewRef.SetActive(true);
                         PlacePreviewArrow();
@@ -241,7 +248,7 @@ namespace Player {
                         _animator.SetBool(AimingBomb,true);
                         // poison aiming audio effect
                         _isAimingBomb = true;
-                        currentSpeed = TimeVariables.PlayerSpeed.Value * _attackSpeedNerf;
+                        speedModifier = _attackSpeedNerf;
                         if ( _canThrowPoisonBomb ) _poisonZonePreviewRef.SetActive(true);
                         PlacePreviewZone();
                     }
@@ -253,6 +260,9 @@ namespace Player {
                     else if (CanTimeFreeze && Input.GetKeyDown(KeyCode.V) && _manaBar.TryTakeDamages(14)) {
                         // time freeze audio effect
                         print("time freeze");
+                    }
+                    else if (Input.GetKeyDown(KeyCode.M)) {
+                        this.TakeDamages(2);
                     }
                 }
             }
@@ -327,20 +337,21 @@ namespace Player {
 
 
         void UpdateAnimationAndMove() {
-            if (change != Vector3.zero) {
-                _myRigidBody.velocity = (change * ( 0.2f * currentSpeed * TimeVariables.PlayerSpeed.Value));
+            if (change != Vector2.zero) {
+                // 0.2 f ?
+                _myRigidBody.velocity = (change * (0.2f * initialSpeed * speedModifier * TimeVariables.PlayerSpeed.Value));
                 _animator.SetFloat(MoveX, change.x);
                 _animator.SetFloat(MoveY, change.y);
                 _animator.SetBool(IsMoving,true);
             }
             else {
-                _myRigidBody.velocity = Vector3.zero;
+                _myRigidBody.velocity = Vector2.zero;
                 _animator.SetBool(IsMoving,false);
             }
         }
 
         public void ChangePlayerControlSpeed(float newSpeedControl) {
-            TimeVariables.PlayerSpeed.Value  = newSpeedControl;
+            // TimeVariables.PlayerSpeed.Value  = newSpeedControl;
             _animator.speed = TimeVariables.PlayerSpeed.Value;
         }
 
@@ -352,13 +363,13 @@ namespace Player {
             // does not seem to work when the player has not yet moved
             float currentSwordRot = Mathf.Atan(notNullChange.y / notNullChange.x) * 180 / Mathf.PI + (notNullChange.x >= 0 ? 0 : 180);
             _swordHitzone.transform.eulerAngles = new Vector3(0f,0f,currentSwordRot);
-            _swordHitzone.transform.position = transform.position + notNullChange * _swordDist;
+            _swordHitzone.transform.position = (Vector2)transform.position + notNullChange * _swordDist;
             // _swordHitzoneCollider.enabled = true;
-            currentSpeed *= _attackSpeedNerf;
+            speedModifier = _attackSpeedNerf;
             // isWielding = true;
             yield return new WaitForSeconds( SwordTime / TimeVariables.PlayerSpeed.Value );
             _swordHitzone.SetActive(false);
-            currentSpeed = initialSpeed * TimeVariables.PlayerSpeed.Value ;
+            speedModifier = 1 ;
             yield return new WaitForSeconds( SwordAttackCooldown / TimeVariables.PlayerSpeed.Value );
             _canSwordAttack = true;
         }
@@ -414,10 +425,10 @@ namespace Player {
             if (change.y != 0 || change.x != 0) {
                 _canDash = false;
                 _isDashing = true;
-                currentSpeed *= _dashPower;
+                speedModifier = _dashPower;
                 StartCoroutine(ChangeColorWait(new Color(1, 1, 0.3f, 0.8f), 0.2f)); // yellow
                 yield return new WaitForSeconds( _dashTime / TimeVariables.PlayerSpeed.Value  );
-                currentSpeed = initialSpeed * TimeVariables.PlayerSpeed.Value ;
+                speedModifier = 1 ;
                 _isDashing = false;
                 yield return new WaitForSeconds( _dashCooldown / TimeVariables.PlayerSpeed.Value  );
                 _canDash = true;

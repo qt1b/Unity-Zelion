@@ -16,7 +16,7 @@ namespace Ennemies {
             uint nbr = value;
             for (int i = 0; i < nbr; i++) {
                 var instantiated = Instantiate(Collectibles[Random.Range(0, 3)] ,
-                    position + Random.Range(0.3f,1f)*new Vector3(Random.Range(-1f,1f), Random.Range(-1f,1f), 0).normalized,
+                    position + Random.Range(0.5f,2.5f)*new Vector3(Random.Range(-1f,1f), Random.Range(-1f,1f), 0).normalized,
                     Quaternion.identity);
                 instantiated.GetComponent<NetworkObject>().Spawn();
             }

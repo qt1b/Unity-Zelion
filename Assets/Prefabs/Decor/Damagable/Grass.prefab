@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8066402174057902658}
   - component: {fileID: -4697152862629079709}
   - component: {fileID: 6256067291665057170}
+  - component: {fileID: 5598920335214955760}
   m_Layer: 0
   m_Name: Grass
   m_TagString: Untagged
@@ -166,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2311884671
+  GlobalObjectIdHash: 2086229389
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -188,3 +189,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 1
   deathDuration: 0.7
+--- !u!114 &5598920335214955760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6984875398303259973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8233ab8c9394540810f217ef470a3f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList:
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: -237466725
+    DestinationState: 1128132054
+    TransitionDuration: 0.25
+    TriggerNameHash: 646380074
+    TransitionIndex: 0
+  m_Animator: {fileID: 1350384167050536937}
