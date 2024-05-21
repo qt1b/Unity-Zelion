@@ -8,12 +8,7 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
 
-/*
- * wth is this : this file will be used to load global variables, handle saves, and all of that stuff
- *
- *
- * 
- */
+// TO Move and split elsewhere !
 
 public class TimeVariables : NetworkBehaviour {
 	// to sync over network with NetworkVariable

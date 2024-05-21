@@ -3,6 +3,7 @@ using System.Collections;
 using Interfaces;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Bars {
@@ -10,19 +11,26 @@ namespace Bars {
 
         // abstract classe des bars, a modifier pour modifier tout les comportementes des bars
 
+        #region Fields
+
+        
+
         public Slider slider;
         public Slider damageBar;
         public float speed = 0.0125f;
         private bool _hasChanged;
         protected uint MaxValue;
-        private uint _curValue;
+        public uint curValue;
         protected float RestoreDelay;
         private bool _gain = true;
+        #endregion
+
+        #region MonoBehaviours
 
         public void Start() {
             MaxValue = (uint)slider.maxValue;
             damageBar.maxValue = MaxValue;
-            _curValue = MaxValue;
+            curValue = MaxValue;
             _hasChanged = true;
         }
 
@@ -34,24 +42,20 @@ namespace Bars {
             if (RestoreDelay > 0 && _gain && !IsMax) StartCoroutine(Gain());
             
             if (_hasChanged) {
-                slider.value = _curValue;
+                slider.value = curValue;
                 _hasChanged = false;
             }
 
             if (Math.Abs(slider.value - damageBar.value) > 0.01) {
-                damageBar.value = Mathf.Lerp(damageBar.value, _curValue, speed);
+                damageBar.value = Mathf.Lerp(damageBar.value, curValue, speed);
             }
-
         }
-
-        public uint GetValue() {
-            return _curValue;
-        }
-
-        public bool CanTakeDamages(uint damages) => damages <= _curValue;
+        #endregion
+        
+        public bool CanTakeDamages(uint damages) => damages <= curValue;
 
         public bool TryTakeDamages(uint damages) {
-            if (damages <= _curValue) {
+            if (damages <= curValue) {
                 TakeDamages(damages);
                 return true;
             }
@@ -61,22 +65,22 @@ namespace Bars {
         public void TakeDamages(uint damages) {
             // value should be checked to be positive, or else use a uint
             _hasChanged = true;
-            if (damages >= _curValue)
-                _curValue = 0;
-            else _curValue -= damages;
+            if (damages >= curValue)
+                curValue = 0;
+            else curValue -= damages;
         }
 
         // tofix ??
         public void Heal(uint heal) {
             _hasChanged = true;
-            if (heal + _curValue > MaxValue)
-                _curValue = MaxValue;
-            else _curValue += heal;
+            if (heal + curValue > MaxValue)
+                curValue = MaxValue;
+            else curValue += heal;
         }
 
         public void ChangeMaxValue(uint newMax) {
             if (newMax < MaxValue) {
-                _curValue = Math.Clamp(_curValue, 0, newMax);
+                curValue = Math.Clamp(curValue, 0, newMax);
                 _hasChanged = true;
             }
             MaxValue = newMax;
@@ -84,7 +88,7 @@ namespace Bars {
             damageBar.maxValue = MaxValue;
         }
 
-        public bool IsMax => _curValue == MaxValue;
+        public bool IsMax => curValue == MaxValue;
 
         IEnumerator Gain() {
             Heal(1);

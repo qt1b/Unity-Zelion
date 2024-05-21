@@ -4,30 +4,24 @@ using System.IO;
 using System.Linq;
 using Bars;
 using Interfaces;
+using Photon.Pun;
 using UI;
-using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Weapons;
 
 namespace Player {
-    public class Player : NetworkBehaviour, IHealth {
-        // this file will be SPLITED into more files ! into the Player folder
-        // putting all the player variables and all useful methods for ennemies here
-        /* The format of the lookup table
-         * 0 : X position (int)
-         * 1 : Y pos
-         * 2 : Life (max value, uint)
-         * 3 : Stamina
-         * 4 : Mana
-         * 5 : Sword is unlocked (bool, formatted as 0 for false, 1 for true)
-         * 6 : Bow
-         * 7 : Poison
-         * 8 : Dash
-         * 9 : Slowdown
-         * 10: TimeFreeze
-         */
+    public class Player : MonoBehaviourPunCallbacks, IHealth, IPunObservable {
+        // MUST BE SPLITED ! or at least reduced, as it is too large as of now
+
+        #region Public Fields
+        [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
+        public static GameObject LocalPlayerInstance;
+        
+
+        #endregion
+
         // we will now list these variables here in the same order
         // initial position is done by the teleport action
         private bool _swordUnlocked;
@@ -122,15 +116,66 @@ namespace Player {
         // public uint staminaLevel
         // the best should be that StaminaBar manages stamina,
         // healthbar manages health and manabar manages mana
-        public override void OnNetworkSpawn()
+        /*public override void OnNetworkSpawn()
         {
             if (!IsOwner)
             {
                 enabled = false;
             }
+        }*/
+        // to move elsewhere
+        #region Player Save management
+/* The format of the lookup table
+ * 0 : X position (int)
+ * 1 : Y pos
+ * 2 : Life (max value, uint)
+ * 3 : Stamina
+ * 4 : Mana
+ * 5 : Sword is unlocked (bool, formatted as 0 for false, 1 for true)
+ * 6 : Bow
+ * 7 : Poison
+ * 8 : Dash
+ * 9 : Slowdown
+ * 10: TimeFreeze
+ */
+        public void LoadSave() {
+            // Reads from the save Id common to all instances
+            var lookupTable = File.ReadLines(SaveData.SaveLookupPath).Skip(1).ToArray();
+            if (lookupTable.Length > saveID) {
+                string[] args = lookupTable[saveID].Split(';');
+                if (args.Length != 11) throw new ArgumentException("the save lookup table is not formatted as expected");
+                else {
+                    Actions.Teleport.Activate(gameObject, new Vector3(int.Parse(args[0]), int.Parse(args[1]),0f));
+                    _healthBar.ChangeMaxValue(uint.Parse(args[2]));
+                    _staminaBar.ChangeMaxValue(uint.Parse(args[3]));
+                    _manaBar.ChangeMaxValue(uint.Parse(args[4]));
+                    _swordUnlocked = args[5] == "1";
+                    _bowUnlocked = args[6] == "1";
+                    _poisonUnlocked = args[7] == "1";
+                    _dashUnlocked = args[8] == "1";
+                    _slowdownUnlocked = args[9] == "1";
+                    _timeFreezeUnlocked = args[10] == "1";
+                    print("read successfully ?");
+                }
+            }
+            else throw new NotImplementedException("unsupported save");
         }
-        void Start()
+        #endregion
+
+        #region MonoBehaviour
+        void Awake()
         {
+            // #Important
+            // used in GameManager.cs: we keep track of the localPlayer instance to prevent instantiation when levels are synchronized
+            if (photonView.IsMine)
+            {
+                Player.LocalPlayerInstance = this.gameObject;
+            }
+            // #Critical
+            // we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
+            DontDestroyOnLoad(this.gameObject);
+            
+            // dirty code
             speedModifier = 1;
             _animator = GetComponent<Animator>();
             _myRigidBody = GetComponent<Rigidbody2D>();
@@ -165,35 +210,39 @@ namespace Player {
             LoadSave();
             TimeVariables.PlayerList.Value.Add(this);
         }
+        
+        /// <summary>
+        /// MonoBehaviour method called on GameObject by Unity during initialization phase.
+        /// </summary>
+        void Start()
+        {
+            CameraMovement cameraMovement = this.gameObject.GetComponent<CameraMovement>();
 
-        public void LoadSave() {
-            // Reads from the save Id common to all instances
-            var lookupTable = File.ReadLines(SaveData.SaveLookupPath).Skip(1).ToArray();
-            if (lookupTable.Length > saveID) {
-                string[] args = lookupTable[saveID].Split(';');
-                if (args.Length != 11) throw new ArgumentException("the save lookup table is not formatted as expected");
-                else {
-                    Actions.Teleport.Activate(gameObject, new Vector3(int.Parse(args[0]), int.Parse(args[1]),0f));
-                    _healthBar.ChangeMaxValue(uint.Parse(args[2]));
-                    _staminaBar.ChangeMaxValue(uint.Parse(args[3]));
-                    _manaBar.ChangeMaxValue(uint.Parse(args[4]));
-                    _swordUnlocked = args[5] == "1";
-                    _bowUnlocked = args[6] == "1";
-                    _poisonUnlocked = args[7] == "1";
-                    _dashUnlocked = args[8] == "1";
-                    _slowdownUnlocked = args[9] == "1";
-                    _timeFreezeUnlocked = args[10] == "1";
-                    print("read successfully ?");
+            if (cameraMovement != null)
+            {
+                if (photonView.IsMine)
+                {
+                    // cameraMovement.OnStartFollowing();
                 }
             }
-            else throw new NotImplementedException("unsupported save");
+            else
+            {
+                Debug.LogError("<Color=Red><a>Missing</a></Color> CameraWork Component on playerPrefab.", this);
+            }
+        /*
+         #if UNITY_5_4_OR_NEWER
+        // Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+        #endif
+        */
         }
 
         // Update is called once per frame
         // To Add : Sounds to indicate whether we can use the capacity or not
         void Update()
         {
-            if(PauseMenu.GameIsPaused){
+            if ((photonView.IsMine == false && PhotonNetwork.IsConnected == true) || PauseMenu.GameIsPaused)
+            {
                 return;
             }
             if (!_isDashing) {
@@ -268,7 +317,43 @@ namespace Player {
             }
             UpdateAnimationAndMove();
         }
+        #endregion
 
+        #region MonoBehaviour Callbacks
+        
+        /*void CalledOnLevelWasLoaded(int level)
+        {
+            // check if we are outside the Arena and if it's the case, spawn around the center of the arena in a safe zone
+            if (!Physics.Raycast(transform.position, -Vector3.up, 5f))
+            {
+                transform.position = new Vector3(0f, 5f, 0f);
+            }
+        }*/
+        
+        #if UNITY_5_4_OR_NEWER
+       /* public override void OnDisable()
+        {
+            // Always call the base to remove callbacks
+            base.OnDisable ();
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+        }*/
+        #endif
+        
+
+        #endregion
+        #region Private Methods
+        #if UNITY_5_4_OR_NEWER
+        /* for their example, may be of some use
+         void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode loadingMode)
+        {
+            this.CalledOnLevelWasLoaded(scene.buildIndex);
+        } */
+        #endif
+        
+        
+        
+
+            #endregion
         // they may overlap
         IEnumerator SlowDownTimeFor(float duration) {
             // will be enemy speed, using player speed to test the property
@@ -376,10 +461,10 @@ namespace Player {
 
         IEnumerator ShootArrow() {
             _canShootArrow = false;
-            if (IsServer)
+            //if (IsServer)
                 SpawnArrowServer(GetMouseRelativePos());
-            else
-                SpawnArrowServerRPC(GetMouseRelativePos());
+            //else
+            //  SpawnArrowServerRPC(GetMouseRelativePos());
             //StartCoroutine(ChangeColorWait(new Color(1, 1, 0, 0.8f), 0.2f));
             yield return new WaitForSeconds( _bowCooldown / TimeVariables.PlayerSpeed.Value );
             _canShootArrow = true;
@@ -392,14 +477,14 @@ namespace Player {
             Quaternion rot = Quaternion.Euler(0f,0f,teta);
             var obj = Instantiate(_arrowRef, transform.position + pos, rot);
             obj.GetComponent<Projectile>().SetVelocity(pos, TimeVariables.PlayerSpeed.Value);
-            obj.GetComponent<NetworkObject>().Spawn(true);
+            //obj.GetComponent<NetworkObject>().Spawn(true);
         }
     
-        [ServerRpc]
+/*        [ServerRpc]
         void SpawnArrowServerRPC(Vector3 mousePos)
         {
             SpawnArrowServer(mousePos);
-        }
+        }*/
     
 
         // first throws the bomb, and then instanciates the poison bomb
@@ -442,6 +527,24 @@ namespace Player {
             }
             else GameOver();
         }
+        
+        #region IPunObservable implementation
+
+        void Photon.Pun.IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                // We own this player: send the others our data
+                stream.SendNext(_healthBar.curValue);
+            }
+            else
+            {
+                // Network player, receive data
+                this._healthBar.curValue = (uint)stream.ReceiveNext();
+            }
+        }
+
+        #endregion
 
         // healing collectibles are not healing and idk why
         public void Heal(uint heal) {
@@ -469,7 +572,7 @@ namespace Player {
         }
 
         public void GameOver() {
-            print("gameover");
+            PUN.GameManager.Instance.LeaveRoom();
         }
 
         IEnumerator ChangeColorWait(Color color, float time) {
@@ -485,7 +588,7 @@ namespace Player {
         }
 
         // to be synced over network
-        [ClientRpc]
+//        [ClientRpc]
         void ChangeColorClientRpc(Color color) {
             // cannot manage to make it an effect on top of the sprite
             _renderer.material.SetColor(Color1,color);

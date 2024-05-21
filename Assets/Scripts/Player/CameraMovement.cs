@@ -1,21 +1,20 @@
+using Photon.Pun;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Player {
-    public class CameraMovement : NetworkBehaviour {
+    public class CameraMovement : MonoBehaviourPunCallbacks {
         // the higher it is, more time it will take to follow the player
         public float smoothTime;
         private Vector3 _velocity = Vector3.zero;
         public float playerDistance;
         [FormerlySerializedAs("CameraHolder")] public GameObject cameraHolder;
         private Player _tarVelo;
-        public override void OnNetworkSpawn() {
-            if (!IsOwner) {
-                cameraHolder.SetActive(false);
-            }
-        }
-        private void Start() {
+
+        #region Mono Behaviours
+
+        private void Awake() {
             _tarVelo = GetComponent<Player>();
         }
         void LateUpdate() {
@@ -30,5 +29,18 @@ namespace Player {
             position1 = Vector3.SmoothDamp(position1, desiredPosition, ref _velocity, smoothTime);
             cameraHolder.transform.position = position1;
         }
+        #endregion
+
+        #region PUN behaviours
+        // could be moved to awake ? or not ?
+
+        public override void OnConnected() {
+            base.OnConnected();
+            if (!photonView.IsMine) {
+                cameraHolder.SetActive(false);
+            }
+        }
+
+        #endregion
     }
 }
