@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -22,7 +21,6 @@ namespace Ennemies {
                 instantiated.GetComponent<NetworkObject>().Spawn();
             }
         }
-        
         /*
          public static List<GameObject> SpawnList(uint value,Vector3 position) {
             // uint nbr = value / 40;

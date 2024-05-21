@@ -1,8 +1,5 @@
-using System;
 using Unity.Netcode;
-using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Collectibles {
     public class Hearts : NetworkBehaviour {

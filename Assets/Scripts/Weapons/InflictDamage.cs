@@ -1,16 +1,14 @@
 using Ennemies;
+using Interfaces;
 using UnityEngine;
 
 namespace Weapons {
-    public class InflictDammage : MonoBehaviour
-    {
-        public string hitTag = "Damageable";
+    public class InflictDammage : MonoBehaviour {
         public uint damage = 3; 
-
+        // can friendly fire
         private void OnTriggerEnter2D(Collider2D other) {
-            if (other.TryGetComponent(out Health health)) {
+            if (other.TryGetComponent(out IHealth health)) {
                 health.TakeDamages(damage);
-                // gameObject.SetActive(false);
             }
         }
     }

@@ -1,11 +1,6 @@
-
 using System;
 using System.IO;
-using System.Linq;
-using System.Net;
 using Unity.Netcode;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace Player {
     public class SaveManager : NetworkBehaviour

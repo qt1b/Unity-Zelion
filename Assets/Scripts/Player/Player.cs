@@ -1,7 +1,4 @@
-using System;
 using System.Collections;
-using System.IO;
-using System.Linq;
 using Bars;
 using Interfaces;
 using UI;
@@ -148,7 +145,6 @@ namespace Player {
             _manaBar = FindObjectOfType<ManaBar>();
             // 'color' effects
             _renderer = gameObject.GetComponent<Renderer>();
-            
             // initial values, if no save
             // does not work ??
             _healthBar.ChangeMaxValue(10);
@@ -232,6 +228,7 @@ namespace Player {
                     }
                     else if (_bowUnlocked && Input.GetKeyDown(KeyCode.Mouse0)) {
                         _animator.SetBool(AimingBow,true);
+                        // bow aiming audio effect
                         _isAimingArrow = true;
                         currentSpeed = TimeVariables.PlayerSpeed.Value * _attackSpeedNerf;
                         if ( _canShootArrow ) _arrowPreviewRef.SetActive(true);
@@ -239,26 +236,26 @@ namespace Player {
                         PlacePreviewArrow();
                         // ArrowPreviewRef.transform.position = transform.position;
                     }
+                    // poison zone: audio from the prefab
                     else if (_poisonUnlocked && Input.GetKeyDown(KeyCode.Mouse1)) {
                         _animator.SetBool(AimingBomb,true);
+                        // poison aiming audio effect
                         _isAimingBomb = true;
                         currentSpeed = TimeVariables.PlayerSpeed.Value * _attackSpeedNerf;
                         if ( _canThrowPoisonBomb ) _poisonZonePreviewRef.SetActive(true);
                         PlacePreviewZone();
                     }
                     else if (CanSlowDownTime && Input.GetKeyDown(KeyCode.LeftControl) && _manaBar.TryTakeDamages(5)) {
+                        // slow down audio effect
                         StartCoroutine(SlowDownTimeFor(4f));
                     }
                         // else some visual and/or audio feedback telling us that we can
                     else if (CanTimeFreeze && Input.GetKeyDown(KeyCode.V) && _manaBar.TryTakeDamages(14)) {
+                        // time freeze audio effect
                         print("time freeze");
                     }
                 }
             }
-            /* if (isWielding) {
-            _swordHitzoneCollider.enabled = false;
-            isWielding = false;
-        } */
             UpdateAnimationAndMove();
         }
 

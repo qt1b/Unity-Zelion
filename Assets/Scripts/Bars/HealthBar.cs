@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-// using UnityEditor.PackageManager; // can't compile with it (for now)
 using UnityEngine;
 
 namespace Bars {
