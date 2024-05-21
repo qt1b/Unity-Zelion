@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7996526956955088713}
   - component: {fileID: 1350384167050536937}
   - component: {fileID: 8066402174057902658}
+  - component: {fileID: -4697152862629079709}
   - component: {fileID: 6256067291665057170}
   m_Layer: 0
   m_Name: Grass
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -700938773
-  m_SortingLayer: -1
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -978760717, guid: 8ff5ad4dd2bfb5e009f5b18a8458fa8e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -153,6 +154,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.875, y: 0.875}
   m_EdgeRadius: 0
+--- !u!114 &-4697152862629079709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6984875398303259973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 2311884671
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &6256067291665057170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,5 +186,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d66d93700ccbfe3dabfc4a1e09a05238, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 1
+  maxHealth: 1
   deathDuration: 0.7

@@ -12,6 +12,11 @@ namespace Actions {
             _camera = Camera.main;
         }
 
+        public static void Activate(GameObject player, Camera camera, Vector3 goal) {
+            player.transform.position = goal;
+            camera.transform.position = goal;
+        }
+
         void OnTriggerEnter2D(Collider2D other) {
             if (other.CompareTag(hitTag)) {
                 other.transform.position = new Vector3(x,y,0f);

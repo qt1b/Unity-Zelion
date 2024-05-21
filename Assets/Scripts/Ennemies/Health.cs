@@ -1,10 +1,11 @@
 using System.Collections;
 using Interfaces;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Ennemies {
-    public class Health : MonoBehaviour, IHealth
+    public class Health : NetworkBehaviour, IHealth
     {
         [FormerlySerializedAs("MaxHealth")] public uint maxHealth;
         // to NetworkVariable ??
@@ -12,6 +13,8 @@ namespace Ennemies {
         public float deathDuration;
         private SpriteRenderer _spriteRenderer; // to change color when hit
         private uint _colorAcc;
+        private static readonly int Death = Animator.StringToHash("Death");
+
         void Start()
         {
             _hp = maxHealth;
@@ -20,7 +23,7 @@ namespace Ennemies {
 
         public void TakeDamages(uint damage){
             if (damage >= _hp)
-                StartCoroutine(Die());
+                Die();
             else _hp -= damage;
             StartCoroutine(ChangeColorWait(new Color(1, 0.3f, 0.3f, 1), 0.5f)); // red with transparency
             // must add here some code to change the color for some frames: that way we will see when we make damages to an enemy/object
@@ -34,38 +37,73 @@ namespace Ennemies {
             StartCoroutine(ChangeColorWait(new Color(0.3f, 1, 0.3f, 1), 0.5f)); // green with transparency
         }
 
-        IEnumerator Die() {
+        void Die() {
             if (gameObject.TryGetComponent(out Collider2D collider2D))
                 collider2D.enabled = false;
             if (gameObject.TryGetComponent(out Animator animator)) {
-                animator.SetTrigger("Death");
+                animator.SetTrigger(Death);
                 // int deathDuration = animator.GetInteger("DeathDuration");
             }
-            yield return new WaitForSeconds(deathDuration);
-            DestroyGameObject();
+            SpawnCollectibles();
+            DestroyGameObj(deathDuration);
+            //Ennemies.CollectibleDrop.Activate(maxHealth,pos);
         }
     
         // sync every function from the die function
-        void DestroyGameObject()
-        {
-            Destroy(gameObject);
+        private void DestroyGameObj(float time = 0f) {
+            if (IsServer) {
+                DestroyServer(time);
+            }
+            else DestroyServerRpc(time);
         }
 
-        // UNTESTED, should change the color
+        private void DestroyServer(float time = 0f) {
+            Destroy(gameObject,time);
+        }
+
+        [ServerRpc]
+        private void DestroyServerRpc(float time = 0f) {
+            DestroyServer(time);
+        }
+
         IEnumerator ChangeColorWait(Color color, float time) {
             Color baseColor = _spriteRenderer.color;
-            ChangeColor(color);
+            ChangeColorClientRpc(color);
             _colorAcc += 1;
             yield return new WaitForSeconds(time);
             _colorAcc -= 1;
             if (_colorAcc == 0) {
-                ChangeColor(Color.white);
+                ChangeColorClientRpc(Color.white);
             }
-            else ChangeColor(baseColor);
+            else if (baseColor != Color.white) ChangeColorClientRpc(baseColor);
         }
         // to be synced over network
-        void ChangeColor(Color color) {
+        [ClientRpc]
+        void ChangeColorClientRpc(Color color) {
             _spriteRenderer.color = color;
         }
+
+        void SpawnCollectibles() {
+            if (IsServer) {
+                SpawnCollectiblesServer();
+            }
+            else SpawnCollectiblesServerRpc();
+        }
+
+        void SpawnCollectiblesServer() {
+            CollectibleDrop.Activate(maxHealth,gameObject.transform.position);
+            /*
+             List<GameObject> toSpawn = CollectibleDrop.SpawnList(maxHealth,gameObject.transform.position);
+            foreach (GameObject o in toSpawn) {
+                var instanciated = Instantiate(o);
+                instanciated.GetComponent<NetworkObject>().Spawn();
+            }*/
+        } 
+        
+        [ServerRpc(RequireOwnership = false)]
+        void SpawnCollectiblesServerRpc() {
+            SpawnCollectiblesServer();
+        }
+        
     }
 }

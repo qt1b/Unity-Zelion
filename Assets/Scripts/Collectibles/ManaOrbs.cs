@@ -4,14 +4,13 @@ using UnityEngine;
 namespace Collectibles {
     public class ManaOrbs : NetworkBehaviour
     {
-        [Header("Values")]
-        public uint HealValue;
+        private uint healValue = 4;
         // private Collider2D _collider2D;
         
         // destruction should be done over network
         private void OnTriggerEnter2D(Collider2D other) {
             if (other.gameObject.TryGetComponent(out Player.Player player)) {
-                player.HealMana(HealValue);
+                player.HealMana(healValue);
                 DestroyGameObj();
 
             }
@@ -20,7 +19,7 @@ namespace Collectibles {
             if (IsServer) {
                 DestroyServer(time);
             }
-            else DestroyServerRPC(time);
+            else DestroyServerRpc(time);
         }
 
         private void DestroyServer(float time = 0f) {
@@ -28,7 +27,7 @@ namespace Collectibles {
         }
 
         [ServerRpc]
-        private void DestroyServerRPC(float time = 0f) {
+        private void DestroyServerRpc(float time = 0f) {
             DestroyServer(time);
         }
 

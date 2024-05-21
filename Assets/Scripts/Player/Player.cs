@@ -3,6 +3,7 @@ using Bars;
 using Interfaces;
 using UI;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Weapons;
@@ -12,43 +13,62 @@ namespace Player {
         // this file will be SPLITED into more files ! into the Player folder
         // putting all the player variables and all useful methods for ennemies here
 
-        [Header("Speed")]
-        public float inititialSpeed = 7f;
-        public float currentSpeed;
+        /* The format of the lookup table
+         * 0 : X position (int)
+         * 1 : Y pos
+         * 2 : Life (max value, uint)
+         * 3 : Stamina
+         * 4 : Mana
+         * 5 : Sword is unlocked (bool, formatted as 0 for false, 1 for true)
+         * 6 : Bow
+         * 7 : Poison
+         * 8 : Dash
+         * 9 : Slowdown
+         * 10: TimeFreeze
+         */
+        // we will now list these variables here in the same order
+        // initial position is done by the teleport action
+        private bool _swordUnlocked;
+        private bool _bowUnlocked;
+        private bool _poisonUnlocked;
+        private bool _dashUnlocked;
+        private bool _slowdownUnlocked;
+        private bool _timeFreezeUnlocked;
+        
+        [FormerlySerializedAs("inititialSpeed")] [Header("Speed")]
+        public float initialSpeed = 7f;
+        [DoNotSerialize] public float currentSpeed;
         // would be better to get them by script
-        [FormerlySerializedAs("ArrowRef")] [Header("Projectiles")]
-        public GameObject arrowRef;
+        private GameObject _arrowRef;
         private GameObject _arrowPreviewRef;
-        [FormerlySerializedAs("PoisonBombRef")] public GameObject poisonBombRef;
-        [FormerlySerializedAs("PoisonZoneRef")] public GameObject poisonZoneRef;
+        private GameObject _poisonZoneRef;
         private GameObject _poisonZonePreviewRef;
 
-        Rigidbody2D _myRigidBody;
-        public Vector3 change = Vector3.zero;
-        public Vector3 notNullChange = new Vector3(0,1,0);
-
-
-
-
-        // variables controlling the attack system
-        // is our player already doing smthg
-        // public as we will make ennemies / etc that make the player enter this state
-        // capacities avalability
+        private Rigidbody2D _myRigidBody;
+        [DoNotSerialize] public Vector3 change = Vector3.zero;
+        [DoNotSerialize] public Vector3 notNullChange = new Vector3(0,1,0);
+        // capacities availability
         bool _canSwordAttack = true;
         bool _canDash = true;
         bool _canShootArrow = true;
         bool _canThrowPoisonBomb = true;
         bool _canSlowDownTime = true;
+        bool _canTimeFreeze = true;
+        // getters
+        private bool CanSwordAttack => _swordUnlocked && _canSwordAttack;
+        private bool CanDash => _dashUnlocked && _canDash;
+        private bool CanShootArrow => _bowUnlocked && _canShootArrow;
+        private bool CanPoison => _poisonUnlocked && _canThrowPoisonBomb;
+        private bool CanSlowDownTime => _slowdownUnlocked &&  _canSlowDownTime;
+        private bool CanTimeFreeze => _timeFreezeUnlocked && _canTimeFreeze;
 
         bool _isDashing;
-        // bool isWielding = false;
         bool _isAimingArrow;
         bool _isAimingBomb;
         private uint _colorAcc; // color accumulator, to know the number of instances started
         private uint _slowdownAcc; // same with slowdown
-        // time control, to enable time effects
-        // bc some bosses will slow down our controls, so this var has to be public
-
+        private uint _timeFreezeAcc;
+        
         // cooldown timers
         // the const property can be removed if we want to modify that stuff with the player's progression
         // BETTER : may be removed if not needed
@@ -76,8 +96,8 @@ namespace Player {
         // display variables
         Animator _animator;
         GameObject _swordHitzone;
-        Collider2D _swordHitzoneCollider;
-        Animator _swordHitzoneAnimator;
+        // Collider2D _swordHitzoneCollider;
+        // Animator _swordHitzoneAnimator;
         [FormerlySerializedAs("Camera")] public new Camera camera;
 
         private HealthBar _healthBar;
@@ -108,14 +128,16 @@ namespace Player {
         }
         void Start()
         {
-            currentSpeed = inititialSpeed * TimeVariables.PlayerSpeed.Value;
+            currentSpeed = initialSpeed * TimeVariables.PlayerSpeed.Value;
             _animator = GetComponent<Animator>();
             _myRigidBody = GetComponent<Rigidbody2D>();
             _animator.speed = TimeVariables.PlayerSpeed.Value;
             _swordHitzone = transform.GetChild(0).gameObject;
-            _swordHitzoneCollider = _swordHitzone.GetComponent<Collider2D>();
-            _swordHitzoneAnimator = _swordHitzone.GetComponent<Animator>();
+            //_swordHitzoneCollider = _swordHitzone.GetComponent<Collider2D>();
+            //_swordHitzoneAnimator = _swordHitzone.GetComponent<Animator>();
             _swordHitzone.SetActive(false);
+            _arrowRef = Resources.Load<GameObject>("Prefabs/Projectiles/Arrow");
+            _poisonZoneRef = Resources.Load<GameObject>("Prefabs/Projectiles/PoisonZone");
             _arrowPreviewRef = transform.GetChild(1).gameObject;
             _poisonZonePreviewRef = transform.GetChild(2).gameObject;
             _healthBar = FindObjectOfType<HealthBar>();
@@ -123,7 +145,41 @@ namespace Player {
             _manaBar = FindObjectOfType<ManaBar>();
             // 'color' effects
             _renderer = gameObject.GetComponent<Renderer>();
+            // initial values, if no save
+            // does not work ??
+            _healthBar.ChangeMaxValue(10);
+            _staminaBar.ChangeMaxValue(14);
+            _manaBar.ChangeMaxValue(14);
+
             // _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+            /*
+            // Reads from the save Id common to all instances
+            var lookupTable = File.ReadLines(SaveData.SaveLookupPath).Skip(1).ToArray();
+            if (lookupTable.Length >= SaveData.SaveId.Value) {
+                string[] args = lookupTable[SaveData.SaveId.Value].Split(';');
+                if (args.Length != 11) throw new ArgumentException("the save lookup table is not formatted as expected");
+                else {
+                    Actions.Teleport.Activate(gameObject, camera, new Vector3(int.Parse(args[0]), int.Parse(args[1])));
+                    _healthBar.ChangeMaxValue(uint.Parse(args[2]));
+                    _staminaBar.ChangeMaxValue(uint.Parse(args[3]));
+                    _manaBar.ChangeMaxValue(uint.Parse(args[4]));
+                    _swordUnlocked = args[5] == "1";
+                    _bowUnlocked = args[6] == "1";
+                    _poisonUnlocked = args[7] == "1";
+                    _dashUnlocked = args[8] == "1";
+                    _slowdownUnlocked = args[9] == "1";
+                    _timeFreezeUnlocked = args[10] == "1";
+                    print("read successfully ?");
+                }
+            }
+            else throw new NotImplementedException("unsupported save");
+            */
+            _swordUnlocked = true;
+            _bowUnlocked = true;
+            _poisonUnlocked = true;
+            _dashUnlocked = true;
+            _slowdownUnlocked = true;
+            _timeFreezeUnlocked = true;
         }
 
         // Update is called once per frame
@@ -146,7 +202,7 @@ namespace Player {
                     if(Input.GetKeyUp(KeyCode.Mouse0)){
                         if ( _canShootArrow && _staminaBar.TryTakeDamages(2) ) StartCoroutine(ShootArrow());
                         _isAimingArrow = false;
-                        currentSpeed = inititialSpeed * TimeVariables.PlayerSpeed.Value;
+                        currentSpeed = initialSpeed * TimeVariables.PlayerSpeed.Value;
                         _arrowPreviewRef.SetActive(false);
                         _animator.SetBool(AimingBow,false);
                     }
@@ -157,21 +213,22 @@ namespace Player {
                     if (Input.GetKeyUp(KeyCode.Mouse1) ) {
                         if ( _canThrowPoisonBomb && _manaBar.TryTakeDamages(10) ) StartCoroutine(ThrowPoisonBomb());
                         _isAimingBomb = false;
-                        currentSpeed = inititialSpeed * TimeVariables.PlayerSpeed.Value;
+                        currentSpeed = initialSpeed * TimeVariables.PlayerSpeed.Value;
                         _animator.SetBool(AimingBomb,false);
                         _poisonZonePreviewRef.SetActive(false);
                     }
                 }
                 else {
                     // no cost in stamina for the sword
-                    if (_canSwordAttack && Input.GetKeyDown(KeyCode.Space)) {
+                    if (CanSwordAttack && Input.GetKeyDown(KeyCode.Space)) {
                         StartCoroutine(SwordAttack());
                     } 
-                    else if(_canDash && Input.GetKeyDown(KeyCode.LeftShift) && _staminaBar.TryTakeDamages(10)){
+                    else if(CanDash && Input.GetKeyDown(KeyCode.LeftShift) && _staminaBar.TryTakeDamages(10)){
                         StartCoroutine(Dash());
                     }
-                    else if (Input.GetKeyDown(KeyCode.Mouse0)) {
+                    else if (_bowUnlocked && Input.GetKeyDown(KeyCode.Mouse0)) {
                         _animator.SetBool(AimingBow,true);
+                        // bow aiming audio effect
                         _isAimingArrow = true;
                         currentSpeed = TimeVariables.PlayerSpeed.Value * _attackSpeedNerf;
                         if ( _canShootArrow ) _arrowPreviewRef.SetActive(true);
@@ -179,31 +236,34 @@ namespace Player {
                         PlacePreviewArrow();
                         // ArrowPreviewRef.transform.position = transform.position;
                     }
-                    else if (Input.GetKeyDown(KeyCode.Mouse1)) {
+                    // poison zone: audio from the prefab
+                    else if (_poisonUnlocked && Input.GetKeyDown(KeyCode.Mouse1)) {
                         _animator.SetBool(AimingBomb,true);
+                        // poison aiming audio effect
                         _isAimingBomb = true;
                         currentSpeed = TimeVariables.PlayerSpeed.Value * _attackSpeedNerf;
                         if ( _canThrowPoisonBomb ) _poisonZonePreviewRef.SetActive(true);
                         PlacePreviewZone();
                     }
-                    else if (Input.GetKeyDown(KeyCode.LeftControl)) {
-                        if (_canSlowDownTime && _manaBar.TryTakeDamages(5)) {
-                            StartCoroutine(SlowDownTimeFor(4f));
-                        }
+                    else if (CanSlowDownTime && Input.GetKeyDown(KeyCode.LeftControl) && _manaBar.TryTakeDamages(5)) {
+                        // slow down audio effect
+                        StartCoroutine(SlowDownTimeFor(4f));
+                    }
                         // else some visual and/or audio feedback telling us that we can
+                    else if (CanTimeFreeze && Input.GetKeyDown(KeyCode.V) && _manaBar.TryTakeDamages(14)) {
+                        // time freeze audio effect
+                        print("time freeze");
                     }
                 }
             }
-            /* if (isWielding) {
-            _swordHitzoneCollider.enabled = false;
-            isWielding = false;
-        } */
             UpdateAnimationAndMove();
         }
 
+        // they may overlap
         IEnumerator SlowDownTimeFor(float duration) {
-            // will be ennemy speed, using player speed to test the property
+            // will be enemy speed, using player speed to test the property
             // like color
+            // float oldVal = TimeVariables.PlayerSpeed.Value;
             TimeVariables.PlayerSpeed.Value = 0.5f;
             _animator.speed = TimeVariables.PlayerSpeed.Value; // to remove if only slowing down ennemies
             _slowdownAcc += 1;
@@ -212,6 +272,16 @@ namespace Player {
             if (_slowdownAcc == 0) {
                 TimeVariables.PlayerSpeed.Value = 1;
                 _animator.speed = 1;
+            }
+        }
+
+        IEnumerator TimeFreezeFor(float duration) {
+            _timeFreezeAcc += 1;
+            TimeVariables.PlayerSpeed.Value = 0f;
+            yield return new WaitForSeconds(duration);
+            _timeFreezeAcc -= 1;
+            if (_timeFreezeAcc == 0) {
+                TimeVariables.PlayerSpeed.Value = 1;
             }
         }
 
@@ -288,7 +358,7 @@ namespace Player {
             // isWielding = true;
             yield return new WaitForSeconds( SwordTime / TimeVariables.PlayerSpeed.Value );
             _swordHitzone.SetActive(false);
-            currentSpeed = inititialSpeed * TimeVariables.PlayerSpeed.Value ;
+            currentSpeed = initialSpeed * TimeVariables.PlayerSpeed.Value ;
             yield return new WaitForSeconds( SwordAttackCooldown / TimeVariables.PlayerSpeed.Value );
             _canSwordAttack = true;
         }
@@ -309,7 +379,7 @@ namespace Player {
             Vector3 pos = mousePos;
             float teta = Mathf.Atan( pos.y / pos.x ) * 180 / Mathf.PI - (pos.x > 0 ? 90 : -90);
             Quaternion rot = Quaternion.Euler(0f,0f,teta);
-            var obj = Instantiate(arrowRef, transform.position + pos, rot);
+            var obj = Instantiate(_arrowRef, transform.position + pos, rot);
             obj.GetComponent<Projectile>().SetVelocity(pos, TimeVariables.PlayerSpeed.Value);
             obj.GetComponent<NetworkObject>().Spawn(true);
         }
@@ -334,7 +404,7 @@ namespace Player {
             if (Vector3.Distance(pos, Vector3.zero) > _maxBombDist) {
                 pos = _maxBombDist * pos.normalized;
             }
-            /*GameObject pZone =*/ Instantiate(poisonZoneRef, new Vector3(position.x + pos.x, position.y + pos.y,0f) , new Quaternion() );
+            /*GameObject pZone =*/ Instantiate(_poisonZoneRef, new Vector3(position.x + pos.x, position.y + pos.y,0f) , new Quaternion() );
             yield return new WaitForSeconds( _poisonBombCooldown / TimeVariables.PlayerSpeed.Value  );
             _canThrowPoisonBomb = true;
         }
@@ -347,7 +417,7 @@ namespace Player {
                 currentSpeed *= _dashPower;
                 StartCoroutine(ChangeColorWait(new Color(1, 1, 0.3f, 0.8f), 0.2f)); // yellow
                 yield return new WaitForSeconds( _dashTime / TimeVariables.PlayerSpeed.Value  );
-                currentSpeed = inititialSpeed * TimeVariables.PlayerSpeed.Value ;
+                currentSpeed = initialSpeed * TimeVariables.PlayerSpeed.Value ;
                 _isDashing = false;
                 yield return new WaitForSeconds( _dashCooldown / TimeVariables.PlayerSpeed.Value  );
                 _canDash = true;
@@ -356,10 +426,13 @@ namespace Player {
     
         // ADD SOUNDS HERE
         public void TakeDamages(uint damage) {
-            _healthBar.TakeDamages(damage);
-            StartCoroutine(ChangeColorWait(new Color(1f, 0.3f, 0.3f, 0.8f), 0.2f));
+            if (_healthBar.TryTakeDamages(damage)) {
+                StartCoroutine(ChangeColorWait(new Color(1f, 0.3f, 0.3f, 0.8f), 0.2f));
+            }
+            else GameOver();
         }
 
+        // healing collectibles are not healing and idk why
         public void Heal(uint heal) {
             _healthBar.Heal(heal);
             StartCoroutine(ChangeColorWait(new Color(0.3f, 1f, 0.3f, 0.8f), 0.2f));
@@ -384,19 +457,25 @@ namespace Player {
             StartCoroutine(ChangeColorWait(new Color(0.3f, 1f, 0.3f, 0.8f), 0.2f));
         }
 
+        public void GameOver() {
+            print("gameover");
+        }
+
         IEnumerator ChangeColorWait(Color color, float time) {
             Color baseColor = _renderer.material.color;
             _colorAcc += 1;
-            ChangeColor(color);
+            ChangeColorClientRpc(color);
             yield return new WaitForSeconds(time);
             _colorAcc -= 1;
             if (_colorAcc == 0) {
-                ChangeColor(Color.white);
+                ChangeColorClientRpc(Color.white);
             }
-            else ChangeColor(baseColor);
+            else if (baseColor != Color.white) ChangeColorClientRpc(baseColor);
         }
+
         // to be synced over network
-        void ChangeColor(Color color) {
+        [ClientRpc]
+        void ChangeColorClientRpc(Color color) {
             // cannot manage to make it an effect on top of the sprite
             _renderer.material.SetColor(Color1,color);
         }

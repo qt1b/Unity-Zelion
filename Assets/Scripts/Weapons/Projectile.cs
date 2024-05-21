@@ -14,7 +14,7 @@ namespace Weapons {
         void Awake() {
             _myRigidBody = GetComponent<Rigidbody2D>();
             // some arrows are not destroying ???
-            DestroyAfterSecs(4f);
+            DestroyGameObj(4f);
             /*
          if (IsServer) {
             myRigidBody.Sleep();
@@ -29,27 +29,38 @@ namespace Weapons {
             _myRigidBody.velocity = Direction * (speed * 0.2f * ControlSpeed);
         }
 
+        
         void OnTriggerEnter2D(Collider2D other) {
-            if (!other.isTrigger && other.gameObject.TryGetComponent(out IHealth health))
+            if (other.gameObject.TryGetComponent(out IHealth health)) {
                 health.TakeDamages(damage);
+            }
             _myRigidBody.velocity = Vector3.zero;
-            DestroyAfterSecs(.2f);
+            DestroyGameObj(.2f);
         }
 
-        void DestroyAfterSecs(float secs) {
-            if (IsServer) 
-                DestrowAfterSecsServer(secs);
-            else
-                DestroyAfterSecsServerRPC(secs);
+        // does not really work, is it bc it needs a rigidbody ?
+        private void OnCollisionEnter2D(Collision2D other) {
+            print("Collision Enter 2D!!");
+            if (other.gameObject.TryGetComponent(out IHealth health))
+                health.TakeDamages(damage);
+            _myRigidBody.velocity = Vector3.zero;
+            DestroyGameObj(.2f);
         }
-    
-        void DestrowAfterSecsServer(float secs) {
-            Destroy(gameObject, secs);
+
+        private void DestroyGameObj(float time = 0f) {
+            if (IsServer) {
+                DestroyServer(time);
+            }
+            else DestroyServerRPC(time);
+        }
+
+        private void DestroyServer(float time = 0f) {
+            Destroy(gameObject,time);
         }
 
         [ServerRpc]
-        void DestroyAfterSecsServerRPC(float secs) {
-            DestrowAfterSecsServer(secs);
+        private void DestroyServerRPC(float time = 0f) {
+            DestroyServer(time);
         }
     }
 }
