@@ -5,8 +5,7 @@ using UnityEngine.Serialization;
 namespace Collectibles {
     public class ManaOrbs : NetworkBehaviour
     {
-        [Header("Values")]
-        public uint healValue;
+        private uint healValue = 4;
         // private Collider2D _collider2D;
         
         // destruction should be done over network

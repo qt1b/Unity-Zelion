@@ -7,8 +7,7 @@ using UnityEngine.Serialization;
 namespace Collectibles {
     public class StaminaOrbs : NetworkBehaviour
     {
-        [Header("Values")]
-        public uint healValue;
+        private uint healValue = 4;
         // private Collider2D _collider2D;
         private void OnTriggerEnter2D(Collider2D other) {
             if (other.gameObject.TryGetComponent(out Player.Player player)) {

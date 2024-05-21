@@ -68,6 +68,7 @@ namespace Bars {
             else _curValue -= damages;
         }
 
+        // tofix ??
         public void Heal(uint heal) {
             _hasChanged = true;
             if (heal + _curValue > MaxValue)

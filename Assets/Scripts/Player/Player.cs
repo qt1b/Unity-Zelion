@@ -151,10 +151,9 @@ namespace Player {
             
             // initial values, if no save
             // does not work ??
-            _healthBar.ChangeMaxValue(6);
-            _staminaBar.ChangeMaxValue(6);
-            _manaBar.ChangeMaxValue(6);
-
+            _healthBar.ChangeMaxValue(10);
+            _staminaBar.ChangeMaxValue(14);
+            _manaBar.ChangeMaxValue(14);
 
             // _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
             /*
@@ -179,6 +178,12 @@ namespace Player {
             }
             else throw new NotImplementedException("unsupported save");
             */
+            _swordUnlocked = true;
+            _bowUnlocked = true;
+            _poisonUnlocked = true;
+            _dashUnlocked = true;
+            _slowdownUnlocked = true;
+            _timeFreezeUnlocked = true;
         }
 
         // Update is called once per frame
@@ -241,16 +246,12 @@ namespace Player {
                         if ( _canThrowPoisonBomb ) _poisonZonePreviewRef.SetActive(true);
                         PlacePreviewZone();
                     }
-                    else if (_slowdownUnlocked && Input.GetKeyDown(KeyCode.LeftControl)) {
-                        if (_canSlowDownTime && _manaBar.TryTakeDamages(5)) {
-                            StartCoroutine(SlowDownTimeFor(4f));
-                        }
-                        // else some visual and/or audio feedback telling us that we can
+                    else if (CanSlowDownTime && Input.GetKeyDown(KeyCode.LeftControl) && _manaBar.TryTakeDamages(5)) {
+                        StartCoroutine(SlowDownTimeFor(4f));
                     }
-                    else if (_timeFreezeUnlocked && Input.GetKeyDown(KeyCode.V)) {
-                        if (_canTimeFreeze && _manaBar.TryTakeDamages(14)) {
-                            print("time freeze");
-                        }
+                        // else some visual and/or audio feedback telling us that we can
+                    else if (CanTimeFreeze && Input.GetKeyDown(KeyCode.V) && _manaBar.TryTakeDamages(14)) {
+                        print("time freeze");
                     }
                 }
             }
@@ -263,7 +264,7 @@ namespace Player {
 
         // they may overlap
         IEnumerator SlowDownTimeFor(float duration) {
-            // will be ennemy speed, using player speed to test the property
+            // will be enemy speed, using player speed to test the property
             // like color
             // float oldVal = TimeVariables.PlayerSpeed.Value;
             TimeVariables.PlayerSpeed.Value = 0.5f;
