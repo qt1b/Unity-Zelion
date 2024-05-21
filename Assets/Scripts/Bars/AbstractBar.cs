@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using Interfaces;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,11 +16,8 @@ namespace Bars {
         private bool _hasChanged;
         protected uint MaxValue;
         private uint _curValue;
-
-        // may be what causes unity to crash ??? but why ??
-        /* public AbstractBar(uint maxvalue) {
-            maxValue = maxValue;
-        } */
+        protected float RestoreDelay;
+        private bool _gain = true;
 
         public void Start() {
             MaxValue = (uint)slider.maxValue;
@@ -32,6 +31,8 @@ namespace Bars {
             /* if(curValue < 0) { // not needed anymore
                 curValue = 0;
             } */
+            if (RestoreDelay > 0 && _gain && !IsMax) StartCoroutine(Gain());
+            
             if (_hasChanged) {
                 slider.value = _curValue;
                 _hasChanged = false;
@@ -84,5 +85,12 @@ namespace Bars {
         }
 
         public bool IsMax => _curValue == MaxValue;
+
+        IEnumerator Gain() {
+            Heal(1);
+            _gain = false;
+            yield return new WaitForSeconds(RestoreDelay);
+            _gain = true;
+        }
     }
 }

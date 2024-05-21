@@ -11,7 +11,6 @@ namespace Ennemies {
         [FormerlySerializedAs("ArrowRef")] public List<GameObject> arrowRef;
         [FormerlySerializedAs("ArrowSpeed")] public float arrowSpeed;
         public float startDistance;
-    
         // Arrows do not despawn when the ennemy shoots them : WHY ???
         // Start is called before the first frame update
         public void Shoot(int arrowIndex, Vector3 initialPos, Vector3 direction) {
@@ -22,9 +21,7 @@ namespace Ennemies {
         }
 
         [ServerRpc]
-        void ShootServerRpc(int arrowIndex, Vector3 initialPos, Vector3 direction) =>
-            ShootServer(arrowIndex, initialPos, direction);
-    
+        void ShootServerRpc(int arrowIndex, Vector3 initialPos, Vector3 direction) => ShootServer(arrowIndex, initialPos, direction);
         void ShootServer(int arrowIndex, Vector3 initialPos, Vector3 direction)
         {
             var rot = Quaternion.Euler(0f, 0f, 
@@ -34,7 +31,5 @@ namespace Ennemies {
             projectile.SetVelocity(-direction, 1);
             projectile.speed = arrowSpeed;
         }
-    
-    
     }
 }

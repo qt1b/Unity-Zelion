@@ -426,8 +426,10 @@ namespace Player {
     
         // ADD SOUNDS HERE
         public void TakeDamages(uint damage) {
-            _healthBar.TakeDamages(damage);
-            StartCoroutine(ChangeColorWait(new Color(1f, 0.3f, 0.3f, 0.8f), 0.2f));
+            if (_healthBar.TryTakeDamages(damage)) {
+                StartCoroutine(ChangeColorWait(new Color(1f, 0.3f, 0.3f, 0.8f), 0.2f));
+            }
+            else GameOver();
         }
 
         // healing collectibles are not healing and idk why
@@ -455,6 +457,10 @@ namespace Player {
             StartCoroutine(ChangeColorWait(new Color(0.3f, 1f, 0.3f, 0.8f), 0.2f));
         }
 
+        public void GameOver() {
+            print("gameover");
+        }
+
         IEnumerator ChangeColorWait(Color color, float time) {
             Color baseColor = _renderer.material.color;
             _colorAcc += 1;
@@ -466,7 +472,7 @@ namespace Player {
             }
             else if (baseColor != Color.white) ChangeColorClientRpc(baseColor);
         }
-        
+
         // to be synced over network
         [ClientRpc]
         void ChangeColorClientRpc(Color color) {

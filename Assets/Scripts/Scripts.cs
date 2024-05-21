@@ -19,6 +19,7 @@ public class TimeVariables : NetworkBehaviour {
 	// to sync over network with NetworkVariable
     public static NetworkVariable<float> PlayerSpeed = new NetworkVariable<float>(1);
     public static NetworkVariable<float> EnnemySpeed = new NetworkVariable<float>(1);
+    public static NetworkVariable<List<Player.Player>> PlayerList = new NetworkVariable<List<Player.Player>>(new());
 }
 
 public class SaveData : NetworkBehaviour {
