@@ -3,10 +3,9 @@ using System.Collections;
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
-using Photon.Pun;
 using Photon;
-using Player = Photon.Realtime.Player;
+using Photon.PhotonUnityNetworking.Code;
+using Player = Photon.PhotonRealtime.Code.Player;
 
 namespace PUN {
 	public class GameManager : MonoBehaviourPunCallbacks {
@@ -53,7 +52,7 @@ namespace PUN {
 			SceneManager.LoadScene(0);
 		}
 		
-		public override void OnPlayerEnteredRoom(Photon.Realtime.Player other)
+		public override void OnPlayerEnteredRoom(Photon.PhotonRealtime.Code.Player other)
 		{
 			Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
 
@@ -65,7 +64,7 @@ namespace PUN {
 			}
 		}
 
-		public override void OnPlayerLeftRoom(Photon.Realtime.Player other)
+		public override void OnPlayerLeftRoom(Photon.PhotonRealtime.Code.Player other)
 		{
 			Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName); // seen when other disconnects
 

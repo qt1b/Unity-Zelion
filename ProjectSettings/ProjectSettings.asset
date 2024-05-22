@@ -444,8 +444,8 @@ PlayerSettings:
   switchSupportedLanguagesMask: 0
   switchLogoType: 0
   switchApplicationErrorCodeCategory: 
-  switchUserAccountSaveDataSize: 0
-  switchUserAccountSaveDataJournalSize: 0
+  switchUserAccountGlobalVarsSize: 0
+  switchUserAccountGlobalVarsJournalSize: 0
   switchApplicationAttribute: 0
   switchCardSpecSize: -1
   switchCardSpecClock: -1
@@ -519,7 +519,7 @@ PlayerSettings:
   ps4StartupImagePath: 
   ps4StartupImagesFolder: 
   ps4IconImagesFolder: 
-  ps4SaveDataImagePath: 
+  ps4GlobalVarsImagePath: 
   ps4SdkOverride: 
   ps4BGMPath: 
   ps4ShareFilePath: 

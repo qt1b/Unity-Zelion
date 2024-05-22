@@ -9,17 +9,16 @@
 // ----------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using ExitGames.Client.Photon;
+using Photon.PhotonRealtime.Code;
+using UnityEngine;
+using UnityEngine.Profiling;
 
-namespace Photon.Pun
+namespace Photon.PhotonUnityNetworking.Code
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using ExitGames.Client.Photon;
-    using Photon.Realtime;
-    using UnityEngine;
-    using UnityEngine.Profiling;
-
     using Debug = UnityEngine.Debug;
 
     /// <summary>

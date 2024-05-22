@@ -1,20 +1,25 @@
+using System;
+using System.IO;
+using Global;
 using Interfaces;
+using Photon.PhotonUnityNetworking.Code;
 using Unity.Netcode;
 using UnityEngine;
+using File = UnityEngine.Windows.File;
 
 namespace Actions {
-	public class WriteSave: MonoBehaviour {
+	public class WriteSave: MonoBehaviourPunCallbacks {
 		public byte SaveID;
 
 		public void Activate() {
-			TimeVariables.PlayerList.ForEach(p=>p.saveID = SaveID);
-			// how to activate this locally on each client ?
-			//ActivateClientRpc();
+			Global.GlobalVars.SaveId = SaveID;
+			if (PhotonNetwork.IsMasterClient) {
+				WriteFile();
+			}
+			else photonView.RPC("WriteFile",RpcTarget.MasterClient);
 		}
 
-		/*[ClientRpc]
-		private void ActivateClientRpc() {
-			Global.SaveManager.Save(SaveID);
-		} */
+		[PunRPC]
+		private void WriteFile() => System.IO.File.OpenWrite(Global.GlobalVars.SavePath).WriteByte(SaveID);
 	}
 }

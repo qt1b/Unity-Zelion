@@ -1,9 +1,9 @@
-namespace PUN {
+using Photon.PhotonRealtime.Code;
+using Photon.PhotonUnityNetworking.Code;
 using UnityEngine;
-using Photon.Pun;
-using Photon.Realtime;
 
-namespace PUN
+namespace PUN {
+    namespace PUN
 {
     public class Launcher : MonoBehaviourPunCallbacks
     {
@@ -87,6 +87,11 @@ namespace PUN
                 isConnecting = PhotonNetwork.ConnectUsingSettings();
                 PhotonNetwork.GameVersion = gameVersion;
             }
+        }
+
+        public void ContinueToTrue() {
+            // will be used to load or not the read value
+            Global.GlobalVars.Continue = true;
         }
         public void StartSinglePlayer() {
             PhotonNetwork.OfflineMode = true;

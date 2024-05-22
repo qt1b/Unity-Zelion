@@ -9,17 +9,16 @@
 // ----------------------------------------------------------------------------
 
 
+using System.Text;
+
 #if UNITY_4_7 || UNITY_5 || UNITY_5_3_OR_NEWER
 #define SUPPORTED_UNITY
 #endif
 
 
 
-namespace Photon.Realtime
+namespace Photon.PhotonRealtime.Code
 {
-    using System.Text;
-
-
     /// <summary>
     /// The SystemConnectionSummary (SBS) is useful to analyze low level connection issues in Unity. This requires a ConnectionHandler in the scene.
     /// </summary>

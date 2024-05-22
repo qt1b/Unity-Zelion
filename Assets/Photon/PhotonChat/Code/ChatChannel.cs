@@ -4,21 +4,15 @@
 // <copyright company="Exit Games GmbH">Photon Chat Api - Copyright (C) 2014 Exit Games GmbH</copyright>
 // ----------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Text;
+
 #if UNITY_4_7 || UNITY_5 || UNITY_5_3_OR_NEWER
 #define SUPPORTED_UNITY
 #endif
 
-namespace Photon.Chat
+namespace Photon.PhotonChat.Code
 {
-    using System.Collections.Generic;
-    using System.Text;
-
-    #if SUPPORTED_UNITY || NETFX_CORE
-    using Hashtable = ExitGames.Client.Photon.Hashtable;
-    using SupportClass = ExitGames.Client.Photon.SupportClass;
-    #endif
-
-
     /// <summary>
     /// A channel of communication in Photon Chat, updated by ChatClient and provided as READ ONLY.
     /// </summary>

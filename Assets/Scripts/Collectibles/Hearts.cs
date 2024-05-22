@@ -1,4 +1,4 @@
-using Photon.Pun;
+using Photon.PhotonUnityNetworking.Code;
 using UnityEngine;
 
 namespace Collectibles {

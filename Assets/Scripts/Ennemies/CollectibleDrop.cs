@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Photon.Pun;
+using Photon.PhotonUnityNetworking.Code;
 using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -12,10 +12,10 @@ namespace Ennemies {
             "StaminaOrb"
         };
 
-        // for every 40hp of every ennemy, we get an orb
+        // for every 16hp of every enemy, we get an orb
         // could be a little more smooth if elements were to go progressively to their place
         public static void Activate(uint value,Vector3 position) {
-            // uint nbr = value / 40; // what we will use
+            // uint nbr = value / 16; // what we will use
             uint nbr = value;
             for (int i = 0; i < nbr; i++) {
                 PhotonNetwork.Instantiate("Prefabs/Collectibles/"+_collectibles[Random.Range(1,3)] ,

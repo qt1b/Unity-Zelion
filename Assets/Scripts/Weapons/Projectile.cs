@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using Interfaces;
-using Photon.Pun;
+using Photon.PhotonUnityNetworking.Code;
 using Unity.Netcode;
 using UnityEngine;
 

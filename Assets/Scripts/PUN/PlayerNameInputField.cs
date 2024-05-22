@@ -1,10 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
-
-using Photon.Pun;
-using Photon.Realtime;
-
 using System.Collections;
+using Photon.PhotonUnityNetworking.Code;
 
 namespace PUN {
 	/// <summary>

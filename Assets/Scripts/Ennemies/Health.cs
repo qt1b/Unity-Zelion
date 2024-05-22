@@ -1,7 +1,8 @@
 using System;
 using System.Collections;
 using Interfaces;
-using Photon.Pun;
+using Photon.PhotonUnityNetworking.Code;
+using Photon.PhotonUnityNetworking.Code.Interfaces;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -27,7 +28,7 @@ namespace Ennemies {
             _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         }
         
-         void Photon.Pun.IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+         void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
             if (stream.IsWriting)
             {

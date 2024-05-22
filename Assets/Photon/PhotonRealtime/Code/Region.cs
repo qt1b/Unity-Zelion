@@ -13,16 +13,8 @@
 #endif
 
 
-namespace Photon.Realtime
+namespace Photon.PhotonRealtime.Code
 {
-    using ExitGames.Client.Photon;
-
-    #if SUPPORTED_UNITY || NETFX_CORE
-    using Hashtable = ExitGames.Client.Photon.Hashtable;
-    using SupportClass = ExitGames.Client.Photon.SupportClass;
-    #endif
-
-
     public class Region
     {
         public string Code { get; private set; }

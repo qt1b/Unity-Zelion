@@ -1,7 +1,8 @@
 ﻿using System;
 using UnityEditor;
 using UnityEngine;
-namespace ParrelSync.Update
+
+namespace Editor
 {
     /// <summary>
     /// A simple update checker

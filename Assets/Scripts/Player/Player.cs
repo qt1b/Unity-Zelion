@@ -3,8 +3,9 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using Bars;
+using Global;
 using Interfaces;
-using Photon.Pun;
+using Photon.PhotonUnityNetworking.Code;
 using UI;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -140,7 +141,7 @@ namespace Player {
  */
         public void LoadSave() {
             // Reads from the save Id common to all instances
-            var lookupTable = File.ReadLines(SaveData.SaveLookupPath).Skip(1).ToArray();
+            var lookupTable = File.ReadLines(GlobalVars.SaveLookupPath).Skip(1).ToArray();
             if (lookupTable.Length > saveID) {
                 string[] args = lookupTable[saveID].Split(';');
                 if (args.Length != 11) throw new ArgumentException("the save lookup table is not formatted as expected");
@@ -179,7 +180,7 @@ namespace Player {
             speedModifier = 1;
             _animator = GetComponent<Animator>();
             _myRigidBody = GetComponent<Rigidbody2D>();
-            _animator.speed = TimeVariables.PlayerSpeed;
+            _animator.speed = GlobalVars.PlayerSpeed;
             _swordHitzone = transform.GetChild(0).gameObject;
             //_swordHitzoneCollider = _swordHitzone.GetComponent<Collider2D>();
             //_swordHitzoneAnimator = _swordHitzone.GetComponent<Animator>();
@@ -194,7 +195,7 @@ namespace Player {
             // 'color' effects
             _renderer = gameObject.GetComponent<Renderer>();
             // _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-            if (TimeVariables.PlayerList.Count == 0) {
+            if (GlobalVars.PlayerList.Count == 0) {
                 // find if save exists, if it does loads it
                 if (File.Exists("zelion.sav") && File.OpenRead("zelion.sav").ReadByte() is not -1 and/*is*/ {} readByte) {
                     saveID = (byte)readByte;
@@ -202,13 +203,13 @@ namespace Player {
                 // else saveID = 0;
             }
             else {
-                saveID = TimeVariables.PlayerList.First().saveID;
+                saveID = GlobalVars.PlayerList.First().saveID;
                 // OVERWRITES THE LAST SAVE !
             }
 
             saveID = 1;
             LoadSave();
-            TimeVariables.PlayerList.Add(this);
+            GlobalVars.PlayerList.Add(this);
         }
         
         /// <summary>
@@ -357,25 +358,25 @@ namespace Player {
         IEnumerator SlowDownTimeFor(float duration) {
             // will be enemy speed, using player speed to test the property
             // like color
-            // float oldVal = TimeVariables.PlayerSpeed.Value;
-            TimeVariables.PlayerSpeed = 0.5f;
-            _animator.speed = TimeVariables.PlayerSpeed; // to remove if only slowing down ennemies
+            // float oldVal = GlobalVars.PlayerSpeed.Value;
+            GlobalVars.PlayerSpeed = 0.5f;
+            _animator.speed = GlobalVars.PlayerSpeed; // to remove if only slowing down ennemies
             _slowdownAcc += 1;
             yield return new WaitForSeconds(duration);
             _slowdownAcc -= 1;
             if (_slowdownAcc == 0) {
-                TimeVariables.PlayerSpeed = 1;
+                GlobalVars.PlayerSpeed = 1;
                 _animator.speed = 1;
             }
         }
 
         IEnumerator TimeFreezeFor(float duration) {
             _timeFreezeAcc += 1;
-            TimeVariables.PlayerSpeed = 0f;
+            GlobalVars.PlayerSpeed = 0f;
             yield return new WaitForSeconds(duration);
             _timeFreezeAcc -= 1;
             if (_timeFreezeAcc == 0) {
-                TimeVariables.PlayerSpeed = 1;
+                GlobalVars.PlayerSpeed = 1;
             }
         }
 
@@ -423,7 +424,7 @@ namespace Player {
         void UpdateAnimationAndMove() {
             if (change != Vector2.zero) {
                 // 0.2 f ?
-                _myRigidBody.velocity = (change * (0.2f * initialSpeed * speedModifier * TimeVariables.PlayerSpeed));
+                _myRigidBody.velocity = (change * (0.2f * initialSpeed * speedModifier * GlobalVars.PlayerSpeed));
                 _animator.SetFloat(MoveX, change.x);
                 _animator.SetFloat(MoveY, change.y);
                 _animator.SetBool(IsMoving,true);
@@ -435,8 +436,8 @@ namespace Player {
         }
 
         public void ChangePlayerControlSpeed(float newSpeedControl) {
-            // TimeVariables.PlayerSpeed.Value  = newSpeedControl;
-            _animator.speed = TimeVariables.PlayerSpeed;
+            // GlobalVars.PlayerSpeed.Value  = newSpeedControl;
+            _animator.speed = GlobalVars.PlayerSpeed;
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
@@ -451,10 +452,10 @@ namespace Player {
             // _swordHitzoneCollider.enabled = true;
             speedModifier = _attackSpeedNerf;
             // isWielding = true;
-            yield return new WaitForSeconds( SwordTime / TimeVariables.PlayerSpeed );
+            yield return new WaitForSeconds( SwordTime / GlobalVars.PlayerSpeed );
             _swordHitzone.SetActive(false);
             speedModifier = 1 ;
-            yield return new WaitForSeconds( SwordAttackCooldown / TimeVariables.PlayerSpeed );
+            yield return new WaitForSeconds( SwordAttackCooldown / GlobalVars.PlayerSpeed );
             _canSwordAttack = true;
         }
 
@@ -465,7 +466,7 @@ namespace Player {
             //else
             //  SpawnArrowServerRPC(GetMouseRelativePos());
             //StartCoroutine(ChangeColorWait(new Color(1, 1, 0, 0.8f), 0.2f));
-            yield return new WaitForSeconds( _bowCooldown / TimeVariables.PlayerSpeed );
+            yield return new WaitForSeconds( _bowCooldown / GlobalVars.PlayerSpeed );
             _canShootArrow = true;
         }
 
@@ -475,7 +476,7 @@ namespace Player {
             float teta = Mathf.Atan( pos.y / pos.x ) * 180 / Mathf.PI - (pos.x > 0 ? 90 : -90);
             Quaternion rot = Quaternion.Euler(0f,0f,teta);
             var obj =PhotonNetwork.Instantiate("Prefabs/Projectiles/Arrow", transform.position + pos, rot);
-            obj.GetComponent<Projectile>().SetVelocity(pos, TimeVariables.PlayerSpeed);
+            obj.GetComponent<Projectile>().SetVelocity(pos, GlobalVars.PlayerSpeed);
             //obj.GetComponent<NetworkObject>().Spawn(true);
         }
     
@@ -500,7 +501,7 @@ namespace Player {
                 pos = _maxBombDist * pos.normalized;
             }
             /*GameObject pZone =*/ Instantiate(_poisonZoneRef, new Vector3(position.x + pos.x, position.y + pos.y,0f) , new Quaternion() );
-            yield return new WaitForSeconds( _poisonBombCooldown / TimeVariables.PlayerSpeed  );
+            yield return new WaitForSeconds( _poisonBombCooldown / GlobalVars.PlayerSpeed  );
             _canThrowPoisonBomb = true;
         }
 
@@ -511,10 +512,10 @@ namespace Player {
                 _isDashing = true;
                 speedModifier = _dashPower;
                 StartCoroutine(ChangeColorWait(new Color(1, 1, 0.3f, 0.8f), 0.2f)); // yellow
-                yield return new WaitForSeconds( _dashTime / TimeVariables.PlayerSpeed  );
+                yield return new WaitForSeconds( _dashTime / GlobalVars.PlayerSpeed  );
                 speedModifier = 1 ;
                 _isDashing = false;
-                yield return new WaitForSeconds( _dashCooldown / TimeVariables.PlayerSpeed  );
+                yield return new WaitForSeconds( _dashCooldown / GlobalVars.PlayerSpeed  );
                 _canDash = true;
             }
         }

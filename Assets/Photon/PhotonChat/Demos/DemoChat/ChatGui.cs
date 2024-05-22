@@ -6,19 +6,15 @@
 
 using System;
 using System.Collections.Generic;
-
+using Photon.PhotonChat.Code;
+using Photon.PhotonRealtime.Code;
+using Photon.PhotonUnityNetworking.Code;
 using UnityEngine;
 using UnityEngine.UI;
-
-using Photon.Chat;
-using Photon.Realtime;
-using AuthenticationValues = Photon.Chat.AuthenticationValues;
-#if PHOTON_UNITY_NETWORKING
-using Photon.Pun;
-#endif
+using AuthenticationValues = Photon.PhotonChat.Code.AuthenticationValues;
 
 
-namespace Photon.Chat.Demo
+namespace Photon.PhotonChat.Demos.DemoChat
 {
     /// <summary>
     /// This simple Chat UI demonstrate basics usages of the Chat Api
