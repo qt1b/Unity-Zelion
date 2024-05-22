@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3874986562
+  GlobalObjectIdHash: 3145513655
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -215,7 +215,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d9723ebabb423b841beb15632303d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealValue: 5
 --- !u!212 &4653302494984272678
 SpriteRenderer:
   m_ObjectHideFlags: 0

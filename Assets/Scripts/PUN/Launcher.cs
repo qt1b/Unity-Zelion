@@ -96,6 +96,7 @@ namespace PUN {
         }
         public void StartSinglePlayer() {
             PhotonNetwork.OfflineMode = true;
+            PhotonNetwork.JoinRandomRoom();
             PhotonNetwork.LoadLevel("Quentin5");
         }
         public void ExitGame() {
