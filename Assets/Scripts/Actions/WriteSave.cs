@@ -14,7 +14,7 @@ namespace Actions {
 		public void Activate() {
 			Global.GlobalVars.SaveId = SaveID;
 			if (PhotonNetwork.IsMasterClient) {
-				WriteFile();
+				Global.SaveManager.Save();
 			}
 			else photonView.RPC("WriteFile",RpcTarget.MasterClient);
 		}

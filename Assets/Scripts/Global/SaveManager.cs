@@ -1,9 +1,9 @@
 using System.IO;
 
 namespace Global {
-    public class SaveManager {
-        public static void Save(byte saveID) {
-            File.Open("zelion.sav",FileMode.Create).WriteByte(saveID);
+    public static class SaveManager {
+        public static void Save() {
+            File.Open("zelion.sav",FileMode.Create).WriteByte(GlobalVars.SaveId);
         }
     }
 }

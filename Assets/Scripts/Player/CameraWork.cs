@@ -10,37 +10,36 @@ using UnityEngine.Serialization;
 // </summary>
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
-// Edited to work within the context of a 2d game
+// Heavily edited to work within the context of a 2d game, and to follow the player;
 
 namespace Player { 
     public class CameraWork : MonoBehaviour
     {
-        #region Public Fields
-        public Player player;
-        #endregion
-        
         #region Private Fields
 
-        [Tooltip("The distance in the local x-z plane to the target")]
-        //[SerializeField]
+        [Tooltip("The multiplier applied to the player's")]
+        [SerializeField]
         private float distance = 2.0f;
         
         [Tooltip("Set this as false if a component of a prefab being instanciated by Photon Network, and manually call OnStartFollowing() when and if needed.")]
-        //[SerializeField]
+        [SerializeField]
         private bool followOnStart = false;
 
         [Tooltip("The Smoothing for the camera to follow the target")]
-        //[SerializeField]
+        [SerializeField]
         private float smoothSpeed = 0.125f;
         
         // velocity for Vector3.SmoothDamp
         private Vector3 _velocity = Vector3.zero;
-
-        // cached transform of the target
-        Transform cameraTransform;
+        
+        // cached transform of the camera
+        private Transform _cameraTransform;
+        
+        // cached player, to get the value of its change vector
+        private Player _player;
 
         // maintain a flag internally to reconnect if target is lost or camera is switched
-        bool isFollowing;
+        bool _isFollowing;
         
         #endregion
 
@@ -50,7 +49,7 @@ namespace Player {
         /// MonoBehaviour method called on GameObject by Unity during initialization phase
         /// </summary>
         void Start() {
-            // should get the player corresponding to its game object ??
+            _player = Player.LocalPlayerInstance.GetComponent<Player>();
             // Start following the target if wanted.
             if (followOnStart)
             {
@@ -63,13 +62,13 @@ namespace Player {
         {
             // The transform target may not destroy on level load,
             // so we need to cover corner cases where the Main Camera is different everytime we load a new scene, and reconnect when that happens
-            if (cameraTransform == null && isFollowing)
+            if (_cameraTransform == null && _isFollowing)
             {
                 OnStartFollowing();
             }
 
             // only follow is explicitly declared
-            if (isFollowing) {
+            if (_isFollowing) {
                 Follow ();
             }
         }
@@ -84,8 +83,8 @@ namespace Player {
         /// </summary>
         public void OnStartFollowing()
         {
-            cameraTransform = gameObject.GetComponent<Camera>().transform;
-            isFollowing = true;
+            _cameraTransform = FindObjectOfType<Camera>().transform;
+            _isFollowing = true;
             // we don't smooth anything, we go straight to the right camera shot
             Cut();
         }
@@ -99,26 +98,22 @@ namespace Player {
         /// </summary>
         void Follow()
         {
-            var playPos = player.transform.position;
-            var camPos = cameraTransform.position;
+            var playPos = Player.LocalPlayerInstance.transform.position;
+            var camPos = _cameraTransform.position;
             if (playPos == camPos) return;
-            Vector3 desiredPosition = new Vector3(playPos.x + player.change.x * distance, 
-                playPos.y + player.change.y * distance, camPos.z);
+            Vector3 desiredPosition = new Vector3(playPos.x + _player.change.x * distance, 
+                playPos.y + _player.change.y * distance, camPos.z);
             // forces the position to be between these two limits
             // desiredPosition.x = /*Mathf.Clamp(*/desiredPosition.x;//, minPosition.x, maxPosition.x);
             // desiredPosition.y = /*Mathf.Clamp(*/desiredPosition.y;//, minPosition.y, maxPosition.y);
-            cameraTransform.position = Vector3.SmoothDamp(cameraTransform.position, desiredPosition, ref _velocity,smoothSpeed);
-
-            //cameraTransform.LookAt(this.transform.position + centerOffset);
+            _cameraTransform.position = Vector3.SmoothDamp(_cameraTransform.position, desiredPosition, ref _velocity,smoothSpeed);
         }
 
 
         void Cut() {
             var desiredPosition = transform.position;
             desiredPosition.z = -1;
-            cameraTransform.position = desiredPosition;// + this.transform.TransformVector(cameraOffset);
-
-            //cameraTransform.LookAt(this.transform.position + centerOffset);
+            _cameraTransform.position = desiredPosition;
         }
         #endregion
     }

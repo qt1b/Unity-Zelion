@@ -59,10 +59,10 @@ namespace Ennemies {
             if (heal + _hp >= maxHealth)
                 _hp = maxHealth;
             else _hp += heal;
-            StartCoroutine(ChangeColorWait(new Color(0.3f, 1, 0.3f, 1), 0.5f)); // green with transparency
+            // test if one or the other works
+            photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,new Color(0.3f, 1, 0.3f, 1), 0.5f);
+            //photonView.StartCoroutine(ChangeColorWait(new Color(0.3f, 1, 0.3f, 1), 0.5f));
         }
-
-        
         // sync every function from the die function
         private void Die() {
             GetComponent<PhotonView>().RPC("DieRPC", RpcTarget.AllBuffered);
@@ -84,7 +84,12 @@ namespace Ennemies {
             }
             CollectibleDrop.Activate(maxHealth,gameObject.transform.position); // error here ?
             Destroy(gameObject,deathDuration);
-        } 
+        }
+
+        [PunRPC]
+        private void ChangeColorWaitRpc(Color color,float time) {
+            StartCoroutine(ChangeColorWait(color, time));
+        }
 
         IEnumerator ChangeColorWait(Color color, float time) {
             Color baseColor = _spriteRenderer.color;
