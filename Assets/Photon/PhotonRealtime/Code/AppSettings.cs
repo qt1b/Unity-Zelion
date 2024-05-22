@@ -5,13 +5,12 @@
 // <summary>Settings for Photon application(s) and the server to connect to.</summary>
 // <author>developer@photonengine.com</author>
 // ----------------------------------------------------------------------------
-
-using System;
-using ExitGames.Client.Photon;
-
 #if UNITY_2017_4_OR_NEWER
 #define SUPPORTED_UNITY
 #endif
+
+using System;
+using ExitGames.Client.Photon;
 
 namespace Photon.PhotonRealtime.Code
 {

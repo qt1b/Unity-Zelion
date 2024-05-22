@@ -5,14 +5,12 @@
 // <summary>Settings for Photon Chat application and the server to connect to.</summary>
 // <author>developer@photonengine.com</author>
 // ----------------------------------------------------------------------------
-
-using System;
-using ExitGames.Client.Photon;
-
 #if UNITY_4_7 || UNITY_5 || UNITY_5_3_OR_NEWER
 #define SUPPORTED_UNITY
 #endif
 
+using System;
+using ExitGames.Client.Photon;
 
 namespace Photon.PhotonChat.Code
 {

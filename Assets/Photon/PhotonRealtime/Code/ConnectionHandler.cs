@@ -8,14 +8,11 @@
 // <author>developer@photonengine.com</author>
 // ----------------------------------------------------------------------------
 
-
-using System;
-using System.Diagnostics;
-
 #if UNITY_4_7 || UNITY_5 || UNITY_5_3_OR_NEWER
 #define SUPPORTED_UNITY
 #endif
-
+using System;
+using System.Diagnostics;
 
 namespace Photon.PhotonRealtime.Code
 {

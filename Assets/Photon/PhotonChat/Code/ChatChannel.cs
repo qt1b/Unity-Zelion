@@ -3,13 +3,13 @@
 // <remarks>ChatClient is the main class of this api.</remarks>
 // <copyright company="Exit Games GmbH">Photon Chat Api - Copyright (C) 2014 Exit Games GmbH</copyright>
 // ----------------------------------------------------------------------------------------------------------------------
+#if UNITY_4_7 || UNITY_5 || UNITY_5_3_OR_NEWER
+#define SUPPORTED_UNITY
+#endif
 
 using System.Collections.Generic;
 using System.Text;
 
-#if UNITY_4_7 || UNITY_5 || UNITY_5_3_OR_NEWER
-#define SUPPORTED_UNITY
-#endif
 
 namespace Photon.PhotonChat.Code
 {

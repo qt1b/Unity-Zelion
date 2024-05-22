@@ -7,13 +7,12 @@
 // </summary>
 // <author>developer@exitgames.com</author>
 // ----------------------------------------------------------------------------
-
-using ExitGames.Client.Photon;
-using UnityEngine;
-
 #if UNITY_4_7 || UNITY_5 || UNITY_5_3_OR_NEWER
 #define SUPPORTED_UNITY
 #endif
+
+using ExitGames.Client.Photon;
+using UnityEngine;
 
 #if SUPPORTED_UNITY
 namespace Photon.PhotonRealtime.Code

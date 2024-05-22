@@ -8,7 +8,9 @@
 // </summary>
 // <author>developer@photonengine.com</author>
 // ----------------------------------------------------------------------------
-
+#if UNITY_4_7 || UNITY_5 || UNITY_5_3_OR_NEWER
+#define SUPPORTED_UNITY
+#endif
 
 using System;
 using System.Collections;
@@ -20,9 +22,7 @@ using System.Text;
 using System.Threading;
 using ExitGames.Client.Photon;
 
-#if UNITY_4_7 || UNITY_5 || UNITY_5_3_OR_NEWER
-#define SUPPORTED_UNITY
-#endif
+
 
 #if UNITY_WEBGL
 #define PING_VIA_COROUTINE

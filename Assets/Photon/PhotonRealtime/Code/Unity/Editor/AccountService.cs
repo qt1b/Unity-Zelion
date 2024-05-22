@@ -8,16 +8,14 @@
 // </summary>
 // <author>developer@exitgames.com</author>
 // ----------------------------------------------------------------------------
+#if UNITY_2017_4_OR_NEWER
+#define SUPPORTED_UNITY
+#endif
 
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
-
-#if UNITY_2017_4_OR_NEWER
-#define SUPPORTED_UNITY
-#endif
-
 
 #if UNITY_EDITOR
 

@@ -8,13 +8,14 @@
 // </summary>
 // <author>developer@photonengine.com</author>
 // ----------------------------------------------------------------------------
+#if UNITY_4_7 || UNITY_5 || UNITY_5_3_OR_NEWER
+#define SUPPORTED_UNITY
+#endif
 
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
 
-#if UNITY_4_7 || UNITY_5 || UNITY_5_3_OR_NEWER
-#define SUPPORTED_UNITY
-#endif
+
 
 
 namespace Photon.PhotonRealtime.Code

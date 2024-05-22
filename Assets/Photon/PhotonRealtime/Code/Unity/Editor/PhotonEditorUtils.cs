@@ -7,6 +7,9 @@
 // </summary>
 // <author>developer@exitgames.com</author>
 // ----------------------------------------------------------------------------
+#if UNITY_2017_4_OR_NEWER
+#define SUPPORTED_UNITY
+#endif
 
 using System;
 using System.Collections.Generic;
@@ -17,12 +20,6 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 #pragma warning disable 618 // Deprecation warnings
-
-
-#if UNITY_2017_4_OR_NEWER
-#define SUPPORTED_UNITY
-#endif
-
 
 #if UNITY_EDITOR
 
