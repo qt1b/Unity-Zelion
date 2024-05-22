@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CameraWork.cs" company="Exit Games GmbH">
@@ -11,41 +12,36 @@ using UnityEngine;
 // --------------------------------------------------------------------------------------------------------------------
 // Edited to work within the context of a 2d game
 
-/*
 namespace Player { 
     public class CameraWork : MonoBehaviour
     {
+        #region Public Fields
+        public Player player;
+        #endregion
+        
         #region Private Fields
 
         [Tooltip("The distance in the local x-z plane to the target")]
-        [SerializeField]
-        private float distance = 7.0f;
-
-        [Tooltip("The height we want the camera to be above the target")]
-        [SerializeField]
-        private float height = 3.0f;
-
-        [Tooltip("Allow the camera to be offseted vertically from the target, for example giving more view of the sceneray and less ground.")]
-        [SerializeField]
-        private Vector3 centerOffset = Vector3.zero;
-
+        //[SerializeField]
+        private float distance = 2.0f;
+        
         [Tooltip("Set this as false if a component of a prefab being instanciated by Photon Network, and manually call OnStartFollowing() when and if needed.")]
-        [SerializeField]
+        //[SerializeField]
         private bool followOnStart = false;
 
         [Tooltip("The Smoothing for the camera to follow the target")]
-        [SerializeField]
+        //[SerializeField]
         private float smoothSpeed = 0.125f;
+        
+        // velocity for Vector3.SmoothDamp
+        private Vector3 _velocity = Vector3.zero;
 
         // cached transform of the target
         Transform cameraTransform;
 
         // maintain a flag internally to reconnect if target is lost or camera is switched
         bool isFollowing;
-
-        // Cache for camera offset
-        Vector3 cameraOffset = Vector3.zero;
-
+        
         #endregion
 
         #region MonoBehaviour Callbacks
@@ -53,8 +49,8 @@ namespace Player {
         /// <summary>
         /// MonoBehaviour method called on GameObject by Unity during initialization phase
         /// </summary>
-        void Start()
-        {
+        void Start() {
+            // should get the player corresponding to its game object ??
             // Start following the target if wanted.
             if (followOnStart)
             {
@@ -88,7 +84,7 @@ namespace Player {
         /// </summary>
         public void OnStartFollowing()
         {
-            cameraTransform = Camera.main.transform;
+            cameraTransform = gameObject.GetComponent<Camera>().transform;
             isFollowing = true;
             // we don't smooth anything, we go straight to the right camera shot
             Cut();
@@ -103,26 +99,27 @@ namespace Player {
         /// </summary>
         void Follow()
         {
-            cameraOffset.z = -distance;
-            cameraOffset.y = height;
+            var playPos = player.transform.position;
+            var camPos = cameraTransform.position;
+            if (playPos == camPos) return;
+            Vector3 desiredPosition = new Vector3(playPos.x + player.change.x * distance, 
+                playPos.y + player.change.y * distance, camPos.z);
+            // forces the position to be between these two limits
+            // desiredPosition.x = /*Mathf.Clamp(*/desiredPosition.x;//, minPosition.x, maxPosition.x);
+            // desiredPosition.y = /*Mathf.Clamp(*/desiredPosition.y;//, minPosition.y, maxPosition.y);
+            cameraTransform.position = Vector3.SmoothDamp(cameraTransform.position, desiredPosition, ref _velocity,smoothSpeed);
 
-            cameraTransform.position = Vector3.Lerp(cameraTransform.position, this.transform.position +this.transform.TransformVector(cameraOffset), smoothSpeed*Time.deltaTime);
-
-            cameraTransform.LookAt(this.transform.position + centerOffset);
+            //cameraTransform.LookAt(this.transform.position + centerOffset);
         }
 
 
-        void Cut()
-        {
-            cameraOffset.z = -distance;
-            cameraOffset.y = height;
+        void Cut() {
+            var desiredPosition = transform.position;
+            desiredPosition.z = -1;
+            cameraTransform.position = desiredPosition;// + this.transform.TransformVector(cameraOffset);
 
-            cameraTransform.position = this.transform.position + this.transform.TransformVector(cameraOffset);
-
-            cameraTransform.LookAt(this.transform.position + centerOffset);
+            //cameraTransform.LookAt(this.transform.position + centerOffset);
         }
         #endregion
     }
 }
-	
-*/

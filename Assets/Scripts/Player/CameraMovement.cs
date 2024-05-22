@@ -35,10 +35,10 @@ namespace Player {
         // could be moved to awake ? or not ?
 
         public override void OnConnected() {
-            base.OnConnected();
             if (!photonView.IsMine) {
                 cameraHolder.SetActive(false);
             }
+            else base.OnConnected();
         }
 
         #endregion

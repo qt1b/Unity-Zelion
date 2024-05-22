@@ -3,18 +3,18 @@ using Unity.Netcode;
 using UnityEngine;
 
 namespace Actions {
-	public class WriteSave: NetworkBehaviour {
+	public class WriteSave: MonoBehaviour {
 		public byte SaveID;
 
 		public void Activate() {
-			TimeVariables.PlayerList.Value.ForEach(p=>p.saveID = SaveID);
+			TimeVariables.PlayerList.ForEach(p=>p.saveID = SaveID);
 			// how to activate this locally on each client ?
-			ActivateClientRpc();
+			//ActivateClientRpc();
 		}
 
-		[ClientRpc]
+		/*[ClientRpc]
 		private void ActivateClientRpc() {
 			Global.SaveManager.Save(SaveID);
-		}
+		} */
 	}
 }

@@ -1,13 +1,16 @@
+using System.Collections.Generic;
+using Photon.Pun;
 using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Ennemies {
     public class CollectibleDrop : MonoBehaviour {
-        public static GameObject[] Collectibles;
-        void Start() {
-            Collectibles = Resources.LoadAll<GameObject>("Prefabs/Collectibles");
-        }
+
+        private static string[] _collectibles = new[] {
+            "Heart", "ManaOrb",
+            "StaminaOrb"
+        };
 
         // for every 40hp of every ennemy, we get an orb
         // could be a little more smooth if elements were to go progressively to their place
@@ -15,10 +18,9 @@ namespace Ennemies {
             // uint nbr = value / 40; // what we will use
             uint nbr = value;
             for (int i = 0; i < nbr; i++) {
-                var instantiated = Instantiate(Collectibles[Random.Range(0, 3)] ,
+                PhotonNetwork.Instantiate("Prefabs/Collectibles/"+_collectibles[Random.Range(1,3)] ,
                     position + Random.Range(0.5f,2.5f)*new Vector3(Random.Range(-1f,1f), Random.Range(-1f,1f), 0).normalized,
                     Quaternion.identity);
-                instantiated.GetComponent<NetworkObject>().Spawn();
             }
         }
         /*

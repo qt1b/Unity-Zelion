@@ -12,7 +12,7 @@ using UnityEngine.Serialization;
 using Weapons;
 
 namespace Player {
-    public class Player : MonoBehaviourPunCallbacks, IHealth, IPunObservable {
+    public class Player : MonoBehaviourPunCallbacks, IHealth {
         // MUST BE SPLITED ! or at least reduced, as it is too large as of now
 
         #region Public Fields
@@ -95,7 +95,7 @@ namespace Player {
         GameObject _swordHitzone;
         // Collider2D _swordHitzoneCollider;
         // Animator _swordHitzoneAnimator;
-        [FormerlySerializedAs("Camera")] public new Camera camera;
+        //private new Camera camera;
 
         private HealthBar _healthBar;
         private StaminaBar _staminaBar;
@@ -179,7 +179,7 @@ namespace Player {
             speedModifier = 1;
             _animator = GetComponent<Animator>();
             _myRigidBody = GetComponent<Rigidbody2D>();
-            _animator.speed = TimeVariables.PlayerSpeed.Value;
+            _animator.speed = TimeVariables.PlayerSpeed;
             _swordHitzone = transform.GetChild(0).gameObject;
             //_swordHitzoneCollider = _swordHitzone.GetComponent<Collider2D>();
             //_swordHitzoneAnimator = _swordHitzone.GetComponent<Animator>();
@@ -194,7 +194,7 @@ namespace Player {
             // 'color' effects
             _renderer = gameObject.GetComponent<Renderer>();
             // _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-            if (TimeVariables.PlayerList.Value.Count == 0) {
+            if (TimeVariables.PlayerList.Count == 0) {
                 // find if save exists, if it does loads it
                 if (File.Exists("zelion.sav") && File.OpenRead("zelion.sav").ReadByte() is not -1 and/*is*/ {} readByte) {
                     saveID = (byte)readByte;
@@ -202,32 +202,31 @@ namespace Player {
                 // else saveID = 0;
             }
             else {
-                saveID = TimeVariables.PlayerList.Value.First().saveID;
+                saveID = TimeVariables.PlayerList.First().saveID;
                 // OVERWRITES THE LAST SAVE !
             }
 
             saveID = 1;
             LoadSave();
-            TimeVariables.PlayerList.Value.Add(this);
+            TimeVariables.PlayerList.Add(this);
         }
         
         /// <summary>
         /// MonoBehaviour method called on GameObject by Unity during initialization phase.
         /// </summary>
-        void Start()
-        {
-            CameraMovement cameraMovement = this.gameObject.GetComponent<CameraMovement>();
-
-            if (cameraMovement != null)
-            {
-                if (photonView.IsMine)
-                {
-                    // cameraMovement.OnStartFollowing();
+        void Start() {
+            // GameObject camGo = gameObject.GetComponent<Camera>().gameObject;
+            //CameraWork cameraWork = Camera.main.GetComponent<CameraWork>();
+            if (Camera.main is {} mainCamera && mainCamera.GetComponent<CameraWork>() is {} cameraWork) {
+                if (photonView.IsMine) {
+                    print("init camerawork");
+                    cameraWork.player = this;
+                    cameraWork.OnStartFollowing();
                 }
             }
             else
             {
-                Debug.LogError("<Color=Red><a>Missing</a></Color> CameraWork Component on playerPrefab.", this);
+                Debug.LogError("<Color=Red><a>Missing</a></Color> CameraWork Component", this);
             }
         /*
          #if UNITY_5_4_OR_NEWER
@@ -359,30 +358,30 @@ namespace Player {
             // will be enemy speed, using player speed to test the property
             // like color
             // float oldVal = TimeVariables.PlayerSpeed.Value;
-            TimeVariables.PlayerSpeed.Value = 0.5f;
-            _animator.speed = TimeVariables.PlayerSpeed.Value; // to remove if only slowing down ennemies
+            TimeVariables.PlayerSpeed = 0.5f;
+            _animator.speed = TimeVariables.PlayerSpeed; // to remove if only slowing down ennemies
             _slowdownAcc += 1;
             yield return new WaitForSeconds(duration);
             _slowdownAcc -= 1;
             if (_slowdownAcc == 0) {
-                TimeVariables.PlayerSpeed.Value = 1;
+                TimeVariables.PlayerSpeed = 1;
                 _animator.speed = 1;
             }
         }
 
         IEnumerator TimeFreezeFor(float duration) {
             _timeFreezeAcc += 1;
-            TimeVariables.PlayerSpeed.Value = 0f;
+            TimeVariables.PlayerSpeed = 0f;
             yield return new WaitForSeconds(duration);
             _timeFreezeAcc -= 1;
             if (_timeFreezeAcc == 0) {
-                TimeVariables.PlayerSpeed.Value = 1;
+                TimeVariables.PlayerSpeed = 1;
             }
         }
 
         Vector3 GetMouseRelativePos() {
             Vector3 mousePosition = Input.mousePosition;
-            mousePosition = camera.ScreenToWorldPoint(mousePosition);
+            mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
             var position = transform.position;
             float y = (mousePosition.y - position.y);
             float x = (mousePosition.x - position.x);
@@ -392,7 +391,7 @@ namespace Player {
         void PlacePreviewArrow() {
             if (_canShootArrow) {
                 Vector3 mousePosition = Input.mousePosition;
-                mousePosition = camera.ScreenToWorldPoint(mousePosition);
+                mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
                 var position = transform.position;
                 float y = (mousePosition.y - position.y);
                 float x = (mousePosition.x - position.x);
@@ -407,7 +406,7 @@ namespace Player {
 
         void PlacePreviewZone() {
             Vector3 mousePosition = Input.mousePosition;
-            mousePosition = camera.ScreenToWorldPoint(mousePosition);
+            mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
             var position = transform.position;
             float y = (mousePosition.y - position.y);
             float x = (mousePosition.x - position.x);
@@ -424,7 +423,7 @@ namespace Player {
         void UpdateAnimationAndMove() {
             if (change != Vector2.zero) {
                 // 0.2 f ?
-                _myRigidBody.velocity = (change * (0.2f * initialSpeed * speedModifier * TimeVariables.PlayerSpeed.Value));
+                _myRigidBody.velocity = (change * (0.2f * initialSpeed * speedModifier * TimeVariables.PlayerSpeed));
                 _animator.SetFloat(MoveX, change.x);
                 _animator.SetFloat(MoveY, change.y);
                 _animator.SetBool(IsMoving,true);
@@ -437,7 +436,7 @@ namespace Player {
 
         public void ChangePlayerControlSpeed(float newSpeedControl) {
             // TimeVariables.PlayerSpeed.Value  = newSpeedControl;
-            _animator.speed = TimeVariables.PlayerSpeed.Value;
+            _animator.speed = TimeVariables.PlayerSpeed;
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
@@ -452,10 +451,10 @@ namespace Player {
             // _swordHitzoneCollider.enabled = true;
             speedModifier = _attackSpeedNerf;
             // isWielding = true;
-            yield return new WaitForSeconds( SwordTime / TimeVariables.PlayerSpeed.Value );
+            yield return new WaitForSeconds( SwordTime / TimeVariables.PlayerSpeed );
             _swordHitzone.SetActive(false);
             speedModifier = 1 ;
-            yield return new WaitForSeconds( SwordAttackCooldown / TimeVariables.PlayerSpeed.Value );
+            yield return new WaitForSeconds( SwordAttackCooldown / TimeVariables.PlayerSpeed );
             _canSwordAttack = true;
         }
 
@@ -466,7 +465,7 @@ namespace Player {
             //else
             //  SpawnArrowServerRPC(GetMouseRelativePos());
             //StartCoroutine(ChangeColorWait(new Color(1, 1, 0, 0.8f), 0.2f));
-            yield return new WaitForSeconds( _bowCooldown / TimeVariables.PlayerSpeed.Value );
+            yield return new WaitForSeconds( _bowCooldown / TimeVariables.PlayerSpeed );
             _canShootArrow = true;
         }
 
@@ -475,8 +474,8 @@ namespace Player {
             Vector3 pos = mousePos;
             float teta = Mathf.Atan( pos.y / pos.x ) * 180 / Mathf.PI - (pos.x > 0 ? 90 : -90);
             Quaternion rot = Quaternion.Euler(0f,0f,teta);
-            var obj = Instantiate(_arrowRef, transform.position + pos, rot);
-            obj.GetComponent<Projectile>().SetVelocity(pos, TimeVariables.PlayerSpeed.Value);
+            var obj =PhotonNetwork.Instantiate("Prefabs/Projectiles/Arrow", transform.position + pos, rot);
+            obj.GetComponent<Projectile>().SetVelocity(pos, TimeVariables.PlayerSpeed);
             //obj.GetComponent<NetworkObject>().Spawn(true);
         }
     
@@ -491,7 +490,7 @@ namespace Player {
         IEnumerator ThrowPoisonBomb() {
             _canThrowPoisonBomb = false;
             Vector3 mousePosition = Input.mousePosition;
-            mousePosition = camera.ScreenToWorldPoint(mousePosition);
+            mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
             var position = transform.position;
             StartCoroutine(ChangeColorWait(new Color(0.3f, 0.3f, 1, 0.8f), 0.2f));
             float y = (mousePosition.y - position.y);
@@ -501,7 +500,7 @@ namespace Player {
                 pos = _maxBombDist * pos.normalized;
             }
             /*GameObject pZone =*/ Instantiate(_poisonZoneRef, new Vector3(position.x + pos.x, position.y + pos.y,0f) , new Quaternion() );
-            yield return new WaitForSeconds( _poisonBombCooldown / TimeVariables.PlayerSpeed.Value  );
+            yield return new WaitForSeconds( _poisonBombCooldown / TimeVariables.PlayerSpeed  );
             _canThrowPoisonBomb = true;
         }
 
@@ -512,10 +511,10 @@ namespace Player {
                 _isDashing = true;
                 speedModifier = _dashPower;
                 StartCoroutine(ChangeColorWait(new Color(1, 1, 0.3f, 0.8f), 0.2f)); // yellow
-                yield return new WaitForSeconds( _dashTime / TimeVariables.PlayerSpeed.Value  );
+                yield return new WaitForSeconds( _dashTime / TimeVariables.PlayerSpeed  );
                 speedModifier = 1 ;
                 _isDashing = false;
-                yield return new WaitForSeconds( _dashCooldown / TimeVariables.PlayerSpeed.Value  );
+                yield return new WaitForSeconds( _dashCooldown / TimeVariables.PlayerSpeed  );
                 _canDash = true;
             }
         }
@@ -528,8 +527,7 @@ namespace Player {
             else GameOver();
         }
         
-        #region IPunObservable implementation
-
+        /* #region IPunObservable implementation
         void Photon.Pun.IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
             if (stream.IsWriting)
@@ -543,8 +541,7 @@ namespace Player {
                 this._healthBar.curValue = (uint)stream.ReceiveNext();
             }
         }
-
-        #endregion
+        #endregion */
 
         // healing collectibles are not healing and idk why
         public void Heal(uint heal) {

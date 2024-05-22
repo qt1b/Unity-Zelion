@@ -88,7 +88,13 @@ namespace PUN
                 PhotonNetwork.GameVersion = gameVersion;
             }
         }
-
+        public void StartSinglePlayer() {
+            PhotonNetwork.OfflineMode = true;
+            PhotonNetwork.LoadLevel("Quentin5");
+        }
+        public void ExitGame() {
+            Application.Quit();
+        }
     #endregion
     
     #region MonoBehaviourPunCallbacks Callbacks
@@ -116,9 +122,12 @@ namespace PUN
         PhotonNetwork.CreateRoom(null, new RoomOptions {MaxPlayers = maxPlayersPerRoom});
     }
 
+    public override void OnCreatedRoom() {
+        PhotonNetwork.LoadLevel("Quentin5");
+    }
     public override void OnJoinedRoom()
     {
-        Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
+        /*Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
         if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
         {
             Debug.Log("We load the 'Room for 1' ");
@@ -127,7 +136,7 @@ namespace PUN
             // Load the Room Level.
             // PhotonNetwork.LoadLevel("Room for 1");
             PhotonNetwork.LoadLevel("Quentin5");
-        }
+        }*/
     }
 
     #endregion

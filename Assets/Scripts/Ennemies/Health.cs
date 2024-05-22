@@ -1,15 +1,16 @@
+using System;
 using System.Collections;
 using Interfaces;
-using Unity.Netcode;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Ennemies {
-    public class Health : NetworkBehaviour, IHealth
+    public class Health : MonoBehaviourPunCallbacks, IPunObservable, IHealth
     {
         [FormerlySerializedAs("MaxHealth")] public uint maxHealth;
         // to NetworkVariable ??
-        private NetworkVariable<uint> _hp;
+        private uint _hp;
         public float deathDuration;
         private SpriteRenderer _spriteRenderer; // to change color when hit
         private uint _colorAcc;
@@ -17,50 +18,72 @@ namespace Ennemies {
 
         void Start()
         {
-            _hp = new NetworkVariable<uint>(maxHealth);
+            if (maxHealth > short.MaxValue) {
+                // is necessary to avoid errors while syncing hp's value
+                Debug.LogError("max value is too big, resizing it to short's max value");
+                maxHealth = (uint)short.MaxValue;
+            }
+            _hp = maxHealth;
             _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        }
+        
+         void Photon.Pun.IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                // We own this player: send the others our data
+                // does not support uint type, so converting it to short
+                // we should never reach hp values as big as 
+                stream.SendNext((short)_hp);
+            }
+            else
+            {
+                // Network player, receive data
+                this._hp = (uint)(short)stream.ReceiveNext();
+            }
         }
 
         public void TakeDamages(uint damage){
-            if (damage >= _hp.Value) Die();
-            else _hp.Value -= damage;
+            if (damage >= _hp) {
+                //GetComponent<PhotonView>().RPC("SpawCollectiblesRPC", RpcTarget.AllBuffered);
+                Die();
+            }
+            else _hp -= damage;
             StartCoroutine(ChangeColorWait(new Color(1, 0.3f, 0.3f, 1), 0.5f)); // red with transparency
             // must add here some code to change the color for some frames: that way we will see when we make damages to an enemy/object
         }
 
         public void Heal(uint heal)
         {
-            if (heal + _hp.Value >= maxHealth)
-                _hp.Value = maxHealth;
-            else _hp.Value += heal;
+            if (heal + _hp >= maxHealth)
+                _hp = maxHealth;
+            else _hp += heal;
             StartCoroutine(ChangeColorWait(new Color(0.3f, 1, 0.3f, 1), 0.5f)); // green with transparency
         }
 
         
         // sync every function from the die function
         private void Die() {
-            if (IsServer) {
-                DieServer();
-            }
-            else DieServerRpc();
+            GetComponent<PhotonView>().RPC("DieRPC", RpcTarget.AllBuffered);
         }
 
-        private void DieServer() {
+        /*[PunRPC]
+        private void NetworkDestroy(float time = 0f)
+        {
+            Destroy(this.gameObject,time);
+        } */
+
+        [PunRPC]
+        private void DieRPC() {
             if (gameObject.TryGetComponent(out Collider2D collider2D)) {
                 collider2D.enabled = false;
             }
             if (gameObject.TryGetComponent(out Animator animator)) {
                 animator.SetTrigger(Death);
             }
-
-            SpawnCollectibles();
+            CollectibleDrop.Activate(maxHealth,gameObject.transform.position); // error here ?
             Destroy(gameObject,deathDuration);
         } 
-            
-        [ServerRpc] 
-        private void DieServerRpc() {
-            DieServer();
-        }
 
         IEnumerator ChangeColorWait(Color color, float time) {
             Color baseColor = _spriteRenderer.color;
@@ -74,33 +97,21 @@ namespace Ennemies {
             else if (baseColor != Color.white) ChangeColorClientRpc(baseColor);
         }
         // to be synced over network
-        [ClientRpc]
         void ChangeColorClientRpc(Color color) {
             _spriteRenderer.color = color;
         }
 
+        /*
         void SpawnCollectibles() {
-            if (IsServer) {
-                SpawnCollectiblesServer();
-            }
-            else SpawnCollectiblesServerRpc();
-        }
-
-        void SpawnCollectiblesServer() {
-            CollectibleDrop.Activate(maxHealth,gameObject.transform.position); // error here ?
-            /*
-             List<GameObject> toSpawn = CollectibleDrop.SpawnList(maxHealth,gameObject.transform.position);
-            foreach (GameObject o in toSpawn) {
-                var instanciated = Instantiate(o);
-                instanciated.GetComponent<NetworkObject>().Spawn();
-            }*/
+            GetComponent<PhotonView>().RPC("SpawCollectiblesRPC", RpcTarget.AllBuffered);
         } 
         
+        
         //[ServerRpc(RequireOwnership = false)]
-        [ServerRpc]
-        void SpawnCollectiblesServerRpc() {
-            SpawnCollectiblesServer();
-        }
+        [PunRPC]
+        void SpawnCollectiblesRPC() {
+            CollectibleDrop.Activate(maxHealth,gameObject.transform.position); // error here ?
+        } */
         
     }
 }
