@@ -52,15 +52,13 @@ namespace PUN {
             // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
             PhotonNetwork.AutomaticallySyncScene = true;
         }
-
-        /// <summary>
-        /// MonoBehaviour method called on GameObject by Unity during initialization phase.
-        /// </summary>
+        
+        /*
         void Start()
         {
             progressLabel.SetActive(false);
             controlPanel.SetActive(true);
-        }
+        } */
 
         #endregion
 
@@ -110,7 +108,7 @@ namespace PUN {
         Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
         // #Critical: The first we try to do is to join a potential existing room. If there is, good, else, we'll be called back with OnJoinRandomFailed()
         if (isConnecting) {
-            PhotonNetwork.JoinRandomRoom();
+            // PhotonNetwork.JoinRandomRoom();
             isConnecting = false;
         }
     }

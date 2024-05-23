@@ -95,7 +95,7 @@ namespace PUN {
 				Debug.LogError("PhotonNetwork : Trying to Load a level but we are not the master Client");
 				return;
 			}
-			Debug.LogFormat("PhotonNetwork : Loading Level : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
+			Debug.LogFormat("PhotonNetwork : Loading Level, Having {0} Players", PhotonNetwork.CurrentRoom.PlayerCount);
 			// to modify this for Zelion
 			//PhotonNetwork.LoadLevel("Room for " + PhotonNetwork.CurrentRoom.PlayerCount);
 			PhotonNetwork.LoadLevel("Quentin5");

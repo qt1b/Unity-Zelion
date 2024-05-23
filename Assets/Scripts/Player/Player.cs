@@ -202,6 +202,9 @@ namespace Player {
 				// else saveID = 0;
 			}
 			// else is already set by master client
+			
+			// to remove later
+			saveID = 1;
 			LoadSave();
 			GlobalVars.PlayerList.Add(this);
 		}
@@ -226,7 +229,6 @@ namespace Player {
 			if ((!photonView.IsMine && PhotonNetwork.IsConnected) || PauseMenu.GameIsPaused) {
 				return;
 			}
-
 			// update with player input
 			if (!_isDashing) {
 				change = Vector2.zero;
@@ -301,18 +303,12 @@ namespace Player {
 					}
 				}
 			}
-
 			UpdateAnimationAndMove();
 		}
-
 		#endregion
-
 		#region MonoBehaviour Callbacks
-
 		// no callbacks in the player script
-
 		#endregion
-
 		// they may overlap
 		IEnumerator SlowDownTimeFor(float duration) {
 			// will be enemy speed, using player speed to test the property
@@ -328,7 +324,6 @@ namespace Player {
 				_animator.speed = 1;
 			}
 		}
-
 		IEnumerator TimeFreezeFor(float duration) {
 			_timeFreezeAcc += 1;
 			GlobalVars.PlayerSpeed = 0f;
@@ -338,7 +333,6 @@ namespace Player {
 				GlobalVars.PlayerSpeed = 1;
 			}
 		}
-
 		Vector3 GetMouseRelativePos() {
 			Vector3 mousePosition = Input.mousePosition;
 			mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
@@ -347,7 +341,6 @@ namespace Player {
 			float x = (mousePosition.x - position.x);
 			return new Vector3(x, y, 0f).normalized;
 		}
-
 		void PlacePreviewArrow() {
 			if (_canShootArrow) {
 				Vector3 mousePosition = Input.mousePosition;
@@ -363,7 +356,6 @@ namespace Player {
 				_arrowPreviewRef.transform.eulerAngles = new Vector3(0f, 0f, teta);
 			}
 		}
-
 		void PlacePreviewZone() {
 			Vector3 mousePosition = Input.mousePosition;
 			mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
@@ -374,13 +366,10 @@ namespace Player {
 			if (Vector3.Distance(pos, Vector3.zero) > _maxBombDist) {
 				pos = _maxBombDist * pos.normalized;
 			}
-
 			_animator.SetFloat(MouseX, pos.x);
 			_animator.SetFloat(MouseY, pos.y);
 			_poisonZonePreviewRef.transform.position = new Vector3(position.x + pos.x, position.y + pos.y, 0f);
 		}
-
-
 		void UpdateAnimationAndMove() {
 			if (change != Vector2.zero) {
 				// 0.2 f ?
@@ -394,12 +383,10 @@ namespace Player {
 				_animator.SetBool(IsMoving, false);
 			}
 		}
-
 		public void ChangePlayerControlSpeed(float newSpeedControl) {
 			// GlobalVars.PlayerSpeed.Value  = newSpeedControl;
 			_animator.speed = GlobalVars.PlayerSpeed;
 		}
-
 		// ReSharper disable Unity.PerformanceAnalysis
 		IEnumerator SwordAttack() {
 			// wielding for 100 degrees
@@ -453,7 +440,6 @@ namespace Player {
 			if (Vector3.Distance(pos, Vector3.zero) > _maxBombDist) {
 				pos = _maxBombDist * pos.normalized;
 			}
-
 			/*GameObject pZone =*/
 			Instantiate(_poisonZoneRef, new Vector3(position.x + pos.x, position.y + pos.y, 0f), new Quaternion());
 			yield return new WaitForSeconds(_poisonBombCooldown / GlobalVars.PlayerSpeed);
@@ -482,8 +468,6 @@ namespace Player {
 			}
 			else GameOver();
 		}
-
-
 		public void Heal(uint heal) {
 			_healthBar.Heal(heal);
 			StartCoroutine(ChangeColorWait(new Color(0.3f, 1f, 0.3f, 0.8f), 0.2f));
@@ -558,10 +542,7 @@ void Photon.Pun.IPunObservable.OnPhotonSerializeView(PhotonStream stream, Photon
     }
 }
 #endregion */
-
 // healing collectibles are not healing and idk why
-
-
 /*void CalledOnLevelWasLoaded(int level)
 {
     // check if we are outside the Arena and if it's the case, spawn around the center of the arena in a safe zone
@@ -569,15 +550,15 @@ void Photon.Pun.IPunObservable.OnPhotonSerializeView(PhotonStream stream, Photon
     {
         transform.position = new Vector3(0f, 5f, 0f);
     }
-}*/
+}
 
 #if UNITY_5_4_OR_NEWER
-/* public override void OnDisable()
+public override void OnDisable()
  {
      // Always call the base to remove callbacks
      base.OnDisable ();
      UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
- }*/
+ }
 #endif
 
 #endregion
@@ -585,14 +566,13 @@ void Photon.Pun.IPunObservable.OnPhotonSerializeView(PhotonStream stream, Photon
 #region Private Methods
 
 #if UNITY_5_4_OR_NEWER
-/* for their example, may be of some use
  void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode loadingMode)
 {
     this.CalledOnLevelWasLoaded(scene.buildIndex);
-} */
+}
 #endif
 
-/*
+
  #if UNITY_5_4_OR_NEWER
 // Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
     UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;

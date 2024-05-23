@@ -63,8 +63,7 @@ namespace Weapons {
         }
 
         [PunRPC]
-        private void NetworkDestroy()
-        {
+        private void NetworkDestroy() {
             PhotonNetwork.Destroy(this.gameObject);
         }
     }

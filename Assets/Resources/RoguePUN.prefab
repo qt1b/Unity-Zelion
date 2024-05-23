@@ -467,10 +467,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialSpeed: 24
-  speedModifier: 0
+  speedModifier: 1
+  saveID: 0
   change: {x: 0, y: 0}
   notNullChange: {x: 0, y: 0}
-  saveID: 0
+  isDead: 0
 --- !u!61 &5866050367752138856
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -586,9 +587,6 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: IsMoving
-  - Type: 9
-    SynchronizeType: 1
-    Name: SwordAttack
   - Type: 4
     SynchronizeType: 1
     Name: AimingBow
