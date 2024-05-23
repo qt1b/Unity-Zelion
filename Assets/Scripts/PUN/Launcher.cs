@@ -1,10 +1,9 @@
+using System;
 using Photon.PhotonRealtime.Code;
 using Photon.PhotonUnityNetworking.Code;
 using UnityEngine;
-
+/*
 namespace PUN {
-    namespace PUN
-{
     public class Launcher : MonoBehaviourPunCallbacks
     {
         #region Public Fields
@@ -52,13 +51,6 @@ namespace PUN {
             // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
             PhotonNetwork.AutomaticallySyncScene = true;
         }
-        
-        /*
-        void Start()
-        {
-            progressLabel.SetActive(false);
-            controlPanel.SetActive(true);
-        } */
 
         #endregion
 
@@ -92,14 +84,6 @@ namespace PUN {
             // will be used to load or not the read value
             Global.GlobalVars.Continue = true;
         }
-        public void StartSinglePlayer() {
-            PhotonNetwork.OfflineMode = true;
-            PhotonNetwork.JoinRandomRoom();
-            PhotonNetwork.LoadLevel("Quentin5");
-        }
-        public void ExitGame() {
-            Application.Quit();
-        }
     #endregion
     
     #region MonoBehaviourPunCallbacks Callbacks
@@ -119,19 +103,13 @@ namespace PUN {
         isConnecting = false;
         Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
     }
-    public override void OnJoinRandomFailed(short returnCode, string message)
-    {
-        Debug.Log("PUN Basics Tutorial/Launcher:OnJoinRandomFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom");
-
-        // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
-        PhotonNetwork.CreateRoom(null, new RoomOptions {MaxPlayers = maxPlayersPerRoom});
-    }
 
     public override void OnCreatedRoom() {
         PhotonNetwork.LoadLevel("Quentin5");
     }
     public override void OnJoinedRoom()
     {
+        PhotonNetwork.NickName = Environment.UserName;
         /*Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
         if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
         {
@@ -141,11 +119,10 @@ namespace PUN {
             // Load the Room Level.
             // PhotonNetwork.LoadLevel("Room for 1");
             PhotonNetwork.LoadLevel("Quentin5");
-        }*/
+        }
     }
 
     #endregion
 
     }
-}
-}
+}*/

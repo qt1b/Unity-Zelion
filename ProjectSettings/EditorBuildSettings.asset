@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Quentin5.unity
     guid: 5238cd3574f514d6aa75b2298def5e78
+  - enabled: 1
+    path: Assets/Scenes/Lobby.unity
+    guid: 113557aef667e463fa9052a6da631efe
   m_configObjects: {}
