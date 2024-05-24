@@ -9,6 +9,7 @@ namespace UI {
     {
         public TMP_Text TimerText;
         void Awake() {
+            GlobalVars.GameOverCount += 1;
             TimerText.text = $"Time elapsed {UIOperations.FormatTime()}.\n"+
                              $"Number of deaths : {GlobalVars.DeathCount}" +
                              $"Number of Game Overs : {GlobalVars.GameOverCount}"+
@@ -23,6 +24,7 @@ namespace UI {
             SceneManager.LoadScene(0);
         }
         public void ExitGame() {
+            PhotonNetwork.Disconnect();
             Application.Quit();
         }
     }
