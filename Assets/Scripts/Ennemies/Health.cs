@@ -43,7 +43,6 @@ namespace Ennemies {
                 this._hp = (uint)(short)stream.ReceiveNext();
             }
         }
-
         public void TakeDamages(uint damage){
             if (damage >= _hp) {
                 //GetComponent<PhotonView>().RPC("SpawCollectiblesRPC", RpcTarget.AllBuffered);
@@ -53,7 +52,6 @@ namespace Ennemies {
             StartCoroutine(ChangeColorWait(new Color(1, 0.3f, 0.3f, 1), 0.5f)); // red with transparency
             // must add here some code to change the color for some frames: that way we will see when we make damages to an enemy/object
         }
-
         public void Heal(uint heal)
         {
             if (heal + _hp >= maxHealth)
@@ -65,9 +63,14 @@ namespace Ennemies {
         }
         // sync every function from the die function
         private void Die() {
-            GetComponent<PhotonView>().RPC("DieRPC", RpcTarget.AllBuffered);
+            PhotonNetwork.Destroy(this.gameObject);
+            //GetComponent<PhotonView>().RPC("DieRPC", RpcTarget.AllBuffered);
+            CollectibleDrop.Activate(maxHealth,gameObject.transform.position);
         }
-
+        IEnumerator DestroyAfterSecs(float secs) {
+            yield return new WaitForSeconds(secs);
+            PhotonNetwork.Destroy(gameObject);
+        }
         /*[PunRPC]
         private void NetworkDestroy(float time = 0f)
         {
@@ -75,22 +78,19 @@ namespace Ennemies {
         } */
 
         [PunRPC]
-        private void DieRPC() {
+        public void DieRPC() {
             if (gameObject.TryGetComponent(out Collider2D collider2D)) {
                 collider2D.enabled = false;
             }
             if (gameObject.TryGetComponent(out Animator animator)) {
-                animator.SetTrigger(Death);
+                animator.SetBool(Death,true);
             }
-            CollectibleDrop.Activate(maxHealth,gameObject.transform.position); // error here ?
-            Destroy(gameObject,deathDuration);
+            StartCoroutine(DestroyAfterSecs(deathDuration));
         }
-
         [PunRPC]
-        private void ChangeColorWaitRpc(Color color,float time) {
+        public void ChangeColorWaitRpc(Color color,float time) {
             StartCoroutine(ChangeColorWait(color, time));
         }
-
         IEnumerator ChangeColorWait(Color color, float time) {
             Color baseColor = _spriteRenderer.color;
             ChangeColorClientRpc(color);
@@ -106,7 +106,6 @@ namespace Ennemies {
         void ChangeColorClientRpc(Color color) {
             _spriteRenderer.color = color;
         }
-
         /*
         void SpawnCollectibles() {
             GetComponent<PhotonView>().RPC("SpawCollectiblesRPC", RpcTarget.AllBuffered);

@@ -3,14 +3,17 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using Bars;
+using ExitGames.Client.Photon;
 using Global;
 using Interfaces;
+using Photon.PhotonRealtime.Code;
 using Photon.PhotonUnityNetworking.Code;
 using UI;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Weapons;
+using Object = System.Object;
 
 namespace Player {
 	public class Player : MonoBehaviourPunCallbacks, IHealth {
@@ -105,7 +108,7 @@ namespace Player {
 		private StaminaBar _staminaBar;
 		private ManaBar _manaBar;
 		private Renderer _renderer;
-
+		private readonly UnityEngine.Object _arrowPrefab = Resources.Load("Prefabs/Projectiles/Arrow");
 		#endregion
 
 		#region Cached Values
@@ -119,6 +122,10 @@ namespace Player {
 		private static readonly int AimingBomb = Animator.StringToHash("AimingBomb");
 		private static readonly int AimingBow = Animator.StringToHash("AimingBow");
 
+		#endregion
+
+		#region Network Callback References
+		private byte NetworkArrowSpawnRef = 245;
 		#endregion
 
 		#region Player Save management
@@ -307,6 +314,15 @@ namespace Player {
 		}
 		#endregion
 		#region MonoBehaviour Callbacks
+		public void OnEvent(EventData photonEvent) {
+			if (photonEvent.Code == NetworkArrowSpawnRef ) {
+				object[] data = (object[]) photonEvent.CustomData;
+				GameObject arrow = (GameObject) Instantiate(_arrowPrefab, (Vector3) data[0], (Quaternion) data[1]);
+				arrow.GetComponent<Projectile>().SetVelocity((Vector3)data[2]);
+				PhotonView photonView = arrow.GetComponent<PhotonView>();
+				photonView.ViewID = (int) data[3];
+			}
+		}
 		// no callbacks in the player script
 		#endregion
 		// they may overlap
@@ -406,28 +422,42 @@ namespace Player {
 			yield return new WaitForSeconds(SwordAttackCooldown / GlobalVars.PlayerSpeed);
 			_canSwordAttack = true;
 		}
-
 		IEnumerator ShootArrow() {
 			_canShootArrow = false;
-			//if (IsServer)
-			SpawnArrowServer(GetMouseRelativePos());
-			//else
-			//  SpawnArrowServerRPC(GetMouseRelativePos());
-			//StartCoroutine(ChangeColorWait(new Color(1, 1, 0, 0.8f), 0.2f));
+			Vector3 pos = GetMouseRelativePos();
+			float teta = Mathf.Atan(pos.y / pos.x) * 180 / Mathf.PI - (pos.x > 0 ? 90 : -90);
+			Quaternion rot = Quaternion.Euler(0f, 0f, teta);
+			SpawnArrowCustomCall(pos,rot);
 			yield return new WaitForSeconds(_bowCooldown / GlobalVars.PlayerSpeed);
 			_canShootArrow = true;
 		}
 
-		void SpawnArrowServer(Vector3 mousePos) {
-			Vector3 pos = mousePos;
-			float teta = Mathf.Atan(pos.y / pos.x) * 180 / Mathf.PI - (pos.x > 0 ? 90 : -90);
-			Quaternion rot = Quaternion.Euler(0f, 0f, teta);
-			var obj = PhotonNetwork.Instantiate("Prefabs/Projectiles/Arrow", transform.position + pos, rot);
-			obj.GetComponent<Projectile>().SetVelocity(pos, GlobalVars.PlayerSpeed);
-			//obj.GetComponent<NetworkObject>().Spawn(true);
-		}
+		private void SpawnArrowCustomCall(Vector3 mousepos, Quaternion rotation) {
+			GameObject arrow = (GameObject)Instantiate(_arrowPrefab,transform.position+mousepos,rotation);
+			arrow.GetComponent<Projectile>().SetVelocity(mousepos);
+			PhotonView photonView = arrow.GetComponent<PhotonView>();
+			if (PhotonNetwork.AllocateViewID(photonView)) {
+				object[] data = new object[] {
+					arrow.transform.position, arrow.transform.rotation, mousepos, photonView.ViewID
+				};
 
-		// first throws the bomb, and then instanciates the poison bomb
+				RaiseEventOptions raiseEventOptions = new RaiseEventOptions {
+					Receivers = ReceiverGroup.Others,
+					CachingOption = EventCaching.AddToRoomCache
+				};
+
+				SendOptions sendOptions = new SendOptions {
+					Reliability = true
+				};
+
+				PhotonNetwork.RaiseEvent(NetworkArrowSpawnRef, data, raiseEventOptions, sendOptions);
+			}
+			else {
+				Debug.LogError("Failed to allocate a ViewId.");
+				Destroy(arrow);
+			}
+		}
+		// first throws the bomb, and then instantiates the poison bomb
 		IEnumerator ThrowPoisonBomb() {
 			_canThrowPoisonBomb = false;
 			Vector3 mousePosition = Input.mousePosition;
@@ -497,21 +527,40 @@ namespace Player {
 		// TODO: change to 
 		public void GameOver() {
 			isDead = true;
-			_renderer.enabled = false;
+			if (GlobalVars.PlayerList.Any(p => !p.isDead)) {
+				if (Camera.main is { } cam) {
+					cam.GetComponent<CameraWork>()._player = GlobalVars.PlayerList.First(p => !p.isDead);
+				}
+				else Debug.LogError("CAMERA.main is null => no camera found ???");
+			}
+			// no more players are alive, game over screen and return to the title screen
+			else {
+				// all players SHOULD follow the scene transition, and go to game over screen
+                PhotonNetwork.LoadLevel("GameOver");
+			}
+
 			// display a indicative text
 
 			// should be used in case where all players are dead and do not decide to replay
 			// PUN.GameManager.Instance.LeaveRoom();
 		}
 
+		public void Revive() {
+			isDead = false;
+			if (Camera.main is { } cam) {
+				cam.GetComponent<CameraWork>()._player = this; //LocalPlayerInstance.GetComponent<Player>();
+			}
+			else Debug.LogError("CAMERA.main is null => no camera found ???");
+		}
+
 		IEnumerator ChangeColorWait(Color color, float time) {
 			Color baseColor = _renderer.material.color;
 			_colorAcc += 1;
-			photonView.RPC("ChangeColorClientRpc", RpcTarget.AllBuffered, baseColor, color);
+			photonView.RPC("ChangeColorClientRpc", RpcTarget.AllBuffered, color);
 			yield return new WaitForSeconds(time);
 			_colorAcc -= 1;
 			if (_colorAcc == 0) {
-				photonView.RPC("ChangeColorClientRpc", RpcTarget.AllBuffered, baseColor, Color.white);
+				photonView.RPC("ChangeColorClientRpc", RpcTarget.AllBuffered, Color.white);
 			}
 			else if (baseColor != Color.white) photonView.RPC("ChangeColorClientRpc", RpcTarget.AllBuffered, baseColor);
 		}

@@ -1,3 +1,4 @@
+using Photon.PhotonUnityNetworking.Code;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -34,6 +35,7 @@ namespace UI {
         }
 
         public void MainMenu(){
+            PhotonNetwork.Disconnect();
             SceneManager.LoadScene(0);
             GameIsPaused = false;
         }

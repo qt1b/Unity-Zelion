@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -17,34 +18,28 @@ namespace Player {
     {
         #region Private Fields
 
+        // the player to follow. Set to public because it must change in case of gameOver
+        [DoNotSerialize]
+        public Player _player;
         [Tooltip("The multiplier applied to the player's")]
         [SerializeField]
         private float distance = 2.0f;
-        
         [Tooltip("Set this as false if a component of a prefab being instanciated by Photon Network, and manually call OnStartFollowing() when and if needed.")]
         [SerializeField]
         private bool followOnStart = false;
-
         [Tooltip("The Smoothing for the camera to follow the target")]
         [SerializeField]
         private float smoothSpeed = 0.125f;
-        
         // velocity for Vector3.SmoothDamp
         private Vector3 _velocity = Vector3.zero;
-        
         // cached transform of the camera
         private Transform _cameraTransform;
-        
         // cached player, to get the value of its change vector
-        private Player _player;
-
         // maintain a flag internally to reconnect if target is lost or camera is switched
         bool _isFollowing;
-        
         #endregion
 
         #region MonoBehaviour Callbacks
-
         /// <summary>
         /// MonoBehaviour method called on GameObject by Unity during initialization phase
         /// </summary>

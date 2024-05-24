@@ -1032,8 +1032,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PUN.PUN.Launcher, Assembly-CSharp
+      - m_Target: {fileID: 35823808}
+        m_TargetAssemblyTypeName: UI.TitleScreen, Assembly-CSharp
         m_MethodName: StartSinglePlayer
         m_Mode: 1
         m_Arguments:

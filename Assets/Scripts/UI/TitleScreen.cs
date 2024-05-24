@@ -1,4 +1,5 @@
 using System;
+using Global;
 using Photon.PhotonRealtime.Code;
 using Photon.PhotonUnityNetworking.Code;
 using UnityEditor.Rendering;
@@ -9,8 +10,9 @@ namespace UI {
 	public class TitleScreen : MonoBehaviour {
 		public void StartSinglePlayer() {
 			PhotonNetwork.OfflineMode = true;
-			PhotonNetwork.CreateRoom(null, new RoomOptions {MaxPlayers = 1});
+			PhotonNetwork.JoinRandomOrCreateRoom();
 			PhotonNetwork.NickName = Environment.UserName;
+			PhotonNetwork.GameVersion = GlobalVars.GameVersion;
 			PhotonNetwork.LoadLevel("Quentin5");
 		}
 		public void ExitGame() {

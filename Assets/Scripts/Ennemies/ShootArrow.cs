@@ -28,7 +28,7 @@ namespace Ennemies {
                 Mathf.Atan(direction.y / direction.x) * 180 / Mathf.PI + (direction.x >= 0 ? 90 : -90));
             var arr = Instantiate(arrowRef[arrowIndex], initialPos - direction * startDistance, rot);
             var projectile = arr.GetComponent<Projectile>();
-            projectile.SetVelocity(-direction, 1);
+            projectile.SetVelocity(-direction);
             projectile.speed = arrowSpeed;
         }
     }
