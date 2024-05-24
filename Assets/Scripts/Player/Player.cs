@@ -428,12 +428,13 @@ namespace Player {
 			Vector3 pos = GetMouseRelativePos();
 			float teta = Mathf.Atan(pos.y / pos.x) * 180 / Mathf.PI - (pos.x > 0 ? 90 : -90);
 			Quaternion rot = Quaternion.Euler(0f, 0f, teta);
-			SpawnArrowCustomCall(pos,rot);
+			GameObject arrow = PhotonNetwork.Instantiate("Prefabs/Projectiles/Arrow",transform.position+pos,rot);
+			arrow.GetComponent<Projectile>().SetVelocity(pos);
 			yield return new WaitForSeconds(_bowCooldown / GlobalVars.PlayerSpeed);
 			_canShootArrow = true;
 		}
 
-		private void SpawnArrowCustomCall(Vector3 mousepos, Quaternion rotation) {
+		/* private void SpawnArrowCustomCall(Vector3 mousepos, Quaternion rotation) {
 			GameObject arrow = (GameObject)Instantiate(_arrowPrefab,transform.position+mousepos,rotation);
 			arrow.GetComponent<Projectile>().SetVelocity(mousepos);
 			PhotonView photonView = arrow.GetComponent<PhotonView>();
@@ -457,7 +458,7 @@ namespace Player {
 				Debug.LogError("Failed to allocate a ViewId.");
 				Destroy(arrow);
 			}
-		}
+		}*/
 		// first throws the bomb, and then instantiates the poison bomb
 		IEnumerator ThrowPoisonBomb() {
 			_canThrowPoisonBomb = false;

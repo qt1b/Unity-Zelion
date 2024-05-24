@@ -6,7 +6,7 @@ using Unity.Netcode;
 using UnityEngine;
 
 namespace Weapons {
-    public class Projectile : MonoBehaviourPun {
+    public class Projectile : MonoBehaviourPunCallbacks {
         public float speed = 30f;
         public Vector3 Direction { get; set; } = Vector3.zero;
         public uint damage = 3;
@@ -25,10 +25,14 @@ namespace Weapons {
         }
 
         public void SetVelocity(Vector3 givenDirection) {
+            photonView.RPC("SetVelocityRPC",RpcTarget.AllBuffered,givenDirection);
+        }
+
+        [PunRPC]
+        public void SetVelocityRPC(Vector3 givenDirection) {
             Direction = givenDirection;
             _myRigidBody.velocity = Direction * (speed * 0.2f * Global.GlobalVars.PlayerSpeed);
         }
-
         // may be destroyed on every instance ?
         IEnumerator DestroyAfterSecs(float secs) {
             yield return new WaitForSeconds(secs);

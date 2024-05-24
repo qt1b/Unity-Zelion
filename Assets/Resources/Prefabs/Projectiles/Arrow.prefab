@@ -66,8 +66,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 0.0041999817, y: 0.0037499666, z: 0}
-    m_Extent: {x: 1.5041, y: 1.24825, z: 0}
+    m_Center: {x: -0.00050002337, y: -0.00059998035, z: 0}
+    m_Extent: {x: 1.506, y: 1.2541, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -97,7 +97,6 @@ GameObject:
   - component: {fileID: 8005479345053348494}
   - component: {fileID: -5511050927933620603}
   - component: {fileID: -8936296847988955135}
-  - component: {fileID: 2046190323365394860}
   m_Layer: 0
   m_Name: Arrow
   m_TagString: Projectile
@@ -373,24 +372,7 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents:
-  - {fileID: 2046190323365394860}
+  ObservedComponents: []
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &2046190323365394860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1893994839326115280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
