@@ -1,6 +1,7 @@
 using System;
 using Global;
 using Photon.PhotonUnityNetworking.Code;
+using Photon.PhotonUnityNetworking.Demos.PunBasics_Tutorial.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -27,6 +28,8 @@ namespace UI {
 		public void MainMenu(){
 			PhotonNetwork.Disconnect();
 			SceneManager.LoadScene(0);
+			Destroy(Player.Player.LocalPlayerInstance);
+			Player.Player.LocalPlayerInstance = null;
 		}
 		public void ExitGame() {
 			PhotonNetwork.Disconnect();
