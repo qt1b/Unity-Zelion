@@ -1,25 +1,29 @@
+using Global;
 using Photon.PhotonUnityNetworking.Code;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace UI {
     public class GameOverMenu : MonoBehaviour
     {
+        public TMP_Text TimerText;
+        void Awake() {
+            TimerText.text = $"Time elapsed {UIOperations.FormatTime()}.\n"+
+                             $"Number of deaths : {GlobalVars.DeathCount}" +
+                             $"Number of Game Overs : {GlobalVars.GameOverCount}"+
+                             $"Number of players : {GlobalVars.NbrOfPlayers}";
+        }
+        // WARING : play From Last Checkpoint !
+        public void PlayAgain() {
+            PhotonNetwork.LoadLevel("Quentin5");
+        }
         public void MainMenu(){
             PhotonNetwork.Disconnect();
             SceneManager.LoadScene(0);
         }
-        
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
+        public void ExitGame() {
+            Application.Quit();
         }
     }
 }

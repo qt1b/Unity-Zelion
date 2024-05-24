@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon;
@@ -10,18 +9,13 @@ using Player = Photon.PhotonRealtime.Code.Player;
 namespace PUN {
 	public class GameManager : MonoBehaviourPunCallbacks {
 		#region Public Fields
-		
 		public static GameManager Instance;
-		
-		//[Tooltip("The prefab to use for representing the player")]
-		//public GameObject playerPrefab; 
-		
 		#endregion
 
 		#region MonoBehoviour
 		private void Start() {
 			Instance = this;
-			GameObject playerPrefab = Resources.Load<GameObject>("RoguePUN");
+			GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Player/Player");
 			if (playerPrefab == null)
 			{
 				Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'",this);
@@ -42,7 +36,6 @@ namespace PUN {
 			}
 		}
 		#endregion
-		
 		#region Photon Callbacks
 		/*
 		/// <summary>

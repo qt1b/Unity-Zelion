@@ -7,7 +7,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
-using Player = Photon.PhotonRealtime.Code.Player;
 
 namespace PUN {
 	public class Lobby : MonoBehaviourPunCallbacks {
@@ -21,6 +20,10 @@ namespace PUN {
 		public GameObject BeforeLobby;
 		public GameObject InsideLobby;
 		#endregion
+
+		#region Private Fields
+		private string _roomName;
+		#endregion
 		#region MonoBehaviour
 		private void Awake() {
 			PhotonNetwork.AutomaticallySyncScene = true;
@@ -33,7 +36,6 @@ namespace PUN {
 		#region Public Functions
 		public static string GenerateRoomName() {
 			string roomName = Random.Range(0,10000).ToString("0000");
-			GlobalVars.RoomName = roomName;
 			Debug.Log(roomName);
 			return roomName;
 		}
@@ -44,13 +46,13 @@ namespace PUN {
 		}
 		// TODO : fix the bug that requires us to click on the button two times to create a room
 		public void CreateRoom() {
-			GenerateRoomName();
-			Debug.Log("trying to join room, id:"+GlobalVars.RoomName);
-			PhotonNetwork.CreateRoom(GlobalVars.RoomName,new RoomOptions(){MaxPlayers = 4});
+			_roomName = GenerateRoomName();
+			Debug.Log("trying to join room, id:"+_roomName);
+			PhotonNetwork.CreateRoom(_roomName,new RoomOptions(){MaxPlayers = 4});
 		}
 		public void LoadTitleScreen() {
 			PhotonNetwork.Disconnect();
-			SceneManager.LoadScene("TitleScene5PUN");
+			SceneManager.LoadScene(0);
 		}
 		public void StartGameMulti() {
 			if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) PhotonNetwork.LoadLevel("Quentin5");
@@ -105,6 +107,7 @@ namespace PUN {
 			CreateRoom();
 		}
 
+		// allows us to change something when on player joins the room
 		public override void OnPlayerEnteredRoom(Photon.PhotonRealtime.Code.Player player) {
 			Debug.Log("Other players joined the room.");
 			if (PhotonNetwork.IsMasterClient) {
