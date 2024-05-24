@@ -22,6 +22,8 @@ namespace UI {
         public void MainMenu(){
             PhotonNetwork.Disconnect();
             SceneManager.LoadScene(0);
+            Destroy(Player.Player.LocalPlayerInstance);
+            Player.Player.LocalPlayerInstance = null;
         }
         public void ExitGame() {
             PhotonNetwork.Disconnect();
