@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+using Player = Photon.PhotonRealtime.Code.Player;
 
 namespace PUN {
 	public class Lobby : MonoBehaviourPunCallbacks {
@@ -71,6 +72,9 @@ namespace PUN {
 
 		public override void OnCreatedRoom() {
 			Debug.Log($"created room with id:{PhotonNetwork.CurrentRoom.Name}");
+			StartGameButton.gameObject.SetActive(true);
+			StartGameButton.GetComponentInChildren<TextMeshProUGUI>().text =
+				$"Start a {PhotonNetwork.CurrentRoom.PlayerCount} player game";
 		}
 
 		public override void OnJoinedRoom() {
@@ -98,6 +102,14 @@ namespace PUN {
 			Debug.Log("PUN Basics Tutorial/Launcher:OnCreateRoomFailed() was called by PUN. Retrying...");
 			Debug.Log($"return code:{returnCode}, message:{message}");
 			CreateRoom();
+		}
+
+		public override void OnPlayerEnteredRoom(Photon.PhotonRealtime.Code.Player player) {
+			Debug.Log("Other players joined the room.");
+			if (PhotonNetwork.IsMasterClient) {
+				StartGameButton.GetComponentInChildren<TextMeshProUGUI>().text =
+					$"Start a {PhotonNetwork.CurrentRoom.PlayerCount} player game";
+			}
 		}
 
 		// public override void OnConnectedToMaster() { }
