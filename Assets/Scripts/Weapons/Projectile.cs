@@ -1,20 +1,21 @@
+using System;
+using System.Collections;
 using Interfaces;
+using Photon.PhotonUnityNetworking.Code;
 using Unity.Netcode;
 using UnityEngine;
 
 namespace Weapons {
-    public class Projectile : NetworkBehaviour {
+    public class Projectile : MonoBehaviourPunCallbacks {
         public float speed = 30f;
         public Vector3 Direction { get; set; } = Vector3.zero;
-        public float ControlSpeed { get; set; } = 1f;
         public uint damage = 3;
         Rigidbody2D _myRigidBody;
 
-        // DOES NOT DESTROY CORRECTLY
         void Awake() {
             _myRigidBody = GetComponent<Rigidbody2D>();
             // some arrows are not destroying ???
-            DestroyGameObj(4f);
+            StartCoroutine(DestroyAfterSecs(4f));
             /*
          if (IsServer) {
             myRigidBody.Sleep();
@@ -23,19 +24,29 @@ namespace Weapons {
             // _healthBar = GameObject.FindGameObjectWithTag($"PlayerHealth").GetComponent<HealthBar>();
         }
 
-        public void SetVelocity(Vector3 givenDirection, float givenControlSpeed) {
-            Direction = givenDirection;
-            ControlSpeed = givenControlSpeed;
-            _myRigidBody.velocity = Direction * (speed * 0.2f * ControlSpeed);
+        public void SetVelocity(Vector3 givenDirection) {
+            photonView.RPC("SetVelocityRPC",RpcTarget.AllBuffered,givenDirection);
         }
 
+        [PunRPC]
+        public void SetVelocityRPC(Vector3 givenDirection) {
+            Direction = givenDirection;
+            _myRigidBody.velocity = Direction * (speed * 0.2f * Global.GlobalVars.PlayerSpeed);
+        }
+        // may be destroyed on every instance ?
+        IEnumerator DestroyAfterSecs(float secs) {
+            yield return new WaitForSeconds(secs);
+            PhotonNetwork.Destroy(gameObject);
+        }
         
         void OnTriggerEnter2D(Collider2D other) {
-            if (other.gameObject.TryGetComponent(out IHealth health)) {
+            if (photonView.IsMine && other.gameObject.TryGetComponent(out IHealth health)) {
                 health.TakeDamages(damage);
             }
             _myRigidBody.velocity = Vector3.zero;
-            DestroyGameObj(.2f);
+            StartCoroutine(DestroyAfterSecs(.2f));
+            //PhotonNetwork.Destroy(gameObject);
+            //DestroyGameObj();
         }
 
         // does not really work, is it bc it needs a rigidbody ?
@@ -44,23 +55,19 @@ namespace Weapons {
             if (other.gameObject.TryGetComponent(out IHealth health))
                 health.TakeDamages(damage);
             _myRigidBody.velocity = Vector3.zero;
-            DestroyGameObj(.2f);
+            StartCoroutine(DestroyAfterSecs(.2f));
+            //PhotonNetwork.Destroy(gameObject);
+            //DestroyGameObj();
         }
 
-        private void DestroyGameObj(float time = 0f) {
-            if (IsServer) {
-                DestroyServer(time);
-            }
-            else DestroyServerRPC(time);
+        private void DestroyGameObj() {
+            StartCoroutine(DestroyAfterSecs(.2f));
+            //GetComponent<PhotonView>().RPC("NetworkDestroy", RpcTarget.AllBuffered);
         }
 
-        private void DestroyServer(float time = 0f) {
-            Destroy(gameObject,time);
-        }
-
-        [ServerRpc]
-        private void DestroyServerRPC(float time = 0f) {
-            DestroyServer(time);
+        [PunRPC]
+        private void NetworkDestroy() {
+            PhotonNetwork.Destroy(this.gameObject);
         }
     }
 }

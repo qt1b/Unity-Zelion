@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace NavMeshPlus.Extensions
+namespace Plugins.NavMeshPlus_master.NavMeshComponents.Scripts
 {
     public class NavMeshBuilderState: IDisposable
     {

@@ -1,11 +1,12 @@
 using System.Collections;
 using Ennemies;
+using Photon.PhotonUnityNetworking.Code;
 using UnityEngine;
 
 namespace Weapons {
     public class PoisonZone : MonoBehaviour {
         public uint damage = 1;
-        public float radius = 1.3f; // is 2.5 but the poison zone's scale is 2
+        private float radius = 1.75f; // is 2.5 but the poison zone's scale is 2
         public float timeBetweenHits = .5f;
         public float duration = 5f;
         float _remaining;
@@ -20,7 +21,7 @@ namespace Weapons {
             while (_currentRemaining >= 0) {
                 yield return new WaitForSeconds(_currentTimeBetweenHits);
                 _currentRemaining -= _currentTimeBetweenHits;
-                DamageObjects();
+                if (gameObject.GetPhotonView().IsMine ) DamageObjects();
             }
             DestroyObject();
         }

@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using NavMeshPlus.Extensions;
 
-namespace NavMeshPlus.Components
+namespace Plugins.NavMeshPlus_master.NavMeshComponents.Scripts
 {
     [ExecuteInEditMode]
     [AddComponentMenu("Navigation/Navigation ModifierVolume", 31)]

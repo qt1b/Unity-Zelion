@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Events {
-    public class BeatEnnemies : MonoBehaviour, IEvent{
+    public class BeatEnnemies : MonoBehaviour, IEvent {
         public IAction Action;
         [FormerlySerializedAs("Radius")] public float radius = 10f;
 
@@ -13,7 +13,6 @@ namespace Events {
             StartCoroutine(BackgroundCheck());
         }
 
-        // Update is called once per frame
         IEnumerator BackgroundCheck()
         {
             while (!CheckCond()) {

@@ -6,9 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/TitleScene2.unity
-    guid: 89848f6dc550341b197ceaa3d1ceaa31
+    path: Assets/Scenes/TitleScene5PUN.unity
+    guid: 61835da44f81f40ba8ee26604646cfea
   - enabled: 1
-    path: Assets/Scenes/Quentin2.unity
-    guid: a4d0b6aaf782a450396dfb93cfc1f643
+    path: Assets/Scenes/Quentin5.unity
+    guid: 5238cd3574f514d6aa75b2298def5e78
+  - enabled: 1
+    path: Assets/Scenes/Lobby.unity
+    guid: 113557aef667e463fa9052a6da631efe
   m_configObjects: {}

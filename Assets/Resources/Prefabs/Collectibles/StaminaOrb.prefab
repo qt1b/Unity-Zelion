@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -2351584525041445863}
   - component: {fileID: 1871516520544736517}
   - component: {fileID: 2620646126341435876}
+  - component: {fileID: 5024042486119964580}
   m_Layer: 0
   m_Name: StaminaOrb
   m_TagString: Untagged
@@ -120,7 +121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6636d6bafad745668eb1ecb6635ff9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealValue: 5
 --- !u!58 &2620646126341435876
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -156,6 +156,28 @@ CircleCollider2D:
   m_Offset: {x: -0.0073975623, y: 0.009673893}
   serializedVersion: 2
   m_Radius: 0.122442335
+--- !u!114 &5024042486119964580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3839636712523994979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &8730642724992978944
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,8 +244,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.008900017, y: -0.00064998865, z: 0}
-    m_Extent: {x: 0.99979997, y: 1.0020499, z: 0}
+    m_Center: {x: 0.00069999695, y: -0.005799979, z: 0}
+    m_Extent: {x: 1.003, y: 1.004, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0

@@ -1,31 +1,25 @@
-using Unity.Netcode;
+using Photon.PhotonUnityNetworking.Code;
 using UnityEngine;
 
 namespace Collectibles {
-    public class Hearts : NetworkBehaviour {
-        private uint healValue = 4;
-        // private Collider2D _collider2D;
-
+    public class Hearts: MonoBehaviour {
+        private uint HealValue = 4;
         private void OnTriggerEnter2D(Collider2D other) {
             if (other.gameObject.TryGetComponent(out Player.Player player)) {
-                player.Heal(healValue);
-                DestroyGameObj();
+                player.Heal(HealValue);
+                if (this.GetComponent<PhotonView>().IsMine) {
+                    PhotonNetwork.Destroy(this.gameObject);
+                }
+                else GetComponent<PhotonView>().RPC("NetworkDestroy", RpcTarget.AllBuffered);
             }
         }
-        private void DestroyGameObj(float time = 0f) {
-            if (IsServer) {
-                DestroyServer(time);
+
+        [PunRPC]
+        private void NetworkDestroy()
+        {
+            if (this.GetComponent<PhotonView>().IsMine && PhotonNetwork.IsConnected) {
+                PhotonNetwork.Destroy(this.gameObject);
             }
-            else DestroyServerRpc(time);
-        }
-
-        private void DestroyServer(float time = 0f) {
-            Destroy(gameObject,time);
-        }
-
-        [ServerRpc]
-        private void DestroyServerRpc(float time = 0f) {
-            DestroyServer(time);
         }
     }
 }
