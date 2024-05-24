@@ -30,9 +30,10 @@ namespace PUN {
 			{
 				if (global::Player.Player.LocalPlayerInstance == null)
 				{
+					Global.GlobalVars.TimeStartedAt = DateTime.Now;
 					Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
 					// we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-					PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
+					PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity, 0);
 				}
 				else
 				{
@@ -43,7 +44,7 @@ namespace PUN {
 		#endregion
 		
 		#region Photon Callbacks
-
+		/*
 		/// <summary>
 		/// Called when the local player left the room. We need to load the launcher scene.
 		/// </summary>
@@ -51,7 +52,7 @@ namespace PUN {
 		{
 			SceneManager.LoadScene(0);
 		}
-		
+		// are not being used ? idk
 		public override void OnPlayerEnteredRoom(Photon.PhotonRealtime.Code.Player other)
 		{
 			Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
@@ -75,7 +76,6 @@ namespace PUN {
 				LoadArena();
 			}
 		}
-		
 		#endregion
 
 		#region Public Methods
@@ -86,7 +86,6 @@ namespace PUN {
 		}
 
 		#endregion
-		
 		#region Private Methods
 		void LoadArena()
 		{
@@ -99,7 +98,7 @@ namespace PUN {
 			// to modify this for Zelion
 			//PhotonNetwork.LoadLevel("Room for " + PhotonNetwork.CurrentRoom.PlayerCount);
 			PhotonNetwork.LoadLevel("Quentin5");
-		}
+		} */
 
 		#endregion
 	}

@@ -14,6 +14,7 @@ namespace Global {
 		// static
 		public static readonly string SavePath = "Zelion.sav";
 		public static readonly string SaveLookupPath = "Assets/Resources/SaveLookupTable.csv";
+		public static DateTime TimeStartedAt;
 		// not to be synced, maybe to put in player ?
 		public static List<Player.Player> PlayerList = new List<Player.Player>();
 		public static int PlayerId;

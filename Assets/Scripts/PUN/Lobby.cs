@@ -42,6 +42,7 @@ namespace PUN {
 			Debug.Log("trying to join room, id:"+RoomIdInput.text);
 			PhotonNetwork.JoinRoom(RoomIdInput.text);
 		}
+		// TODO : fix the bug that requires us to click on the button two times to create a room
 		public void CreateRoom() {
 			GenerateRoomName();
 			Debug.Log("trying to join room, id:"+GlobalVars.RoomName);

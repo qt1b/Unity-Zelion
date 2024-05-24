@@ -394,7 +394,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1000000
+  m_Mass: 0.0001
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 0
@@ -935,8 +935,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 0.0022499561, y: 0.00084996223, z: 0}
-    m_Extent: {x: 5.4963503, y: 5.50025, z: 0}
+    m_Center: {x: 0.0011000633, y: 0.004099846, z: 0}
+    m_Extent: {x: 5.5013, y: 5.5035, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0

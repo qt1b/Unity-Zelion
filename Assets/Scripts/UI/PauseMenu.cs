@@ -22,7 +22,6 @@ namespace UI {
                 }
             }
         }
-
         public void Resume(){
             gameObjectUI.SetActive(false);
             Time.timeScale = 1f;
