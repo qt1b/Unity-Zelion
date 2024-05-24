@@ -19,8 +19,9 @@ namespace UI {
 			Application.Quit();
 		}
 
-		public void SetContinue() => Global.GlobalVars.Continue = true;
-		public void NewGame() => Global.GlobalVars.Continue = false;
+		// now unused, as the save will only be used for checkpoints
+		//public void SetContinue() => Global.GlobalVars.Continue = true;
+		//public void NewGame() => Global.GlobalVars.Continue = false;
 
 		public void LoadLobby() {
 			SceneManager.LoadScene("Scenes/Lobby");

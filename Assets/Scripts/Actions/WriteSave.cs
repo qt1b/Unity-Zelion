@@ -8,7 +8,7 @@ using UnityEngine;
 using File = UnityEngine.Windows.File;
 
 namespace Actions {
-	public class WriteSave: MonoBehaviourPunCallbacks {
+	public class WriteSave: MonoBehaviourPunCallbacks, IAction {
 		public byte SaveID;
 
 		public void Activate() {

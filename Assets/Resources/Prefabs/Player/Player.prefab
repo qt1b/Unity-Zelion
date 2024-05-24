@@ -283,7 +283,7 @@ GameObject:
   - component: {fileID: 1786769269898683356}
   - component: {fileID: 6127966832259076807}
   m_Layer: 0
-  m_Name: RoguePUN
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -394,7 +394,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.0001
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 0
@@ -935,8 +935,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 0.00020003319, y: -0.0012497902, z: 0}
-    m_Extent: {x: 5.4994, y: 5.49475, z: 0}
+    m_Center: {x: 0.0030999184, y: -0.0020999908, z: 0}
+    m_Extent: {x: 5.4983, y: 5.4941, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0

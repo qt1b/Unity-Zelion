@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
+using Actions;
 using Bars;
 using ExitGames.Client.Photon;
 using Global;
@@ -151,7 +152,10 @@ namespace Player {
 				if (args.Length != 11)
 					throw new ArgumentException("the save lookup table is not formatted as expected; saveID=" + saveID);
 				else {
-					Actions.Teleport.Activate(gameObject, new Vector3(int.Parse(args[0]), int.Parse(args[1]), 0f));
+					// should work ? may be better to use transforms manually
+					Vector3 pos =  new Vector3(int.Parse(args[0]), int.Parse(args[1]), 0f);
+					gameObject.transform.position = pos;
+					Camera.main.transform.position = pos;
 					_healthBar.ChangeMaxValue(uint.Parse(args[2]));
 					_staminaBar.ChangeMaxValue(uint.Parse(args[3]));
 					_manaBar.ChangeMaxValue(uint.Parse(args[4]));
@@ -168,11 +172,13 @@ namespace Player {
 		}
 
 		#endregion
-
 		#region MonoBehaviour
 
 		void Awake() {
-			if (!photonView.IsMine) return;
+			GlobalVars.PlayerList.Add(this);
+			if (!photonView.IsMine) {
+				return;
+			}
 			// #Important
 			// used in GameManager.cs: we keep track of the localPlayer instance to prevent instantiation when levels are synchronized
 			Player.LocalPlayerInstance = this.gameObject;
@@ -210,18 +216,19 @@ namespace Player {
 				// else saveID = 0;
 			}
 			// else is already set by master client
-			
 			// to remove later
 			saveID = 1;
 			LoadSave();
-			GlobalVars.PlayerList.Add(this);
 		}
 
 		/// <summary>
 		/// MonoBehaviour method called on GameObject by Unity during initialization phase.
 		/// </summary>
 		void Start() {
-			if (!photonView.IsMine) return;
+			if (!photonView.IsMine) {
+				// this.enabled = false;
+				return;
+			}
 			if (Camera.main is { } mainCamera && mainCamera.GetComponent<CameraWork>() is { } cameraWork) {
 				cameraWork.OnStartFollowing();
 			}
@@ -315,6 +322,7 @@ namespace Player {
 		}
 		#endregion
 		#region MonoBehaviour Callbacks
+		/* // is not being used anymore, did not really work
 		public void OnEvent(EventData photonEvent) {
 			if (photonEvent.Code == NetworkArrowSpawnRef ) {
 				object[] data = (object[]) photonEvent.CustomData;
@@ -323,7 +331,7 @@ namespace Player {
 				PhotonView photonView = arrow.GetComponent<PhotonView>();
 				photonView.ViewID = (int) data[3];
 			}
-		}
+		} */
 		// no callbacks in the player script
 		#endregion
 		// they may overlap
@@ -332,7 +340,7 @@ namespace Player {
 			// like color
 			// float oldVal = GlobalVars.PlayerSpeed.Value;
 			GlobalVars.PlayerSpeed = 0.5f;
-			_animator.speed = GlobalVars.PlayerSpeed; // to remove if only slowing down ennemies
+			_animator.speed = GlobalVars.PlayerSpeed; // to remove if only slowing down enemies
 			_slowdownAcc += 1;
 			yield return new WaitForSeconds(duration);
 			_slowdownAcc -= 1;
@@ -567,7 +575,7 @@ namespace Player {
 			else if (baseColor != Color.white) photonView.RPC("ChangeColorClientRpc", RpcTarget.AllBuffered, baseColor);
 		}
 
-		// may obviously not work, we'll try
+		// must be changed to float values for the RPC to work
 		[PunRPC]
 		void ChangeColorClientRpc(Color color) {
 			// cannot manage to make it an effect on top of the sprite
@@ -579,6 +587,7 @@ namespace Player {
 #region Code TrashBin, some scraps that can be useful later in developement
 
 /* #region IPunObservable implementation
+ // does not work because bars are not set for every player
 void Photon.Pun.IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
 {
     if (stream.IsWriting)
