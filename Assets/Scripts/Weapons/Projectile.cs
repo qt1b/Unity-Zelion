@@ -36,7 +36,7 @@ namespace Weapons {
         }
         
         void OnTriggerEnter2D(Collider2D other) {
-            if (other.gameObject.TryGetComponent(out IHealth health)) {
+            if (photonView.IsMine && other.gameObject.TryGetComponent(out IHealth health)) {
                 health.TakeDamages(damage);
             }
             _myRigidBody.velocity = Vector3.zero;

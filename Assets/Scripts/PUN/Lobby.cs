@@ -38,28 +38,20 @@ namespace PUN {
 		}
 		public void JoinRoom() {
 			if (RoomIdInput.text.Length != 4) return;
-			Debug.Log($"joining room with id:{RoomIdInput.text}");
+			Debug.Log("trying to join room, id:"+RoomIdInput.text);
 			PhotonNetwork.JoinRoom(RoomIdInput.text);
-			BeforeLobby.SetActive(false);
-			InsideLobby.SetActive(true);
-			RoomNameText.SetText($"RoomID:{PhotonNetwork.CurrentRoom.Name}");
-			StartGameButton.gameObject.SetActive(false);
 		}
 		public void CreateRoom() {
 			GenerateRoomName();
+			Debug.Log("trying to join room, id:"+GlobalVars.RoomName);
 			PhotonNetwork.CreateRoom(GlobalVars.RoomName,new RoomOptions(){MaxPlayers = 4});
-			BeforeLobby.SetActive(false);
-			InsideLobby.SetActive(true);
-			Debug.Log($"creating room with id:{PhotonNetwork.CurrentRoom.Name}");
-			RoomNameText.SetText($"RoomID:{PhotonNetwork.CurrentRoom.Name}");
-			StartGameButton.gameObject.SetActive(true);
 		}
 		public void LoadTitleScreen() {
 			PhotonNetwork.Disconnect();
 			SceneManager.LoadScene("TitleScene5PUN");
 		}
 		public void StartGameMulti() {
-			if (PhotonNetwork.IsConnected) PhotonNetwork.LoadLevel("Quentin5");
+			if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) PhotonNetwork.LoadLevel("Quentin5");
 		}
 		public void ExitLobby() {
 			Debug.Log("exiting lobby");
@@ -76,11 +68,23 @@ namespace PUN {
 		#endregion
 
 		#region Pun Callbacks
+
+		public override void OnCreatedRoom() {
+			Debug.Log($"created room with id:{PhotonNetwork.CurrentRoom.Name}");
+		}
+
 		public override void OnJoinedRoom() {
 			PhotonNetwork.NickName = Environment.UserName;
 			// assigns the right id to the right player
 			GlobalVars.PlayerId = PhotonNetwork.CurrentRoom.PlayerCount-1;
+			Debug.Log($"joining room with id:{RoomIdInput.text}");
 			Debug.Log("Joined Room : current player ID:"+GlobalVars.PlayerId);
+			PhotonNetwork.JoinRoom(RoomIdInput.text);
+			BeforeLobby.SetActive(false);
+			InsideLobby.SetActive(true);
+			RoomNameText.SetText($"RoomID:{PhotonNetwork.CurrentRoom.Name}");
+			if (PhotonNetwork.IsMasterClient) StartGameButton.gameObject.SetActive(true);
+			else StartGameButton.gameObject.SetActive(false);
 		}
 		public override void OnJoinRoomFailed(short returnCode, string message)
 		{

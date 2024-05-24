@@ -9,15 +9,17 @@ using UnityEngine.Serialization;
 namespace Ennemies {
     public class Health : MonoBehaviourPunCallbacks, IPunObservable, IHealth
     {
-        [FormerlySerializedAs("MaxHealth")] public uint maxHealth;
-        // to NetworkVariable ??
+        #region Fields
+        public uint maxHealth;
         private uint _hp;
         public float deathDuration;
         private SpriteRenderer _spriteRenderer; // to change color when hit
         private uint _colorAcc;
         private static readonly int Death = Animator.StringToHash("Death");
+        #endregion
 
-        void Start()
+        #region MonoBehaviours
+        void Awake()
         {
             if (maxHealth > short.MaxValue) {
                 // is necessary to avoid errors while syncing hp's value
@@ -27,8 +29,10 @@ namespace Ennemies {
             _hp = maxHealth;
             _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         }
-        
-         void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        #endregion
+
+        #region Photon Observable
+        void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
             if (stream.IsWriting)
             {
@@ -43,6 +47,8 @@ namespace Ennemies {
                 this._hp = (uint)(short)stream.ReceiveNext();
             }
         }
+        #endregion
+
         public void TakeDamages(uint damage){
             if (damage >= _hp) {
                 //GetComponent<PhotonView>().RPC("SpawCollectiblesRPC", RpcTarget.AllBuffered);
@@ -63,19 +69,21 @@ namespace Ennemies {
         }
         // sync every function from the die function
         private void Die() {
-            PhotonNetwork.Destroy(this.gameObject);
-            //GetComponent<PhotonView>().RPC("DieRPC", RpcTarget.AllBuffered);
+            //photonView.RPC("NetworkDestroy",RpcTarget.MasterClient);
+            GetComponent<PhotonView>().RPC("DieRPC", RpcTarget.AllBuffered);
+            // does not need to be master client ??
             CollectibleDrop.Activate(maxHealth,gameObject.transform.position);
         }
         IEnumerator DestroyAfterSecs(float secs) {
             yield return new WaitForSeconds(secs);
             PhotonNetwork.Destroy(gameObject);
         }
-        /*[PunRPC]
-        private void NetworkDestroy(float time = 0f)
-        {
-            Destroy(this.gameObject,time);
-        } */
+
+        private void NetworkDestroy() {
+            if (this.GetComponent<PhotonView>().IsMine && PhotonNetwork.IsConnected) {
+                StartCoroutine(DestroyAfterSecs(deathDuration));
+            }            //PhotonNetwork.Destroy(this.gameObject);
+        }
 
         [PunRPC]
         public void DieRPC() {
@@ -85,7 +93,7 @@ namespace Ennemies {
             if (gameObject.TryGetComponent(out Animator animator)) {
                 animator.SetBool(Death,true);
             }
-            StartCoroutine(DestroyAfterSecs(deathDuration));
+            NetworkDestroy();
         }
         [PunRPC]
         public void ChangeColorWaitRpc(Color color,float time) {

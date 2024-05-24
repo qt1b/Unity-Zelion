@@ -108,7 +108,7 @@ namespace Player {
 		private StaminaBar _staminaBar;
 		private ManaBar _manaBar;
 		private Renderer _renderer;
-		private readonly UnityEngine.Object _arrowPrefab = Resources.Load("Prefabs/Projectiles/Arrow");
+		private GameObject _arrowPrefab;
 		#endregion
 
 		#region Cached Values
@@ -187,6 +187,7 @@ namespace Player {
 			_swordHitzone = transform.GetChild(0).gameObject;
 			_swordHitzone.SetActive(false);
 			_poisonZoneRef = Resources.Load<GameObject>("Prefabs/Projectiles/PoisonZone");
+			_arrowPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/Arrow");
 			_arrowPreviewRef = transform.GetChild(1).gameObject;
 			_poisonZonePreviewRef = transform.GetChild(2).gameObject;
 			_healthBar = FindObjectOfType<HealthBar>();
@@ -471,7 +472,7 @@ namespace Player {
 				pos = _maxBombDist * pos.normalized;
 			}
 			/*GameObject pZone =*/
-			Instantiate(_poisonZoneRef, new Vector3(position.x + pos.x, position.y + pos.y, 0f), new Quaternion());
+			PhotonNetwork.Instantiate("Prefabs/Projectiles/PoisonZone", new Vector3(position.x + pos.x, position.y + pos.y, 0f), new Quaternion());
 			yield return new WaitForSeconds(_poisonBombCooldown / GlobalVars.PlayerSpeed);
 			_canThrowPoisonBomb = true;
 		}
