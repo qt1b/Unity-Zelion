@@ -16,3 +16,7 @@
 - tutorial for new players
 - make it impossible for new players to join while playing
 - fixes for photon
+
+# "useless" scripts to keep just in case for reference
+- PlayerNameInputField
+- Launcher
