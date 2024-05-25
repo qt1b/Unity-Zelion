@@ -9,30 +9,21 @@ using Player = Photon.PhotonRealtime.Code.Player;
 namespace PUN {
 	public class GameManager : MonoBehaviourPunCallbacks {
 		#region Public Fields
-		public static GameManager Instance;
+		// public static GameManager Instance;
 		#endregion
 
 		#region MonoBehoviour
 		private void Start() {
-			Instance = this;
-			GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Player/Player");
-			if (playerPrefab == null)
-			{
-				Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'",this);
-			}
-			else
-			{
-				if (global::Player.Player.LocalPlayerInstance == null)
-				{
+			// Instance = this;
+			//GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Player/Player");
+			if (global::Player.Player.LocalPlayerInstance == null) {
 					Global.GlobalVars.TimeStartedAt = DateTime.Now;
 					Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
 					// we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-					PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity, 0);
-				}
-				else
-				{
-					Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
-				} 
+					PhotonNetwork.Instantiate("Prefabs/Player/Player", Vector3.zero, Quaternion.identity, 0);
+			}
+			else {
+				Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
 			}
 		}
 		#endregion
