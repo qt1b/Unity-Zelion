@@ -468,7 +468,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialSpeed: 24
   speedModifier: 1
-  saveID: 0
   change: {x: 0, y: 0}
   notNullChange: {x: 0, y: 0}
   isDead: 0

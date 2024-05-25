@@ -23,6 +23,7 @@ namespace PUN {
 
 		#region Private Fields
 		private string _roomName;
+		private bool _creatingRoom;
 		#endregion
 		#region MonoBehaviour
 		private void Awake() {
@@ -46,6 +47,7 @@ namespace PUN {
 		}
 		// TODO : fix the bug that requires us to click on the button two times to create a room
 		public void CreateRoom() {
+			_creatingRoom = true;
 			_roomName = GenerateRoomName();
 			Debug.Log("trying to join room, id:"+_roomName);
 			PhotonNetwork.CreateRoom(_roomName,new RoomOptions(){MaxPlayers = 4});
@@ -72,6 +74,11 @@ namespace PUN {
 		#endregion
 
 		#region Pun Callbacks
+
+		// dirty but works
+		public override void OnConnectedToMaster() {
+			if (_creatingRoom) CreateRoom();
+		}
 
 		public override void OnCreatedRoom() {
 			Debug.Log($"created room with id:{PhotonNetwork.CurrentRoom.Name}");

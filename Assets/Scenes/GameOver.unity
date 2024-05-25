@@ -1090,6 +1090,7 @@ GameObject:
   - component: {fileID: 5837068784531384608}
   - component: {fileID: 5980493970665457866}
   - component: {fileID: 7009012343343498565}
+  - component: {fileID: 7009012343343498566}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1802,6 +1803,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimerText: {fileID: 1607417296}
+--- !u!114 &7009012343343498566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2531776036236295695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!222 &7912111272875837591
 CanvasRenderer:
   m_ObjectHideFlags: 0
