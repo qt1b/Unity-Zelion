@@ -25,7 +25,6 @@ namespace Player {
 
 		public float initialSpeed = 7f;
 		[DoNotSerialize] public float speedModifier = 1;
-		[DoNotSerialize] public byte saveID;
 		[DoNotSerialize] public Vector2 change = Vector2.zero;
 		[DoNotSerialize] public Vector2 notNullChange = new Vector2(0, 1);
 		[DoNotSerialize] public bool isDead;
@@ -126,7 +125,7 @@ namespace Player {
 		#endregion
 
 		#region Network Callback References
-		private byte NetworkArrowSpawnRef = 245;
+		// private byte NetworkArrowSpawnRef = 245;
 		#endregion
 
 		#region Player Save management
@@ -144,13 +143,13 @@ namespace Player {
  * 9 : Slowdown
  * 10: TimeFreeze
  */
-		private void LoadSave() {
+		public void LoadSave() {
 			// Reads from the save Id common to all instances
-			var lookupTable = File.ReadLines(GlobalVars.SaveLookupPath).Skip(1).ToArray();
-			if (lookupTable.Length > saveID) {
-				string[] args = lookupTable[saveID].Split(';');
+			var lookupTable = GlobalVars.SaveLookupData.Split('\n').Skip(1).ToArray();
+			if (lookupTable.Length > GlobalVars.SaveId) {
+				string[] args = lookupTable[GlobalVars.SaveId].Split(';');
 				if (args.Length != 11)
-					throw new ArgumentException("the save lookup table is not formatted as expected; saveID=" + saveID);
+					throw new ArgumentException("the save lookup table is not formatted as expected; saveID=" + GlobalVars.SaveId);
 				else {
 					// should work ? may be better to use transforms manually
 					Vector3 pos =  new Vector3(int.Parse(args[0]), int.Parse(args[1]), 0f);
@@ -165,10 +164,10 @@ namespace Player {
 					_dashUnlocked = args[8] == "1";
 					_slowdownUnlocked = args[9] == "1";
 					_timeFreezeUnlocked = args[10] == "1";
-					Debug.Log("Loaded Save successfully, saveID=" + saveID);
+					Debug.Log("Loaded Save successfully, saveID=" + GlobalVars.SaveId);
 				}
 			}
-			else throw new NotImplementedException("Unsupported saveID : " + saveID);
+			else throw new NotImplementedException("Unsupported saveID : " + GlobalVars.SaveId);
 		}
 
 		#endregion
@@ -200,24 +199,6 @@ namespace Player {
 			_staminaBar = FindObjectOfType<StaminaBar>();
 			_manaBar = FindObjectOfType<ManaBar>();
 			_renderer = gameObject.GetComponent<Renderer>();
-
-
-			if (GlobalVars.Continue && PhotonNetwork.IsMasterClient) {
-				// find if save exists, if it does loads it
-				if (File.Exists(GlobalVars.SavePath) &&
-				    File.OpenRead(GlobalVars.SavePath).ReadByte() is not -1 and /*is*/ { } readByte) {
-					Debug.Log("reading from save...");
-					saveID = (byte)readByte;
-				}
-				else {
-					Debug.Log("Writing new save ...");
-					Global.SaveManager.Save(); // writes 0 if it does not exist
-				}
-				// else saveID = 0;
-			}
-			// else is already set by master client
-			// to remove later
-			saveID = 1;
 			LoadSave();
 		}
 

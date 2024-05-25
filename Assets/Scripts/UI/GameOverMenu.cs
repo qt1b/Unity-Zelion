@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace UI {
-    public class GameOverMenu : MonoBehaviour
+    public class GameOverMenu : MonoBehaviourPunCallbacks
     {
         public TMP_Text TimerText;
         void Awake() {
@@ -17,7 +17,17 @@ namespace UI {
         }
         // WARING : play From Last Checkpoint !
         public void PlayAgain() {
+            photonView.RPC("PlayAgainRPC",RpcTarget.MasterClient);
+        }
+        [PunRPC]
+        public void PlayAgainRPC() {
+            photonView.RPC("LoadDataRPC",RpcTarget.AllBuffered);
             PhotonNetwork.LoadLevel("Quentin5");
+        }
+        [PunRPC]
+        public void LoadDataRPC() {
+            // GlobalVars.SaveId = 0;
+            Player.Player.LocalPlayerInstance.GetComponent<Player.Player>().LoadSave();
         }
         public void MainMenu(){
             PhotonNetwork.Disconnect();

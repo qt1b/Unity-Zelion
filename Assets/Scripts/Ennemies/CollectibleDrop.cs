@@ -23,6 +23,8 @@ namespace Ennemies {
                     Quaternion.identity);
             }
         }
+        
+        // TODO : IMPLEMENT https://forum.unity.com/threads/how-to-prevent-particle-colliders-from-spawning-on-top-of-each-other.410855/
         /*
          public static List<GameObject> SpawnList(uint value,Vector3 position) {
             // uint nbr = value / 40;

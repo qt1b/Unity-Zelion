@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 // add settings ? if needed ?
 namespace UI {
-	public class GameClearMenu : MonoBehaviour {
+	public class GameClearMenu : MonoBehaviourPunCallbacks {
 		public TMP_Text TimerText;
 		void Awake() {
 			TimerText.text = $"You cleared the game in {UIOperations.FormatTime()}.\n"+
@@ -18,12 +18,22 @@ namespace UI {
 		}
 		// WARNING : play From The Beginning !
 		public void PlayAgain() {
+			photonView.RPC("PlayAgainRPC",RpcTarget.MasterClient);
+		}
+		[PunRPC]
+		public void PlayAgainRPC() {
 			GlobalVars.SaveId = 0; // from the beginning
 			GlobalVars.DeathCount = 0;
 			GlobalVars.NbrOfPlayers = (byte)PhotonNetwork.CurrentRoom.PlayerCount;
 			GlobalVars.GameOverCount = 0;
 			GlobalVars.TimeStartedAt = DateTime.Now;
+			photonView.RPC("LoadDataRPC",RpcTarget.AllBuffered);
 			PhotonNetwork.LoadLevel("Quentin5");
+		}
+		[PunRPC]
+		public void LoadDataRPC() {
+			// GlobalVars.SaveId = 0;
+			Player.Player.LocalPlayerInstance.GetComponent<Player.Player>().LoadSave();
 		}
 		public void MainMenu(){
 			PhotonNetwork.Disconnect();

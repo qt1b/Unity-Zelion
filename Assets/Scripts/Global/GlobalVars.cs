@@ -9,14 +9,16 @@ namespace Global {
 		// to sync over network
 		public static float PlayerSpeed = 1;
 		public static float EnnemySpeed = 1;
-		public static byte SaveId = 0;
+		public static byte SaveId = 1; // useful for debugging, will be 0 in the end
 		public static short DeathCount = 0;
 		public static short GameOverCount = 0;
+		// the INITIAL player count
 		public static byte NbrOfPlayers = 1;
 		// public static string RoomName; // not sure that is useful tbh
 		// static
-		public static readonly string SavePath = "Zelion.sav";
-		public static readonly string SaveLookupPath = "Assets/Resources/SaveLookupTable.csv";
+		public static readonly string SaveLookupData = "X Position; Y Position; Life; Stamina; Mana; Unlocked Sword; Unlocked Bow; Unlocked Poison; Unlocked Dash; Unlocked Slowdown; Unlocked TimeFreeze\n" +
+		                                               "0;0;6;2;2;0;0;0;0;0;0\n" +
+		                                               "0;0;12;16;16;1;1;1;1;1;1\n";
 		public static DateTime TimeStartedAt;
 		// not to be synced, maybe to put in player ?
 		public static List<Player.Player> PlayerList = new List<Player.Player>();
