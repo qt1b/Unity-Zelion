@@ -30,6 +30,7 @@ namespace UI {
 			Player.Player.LocalPlayerInstance.GetComponent<Player.Player>().LoadSave();
 		}
 		public void MainMenu(){
+			PhotonNetwork.Destroy(Player.Player.LocalPlayerInstance);
 			PhotonNetwork.Disconnect();
 			SceneManager.LoadScene(0);
 			Destroy(Player.Player.LocalPlayerInstance);

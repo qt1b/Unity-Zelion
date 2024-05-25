@@ -16,9 +16,15 @@ namespace Global {
 		public static byte NbrOfPlayers = 1;
 		// public static string RoomName; // not sure that is useful tbh
 		// static
+		// better to convert it into a 2-dimensional array if we're doing it like this ?
 		public static readonly string SaveLookupData = "X Position; Y Position; Life; Stamina; Mana; Unlocked Sword; Unlocked Bow; Unlocked Poison; Unlocked Dash; Unlocked Slowdown; Unlocked TimeFreeze\n" +
 		                                               "0;0;6;2;2;0;0;0;0;0;0\n" +
-		                                               "0;0;12;16;16;1;1;1;1;1;1\n";
+		                                               "0;0;12;16;16;1;1;1;1;1;1";
+		// allows us to be sure there is the right amount of data
+		public static readonly string[,] SaveLookupArray = new string[2,11] {
+			{ "0", "0", "6", "2", "2", "0", "0", "0", "0", "0", "0" },
+			{ "0", "0", "12", "16", "16", "1", "1", "1", "1", "1", "1" }
+		};
 		public static DateTime TimeStartedAt;
 		// not to be synced, maybe to put in player ?
 		public static List<Player.Player> PlayerList = new List<Player.Player>();

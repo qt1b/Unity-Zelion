@@ -33,6 +33,7 @@ namespace UI {
             GameIsPaused = true;
         }
         public void MainMenu(){
+            PhotonNetwork.Destroy(Player.Player.LocalPlayerInstance);
             PhotonNetwork.Disconnect();
             SceneManager.LoadScene(0);
             GameIsPaused = false;

@@ -145,6 +145,7 @@ namespace Player {
  */
 		public void LoadSave() {
 			// Reads from the save Id common to all instances
+			/*
 			var lookupTable = GlobalVars.SaveLookupData.Split('\n').Skip(1).ToArray();
 			if (lookupTable.Length > GlobalVars.SaveId) {
 				string[] args = lookupTable[GlobalVars.SaveId].Split(';');
@@ -168,6 +169,23 @@ namespace Player {
 				}
 			}
 			else throw new NotImplementedException("Unsupported saveID : " + GlobalVars.SaveId);
+			*/
+			// ver 2
+			if (GlobalVars.SaveLookupArray.GetLength(0) > GlobalVars.SaveId) {
+				Vector3 pos =  new Vector3(int.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId,0]), int.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId,1]), 0f);
+				gameObject.transform.position = pos;
+				Camera.main.transform.position = new Vector3(pos.x,pos.y,-1f);
+				_healthBar.ChangeMaxValue(uint.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId,2]));
+				_staminaBar.ChangeMaxValue(uint.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId,3]));
+				_manaBar.ChangeMaxValue(uint.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId,4]));
+				_swordUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId,5] == "1";
+				_bowUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId,6] == "1";
+				_poisonUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId,7] == "1";
+				_dashUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId,8] == "1";
+				_slowdownUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId,9] == "1";
+				_timeFreezeUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId,10] == "1";
+				Debug.Log("Loaded Save successfully, saveID=" + GlobalVars.SaveId);
+			}
 		}
 
 		#endregion
