@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Global;
 using Photon.PhotonRealtime.Code;
 using Photon.PhotonUnityNetworking.Code;
@@ -18,6 +20,7 @@ namespace PUN {
 		public TMP_Text RoomNameText;
 		public Button StartGameButton;
 		public GameObject BeforeLobby;
+		public GameObject Loading;
 		public GameObject InsideLobby;
 		#endregion
 
@@ -38,13 +41,15 @@ namespace PUN {
 		#region Public Functions
 		public static string GenerateRoomName() {
 			string roomName = Random.Range(0,10000).ToString("0000");
-			Debug.Log(roomName);
+			//Debug.Log($"generated RoomName:{roomName}");
 			return roomName;
 		}
 		public void JoinRoom() {
-			if (RoomIdInput.text.Length != 4) return;
+			if (RoomIdInput.text.Length != 4 || !RoomIdInput.text.ToCharArray().All(char.IsDigit)) return;
 			Debug.Log("trying to join room, id:"+RoomIdInput.text);
 			PhotonNetwork.JoinRoom(RoomIdInput.text);
+			BeforeLobby.SetActive(false);
+			Loading.SetActive(true);
 		}
 		// TODO : fix the bug that requires us to click on the button two times to create a room
 		public void CreateRoom() {
@@ -52,16 +57,21 @@ namespace PUN {
 			_roomName = GenerateRoomName();
 			Debug.Log("trying to join room, id:"+_roomName);
 			PhotonNetwork.CreateRoom(_roomName,new RoomOptions(){MaxPlayers = 4});
+			BeforeLobby.SetActive(false);
+			Loading.SetActive(true);
 		}
 		public void LoadTitleScreen() {
-			PhotonNetwork.Disconnect();
+			PhotonNetwork.Disconnect(); // should also work without it
 			SceneManager.LoadScene(0);
 		}
 		public void StartGameMulti() {
-			if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) PhotonNetwork.LoadLevel("Quentin5");
+			if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) {
+				PhotonNetwork.CurrentRoom.MaxPlayers = PhotonNetwork.CurrentRoom.PlayerCount;
+				PhotonNetwork.LoadLevel(GlobalVars.FirstLevelName);
+			}
 		}
 		public void ExitLobby() {
-			Debug.Log("exiting lobby");
+			Debug.Log("exiting room");
 			PhotonNetwork.LeaveRoom();
 		}
 
@@ -78,45 +88,50 @@ namespace PUN {
 
 		// dirty but works
 		public override void OnConnectedToMaster() {
+			Debug.Log("Lobby: OnConnectedToMaster");
 			if (_creatingRoom) CreateRoom();
+			else JoinRoom();
 		}
 
 		public override void OnCreatedRoom() {
+			Debug.Log("Lobby: OnCreatedRoom");
 			Debug.Log($"created room with id:{PhotonNetwork.CurrentRoom.Name}");
-			StartGameButton.gameObject.SetActive(true);
-			StartGameButton.GetComponentInChildren<TextMeshProUGUI>().text =
-				$"Start a {PhotonNetwork.CurrentRoom.PlayerCount} player game";
+			_creatingRoom = false;
 		}
 
 		public override void OnJoinedRoom() {
+			Debug.Log("Lobby: OnJoinedRoom");
 			PhotonNetwork.NickName = Environment.UserName;
 			// assigns the right id to the right player
 			GlobalVars.PlayerId = PhotonNetwork.CurrentRoom.PlayerCount-1;
 			Debug.Log($"joining room with id:{RoomIdInput.text}");
 			Debug.Log("Joined Room : current player ID:"+GlobalVars.PlayerId);
 			PhotonNetwork.JoinRoom(RoomIdInput.text);
-			BeforeLobby.SetActive(false);
+			Loading.SetActive(false);
 			InsideLobby.SetActive(true);
 			RoomNameText.SetText($"RoomID:{PhotonNetwork.CurrentRoom.Name}");
-			if (PhotonNetwork.IsMasterClient) StartGameButton.gameObject.SetActive(true);
-			else StartGameButton.gameObject.SetActive(false);
+			StartGameButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
+			StartGameButton.GetComponentInChildren<TextMeshProUGUI>().text =
+				$"Start a {PhotonNetwork.CurrentRoom.PlayerCount} player game";
 		}
 		public override void OnJoinRoomFailed(short returnCode, string message)
 		{
-			Debug.Log("PUN Basics Tutorial/Launcher:OnJoinRandomFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom");
+			Debug.Log("Lobby: OnJoinRoomFailed()");
 			Debug.Log($"return code:{returnCode}, message:{message}");
 			BeforeLobby.SetActive(true);
+			Loading.SetActive(false);
 			InsideLobby.SetActive(false);
 		}
 
 		public override void OnCreateRoomFailed(short returnCode, string message) {
-			Debug.Log("PUN Basics Tutorial/Launcher:OnCreateRoomFailed() was called by PUN. Retrying...");
+			Debug.Log("Lobby: OnCreateRoomFailed(). Retrying...");
 			Debug.Log($"return code:{returnCode}, message:{message}");
 			CreateRoom();
 		}
 
 		// allows us to change something when on player joins the room
 		public override void OnPlayerEnteredRoom(Photon.PhotonRealtime.Code.Player player) {
+			Debug.Log("Lobby: OnPlayerEnteredRoom()");
 			Debug.Log("Other players joined the room.");
 			if (PhotonNetwork.IsMasterClient) {
 				StartGameButton.GetComponentInChildren<TextMeshProUGUI>().text =
@@ -124,7 +139,19 @@ namespace PUN {
 			}
 		}
 
-		// public override void OnConnectedToMaster() { }
 		#endregion
+
+		/*
+		#region Pun RPC
+
+		public void StartGameRPC() {
+			// is not a good idea, could be done from gameManager
+			PhotonNetwork.Instantiate("Prefabs/Player/Player", Vector3.zero, Quaternion.identity);
+			GlobalVars.TimeStartedAt = DateTime.UtcNow;
+			GlobalVars.PlayerList = new List<Player.Player>();
+			GlobalVars.SaveId = 0; // no save if we start from the lobby
+		}
+		#endregion
+		*/
 	}
 }

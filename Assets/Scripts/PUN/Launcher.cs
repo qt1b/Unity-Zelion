@@ -78,12 +78,6 @@ namespace PUN {
                 PhotonNetwork.GameVersion = gameVersion;
             }
         }
-
-        // is not appearing, why ??
-        public void ContinueToTrue() {
-            // will be used to load or not the read value
-            Global.GlobalVars.Continue = true;
-        }
     #endregion
     
     #region MonoBehaviourPunCallbacks Callbacks

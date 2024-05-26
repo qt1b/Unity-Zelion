@@ -16,10 +16,9 @@ namespace UI {
 			button.GetComponent<TMP_Text>().color = new Color(0.2f, 0.2f, 0.2f);
 			// same
 		}
-		
 		public static string FormatTime()
 		{
-			TimeSpan res = DateTime.Now - Global.GlobalVars.TimeStartedAt;
+			TimeSpan res = DateTime.UtcNow - Global.GlobalVars.TimeStartedAt;
 			// idk if the format is valid, may be worth to do some checks to cleanup the output
 			return String.Format("{0:%h} hours {0:%m} minutes and {0:%s} seconds", res);
 			// return res.ToString("hh':'mm':'ss"); // 00:03:48

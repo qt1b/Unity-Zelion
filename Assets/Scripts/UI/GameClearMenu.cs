@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Global;
 using Photon.PhotonUnityNetworking.Code;
 using Photon.PhotonUnityNetworking.Demos.PunBasics_Tutorial.Scripts;
@@ -27,23 +28,26 @@ namespace UI {
 			GlobalVars.DeathCount = 0;
 			GlobalVars.NbrOfPlayers = (byte)PhotonNetwork.CurrentRoom.PlayerCount;
 			GlobalVars.GameOverCount = 0;
-			GlobalVars.TimeStartedAt = DateTime.Now;
-			photonView.RPC("LoadDataRPC",RpcTarget.AllBuffered);
+			GlobalVars.TimeStartedAt = DateTime.UtcNow;
+			// photonView.RPC("LoadDataRPC",RpcTarget.AllBuffered); may not be necessary ??
 			PhotonNetwork.LoadLevel(GlobalVars.FirstLevelName);
 		}
 		[PunRPC]
 		public void LoadDataRPC() {
-			// GlobalVars.SaveId = 0;
-			Player.Player.LocalPlayerInstance.GetComponent<Player.Player>().LoadSave();
+			GlobalVars.SaveId = 0;
+			//Player.Player.LocalPlayerInstance.GetComponent<Player.Player>().LoadSave();
 		}
 		public void MainMenu(){
-			PhotonNetwork.Destroy(Player.Player.LocalPlayerInstance);
+			//PhotonNetwork.Destroy(Player.Player.LocalPlayerInstance);
+			//Player.Player.LocalPlayerInstance = null;
+			//PhotonNetwork.Destroy(Player.Player.LocalPlayerInstance);
+			//Player.Player.LocalPlayerInstance = null;
+			PhotonNetwork.LeaveRoom();
 			PhotonNetwork.Disconnect();
 			SceneManager.LoadScene(0);
-			Destroy(Player.Player.LocalPlayerInstance);
-			Player.Player.LocalPlayerInstance = null;
 		}
 		public void ExitGame() {
+			PhotonNetwork.LeaveRoom();
 			PhotonNetwork.Disconnect();
 			Application.Quit();
 		}

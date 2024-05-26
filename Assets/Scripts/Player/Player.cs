@@ -98,11 +98,11 @@ namespace Player {
 
 		#region Private References
 
+		private Animator _animator;
 		private Rigidbody2D _myRigidBody;
 		private GameObject _arrowPreviewRef;
 		private GameObject _poisonZoneRef;
 		private GameObject _poisonZonePreviewRef;
-		private Animator _animator;
 		private GameObject _swordHitzone;
 		private HealthBar _healthBar;
 		private StaminaBar _staminaBar;
@@ -192,8 +192,11 @@ namespace Player {
 		#region MonoBehaviour
 
 		void Awake() {
+			//Debug.Log("player awake");
 			GlobalVars.PlayerList.Add(this);
 			if (!photonView.IsMine) {
+				Destroy(gameObject.GetComponentInChildren<Camera>());
+				Debug.Log("player awake - is not mine, return");
 				return;
 			}
 			// #Important
@@ -201,7 +204,8 @@ namespace Player {
 			Player.LocalPlayerInstance = this.gameObject;
 			// #Critical
 			// we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
-			DontDestroyOnLoad(this.gameObject);
+			// for now we don't use it
+			// DontDestroyOnLoad(this.gameObject);
 
 			// initializing all needed references
 			_animator = GetComponent<Animator>();
@@ -218,13 +222,17 @@ namespace Player {
 			_manaBar = FindObjectOfType<ManaBar>();
 			_renderer = gameObject.GetComponent<Renderer>();
 			LoadSave();
+			gameObject.GetComponentInChildren<CameraWork>().OnStartFollowing();
 		}
 
+		/*
 		/// <summary>
 		/// MonoBehaviour method called on GameObject by Unity during initialization phase.
 		/// </summary>
 		void Start() {
+			Debug.Log("player start");
 			if (!photonView.IsMine) {
+				Debug.Log("player start - is not mine, return");
 				// this.enabled = false;
 				return;
 			}
@@ -234,13 +242,18 @@ namespace Player {
 			else {
 				Debug.LogError("<Color=Red><a>Missing</a></Color> CameraWork Component", this);
 			}
-		}
+		} */
 
 		// Update is called once per frame
 		// To Add : Sounds to indicate whether we can use the capacity or not
 		void Update() {
+			// Debug.Log("updating player ...");
 			// && PhotonNetwork.IsConnected is for debugging purposes
 			if ((!photonView.IsMine && PhotonNetwork.IsConnected) || PauseMenu.GameIsPaused) {
+				/*Debug.LogWarning($"Update : Return !! \n" +
+				                 $"photonView.IsMine={photonView.IsMine},\n" +
+				                 $"PhotonNetwork.IsConnected={PhotonNetwork.IsConnected},\n" +
+				                 $"PauseMenu.GameIsPaused={PauseMenu.GameIsPaused}");*/
 				return;
 			}
 			// update with player input
@@ -487,7 +500,8 @@ namespace Player {
 
 		IEnumerator Dash() {
 			// does not execute the dash if the player is not moving
-			if (change.y != 0 || change.x != 0) {
+			// ends up executing it ? why ?
+			if (change != Vector2.zero) {
 				_canDash = false;
 				_isDashing = true;
 				speedModifier = _dashPower;
