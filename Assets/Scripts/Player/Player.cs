@@ -236,6 +236,7 @@ namespace Player {
 			else {
 				Debug.LogError("<Color=Red><a>Missing</a></Color> CameraWork Component", this);
 			}
+			cursorManager = FindObjectOfType<CursorManager>();
 		}
 
 		// Update is called once per frame
@@ -257,6 +258,8 @@ namespace Player {
 				// one attack / 'normal' ability at a time
 				if (_isAimingArrow)
 				{ cursorManager.SetCursor(cursorManager.crosshairTexture, cursorManager.crosshairHotSpot); }   
+				else
+				{ cursorManager.SetCursor(cursorManager.cursorTexture, cursorManager.cursorHotSpot); }
 	
 
 
