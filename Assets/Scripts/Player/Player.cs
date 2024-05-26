@@ -267,16 +267,12 @@ namespace Player {
 				change.Normalize();
 				if (change != Vector2.zero) notNullChange = change;
 				// one attack / 'normal' ability at a time
-				if (_isAimingArrow)
-				{ cursorManager.SetCursor(cursorManager.crosshairTexture, cursorManager.crosshairHotSpot); }   
-				else
-				{ cursorManager.SetCursor(cursorManager.cursorTexture, cursorManager.cursorHotSpot); }
-	
-
-
 				if (_isAimingArrow) {
-					if (!_arrowPreviewRef.activeSelf && _canShootArrow && _staminaBar.CanTakeDamages(2))
+					cursorManager.SetCursor(cursorManager.crosshairTexture, cursorManager.crosshairHotSpot); // is not opti
+					if (!_arrowPreviewRef.activeSelf && _canShootArrow && _staminaBar.CanTakeDamages(2)) {
 						_arrowPreviewRef.SetActive(true);
+					}
+
 					PlacePreviewArrow();
 					if (Input.GetKeyUp(KeyCode.Mouse0)) {
 						if (_canShootArrow && _staminaBar.TryTakeDamages(2)) StartCoroutine(ShootArrow());
@@ -286,57 +282,61 @@ namespace Player {
 						_animator.SetBool(AimingBow, false);
 					}
 				}
-				else if (_isAimingBomb) {
-					if (!_poisonZonePreviewRef.activeSelf && _canThrowPoisonBomb && _manaBar.CanTakeDamages(10))
-						_poisonZonePreviewRef.SetActive(true);
-					PlacePreviewZone();
-					if (Input.GetKeyUp(KeyCode.Mouse1)) {
-						if (_canThrowPoisonBomb && _manaBar.TryTakeDamages(10)) StartCoroutine(ThrowPoisonBomb());
-						_isAimingBomb = false;
-						speedModifier = 1;
-						_animator.SetBool(AimingBomb, false);
-						_poisonZonePreviewRef.SetActive(false);
-					}
-				}
 				else {
-					// the sword has not any cost
-					if (CanSwordAttack && Input.GetKeyDown(KeyCode.Space)) {
-						StartCoroutine(SwordAttack());
-					}
-					else if (CanDash && Input.GetKeyDown(KeyCode.LeftShift) && _staminaBar.TryTakeDamages(10)) {
-						StartCoroutine(Dash());
-					}
-					else if (_bowUnlocked && Input.GetKeyDown(KeyCode.Mouse0)) {
-						_animator.SetBool(AimingBow, true);
-						// bow aiming audio effect
-						_isAimingArrow = true;
-						speedModifier = _attackSpeedNerf;
-						if (_canShootArrow) _arrowPreviewRef.SetActive(true);
-						// PoisonZonePreviewRef.SetActive(true);
-						PlacePreviewArrow();
-						// ArrowPreviewRef.transform.position = transform.position;
-					}
-					// poison zone: audio from the prefab
-					else if (_poisonUnlocked && Input.GetKeyDown(KeyCode.Mouse1)) {
-						_animator.SetBool(AimingBomb, true);
-						// poison aiming audio effect
-						_isAimingBomb = true;
-						speedModifier = _attackSpeedNerf;
-						if (_canThrowPoisonBomb) _poisonZonePreviewRef.SetActive(true);
+					cursorManager.SetCursor(cursorManager.cursorTexture, cursorManager.cursorHotSpot); // same
+					if (_isAimingBomb) {
+						if (!_poisonZonePreviewRef.activeSelf && _canThrowPoisonBomb && _manaBar.CanTakeDamages(10))
+							_poisonZonePreviewRef.SetActive(true);
 						PlacePreviewZone();
+						if (Input.GetKeyUp(KeyCode.Mouse1)) {
+							if (_canThrowPoisonBomb && _manaBar.TryTakeDamages(10)) StartCoroutine(ThrowPoisonBomb());
+							_isAimingBomb = false;
+							speedModifier = 1;
+							_animator.SetBool(AimingBomb, false);
+							_poisonZonePreviewRef.SetActive(false);
+						}
 					}
-					else if (CanSlowDownTime && Input.GetKeyDown(KeyCode.LeftControl) &&
-					         _manaBar.TryTakeDamages(5)) {
-						// slow down audio effect
-						StartCoroutine(SlowDownTimeFor(4f));
-					}
-					// else some visual and/or audio feedback telling us that we can
-					else if (CanTimeFreeze && Input.GetKeyDown(KeyCode.V) && _manaBar.TryTakeDamages(14)) {
-						// time freeze audio effect
-						print("time freeze");
-					}
-					else if (Input.GetKeyDown(KeyCode.M)) {
-						this.TakeDamages(2);
+					else {
+						// the sword has not any cost
+						if (CanSwordAttack && Input.GetKeyDown(KeyCode.Space)) {
+							StartCoroutine(SwordAttack());
+						}
+						else if (CanDash && Input.GetKeyDown(KeyCode.LeftShift) && _staminaBar.TryTakeDamages(10)) {
+							StartCoroutine(Dash());
+						}
+						else if (_bowUnlocked && Input.GetKeyDown(KeyCode.Mouse0)) {
+							_animator.SetBool(AimingBow, true);
+							// bow aiming audio effect
+							_isAimingArrow = true;
+							speedModifier = _attackSpeedNerf;
+							if (_canShootArrow) _arrowPreviewRef.SetActive(true);
+							// PoisonZonePreviewRef.SetActive(true);
+							PlacePreviewArrow();
+							// ArrowPreviewRef.transform.position = transform.position;
+						}
+						// poison zone: audio from the prefab
+						else if (_poisonUnlocked && Input.GetKeyDown(KeyCode.Mouse1)) {
+							_animator.SetBool(AimingBomb, true);
+							// poison aiming audio effect
+							_isAimingBomb = true;
+							speedModifier = _attackSpeedNerf;
+							if (_canThrowPoisonBomb) _poisonZonePreviewRef.SetActive(true);
+							PlacePreviewZone();
+						}
+						else if (CanSlowDownTime && Input.GetKeyDown(KeyCode.LeftControl) &&
+						         _manaBar.TryTakeDamages(5)) {
+							// slow down audio effect
+							StartCoroutine(SlowDownTimeFor(4f));
+						}
+						// else some visual and/or audio feedback telling us that we can
+						else if (CanTimeFreeze && Input.GetKeyDown(KeyCode.V) && _manaBar.TryTakeDamages(14)) {
+							// time freeze audio effect
+							print("time freeze");
+						}
+						// to remove when we have some enemies
+						else if (Input.GetKeyDown(KeyCode.M)) {
+							this.TakeDamages(2);
+						}
 					}
 				}
 			}

@@ -10,25 +10,19 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace UI {
-	public class TitleScreen : MonoBehaviour {
-		// public static GameObject GlobalVarsGo;
-		void Start() {
-			// idk if it even is useful, to try without ?
-			/*if (GlobalVarsGo == null) {
-				GlobalVarsGo = Instantiate(Resources.Load("Prefabs/Player/GlobalVars")) as GameObject;
-				DontDestroyOnLoad(GlobalVarsGo);
-			}*/
-		}
-		public void StartSinglePlayer() {
-			PhotonNetwork.OfflineMode = true;
-			//PhotonNetwork.ConnectUsingSettings();
-			PhotonNetwork.CreateRoom("soloGaming"/*DateTime.UtcNow.ToBinary().ToString()*/);
-			PhotonNetwork.NickName = Environment.UserName;
+	public class TitleScreen : MonoBehaviourPunCallbacks {
+		// or start ?
+		private void Awake() {
+			PhotonNetwork.AutomaticallySyncScene = true;
+			PhotonNetwork.OfflineMode = false;
+			PhotonNetwork.ConnectUsingSettings();
 			PhotonNetwork.GameVersion = GlobalVars.GameVersion;
-			GlobalVars.PlayerList = new List<Player.Player>();
-			GlobalVars.TimeStartedAt = DateTime.UtcNow;
-			PhotonNetwork.LoadLevel(GlobalVars.FirstLevelName);
-			// Player.Player.LocalPlayerInstance = PhotonNetwork.Instantiate("Prefabs/Player/Player",Vector3.zero,Quaternion.identity);
+		}
+
+		private bool _soloPlay = false;
+		public void StartSinglePlayer() {
+			_soloPlay = true;
+			PhotonNetwork.Disconnect();
 		}
 		public void ExitGame() {
 			Application.Quit();
@@ -40,6 +34,19 @@ namespace UI {
 
 		public void LoadLobby() {
 			SceneManager.LoadScene("Scenes/Lobby");
+		}
+
+		public override void OnDisconnected(DisconnectCause cause) {
+			if (_soloPlay) {
+				PhotonNetwork.OfflineMode = true;
+				PhotonNetwork.CreateRoom("soloGaming" /*DateTime.UtcNow.ToBinary().ToString()*/);
+				PhotonNetwork.NickName = Environment.UserName;
+				PhotonNetwork.GameVersion = GlobalVars.GameVersion;
+				GlobalVars.PlayerList = new List<Player.Player>();
+				GlobalVars.TimeStartedAt = DateTime.UtcNow;
+				PhotonNetwork.LoadLevel(GlobalVars.FirstLevelName);
+			}
+			else Awake();
 		}
 	}
 }
