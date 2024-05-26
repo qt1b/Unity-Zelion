@@ -1528,6 +1528,54 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7152390651082286413, guid: da34d019a196ab22f8e31f6bb16d51e4, type: 3}
   m_PrefabInstance: {fileID: 1345084661}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1347181611
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1347181613}
+  - component: {fileID: 1347181612}
+  m_Layer: 0
+  m_Name: CursorManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1347181612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347181611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd5f44bb4e8fe0444817e816791efea0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorTexture: {fileID: 2800000, guid: d961956250a52cf49871077ab85e3e0c, type: 3}
+  cursorHotSpot: {x: 0, y: 0}
+  crosshairTexture: {fileID: 2800000, guid: 4727c174145cd0d458e3207f2dfe2a22, type: 3}
+  crosshairHotSpot: {x: 0, y: 0}
+--- !u!4 &1347181613
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347181611}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.1312366, y: -0.80308384, z: -0.07721957}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1440741228
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -79190,3 +79238,4 @@ SceneRoots:
   - {fileID: 1440741228}
   - {fileID: 1179168601}
   - {fileID: 1073318327}
+  - {fileID: 1347181613}
