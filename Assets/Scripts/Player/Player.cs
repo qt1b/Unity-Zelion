@@ -17,6 +17,8 @@ using Weapons;
 using Object = System.Object;
 
 namespace Player {
+	
+	
 	public class Player : MonoBehaviourPunCallbacks, IHealth {
 		#region Public Fields
 
@@ -190,7 +192,7 @@ namespace Player {
 
 		#endregion
 		#region MonoBehaviour
-
+		public CursorManager cursorManager; 
 		void Awake() {
 			//Debug.Log("player awake");
 			GlobalVars.PlayerList.Add(this);
@@ -264,6 +266,11 @@ namespace Player {
 				change.Normalize();
 				if (change != Vector2.zero) notNullChange = change;
 				// one attack / 'normal' ability at a time
+				if (_isAimingArrow)
+				{ cursorManager.SetCursor(cursorManager.crosshairTexture, cursorManager.crosshairHotSpot); }   
+	
+
+
 				if (_isAimingArrow) {
 					if (!_arrowPreviewRef.activeSelf && _canShootArrow && _staminaBar.CanTakeDamages(2))
 						_arrowPreviewRef.SetActive(true);
