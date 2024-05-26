@@ -223,6 +223,7 @@ namespace Player {
 			_staminaBar = FindObjectOfType<StaminaBar>();
 			_manaBar = FindObjectOfType<ManaBar>();
 			_renderer = gameObject.GetComponent<Renderer>();
+			cursorManager = FindObjectOfType<CursorManager>();
 			LoadSave();
 			gameObject.GetComponentInChildren<CameraWork>().OnStartFollowing();
 		}
@@ -268,6 +269,8 @@ namespace Player {
 				// one attack / 'normal' ability at a time
 				if (_isAimingArrow)
 				{ cursorManager.SetCursor(cursorManager.crosshairTexture, cursorManager.crosshairHotSpot); }   
+				else
+				{ cursorManager.SetCursor(cursorManager.cursorTexture, cursorManager.cursorHotSpot); }
 	
 
 
