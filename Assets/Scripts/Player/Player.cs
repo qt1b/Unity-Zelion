@@ -100,11 +100,11 @@ namespace Player {
 
 		#region Private References
 
+		private Animator _animator;
 		private Rigidbody2D _myRigidBody;
 		private GameObject _arrowPreviewRef;
 		private GameObject _poisonZoneRef;
 		private GameObject _poisonZonePreviewRef;
-		private Animator _animator;
 		private GameObject _swordHitzone;
 		private HealthBar _healthBar;
 		private StaminaBar _staminaBar;
@@ -194,8 +194,11 @@ namespace Player {
 		#region MonoBehaviour
 		public CursorManager cursorManager; 
 		void Awake() {
+			//Debug.Log("player awake");
 			GlobalVars.PlayerList.Add(this);
 			if (!photonView.IsMine) {
+				Destroy(gameObject.GetComponentInChildren<Camera>());
+				Debug.Log("player awake - is not mine, return");
 				return;
 			}
 			// #Important
@@ -203,7 +206,8 @@ namespace Player {
 			Player.LocalPlayerInstance = this.gameObject;
 			// #Critical
 			// we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
-			DontDestroyOnLoad(this.gameObject);
+			// for now we don't use it
+			// DontDestroyOnLoad(this.gameObject);
 
 			// initializing all needed references
 			_animator = GetComponent<Animator>();
@@ -219,14 +223,19 @@ namespace Player {
 			_staminaBar = FindObjectOfType<StaminaBar>();
 			_manaBar = FindObjectOfType<ManaBar>();
 			_renderer = gameObject.GetComponent<Renderer>();
+			cursorManager = FindObjectOfType<CursorManager>();
 			LoadSave();
+			gameObject.GetComponentInChildren<CameraWork>().OnStartFollowing();
 		}
 
+		/*
 		/// <summary>
 		/// MonoBehaviour method called on GameObject by Unity during initialization phase.
 		/// </summary>
 		void Start() {
+			Debug.Log("player start");
 			if (!photonView.IsMine) {
+				Debug.Log("player start - is not mine, return");
 				// this.enabled = false;
 				return;
 			}
@@ -236,16 +245,18 @@ namespace Player {
 			else {
 				Debug.LogError("<Color=Red><a>Missing</a></Color> CameraWork Component", this);
 			}
-			cursorManager = FindObjectOfType<CursorManager>();
-		}
+		} */
 
 		// Update is called once per frame
 		// To Add : Sounds to indicate whether we can use the capacity or not
 		void Update() {
-			
-		
+			// Debug.Log("updating player ...");
 			// && PhotonNetwork.IsConnected is for debugging purposes
 			if ((!photonView.IsMine && PhotonNetwork.IsConnected) || PauseMenu.GameIsPaused) {
+				/*Debug.LogWarning($"Update : Return !! \n" +
+				                 $"photonView.IsMine={photonView.IsMine},\n" +
+				                 $"PhotonNetwork.IsConnected={PhotonNetwork.IsConnected},\n" +
+				                 $"PauseMenu.GameIsPaused={PauseMenu.GameIsPaused}");*/
 				return;
 			}
 			// update with player input
@@ -256,16 +267,12 @@ namespace Player {
 				change.Normalize();
 				if (change != Vector2.zero) notNullChange = change;
 				// one attack / 'normal' ability at a time
-				if (_isAimingArrow)
-				{ cursorManager.SetCursor(cursorManager.crosshairTexture, cursorManager.crosshairHotSpot); }   
-				else
-				{ cursorManager.SetCursor(cursorManager.cursorTexture, cursorManager.cursorHotSpot); }
-	
-
-
 				if (_isAimingArrow) {
-					if (!_arrowPreviewRef.activeSelf && _canShootArrow && _staminaBar.CanTakeDamages(2))
+					cursorManager.SetCursor(cursorManager.crosshairTexture, cursorManager.crosshairHotSpot); // is not opti
+					if (!_arrowPreviewRef.activeSelf && _canShootArrow && _staminaBar.CanTakeDamages(2)) {
 						_arrowPreviewRef.SetActive(true);
+					}
+
 					PlacePreviewArrow();
 					if (Input.GetKeyUp(KeyCode.Mouse0)) {
 						if (_canShootArrow && _staminaBar.TryTakeDamages(2)) StartCoroutine(ShootArrow());
@@ -275,57 +282,61 @@ namespace Player {
 						_animator.SetBool(AimingBow, false);
 					}
 				}
-				else if (_isAimingBomb) {
-					if (!_poisonZonePreviewRef.activeSelf && _canThrowPoisonBomb && _manaBar.CanTakeDamages(10))
-						_poisonZonePreviewRef.SetActive(true);
-					PlacePreviewZone();
-					if (Input.GetKeyUp(KeyCode.Mouse1)) {
-						if (_canThrowPoisonBomb && _manaBar.TryTakeDamages(10)) StartCoroutine(ThrowPoisonBomb());
-						_isAimingBomb = false;
-						speedModifier = 1;
-						_animator.SetBool(AimingBomb, false);
-						_poisonZonePreviewRef.SetActive(false);
-					}
-				}
 				else {
-					// the sword has not any cost
-					if (CanSwordAttack && Input.GetKeyDown(KeyCode.Space)) {
-						StartCoroutine(SwordAttack());
-					}
-					else if (CanDash && Input.GetKeyDown(KeyCode.LeftShift) && _staminaBar.TryTakeDamages(10)) {
-						StartCoroutine(Dash());
-					}
-					else if (_bowUnlocked && Input.GetKeyDown(KeyCode.Mouse0)) {
-						_animator.SetBool(AimingBow, true);
-						// bow aiming audio effect
-						_isAimingArrow = true;
-						speedModifier = _attackSpeedNerf;
-						if (_canShootArrow) _arrowPreviewRef.SetActive(true);
-						// PoisonZonePreviewRef.SetActive(true);
-						PlacePreviewArrow();
-						// ArrowPreviewRef.transform.position = transform.position;
-					}
-					// poison zone: audio from the prefab
-					else if (_poisonUnlocked && Input.GetKeyDown(KeyCode.Mouse1)) {
-						_animator.SetBool(AimingBomb, true);
-						// poison aiming audio effect
-						_isAimingBomb = true;
-						speedModifier = _attackSpeedNerf;
-						if (_canThrowPoisonBomb) _poisonZonePreviewRef.SetActive(true);
+					cursorManager.SetCursor(cursorManager.cursorTexture, cursorManager.cursorHotSpot); // same
+					if (_isAimingBomb) {
+						if (!_poisonZonePreviewRef.activeSelf && _canThrowPoisonBomb && _manaBar.CanTakeDamages(10))
+							_poisonZonePreviewRef.SetActive(true);
 						PlacePreviewZone();
+						if (Input.GetKeyUp(KeyCode.Mouse1)) {
+							if (_canThrowPoisonBomb && _manaBar.TryTakeDamages(10)) StartCoroutine(ThrowPoisonBomb());
+							_isAimingBomb = false;
+							speedModifier = 1;
+							_animator.SetBool(AimingBomb, false);
+							_poisonZonePreviewRef.SetActive(false);
+						}
 					}
-					else if (CanSlowDownTime && Input.GetKeyDown(KeyCode.LeftControl) &&
-					         _manaBar.TryTakeDamages(5)) {
-						// slow down audio effect
-						StartCoroutine(SlowDownTimeFor(4f));
-					}
-					// else some visual and/or audio feedback telling us that we can
-					else if (CanTimeFreeze && Input.GetKeyDown(KeyCode.V) && _manaBar.TryTakeDamages(14)) {
-						// time freeze audio effect
-						print("time freeze");
-					}
-					else if (Input.GetKeyDown(KeyCode.M)) {
-						this.TakeDamages(2);
+					else {
+						// the sword has not any cost
+						if (CanSwordAttack && Input.GetKeyDown(KeyCode.Space)) {
+							StartCoroutine(SwordAttack());
+						}
+						else if (CanDash && Input.GetKeyDown(KeyCode.LeftShift) && _staminaBar.TryTakeDamages(10)) {
+							StartCoroutine(Dash());
+						}
+						else if (_bowUnlocked && Input.GetKeyDown(KeyCode.Mouse0)) {
+							_animator.SetBool(AimingBow, true);
+							// bow aiming audio effect
+							_isAimingArrow = true;
+							speedModifier = _attackSpeedNerf;
+							if (_canShootArrow) _arrowPreviewRef.SetActive(true);
+							// PoisonZonePreviewRef.SetActive(true);
+							PlacePreviewArrow();
+							// ArrowPreviewRef.transform.position = transform.position;
+						}
+						// poison zone: audio from the prefab
+						else if (_poisonUnlocked && Input.GetKeyDown(KeyCode.Mouse1)) {
+							_animator.SetBool(AimingBomb, true);
+							// poison aiming audio effect
+							_isAimingBomb = true;
+							speedModifier = _attackSpeedNerf;
+							if (_canThrowPoisonBomb) _poisonZonePreviewRef.SetActive(true);
+							PlacePreviewZone();
+						}
+						else if (CanSlowDownTime && Input.GetKeyDown(KeyCode.LeftControl) &&
+						         _manaBar.TryTakeDamages(5)) {
+							// slow down audio effect
+							StartCoroutine(SlowDownTimeFor(4f));
+						}
+						// else some visual and/or audio feedback telling us that we can
+						else if (CanTimeFreeze && Input.GetKeyDown(KeyCode.V) && _manaBar.TryTakeDamages(14)) {
+							// time freeze audio effect
+							print("time freeze");
+						}
+						// to remove when we have some enemies
+						else if (Input.GetKeyDown(KeyCode.M)) {
+							this.TakeDamages(2);
+						}
 					}
 				}
 			}
@@ -499,7 +510,8 @@ namespace Player {
 
 		IEnumerator Dash() {
 			// does not execute the dash if the player is not moving
-			if (change.y != 0 || change.x != 0) {
+			// ends up executing it ? why ?
+			if (change != Vector2.zero) {
 				_canDash = false;
 				_isDashing = true;
 				speedModifier = _dashPower;
