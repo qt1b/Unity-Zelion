@@ -18,7 +18,7 @@ using Weapons;
 using Object = System.Object;
 
 namespace Player {
-	public class Player : MonoBehaviourPunCallbacks, IHealth /*, IPunObservable */ {
+	public class Player : MonoBehaviourPunCallbacks, IHealth , IPunObservable {
 		#region Public Fields
 
 		[Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
@@ -176,9 +176,9 @@ namespace Player {
 				Vector3 pos =  new Vector3(int.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId,0]), int.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId,1]), 0f);
 				gameObject.transform.position = pos;
 				Camera.main.transform.position = new Vector3(pos.x,pos.y,-1f);
-				_healthBar.ChangeMaxValue(uint.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId,2]));
-				_staminaBar.ChangeMaxValue(uint.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId,3]));
-				_manaBar.ChangeMaxValue(uint.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId,4]));
+				_healthBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId,2]));
+				_staminaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId,3]));
+				_manaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId,4]));
 				_swordUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId,5] == "1";
 				_bowUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId,6] == "1";
 				_poisonUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId,7] == "1";
@@ -195,8 +195,9 @@ namespace Player {
 		void Awake() {
 			//Debug.Log("player awake");
 			GlobalVars.PlayerList.Add(this);
+			_healthBar = GetComponentInChildren<HealthBar>();
 			if (!photonView.IsMine) {
-				Destroy(gameObject.GetComponentInChildren<Camera>());
+				gameObject.GetComponentInChildren<Camera>().gameObject.SetActive(false);
 				Debug.Log("player awake - is not mine, return");
 				return;
 			}
@@ -218,7 +219,6 @@ namespace Player {
 			_arrowPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/Arrow");
 			_arrowPreviewRef = transform.GetChild(1).gameObject;
 			_poisonZonePreviewRef = transform.GetChild(2).gameObject;
-			_healthBar = FindObjectOfType<HealthBar>();
 			_staminaBar = FindObjectOfType<StaminaBar>();
 			_manaBar = FindObjectOfType<ManaBar>();
 			_renderer = gameObject.GetComponent<Renderer>();
@@ -524,34 +524,46 @@ namespace Player {
 		}
 
 		// ADD SOUNDS HERE
-		public void TakeDamages(uint damage) {
+		public void TakeDamages(ushort damage) {
 			if (_healthBar.TryTakeDamages(damage)) {
 				StartCoroutine(ChangeColorWait(new Color(1f, 0.3f, 0.3f, 0.8f), 0.2f));
+				photonView.RPC("TakeDmgRPC",RpcTarget.OthersBuffered,(short)damage);
 			}
 			else GameOver();
 		}
-		public void Heal(uint heal) {
-			_healthBar.Heal(heal);
+
+		[PunRPC]
+		public void TakeDmgRPC(short damage) {
+			_healthBar.TakeDamages((ushort)damage);
+			StartCoroutine(ChangeColorWait(new Color(1f, 0.3f, 0.3f, 0.8f), 0.2f));
+		}
+		public void Heal(ushort heal) {
+			photonView.RPC("HealRPC",RpcTarget.AllBuffered,(short)heal);
+		}
+		[PunRPC]
+		public void HealRPC(short heal) {
+			_healthBar.Heal((ushort)heal);
 			StartCoroutine(ChangeColorWait(new Color(0.3f, 1f, 0.3f, 0.8f), 0.2f));
 		}
 
+		// these ones are not used over network
 		// maybe change these colors ???
-		public void TakeDamagesStamina(uint damage) {
+		public void TakeDamagesStamina(ushort damage) {
 			_staminaBar.TakeDamages(damage);
 			StartCoroutine(ChangeColorWait(new Color(1f, 0.3f, 0.3f, 0.8f), 0.2f));
 		}
 
-		public void HealStamina(uint heal) {
+		public void HealStamina(ushort heal) {
 			_staminaBar.Heal(heal);
 			StartCoroutine(ChangeColorWait(new Color(0.3f, 1f, 0.3f, 0.8f), 0.2f));
 		}
 
-		public void TakeDamagesMana(uint damage) {
+		public void TakeDamagesMana(ushort damage) {
 			_manaBar.TakeDamages(damage);
 			StartCoroutine(ChangeColorWait(new Color(1f, 0.3f, 0.3f, 0.8f), 0.2f));
 		}
 
-		public void HealMana(uint heal) {
+		public void HealMana(ushort heal) {
 			_manaBar.Heal(heal);
 			StartCoroutine(ChangeColorWait(new Color(0.3f, 1f, 0.3f, 0.8f), 0.2f));
 		}
@@ -559,22 +571,21 @@ namespace Player {
 		// TODO: change to 
 		public void GameOver() {
 			isDead = true;
-			if (GlobalVars.PlayerList.Any(p => !p.isDead)) {
-				if (Camera.main is { } cam) {
-					cam.GetComponent<CameraWork>()._player = GlobalVars.PlayerList.First(p => !p.isDead);
-				}
-				else Debug.LogError("CAMERA.main is null => no camera found ???");
+			// idk if this works
+			if (GlobalVars.PlayerList.Any(p => !p.isDead) && GlobalVars.PlayerList.FirstOrDefault(p=>!p.isDead) is {} player) {
+				player.GetComponent<Camera>().gameObject.SetActive(true);
+				this.GetComponent<Camera>().gameObject.SetActive(false);
 			}
 			// no more players are alive, game over screen and return to the title screen
 			else {
 				// all players SHOULD follow the scene transition, and go to game over screen
-                PhotonNetwork.LoadLevel("GameOver");
+                photonView.RPC("LoadGameOverRPC",RpcTarget.MasterClient);
 			}
+		}
 
-			// display a indicative text
-
-			// should be used in case where all players are dead and do not decide to replay
-			// PUN.GameManager.Instance.LeaveRoom();
+		[PunRPC]
+		public void LoadGameOverRPC() {
+			PhotonNetwork.LoadLevel("GameOver");
 		}
 
 		public void Revive() {
@@ -604,14 +615,14 @@ namespace Player {
 			_renderer.material.SetColor(Color1, color);
 		}
 
-		/*
+		
 		#region IPunObservable implementation
 		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
 			if (stream.IsWriting) {
-				stream.SendNext(Time.timeScale);
+				stream.SendNext((short)_healthBar.curValue);
 			}
 			else {
-				Time.timeScale = (float)stream.ReceiveNext();
+				_healthBar.curValue = (ushort)(short)stream.ReceiveNext();
 			}
 		}
 		#endregion*/

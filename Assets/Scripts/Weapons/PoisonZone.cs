@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Weapons {
     public class PoisonZone : MonoBehaviour {
-        public uint damage = 1;
+        public ushort damage = 1;
         private float radius = 1.75f; // is 2.5 but the poison zone's scale is 2
         public float timeBetweenHits = .5f;
         public float duration = 5f;

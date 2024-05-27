@@ -44,12 +44,12 @@ namespace Ennemies {
             else
             {
                 // Network player, receive data
-                this._hp = (uint)(short)stream.ReceiveNext();
+                this._hp = (ushort)(short)stream.ReceiveNext();
             }
         }
         #endregion
 
-        public void TakeDamages(uint damage){
+        public void TakeDamages(ushort damage){
             if (damage >= _hp) {
                 //GetComponent<PhotonView>().RPC("SpawCollectiblesRPC", RpcTarget.AllBuffered);
                 Die();
@@ -58,7 +58,7 @@ namespace Ennemies {
             StartCoroutine(ChangeColorWait(new Color(1, 0.3f, 0.3f, 1), 0.5f)); // red with transparency
             // must add here some code to change the color for some frames: that way we will see when we make damages to an enemy/object
         }
-        public void Heal(uint heal)
+        public void Heal(ushort heal)
         {
             if (heal + _hp >= maxHealth)
                 _hp = maxHealth;

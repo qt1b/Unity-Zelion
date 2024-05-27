@@ -9,7 +9,7 @@ namespace Weapons {
     public class Projectile : MonoBehaviourPunCallbacks {
         public float speed = 30f;
         public Vector3 Direction { get; set; } = Vector3.zero;
-        public uint damage = 3;
+        public ushort damage = 3;
         Rigidbody2D _myRigidBody;
 
         void Awake() {

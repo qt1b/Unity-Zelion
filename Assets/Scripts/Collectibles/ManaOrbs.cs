@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Collectibles {
     public class ManaOrbs : MonoBehaviour {
-        private uint HealValue = 4;
+        private ushort HealValue = 4;
         private void OnTriggerEnter2D(Collider2D other) {
             if (other.gameObject.TryGetComponent(out Player.Player player)) {
                 player.HealMana(HealValue);

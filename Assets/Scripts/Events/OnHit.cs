@@ -7,11 +7,11 @@ namespace Events {
 		void Awake() {
 			Action = gameObject.GetComponent<IAction>();
 		}
-		public void TakeDamages(uint damage) {
+		public void TakeDamages(ushort damage) {
 			Action.Activate();
 		}
 
 		// do nothing
-		public void Heal(uint heal) { }
+		public void Heal(ushort heal) { }
 	}
 }
