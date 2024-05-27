@@ -18,7 +18,7 @@ using Weapons;
 using Object = System.Object;
 
 namespace Player {
-	public class Player : MonoBehaviourPunCallbacks, IHealth , IPunObservable {
+	public class Player : MonoBehaviourPunCallbacks, IHealth, IPunObservable {
 		#region Public Fields
 
 		[Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
@@ -110,6 +110,7 @@ namespace Player {
 		private ManaBar _manaBar;
 		private Renderer _renderer;
 		private GameObject _arrowPrefab;
+
 		#endregion
 
 		#region Cached Values
@@ -126,7 +127,9 @@ namespace Player {
 		#endregion
 
 		#region Network Callback References
+
 		// private byte NetworkArrowSpawnRef = 245;
+
 		#endregion
 
 		#region Player Save management
@@ -173,23 +176,64 @@ namespace Player {
 			*/
 			// ver 2
 			if (GlobalVars.SaveLookupArray.GetLength(0) > GlobalVars.SaveId) {
-				Vector3 pos =  new Vector3(int.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId,0]), int.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId,1]), 0f);
-				gameObject.transform.position = pos;
-				Camera.main.transform.position = new Vector3(pos.x,pos.y,-1f);
-				_healthBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId,2]));
-				_staminaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId,3]));
-				_manaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId,4]));
-				_swordUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId,5] == "1";
-				_bowUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId,6] == "1";
-				_poisonUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId,7] == "1";
-				_dashUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId,8] == "1";
-				_slowdownUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId,9] == "1";
-				_timeFreezeUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId,10] == "1";
-				Debug.Log("Loaded Save successfully, saveID=" + GlobalVars.SaveId);
+				_healthBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 2]));
+				if (photonView.IsMine) {
+					Vector3 pos = new Vector3(int.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 0]),
+						int.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 1]), 0f);
+					gameObject.transform.position = pos;
+					Camera.main.transform.position = new Vector3(pos.x, pos.y, -1f);
+					_swordUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 5] == "1";
+					_bowUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 6] == "1";
+					_poisonUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 7] == "1";
+					_dashUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 8] == "1";
+					_slowdownUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 9] == "1";
+					_timeFreezeUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 10] == "1";
+					_staminaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 3]));
+					_manaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 4]));
+				}
+
+				Debug.Log("Loaded Global Save successfully, saveID=" + GlobalVars.SaveId);
 			}
 		}
 
-		#endregion
+		// next ????: should call a rpc to sync the healthbar's max value, etc..
+		public void LoadSaveWithoutPos() {
+			if (GlobalVars.SaveLookupArray.GetLength(0) > GlobalVars.SaveId) {
+				_healthBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 2]));
+				if (photonView.IsMine) {
+					_swordUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 5] == "1";
+					_bowUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 6] == "1";
+					_poisonUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 7] == "1";
+					_dashUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 8] == "1";
+					_slowdownUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 9] == "1";
+					_timeFreezeUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 10] == "1";
+					_staminaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 3]));
+					_manaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 4]));
+				}
+				Debug.Log("Loaded Global Save successfully, saveID=" + GlobalVars.SaveId);
+			}
+		}
+
+		/*
+		[PunRPC]
+		public void LoadSaveWPRPC() {
+			if (GlobalVars.SaveLookupArray.GetLength(0) > GlobalVars.SaveId) {
+				_healthBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 2]));
+				if (photonView.IsMine) {
+					_swordUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 5] == "1";
+					_bowUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 6] == "1";
+					_poisonUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 7] == "1";
+					_dashUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 8] == "1";
+					_slowdownUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 9] == "1";
+					_timeFreezeUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 10] == "1";
+					_staminaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 3]));
+					_manaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 4]));
+				}
+				Debug.Log("Loaded Global Save successfully, saveID=" + GlobalVars.SaveId);
+			}
+		} */
+
+	#endregion
 		#region MonoBehaviour
 		public CursorManager cursorManager; 
 		void Awake() {
@@ -198,6 +242,7 @@ namespace Player {
 			_healthBar = GetComponentInChildren<HealthBar>();
 			if (!photonView.IsMine) {
 				gameObject.GetComponentInChildren<Camera>().gameObject.SetActive(false);
+				LoadSave();
 				Debug.Log("player awake - is not mine, return");
 				return;
 			}
@@ -525,17 +570,15 @@ namespace Player {
 
 		// ADD SOUNDS HERE
 		public void TakeDamages(ushort damage) {
-			if (_healthBar.TryTakeDamages(damage)) {
-				StartCoroutine(ChangeColorWait(new Color(1f, 0.3f, 0.3f, 0.8f), 0.2f));
-				photonView.RPC("TakeDmgRPC",RpcTarget.OthersBuffered,(short)damage);
-			}
-			else GameOver();
+			photonView.RPC("TakeDmgRPC",RpcTarget.AllBuffered,(short)damage);
 		}
 
 		[PunRPC]
 		public void TakeDmgRPC(short damage) {
-			_healthBar.TakeDamages((ushort)damage);
-			StartCoroutine(ChangeColorWait(new Color(1f, 0.3f, 0.3f, 0.8f), 0.2f));
+			if (_healthBar.TryTakeDamages((ushort)damage)) {
+				StartCoroutine(ChangeColorWait(new Color(1f, 0.3f, 0.3f, 0.8f), 0.2f));
+			}
+			else GameOver();
 		}
 		public void Heal(ushort heal) {
 			photonView.RPC("HealRPC",RpcTarget.AllBuffered,(short)heal);
@@ -575,6 +618,7 @@ namespace Player {
 			if (GlobalVars.PlayerList.Any(p => !p.isDead) && GlobalVars.PlayerList.FirstOrDefault(p=>!p.isDead) is {} player) {
 				player.GetComponent<Camera>().gameObject.SetActive(true);
 				this.GetComponent<Camera>().gameObject.SetActive(false);
+				player.GetComponent<CameraWork>().OnStartFollowing();
 			}
 			// no more players are alive, game over screen and return to the title screen
 			else {
