@@ -9,6 +9,7 @@ using Global;
 using Interfaces;
 using Photon.PhotonRealtime.Code;
 using Photon.PhotonUnityNetworking.Code;
+using Photon.PhotonUnityNetworking.Code.Interfaces;
 using UI;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -17,9 +18,7 @@ using Weapons;
 using Object = System.Object;
 
 namespace Player {
-	
-	
-	public class Player : MonoBehaviourPunCallbacks, IHealth {
+	public class Player : MonoBehaviourPunCallbacks, IHealth /*, IPunObservable */ {
 		#region Public Fields
 
 		[Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
@@ -604,27 +603,23 @@ namespace Player {
 			// cannot manage to make it an effect on top of the sprite
 			_renderer.material.SetColor(Color1, color);
 		}
+
+		/*
+		#region IPunObservable implementation
+		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
+			if (stream.IsWriting) {
+				stream.SendNext(Time.timeScale);
+			}
+			else {
+				Time.timeScale = (float)stream.ReceiveNext();
+			}
+		}
+		#endregion*/
 	}
 }
 
 #region Code TrashBin, some scraps that can be useful later in developement
 
-/* #region IPunObservable implementation
- // does not work because bars are not set for every player
-void Photon.Pun.IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-{
-    if (stream.IsWriting)
-    {
-        // We own this player: send the others our data
-        stream.SendNext(_healthBar.curValue);
-    }
-    else
-    {
-        // Network player, receive data
-        this._healthBar.curValue = (uint)stream.ReceiveNext();
-    }
-}
-#endregion */
 // healing collectibles are not healing and idk why
 /*void CalledOnLevelWasLoaded(int level)
 {

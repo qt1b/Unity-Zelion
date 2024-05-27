@@ -21,7 +21,7 @@ namespace UI {
 		}
 		[PunRPC]
 		public void PlayAgainRPC() {
-			// photonView.RPC("LoadDataRPC",RpcTarget.AllBuffered); may not be necessary ?
+			// photonView.RPC("LoadDataRPC",RpcTarget.AllBuffered); //may not be necessary ?
 			PhotonNetwork.LoadLevel(GlobalVars.FirstLevelName);
 		}
 		[PunRPC]

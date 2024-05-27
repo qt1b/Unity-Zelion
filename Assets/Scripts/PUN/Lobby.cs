@@ -30,7 +30,12 @@ namespace PUN {
 		#endregion
 		#region MonoBehaviour
 		private void Awake() {
+			PhotonNetwork.AutomaticallySyncScene = true;
+			PhotonNetwork.OfflineMode = false;
+			PhotonNetwork.ConnectUsingSettings();
+			PhotonNetwork.GameVersion = GlobalVars.GameVersion;
 		}
+
 		// after
 		#endregion
 

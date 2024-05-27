@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Global;
 using Photon.PhotonRealtime.Code;
@@ -12,17 +13,25 @@ using UnityEngine.SceneManagement;
 namespace UI {
 	public class TitleScreen : MonoBehaviourPunCallbacks {
 		// or start ?
-		private void Awake() {
-			PhotonNetwork.AutomaticallySyncScene = true;
-			PhotonNetwork.OfflineMode = false;
-			PhotonNetwork.ConnectUsingSettings();
-			PhotonNetwork.GameVersion = GlobalVars.GameVersion;
+		private bool _soloPlay = false;
+
+		public void StartSinglePlayer() {
+			//PhotonNetwork.NetworkClientState is ClientState.ConnectedToMasterServer) {
+			if (PhotonNetwork.IsConnected) {
+				_soloPlay = true;
+				PhotonNetwork.Disconnect();
+			}
+			else {
+				_soloPlay = true;
+				OnDisconnected(DisconnectCause.None);
+				//OnDisconnected(DisconnectCause.None);
+			}
+			//else StartCoroutine(WaitAndRestartSingle());
 		}
 
-		private bool _soloPlay = false;
-		public void StartSinglePlayer() {
-			_soloPlay = true;
-			PhotonNetwork.Disconnect();
+		IEnumerator WaitAndRestartSingle() {
+			yield return new WaitForSeconds(0.5f);
+			StartSinglePlayer();
 		}
 		public void ExitGame() {
 			Application.Quit();
@@ -46,7 +55,6 @@ namespace UI {
 				GlobalVars.TimeStartedAt = DateTime.UtcNow;
 				PhotonNetwork.LoadLevel(GlobalVars.FirstLevelName);
 			}
-			else Awake();
 		}
 	}
 }

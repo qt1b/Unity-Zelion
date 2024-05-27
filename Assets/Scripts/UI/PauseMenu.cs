@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 namespace UI {
     public class PauseMenu : MonoBehaviour
     {
-        static public bool GameIsPaused = false;
+        public static bool GameIsPaused = false;
         [FormerlySerializedAs("GameObjectUI")] public GameObject gameObjectUI;
         private static readonly int IsMoving = Animator.StringToHash("IsMoving");
         private static readonly int IsAimingBow = Animator.StringToHash("IsAimingBow");
@@ -16,7 +16,7 @@ namespace UI {
         // Update is called once per frame
         void Update()
         {
-            if(Input.GetKeyDown(KeyCode.Escape)){
+            if(Input.GetKeyDown(KeyCode.Escape)) {
                 if(GameIsPaused){
                     Resume();
                 }
@@ -31,6 +31,7 @@ namespace UI {
             GameIsPaused = false;
         }
         public void Pause() {
+            // object not found ? when solo play
             Animator animator = Player.Player.LocalPlayerInstance.GetComponent<Animator>();
             animator.SetBool(IsMoving,false);
             animator.SetBool(IsAimingBow,false);

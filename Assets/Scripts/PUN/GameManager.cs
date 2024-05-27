@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Global;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon;
+using Photon.PhotonRealtime.Code;
 using Photon.PhotonUnityNetworking.Code;
 using TMPro;
 using Player = Photon.PhotonRealtime.Code.Player;
@@ -34,6 +36,17 @@ namespace PUN {
 		}
 		#endregion
 		#region Photon Callbacks
+
+		public override void OnDisconnected(DisconnectCause cause) {
+			Debug.LogError("DISCONNECTED !!");
+			if (PhotonNetwork.OfflineMode is true) {
+				Debug.LogError("Offline mode Activated, trying to reconnect ??");
+				// do not Disconnect !!!
+				// idk if it works in offline mode
+				PhotonNetwork.ReconnectAndRejoin();
+			}
+		}
+
 		/*
 		/// <summary>
 		/// Called when the local player left the room. We need to load the launcher scene.
@@ -41,6 +54,7 @@ namespace PUN {
 		*/
 		public override void OnLeftRoom()
 		{
+			Debug.LogError("OnLeftRoom : Disconnected");
 			SceneManager.LoadScene(0);
 			global::Player.Player.LocalPlayerInstance = null;
 			Destroy(gameObject); // destroys this very game manager

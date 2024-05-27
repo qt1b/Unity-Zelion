@@ -29,13 +29,13 @@ namespace UI {
 			GlobalVars.NbrOfPlayers = (byte)PhotonNetwork.CurrentRoom.PlayerCount;
 			GlobalVars.GameOverCount = 0;
 			GlobalVars.TimeStartedAt = DateTime.UtcNow;
-			// photonView.RPC("LoadDataRPC",RpcTarget.AllBuffered); may not be necessary ??
+			// photonView.RPC("LoadDataRPC",RpcTarget.AllBuffered); // may not be necessary ??
 			PhotonNetwork.LoadLevel(GlobalVars.FirstLevelName);
 		}
 		[PunRPC]
 		public void LoadDataRPC() {
 			GlobalVars.SaveId = 0;
-			//Player.Player.LocalPlayerInstance.GetComponent<Player.Player>().LoadSave();
+			// Player.Player.LocalPlayerInstance.GetComponent<Player.Player>().LoadSave();
 		}
 		public void MainMenu(){
 			//PhotonNetwork.Destroy(Player.Player.LocalPlayerInstance);
