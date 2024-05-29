@@ -32,7 +32,7 @@ namespace Global {
 		public static bool Continue = false;
 		#region Game Constants
 		public static string GameVersion = "0.1";
-		public static string FirstLevelName = "Quentin5";
+		public static string FirstLevelName = "Louis";
 		// public static string SecondLevelName = ???; // if needed, maybe we'll keep everything into one scene
 		public static string GameOverSceneName = "GameOver";
 		public static string GameClearSceneName = "GameClear";
