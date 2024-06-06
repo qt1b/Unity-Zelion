@@ -61,6 +61,13 @@ namespace Bars {
             }
             else return false;
         }
+        public bool TryTakeDamagesStrict(ushort damages) {
+            if (damages < curValue) {
+                TakeDamages(damages);
+                return true;
+            }
+            else return false;
+        }
 
         public void TakeDamages(ushort damages) {
             // value should be checked to be positive, or else use a uint
@@ -78,6 +85,11 @@ namespace Bars {
             else curValue += heal;
         }
 
+        // UNSAFE, just to help with Health2.cs
+        public void ChangeCurVal(ushort newCurr) {
+            curValue = newCurr;
+            _hasChanged = true;
+        }
         public void ChangeMaxValue(ushort newMax) {
             if (newMax < MaxValue) {
                 curValue = Math.Clamp(curValue, (ushort)0, newMax);

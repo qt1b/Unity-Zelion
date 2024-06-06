@@ -109,6 +109,7 @@ namespace Player {
 		private StaminaBar _staminaBar;
 		private ManaBar _manaBar;
 		private Renderer _renderer;
+		private SpriteRenderer _spriteRenderer;
 		private GameObject _arrowPrefab;
 
 		#endregion
@@ -267,6 +268,7 @@ namespace Player {
 			_staminaBar = FindObjectOfType<StaminaBar>();
 			_manaBar = FindObjectOfType<ManaBar>();
 			_renderer = gameObject.GetComponent<Renderer>();
+			_spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 			cursorManager = FindObjectOfType<CursorManager>();
 			LoadSave();
 			gameObject.GetComponentInChildren<CameraWork>().OnStartFollowing();
@@ -539,7 +541,7 @@ namespace Player {
 			Vector3 mousePosition = Input.mousePosition;
 			mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
 			var position = transform.position;
-			StartCoroutine(ChangeColorWait(new Color(0.3f, 0.3f, 1, 0.8f), 0.2f));
+			photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,0.3f, 0.3f, 1f, 0.8f, 0.2f);
 			float y = (mousePosition.y - position.y);
 			float x = (mousePosition.x - position.x);
 			Vector3 pos = new Vector3(x, y, 0f);
@@ -559,7 +561,7 @@ namespace Player {
 				_canDash = false;
 				_isDashing = true;
 				speedModifier = _dashPower;
-				StartCoroutine(ChangeColorWait(new Color(1, 1, 0.3f, 0.8f), 0.2f)); // yellow
+				photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,1f, 1f, 0.3f, 0.8f, 0.2f); // yellow
 				yield return new WaitForSeconds(_dashTime / GlobalVars.PlayerSpeed);
 				speedModifier = 1;
 				_isDashing = false;
@@ -575,8 +577,8 @@ namespace Player {
 
 		[PunRPC]
 		public void TakeDmgRPC(short damage) {
-			if (_healthBar.TryTakeDamages((ushort)damage)) {
-				StartCoroutine(ChangeColorWait(new Color(1f, 0.3f, 0.3f, 0.8f), 0.2f));
+			if (_healthBar.TryTakeDamagesStrict((ushort)damage)) {
+				photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,1f, 0.3f, 0.3f, 0.8f, 0.2f);
 			}
 			else GameOver();
 		}
@@ -586,29 +588,29 @@ namespace Player {
 		[PunRPC]
 		public void HealRPC(short heal) {
 			_healthBar.Heal((ushort)heal);
-			StartCoroutine(ChangeColorWait(new Color(0.3f, 1f, 0.3f, 0.8f), 0.2f));
+			photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,0.3f, 1f, 0.3f, 0.8f, 0.2f);
 		}
 
 		// these ones are not used over network
 		// maybe change these colors ???
 		public void TakeDamagesStamina(ushort damage) {
 			_staminaBar.TakeDamages(damage);
-			StartCoroutine(ChangeColorWait(new Color(1f, 0.3f, 0.3f, 0.8f), 0.2f));
+			photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,1f, 0.3f, 0.3f, 0.8f, 0.2f);
 		}
 
 		public void HealStamina(ushort heal) {
 			_staminaBar.Heal(heal);
-			StartCoroutine(ChangeColorWait(new Color(0.3f, 1f, 0.3f, 0.8f), 0.2f));
+			photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,0.3f, 1f, 0.3f, 0.8f, 0.2f);
 		}
 
 		public void TakeDamagesMana(ushort damage) {
 			_manaBar.TakeDamages(damage);
-			StartCoroutine(ChangeColorWait(new Color(1f, 0.3f, 0.3f, 0.8f), 0.2f));
+			photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,1f, 0.3f, 0.3f, 0.8f, 0.2f);
 		}
 
 		public void HealMana(ushort heal) {
 			_manaBar.Heal(heal);
-			StartCoroutine(ChangeColorWait(new Color(0.3f, 1f, 0.3f, 0.8f), 0.2f));
+			photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,0.3f, 1f, 0.3f, 0.8f, 0.2f);
 		}
 
 		// TODO: change to 
@@ -643,20 +645,19 @@ namespace Player {
 		IEnumerator ChangeColorWait(Color color, float time) {
 			Color baseColor = _renderer.material.color;
 			_colorAcc += 1;
-			photonView.RPC("ChangeColorClientRpc", RpcTarget.AllBuffered, color);
+			_spriteRenderer.color = (color);
 			yield return new WaitForSeconds(time);
 			_colorAcc -= 1;
 			if (_colorAcc == 0) {
-				photonView.RPC("ChangeColorClientRpc", RpcTarget.AllBuffered, Color.white);
+				_spriteRenderer.color = (Color.white);
 			}
-			else if (baseColor != Color.white) photonView.RPC("ChangeColorClientRpc", RpcTarget.AllBuffered, baseColor);
+			else if (baseColor != Color.white) _spriteRenderer.color =(baseColor);
 		}
 
 		// must be changed to float values for the RPC to work
 		[PunRPC]
-		void ChangeColorClientRpc(Color color) {
-			// cannot manage to make it an effect on top of the sprite
-			_renderer.material.SetColor(Color1, color);
+		void ChangeColorWaitRpc(float r, float g, float b, float a, float time) {
+			StartCoroutine(ChangeColorWait(new Color(r, g, b, a), time));
 		}
 
 		

@@ -4,15 +4,14 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 namespace UI {
-    public class PauseMenu : MonoBehaviour
+    // todo : sync the pause menu over the network
+    public class PauseMenu : MonoBehaviourPunCallbacks
     {
         public static bool GameIsPaused = false;
         [FormerlySerializedAs("GameObjectUI")] public GameObject gameObjectUI;
-        private static readonly int IsMoving = Animator.StringToHash("IsMoving");
+       /* private static readonly int IsMoving = Animator.StringToHash("IsMoving");
         private static readonly int IsAimingBow = Animator.StringToHash("IsAimingBow");
-        private static readonly int IsAimingBomb = Animator.StringToHash("IsAimingBomb");
-
-
+        private static readonly int IsAimingBomb = Animator.StringToHash("IsAimingBomb"); */
         // Update is called once per frame
         void Update()
         {
@@ -26,16 +25,24 @@ namespace UI {
             }
         }
         public void Resume(){
+            photonView.RPC("ResumeRpc",RpcTarget.AllBuffered);
+        }
+        [PunRPC]
+        public void ResumeRpc(){
             gameObjectUI.SetActive(false);
             Time.timeScale = 1f; // wthhhhhhhh this existed all along
             GameIsPaused = false;
         }
         public void Pause() {
-            // object not found ? when solo play
-            Animator animator = Player.Player.LocalPlayerInstance.GetComponent<Animator>();
+            photonView.RPC("PauseRpc",RpcTarget.AllBuffered);
+        }
+
+        [PunRPC]
+        public void PauseRpc() {
+            /* Animator animator = Player.Player.LocalPlayerInstance.GetComponent<Animator>();
             animator.SetBool(IsMoving,false);
             animator.SetBool(IsAimingBow,false);
-            animator.SetBool(IsAimingBomb,false);
+            animator.SetBool(IsAimingBomb,false); */
             gameObjectUI.SetActive(true);
             Time.timeScale = 0f;
             GameIsPaused = true;
@@ -44,7 +51,8 @@ namespace UI {
             //PhotonNetwork.Destroy(Player.Player.LocalPlayerInstance);
             //Player.Player.LocalPlayerInstance = null;
             // no way do "destroy" a room
-            Resume();
+            Time.timeScale = 1f; // wthhhhhhhh this existed all along
+            GameIsPaused = false;
             PhotonNetwork.LeaveRoom();
             PhotonNetwork.Disconnect();
             SceneManager.LoadScene(0);
