@@ -1,10 +1,10 @@
 # Unity-Zelion
 
 ### working with photon :
-- basic movements
-- sword
-- arrows
-- poison bomb
+- [x] basic movements
+- [x] sword
+- [x] arrows
+- [x] poison bomb
 
 ### working without photon :
 - time powers (will fix it soon)
@@ -12,11 +12,10 @@
 
 ### todo :
 - ennemies / AI
-- fix some menus, make them clean and intuitive
+- audio, sound effects
+- fix some menus, make them clean and intuitive (+ settings)
 - tutorial for new players
-- make it impossible for new players to join while playing
-- fixes for photon
-
-# "useless" scripts to keep just in case for reference
-- PlayerNameInputField
-- Launcher
+- a windows installer + uninstaller
+- package (lol)
+- [x] make it impossible for new players to join while playing
+- [x] fixes for photon
