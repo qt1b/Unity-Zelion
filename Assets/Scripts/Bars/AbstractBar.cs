@@ -19,8 +19,8 @@ namespace Bars {
         public Slider damageBar;
         public float speed = 0.0125f;
         private bool _hasChanged;
-        protected uint MaxValue;
-        public uint curValue;
+        protected ushort MaxValue;
+        public ushort curValue;
         protected float RestoreDelay;
         private bool _gain = true;
         #endregion
@@ -28,7 +28,7 @@ namespace Bars {
         #region MonoBehaviours
 
         public void Start() {
-            MaxValue = (uint)slider.maxValue;
+            MaxValue = (ushort)slider.maxValue;
             damageBar.maxValue = MaxValue;
             curValue = MaxValue;
             _hasChanged = true;
@@ -52,9 +52,9 @@ namespace Bars {
         }
         #endregion
         
-        public bool CanTakeDamages(uint damages) => damages <= curValue;
+        public bool CanTakeDamages(ushort damages) => damages <= curValue;
 
-        public bool TryTakeDamages(uint damages) {
+        public bool TryTakeDamages(ushort damages) {
             if (damages <= curValue) {
                 TakeDamages(damages);
                 return true;
@@ -62,7 +62,7 @@ namespace Bars {
             else return false;
         }
 
-        public void TakeDamages(uint damages) {
+        public void TakeDamages(ushort damages) {
             // value should be checked to be positive, or else use a uint
             _hasChanged = true;
             if (damages >= curValue)
@@ -71,16 +71,16 @@ namespace Bars {
         }
 
         // tofix ??
-        public void Heal(uint heal) {
+        public void Heal(ushort heal) {
             _hasChanged = true;
             if (heal + curValue > MaxValue)
                 curValue = MaxValue;
             else curValue += heal;
         }
 
-        public void ChangeMaxValue(uint newMax) {
+        public void ChangeMaxValue(ushort newMax) {
             if (newMax < MaxValue) {
-                curValue = Math.Clamp(curValue, 0, newMax);
+                curValue = Math.Clamp(curValue, (ushort)0, newMax);
                 _hasChanged = true;
             }
             MaxValue = newMax;

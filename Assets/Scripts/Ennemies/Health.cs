@@ -13,7 +13,7 @@ namespace Ennemies {
         public uint maxHealth;
         private uint _hp;
         public float deathDuration;
-        private SpriteRenderer _spriteRenderer; // to change color when hit
+        [Header("Change if not in current GO")]public SpriteRenderer SpriteRenderer; // to change color when hit
         private uint _colorAcc;
         private static readonly int Death = Animator.StringToHash("Death");
         #endregion
@@ -27,7 +27,8 @@ namespace Ennemies {
                 maxHealth = (uint)short.MaxValue;
             }
             _hp = maxHealth;
-            _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+            if (SpriteRenderer is null)
+                SpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         }
         #endregion
 
@@ -44,12 +45,12 @@ namespace Ennemies {
             else
             {
                 // Network player, receive data
-                this._hp = (uint)(short)stream.ReceiveNext();
+                this._hp = (ushort)(short)stream.ReceiveNext();
             }
         }
         #endregion
 
-        public void TakeDamages(uint damage){
+        public void TakeDamages(ushort damage){
             if (damage >= _hp) {
                 //GetComponent<PhotonView>().RPC("SpawCollectiblesRPC", RpcTarget.AllBuffered);
                 Die();
@@ -58,7 +59,7 @@ namespace Ennemies {
             StartCoroutine(ChangeColorWait(new Color(1, 0.3f, 0.3f, 1), 0.5f)); // red with transparency
             // must add here some code to change the color for some frames: that way we will see when we make damages to an enemy/object
         }
-        public void Heal(uint heal)
+        public void Heal(ushort heal)
         {
             if (heal + _hp >= maxHealth)
                 _hp = maxHealth;
@@ -100,7 +101,7 @@ namespace Ennemies {
             StartCoroutine(ChangeColorWait(color, time));
         }
         IEnumerator ChangeColorWait(Color color, float time) {
-            Color baseColor = _spriteRenderer.color;
+            Color baseColor = SpriteRenderer.color;
             ChangeColorClientRpc(color);
             _colorAcc += 1;
             yield return new WaitForSeconds(time);
@@ -112,7 +113,7 @@ namespace Ennemies {
         }
         // to be synced over network
         void ChangeColorClientRpc(Color color) {
-            _spriteRenderer.color = color;
+            SpriteRenderer.color = color;
         }
         /*
         void SpawnCollectibles() {
