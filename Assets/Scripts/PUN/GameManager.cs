@@ -21,17 +21,19 @@ namespace PUN {
 		#region MonoBehaviour
 		private void Start() {
 			Debug.Log("Game Manager : Starting ...");
-			Instance = this;
+			Instance = this; // useless for now
 			// GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Player/Player");
-			if (global::Player.Player.LocalPlayerInstance == null) {
+			// decided not to keep the instance of the player between scenes for now
+			// if (global::Player.Player.LocalPlayerInstance == null) {
+					GlobalVars.PlayerList = new();
 					if (Global.GlobalVars.GameOverCount == 0) Global.GlobalVars.TimeStartedAt = DateTime.UtcNow;
 					Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
 					// we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
 					PhotonNetwork.Instantiate("Prefabs/Player/Player", Vector3.zero, Quaternion.identity, 0);
-			}
+			/*}
 			else {
 				Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
-			}
+			}*/
 			NetworkStatusText.SetText(GenerateNetworkStatusText());
 		}
 		#endregion

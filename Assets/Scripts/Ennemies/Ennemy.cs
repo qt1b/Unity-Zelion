@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +46,7 @@ namespace Ennemies {
         // Start is called before the first frame update
         void Start()
         {
-            
+            Debug.Log("Enemy script : start");
             if (PhotonNetwork.OfflineMode || PhotonNetwork.IsMasterClient)
             {
                 Debug.Log("Enemy enabled");
@@ -75,6 +76,11 @@ namespace Ennemies {
         public override void OnDisable()
         {
             Debug.Log("Enemy disabled");
+            CancelInvoke(nameof(Refresh));
+        }
+
+        public void OnDestroy() {
+            Debug.Log("Enemy Destroyed");
             CancelInvoke(nameof(Refresh));
         }
 

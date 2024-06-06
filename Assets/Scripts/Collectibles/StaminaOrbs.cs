@@ -6,7 +6,7 @@ namespace Collectibles {
         private ushort HealValue = 4;
         private void OnTriggerEnter2D(Collider2D other) {
             if (other.gameObject.TryGetComponent(out Player.Player player)) {
-                player.HealStamina(HealValue);
+                if (player.photonView.IsMine) player.HealStamina(HealValue);
                 if (this.GetComponent<PhotonView>().IsMine) {
                     PhotonNetwork.Destroy(this.gameObject);
                 }
