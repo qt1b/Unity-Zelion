@@ -51,7 +51,7 @@ namespace Player {
 		bool _canThrowPoisonBomb = true;
 		bool _canSlowDownTime = true;
 		bool _canTimeFreeze = true;
-		bool _isDashing;
+		public bool _isDashing;
 		bool _isAimingArrow;
 		bool _isAimingBomb;
 
@@ -407,23 +407,23 @@ namespace Player {
 			// will be enemy speed, using player speed to test the property
 			// like color
 			// float oldVal = GlobalVars.PlayerSpeed.Value;
-			GlobalVars.PlayerSpeed = 0.5f;
+			GlobalVars.EnnemySpeed = 0.5f;
 			_animator.speed = GlobalVars.PlayerSpeed; // to remove if only slowing down enemies
 			_slowdownAcc += 1;
 			yield return new WaitForSeconds(duration);
 			_slowdownAcc -= 1;
 			if (_slowdownAcc == 0) {
-				GlobalVars.PlayerSpeed = 1;
+				GlobalVars.EnnemySpeed = 1;
 				_animator.speed = 1;
 			}
 		}
 		IEnumerator TimeFreezeFor(float duration) {
 			_timeFreezeAcc += 1;
-			GlobalVars.PlayerSpeed = 0f;
+			GlobalVars.EnnemySpeed = 0f;
 			yield return new WaitForSeconds(duration);
 			_timeFreezeAcc -= 1;
 			if (_timeFreezeAcc == 0) {
-				GlobalVars.PlayerSpeed = 1;
+				GlobalVars.EnnemySpeed = 1;
 			}
 		}
 		Vector3 GetMouseRelativePos() {

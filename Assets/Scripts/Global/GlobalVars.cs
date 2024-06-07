@@ -52,7 +52,7 @@ namespace Global {
 				// cannot sync this, do we even really need it to be synced ?
 				// PlayerList = (List<Player.Player>)stream.ReceiveNext();
 				SaveId = (byte)stream.ReceiveNext();
-				PlayerId = (int)stream.ReceiveNext();
+				// PlayerId = (int)stream.ReceiveNext();
 			}
 		}
 		#endregion
