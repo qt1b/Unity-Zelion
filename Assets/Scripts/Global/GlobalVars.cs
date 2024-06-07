@@ -32,7 +32,7 @@ namespace Global {
 		public static bool Continue = false;
 		#region Game Constants
 		public static string GameVersion = "0.1";
-		public static string FirstLevelName = "Louis";
+		public static string FirstLevelName = "Quentin6";
 		// public static string SecondLevelName = ???; // if needed, maybe we'll keep everything into one scene
 		public static string GameOverSceneName = "GameOver";
 		public static string GameClearSceneName = "GameClear";
@@ -52,7 +52,7 @@ namespace Global {
 				// cannot sync this, do we even really need it to be synced ?
 				// PlayerList = (List<Player.Player>)stream.ReceiveNext();
 				SaveId = (byte)stream.ReceiveNext();
-				PlayerId = (int)stream.ReceiveNext();
+				// PlayerId = (int)stream.ReceiveNext();
 			}
 		}
 		#endregion

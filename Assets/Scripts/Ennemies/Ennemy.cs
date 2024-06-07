@@ -101,6 +101,10 @@ namespace Ennemies {
             List<Player.Player> players = new List<Player.Player>(GlobalVars.PlayerList);
             if (players.Count == 0)
                 return;
+            else if (UI.PauseMenu.GameIsPaused) {
+                Agent.SetDestination(transform.position);
+                return;
+            }
             
             var pos = transform.position;
             players = players.OrderBy(g => (g.transform.position - pos).sqrMagnitude).ToList();
