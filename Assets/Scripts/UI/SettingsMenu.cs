@@ -8,6 +8,8 @@ using UnityEngine.UI;
 namespace UI {
     public class Settings : MonoBehaviour {
         private Resolution[] _resolutions;
+        private int _lastBeforeFull;
+        private int _maxRes;
         private List<string> _options = new List<string>();
         private int _index;
         public TMPro.TMP_Dropdown resDropdown;
@@ -27,6 +29,8 @@ namespace UI {
             }
             resDropdown.options = _resolutions.Select(r => new TMP_Dropdown.OptionData(r.width + "x" + r.height)).ToList();
             resDropdown.value = _index;
+            _lastBeforeFull = _index;
+            _maxRes = _resolutions.Length - 1;
 
             currentVolume = 0.5f;
             audioMixer.SetFloat("Volume", currentVolume);
@@ -34,16 +38,28 @@ namespace UI {
 
         public void SetFullscreen(bool val) {
             if (val) {
-                Screen.SetResolution(_resolutions.Last().width,_resolutions.Last().height,FullScreenMode.FullScreenWindow);
+                _lastBeforeFull = _index;
+                // on windows
+                Screen.fullScreen = true;
+                /*if (SystemInfo.operatingSystem.Contains("Windows")) {
+                    Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
+                }
+                // on mac
+                else {
+                    Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
+                } */
+                SetResolution(_maxRes);
             }
             else {
-                // tip : keep the last resolution before fullscreen ?
                 Screen.fullScreen = false;
+                //Debug.LogError("fullscreen : False");
+                //Screen.fullScreenMode = FullScreenMode.Windowed;
+                SetResolution(_lastBeforeFull);
             }
         }
 
-        public void SetResolution(int resolutionIndex)
-        {
+        public void SetResolution(int resolutionIndex) {
+            _index = resolutionIndex;
             Resolution resolution = _resolutions[resolutionIndex];
             Screen.SetResolution(resolution.width, 
                 resolution.height, Screen.fullScreen);
