@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 94652294}
   - component: {fileID: 94652293}
   m_Layer: 0
-  m_Name: NavMesh
+  m_Name: NavMeshHumanoid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -745,8 +745,6 @@ GameObject:
   - component: {fileID: 884015234}
   - component: {fileID: 884015231}
   - component: {fileID: 884015233}
-  - component: {fileID: 884015230}
-  - component: {fileID: 884015229}
   - component: {fileID: 884015227}
   - component: {fileID: 884015226}
   - component: {fileID: 884015225}
@@ -848,34 +846,6 @@ MonoBehaviour:
   maxHealth: 15
   deathDuration: 0.5
   SpriteRenderer: {fileID: 990858039}
---- !u!114 &884015229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 884015223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c92e8464d770f154fa6368876421ec65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &884015230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 884015223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 830e2918e9c96d845ba55403ceafc747, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  arrowRef:
-  - {fileID: 1893994839326115280, guid: ad816b496d7cad7d1ac102f28f447180, type: 3}
-  arrowSpeed: 3
-  startDistance: 1
 --- !u!114 &884015231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -892,11 +862,20 @@ MonoBehaviour:
   distanceFromPlayer: 5
   distanceFromPlayerMargin: 1
   backWhenPlayerTooClose: 0
-  shootFrequency: 3
-  meleeFrequency: 3
-  shootRangeMax: 10
-  shootRangeMin: 2
-  meleeRange: 1
+  forwardWhenPlayerTooClose: 0
+  isShooter: 1
+  ShootParams:
+    damage: 0
+    shootFrequency: 0
+    shootRangeMax: 0
+    shootRangeMin: 0
+    arrowSpeed: 0
+    startDistance: 0
+  isMelee: 1
+  MeleeParams:
+    meleeDamage: 0
+    meleeFrequency: 0
+    meleeRange: 0
   Agent: {fileID: 884015233}
 --- !u!195 &884015233
 NavMeshAgent:
@@ -4312,6 +4291,85 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5012104492963124867, guid: 98b259ff35e734172a70f873d674218c, type: 3}
   m_PrefabInstance: {fileID: 1517612835}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1658285869
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1658285872}
+  - component: {fileID: 1658285871}
+  - component: {fileID: 1658285870}
+  m_Layer: 0
+  m_Name: NavMeshNonHumanoid
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1658285870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658285869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70bd44a44cd62c64fbfc1eea95b24880, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideByGrid: 0
+  m_UseMeshPrefab: {fileID: 0}
+  m_CompressBounds: 0
+  m_OverrideVector: {x: 1, y: 1, z: 1}
+--- !u!114 &1658285871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658285869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e04976799df50f54ba128eff723155a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: -1372625422
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_BuildHeightMesh: 0
+  m_HideEditorLogs: 0
+  m_NavMeshData: {fileID: 23800000, guid: cb62edaaf5935334ea981ae5e59db959, type: 2}
+--- !u!4 &1658285872
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658285869}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -59.11, y: 92.77, z: 0.72582686}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1661232605 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7152390651082286413, guid: da34d019a196ab22f8e31f6bb16d51e4, type: 3}
@@ -79258,6 +79316,7 @@ SceneRoots:
   - {fileID: 493710083}
   - {fileID: 884015224}
   - {fileID: 94652295}
+  - {fileID: 1658285872}
   - {fileID: 1517612835}
   - {fileID: 832797683}
   - {fileID: 1179168601}

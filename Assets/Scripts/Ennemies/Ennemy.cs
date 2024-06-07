@@ -2,66 +2,56 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Global;
 using Photon.PhotonUnityNetworking.Code;
+using Porperty_Attributes;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using Weapons;
 
 
-namespace Ennemies {
+namespace Ennemies
+{
     public class Ennemy : MonoBehaviourPunCallbacks
     {
-        private bool _isShooter;
-        private bool _isMelee;
-
-        private ShootArrow _shooter;
-        private MeleeAttack _meleeAttack;
-    
-        public float speed => GlobalVars.EnnemySpeed;
-
-        [Header("Movement variables")]
+        [Header("Movement")] [Tooltip("From which distance the ennemy will be able to detect a player")]
         public float detectionDistance;
+
+        [Tooltip("Distance from the player where the ennemy will not move")]
         public float distanceFromPlayer;
+
+        [Tooltip("Margin of error for the distance from the player")]
         public float distanceFromPlayerMargin;
-        public bool backWhenPlayerTooClose = false;
+
+        [Space(5f)]
+        [Tooltip("If the ennemy will distance himself from the player when too close")]
+        public bool backWhenPlayerTooClose;
+
+        [Tooltip("If the ennemy will close the distance to the player when too close")]
+        public bool forwardWhenPlayerTooClose;
+
+        [Tooltip("If ennemy can shoot arrows")]
+        public bool isShooter;
+        [SerializeField] private EnnemyShootParams ShootParams;
+
+        [Tooltip("If ennemy do short distance attacks")]
+        [HorizontalLine(Padding = 10f)] public bool isMelee;
+        [SerializeField] private EnnemyMeleeParams MeleeParams;
+
+        [Space] public NavMeshAgent Agent;
+
+        private bool _canShoot;
+        private bool _canMelee;
         private float LowerMargin => distanceFromPlayer - distanceFromPlayerMargin;
         private float HigherMargin => distanceFromPlayer + distanceFromPlayerMargin;
-    
-        [Header("Attacks variables")]
-        public float shootFrequency;
-        public float meleeFrequency;
+        public float speed => GlobalVars.EnnemySpeed;
 
-        public float shootRangeMax;
-        public float shootRangeMin;
-        public float meleeRange;
-
-        private bool _canShoot = true;
-        private bool _canMelee;
-        
-        
-        [Header("Movement variables")]
-        public NavMeshAgent Agent;
-    
-        // Start is called before the first frame update
         void Start()
         {
-            Debug.Log("Enemy script : start");
-            if (PhotonNetwork.OfflineMode || PhotonNetwork.IsMasterClient)
-            {
-                Debug.Log("Enemy enabled");
-                _shooter = GetComponent<ShootArrow>();
-                _isShooter = _shooter is not null;
-
-                _meleeAttack = GetComponent<MeleeAttack>();
-                _isMelee = _meleeAttack is not null;
-            }
-            else
-            {
-                Debug.Log("Enemy disabled");
-                enabled = false;
-                GetComponent<NavMeshAgent>().enabled = false;
-            }
+            if (PhotonNetwork.OfflineMode || PhotonNetwork.IsMasterClient) return;
+            enabled = false;
+            GetComponent<NavMeshAgent>().enabled = false;
         }
 
         public override void OnEnable()
@@ -72,7 +62,7 @@ namespace Ennemies {
                 InvokeRepeating(nameof(Refresh), .1f, .1f);
             }
         }
-        
+
         public override void OnDisable()
         {
             Debug.Log("Enemy disabled");
@@ -84,53 +74,93 @@ namespace Ennemies {
             CancelInvoke(nameof(Refresh));
         }
 
-        IEnumerator ResetShoot()
+        #region Attacks
+
+        private IEnumerator Shoot(int arrowIndex, Vector3 initialPos, Vector3 direction)
         {
-            yield return new WaitForSeconds(shootFrequency / GlobalVars.EnnemySpeed);
+            _canShoot = false;
+            var rot = Quaternion.Euler(0f, 0f,
+                Mathf.Atan(direction.y / direction.x) * 180 / Mathf.PI + (direction.x < 0 ? 90 : -90));
+            var arr = PhotonNetwork.Instantiate(
+                "Prefabs/Projectiles/Arrow",
+                initialPos + direction * ShootParams.startDistance, rot);
+            var projectile = arr.GetComponent<Projectile>();
+            projectile.damage = ShootParams.damage;
+            projectile.SetVelocity(direction);
+            projectile.speed = ShootParams.arrowSpeed;
+
+            // animator for shooting here
+
+            yield return new WaitForSeconds(ShootParams.shootFrequency / GlobalVars.EnnemySpeed);
             _canShoot = true;
         }
-        
-        IEnumerator ResetMelee()
+
+        private IEnumerator Attack(Player.Player player, Vector3 direciton)
         {
-            yield return new WaitForSeconds(meleeFrequency / GlobalVars.EnnemySpeed);
+            _canMelee = false;
+            player.TakeDamages(MeleeParams.meleeDamage);
+            // animator for melee here
+            yield return new WaitForSeconds(MeleeParams.meleeFrequency / GlobalVars.EnnemySpeed);
             _canMelee = true;
         }
+
+        #endregion
+
         // Update is called once per frame
-        void Refresh()
+        private void Refresh()
         {
-            List<Player.Player> players = new List<Player.Player>(GlobalVars.PlayerList);
+            List<Player.Player> players = new(GlobalVars.PlayerList);
             if (players.Count == 0)
                 return;
-            
+
             var pos = transform.position;
             players = players.OrderBy(g => (g.transform.position - pos).sqrMagnitude).ToList();
-            var playerPos = players.First().transform.position;
-            var nDirection = pos - playerPos;
-            var distance = Mathf.Abs(nDirection.magnitude);
-            
+            var player = players.First();
+            var playerPos = player.transform.position;
+            var direction = playerPos - pos;
+            var distance = Mathf.Abs(direction.magnitude);
+
             if (!(distance <= detectionDistance)) return;
-            bool bigMarg = distance > LowerMargin;
-            bool smallMarg = distance < HigherMargin;
+            var bigMarg = distance > LowerMargin;
+            var smallMarg = distance < HigherMargin;
 
             if (bigMarg && !smallMarg)
                 Agent.SetDestination(playerPos);
             else if (smallMarg && !bigMarg && backWhenPlayerTooClose)
-                Agent.SetDestination(pos + nDirection);
+                Agent.SetDestination(pos - direction);
             else
                 Agent.ResetPath();
-            if (_isShooter && distance >= shootRangeMin && distance <= shootRangeMax && _canShoot)
-            {
-                _canShoot = false;
-                StartCoroutine(_shooter.Shoot(0, pos, nDirection.normalized));
-                StartCoroutine(ResetShoot());
-            }
-
-            if (_isMelee && distance <= meleeRange && _canMelee)
-            {
-                _canMelee = false;
-                StartCoroutine(_meleeAttack.Attack());
-                StartCoroutine(ResetMelee());
-            }
+            if (isShooter && distance >= ShootParams.shootRangeMin && distance <= ShootParams.shootRangeMax &&
+                _canShoot && (!forwardWhenPlayerTooClose || distance >= LowerMargin))
+                StartCoroutine(Shoot(0, pos, direction.normalized));
+            if (isMelee && distance <= MeleeParams.meleeRange && _canMelee)
+                StartCoroutine(Attack(player, direction));
         }
+    }
+
+    [Serializable]
+    public class EnnemyShootParams
+    {
+        [SerializeAs("Arrow damage")] public uint damage;
+        [Tooltip("sec / arrow")] public float shootFrequency;
+
+        [Tooltip("max distance where the ennemy will shoot arrows")]
+        public float shootRangeMax;
+
+        [Tooltip("min distance where the ennemy will shoot arrows")]
+        public float shootRangeMin;
+
+        public float arrowSpeed;
+
+        [Tooltip("Distance from the ennemy's center where arrows will spawn")]
+        public float startDistance;
+    }
+
+    [Serializable]
+    public class EnnemyMeleeParams
+    {
+        [SerializeAs("Melee damage")] public uint meleeDamage;
+        [Tooltip("sec / hit")] public float meleeFrequency;
+        public float meleeRange;
     }
 }
