@@ -14,7 +14,6 @@ namespace UI {
         [FormerlySerializedAs("GameObjectUI")] public GameObject gameObjectUI;
         private static readonly int IsMoving = Animator.StringToHash("IsMoving");
         private static readonly int IsAimingBow = Animator.StringToHash("IsAimingBow");
-        
         void Update()
         {
             if(Input.GetKeyDown(KeyCode.Escape)) {
@@ -59,7 +58,7 @@ namespace UI {
                 animator.SetBool(IsMoving,false);
                 animator.SetBool(IsAimingBow,false);
                 Player.Player.LocalPlayerInstance.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-\            }
+            }
         }
         public void MainMenu(){
             Time.timeScale = 1f; // wth this existed all along
