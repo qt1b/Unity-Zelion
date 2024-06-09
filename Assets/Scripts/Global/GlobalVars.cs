@@ -23,7 +23,7 @@ namespace Global {
 		// allows us to be sure there is the right amount of data
 		public static readonly string[,] SaveLookupArray = new string[2,11] {
 			{ "0", "0", "6", "2", "2", "0", "0", "0", "0", "0", "0" },
-			{ "0", "0", "12", "16", "16", "1", "1", "1", "1", "1", "1" }
+			{ "22", "-22", "12", "16", "16", "1", "1", "1", "1", "1", "1" }
 		};
 		public static DateTime TimeStartedAt;
 		// not to be synced, maybe to put in player ?
