@@ -33,7 +33,7 @@ namespace UI {
             _maxRes = _resolutions.Length - 1;
 
             currentVolume = 0.5f;
-            audioMixer.SetFloat("Volume", currentVolume);
+            audioMixer.SetFloat("Master", currentVolume);
         }
 
         public void SetFullscreen(bool val) {
@@ -67,7 +67,7 @@ namespace UI {
 
         // is incomplete
         public void SetVolume(float volume) {
-            audioMixer.SetFloat("Volume", volume);
+            audioMixer.SetFloat("Master", volume);
             currentVolume = volume;
         }
     }
