@@ -13,7 +13,7 @@ namespace Editor
             return Mathf.Max(attr!.Padding, attr.Thickness);
         }
 
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        public override void OnGUI(Rect position)
         {
             HorizontalLineAttribute attr = attribute as HorizontalLineAttribute;
             position.height = attr!.Thickness;
@@ -21,11 +21,5 @@ namespace Editor
             
             EditorGUI.DrawRect(position, EditorGUIUtility.isProSkin ? new Color(.3f, .3f, .3f, 1f) : new Color(.7f, .7f, .7f, 1f));
         }
-    }
-
-    [CustomPropertyDrawer(typeof(DrawIf))]
-    public class DrawIfDrawer : DecoratorDrawer
-    {
-        public override 
     }
 }

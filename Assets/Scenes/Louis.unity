@@ -861,9 +861,16 @@ MonoBehaviour:
   detectionDistance: 10
   distanceFromPlayer: 5
   distanceFromPlayerMargin: 1
-  backWhenPlayerTooClose: 0
+  backWhenPlayerTooClose: 1
   forwardWhenPlayerTooClose: 0
-  isShooter: 1
+  isCharger: 1
+  _chargeParams:
+    speed: 6
+    Minfrequency: 7
+    maxFrequency: 20
+    time: 3
+    stopOnCollision: 0
+  isShooter: 0
   ShootParams:
     damage: 0
     shootFrequency: 0
@@ -871,12 +878,13 @@ MonoBehaviour:
     shootRangeMin: 0
     arrowSpeed: 0
     startDistance: 0
-  isMelee: 1
+  isMelee: 0
   MeleeParams:
     meleeDamage: 0
     meleeFrequency: 0
     meleeRange: 0
   Agent: {fileID: 884015233}
+  Rigidbody2D: {fileID: 884015238}
 --- !u!195 &884015233
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -4169,6 +4177,14 @@ PrefabInstance:
     - target: {fileID: 2483156993452652223, guid: 98b259ff35e734172a70f873d674218c, type: 3}
       propertyPath: m_Name
       value: healthbar
+      objectReference: {fileID: 0}
+    - target: {fileID: 2711667435030849121, guid: 98b259ff35e734172a70f873d674218c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 79.6615
+      objectReference: {fileID: 0}
+    - target: {fileID: 2711667435030849121, guid: 98b259ff35e734172a70f873d674218c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -28.099976
       objectReference: {fileID: 0}
     - target: {fileID: 3426625320401328672, guid: 98b259ff35e734172a70f873d674218c, type: 3}
       propertyPath: m_AnchorMax.y
