@@ -19,8 +19,17 @@ namespace UI {
         private float currentVolume;
         // Start is called before the first frame update
         public TMPro.TMP_Dropdown langDropdown;
+        public TMP_Text SettingsTxt;
+        public TMP_Text ResolutionTxt;
+        public TMP_Text FullScreenTxt;
+        public TMP_Text VolumeTxt;
+        public TMP_Text LanguageTxt;
+        public TMP_Text BackText;
+
+        public bool IsTitleScreen;
+        public TitleScreen TitleScreen;
         
-        void Start() {
+        void Awake() {
             _resolutions = Screen.resolutions.Select(resolution => new Resolution() { width = resolution.width, height = resolution.height}).Distinct().ToArray();
             _index = 0;
             for (int i = 0; i < _resolutions.Length; i++) {
@@ -39,7 +48,17 @@ namespace UI {
             audioMixer.SetFloat("Master", currentVolume);
 
             langDropdown.value = GlobalVars.Language;
-            langDropdown.options = new string[] { "English", "Français", "日本語" }.Select(s => new TMP_Dropdown.OptionData(s)).ToList();
+            langDropdown.options = new string[] { "English", "Français", "日本語", "Italiano" }.Select(s => new TMP_Dropdown.OptionData(s)).ToList();
+        }
+
+        // sets the text depending on the language
+        void Start() {
+            SettingsTxt.text = TextValues.Settings;
+            ResolutionTxt.text = TextValues.Resolution;
+            FullScreenTxt.text = TextValues.FullScreen;
+            VolumeTxt.text = TextValues.Volume;
+            LanguageTxt.text = TextValues.Language;
+            BackText.text = TextValues.Back;
         }
 
         public void SetFullscreen(bool val) {
@@ -75,6 +94,12 @@ namespace UI {
         public void SetVolume(float volume) {
             audioMixer.SetFloat("Master", volume);
             currentVolume = volume;
+        }
+
+        public void SetLang(int langIndex) {
+            GlobalVars.Language = (byte)langIndex;
+            Start();
+            if (IsTitleScreen) TitleScreen.Start();
         }
     }
 }
