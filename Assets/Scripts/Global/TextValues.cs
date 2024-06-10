@@ -36,16 +36,16 @@ namespace Global {
 		public static string SinglePlayer {
 			get {
 				if (GlobalVars.Language == 0) return "SinglePlayer";
-				else if (GlobalVars.Language == 1) return "Jeu Seul";
-				else if (GlobalVars.Language == 2) return "一人";
+				else if (GlobalVars.Language == 1) return "Partie Solo";
+				else if (GlobalVars.Language == 2) return "一人で";
 				else throw new ArgumentException("invalid language value");
 			}
 		}
 		public static string MultiPlayer {
 			get {
 				if (GlobalVars.Language == 0) return "Multiplayer";
-				else if (GlobalVars.Language == 1) return "À Plusieurs";
-				else if (GlobalVars.Language == 2) return "マルチプレイ";
+				else if (GlobalVars.Language == 1) return "Multijoueur";
+				else if (GlobalVars.Language == 2) return "マルチプレイヤ";
 				else throw new ArgumentException("invalid language value");
 			}
 		}
@@ -68,9 +68,9 @@ namespace Global {
 		}
 		public static string CreateLobby {
 			get {
-				if (GlobalVars.Language == 0) return "Join";
-				else if (GlobalVars.Language == 1) return "Rejoindre";
-				else if (GlobalVars.Language == 2) return "ルームを参加する";
+				if (GlobalVars.Language == 0) return "Create";
+				else if (GlobalVars.Language == 1) return "Créer";
+				else if (GlobalVars.Language == 2) return "ルームを作る";
 				else throw new ArgumentException("invalid language value");
 			}
 		}
@@ -126,9 +126,9 @@ namespace Global {
 		// Pause Menu
 		public static string Paused {
 			get {
-				if (GlobalVars.Language == 0) return "Language";
-				else if (GlobalVars.Language == 1) return "Langue";
-				else if (GlobalVars.Language == 2) return "言語";
+				if (GlobalVars.Language == 0) return "Paused";
+				else if (GlobalVars.Language == 1) return "En Pause";
+				else if (GlobalVars.Language == 2) return "ゲーム中断";// not sure for this one
 				else throw new ArgumentException("invalid language value");
 			}
 		}
@@ -136,7 +136,7 @@ namespace Global {
 			get {
 				if (GlobalVars.Language == 0) return "Resume";
 				else if (GlobalVars.Language == 1) return "Continuer";
-				else if (GlobalVars.Language == 2) return "言語";
+				else if (GlobalVars.Language == 2) return "ゲーム再会";
 				else throw new ArgumentException("invalid language value");
 			}
 		}

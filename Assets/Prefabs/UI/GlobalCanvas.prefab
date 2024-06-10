@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5081907724311344390}
   - component: {fileID: 6816702614153751790}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Resume Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 2642207393418069065}
   - component: {fileID: 235038908579549960}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Main Menu Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -435,7 +435,7 @@ GameObject:
   - component: {fileID: 5297787973897216446}
   - component: {fileID: 1875551223178069001}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Settings Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -757,8 +757,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: '- network status text -'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8cf30f21157eb4be3b2173400dbacc9c, type: 2}
-  m_sharedMaterial: {fileID: -7497230022825908593, guid: 8cf30f21157eb4be3b2173400dbacc9c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2082,7 +2082,6 @@ GameObject:
   - component: {fileID: 8295757009520519052}
   - component: {fileID: 2338507330243436002}
   - component: {fileID: 752981552407710132}
-  - component: {fileID: 3575317896762503327}
   m_Layer: 5
   m_Name: GlobalCanvas
   m_TagString: Untagged
@@ -2192,6 +2191,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameObjectUI: {fileID: 1370829886882803311}
+  PausedTxt: {fileID: 3521866553654531693}
+  ResumeTxt: {fileID: 6816702614153751790}
+  SettingsTxt: {fileID: 1875551223178069001}
+  MainMenuTxt: {fileID: 235038908579549960}
 --- !u!114 &752981552407710132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2214,29 +2217,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &3575317896762503327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7628863537969484830}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1df7d8c7cd88e41a1b12740ccfd94142, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resDropdown: {fileID: 0}
-  audioMixer: {fileID: 24100000, guid: e8ecfdfec3ce041b4949e2fa8e7528f8, type: 2}
-  langDropdown: {fileID: 0}
-  SettingsTxt: {fileID: 0}
-  ResolutionTxt: {fileID: 0}
-  FullScreenTxt: {fileID: 0}
-  VolumeTxt: {fileID: 0}
-  LanguageTxt: {fileID: 0}
-  BackText: {fileID: 0}
-  IsTitleScreen: 0
-  TitleScreen: {fileID: 0}
 --- !u!1 &7708092707506235498
 GameObject:
   m_ObjectHideFlags: 0
@@ -2603,17 +2583,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4605562715872006282, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 3575317896762503327}
-    - target: {fileID: 4605562715872006282, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetResolution
       objectReference: {fileID: 0}
-    - target: {fileID: 4901233326734949206, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 3575317896762503327}
     - target: {fileID: 4901233326734949206, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetFullscreen
@@ -2703,10 +2675,6 @@ PrefabInstance:
       value: SetActive
       objectReference: {fileID: 0}
     - target: {fileID: 6118107304152429222, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 3575317896762503327}
-    - target: {fileID: 6118107304152429222, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetVolume
       objectReference: {fileID: 0}
@@ -2742,6 +2710,10 @@ PrefabInstance:
       propertyPath: m_enableVertexGradient
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7438748720801974493, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
+      propertyPath: PauseMenu
+      value: 
+      objectReference: {fileID: 2338507330243436002}
     - target: {fileID: 7518657552161407649, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

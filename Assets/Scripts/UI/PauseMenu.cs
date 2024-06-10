@@ -22,7 +22,10 @@ namespace UI {
         public TMP_Text MainMenuTxt;
         
         public void Start() {
-            
+            PausedTxt.text = TextValues.Paused;
+            ResumeTxt.text = TextValues.Resume;
+            SettingsTxt.text = TextValues.Settings;
+            MainMenuTxt.text = TextValues.MainMenu;
         }
         
         void Update()

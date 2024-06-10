@@ -11,7 +11,6 @@ namespace UI {
         private Resolution[] _resolutions;
         private int _lastBeforeFull;
         private int _maxRes;
-        private List<string> _options = new List<string>();
         private int _index;
         public TMPro.TMP_Dropdown resDropdown;
         public AudioMixer audioMixer;
@@ -28,13 +27,15 @@ namespace UI {
 
         public bool IsTitleScreen;
         public TitleScreen TitleScreen;
+        public PauseMenu PauseMenu;
         
         void Awake() {
+            List<string> options = new List<string>();
             _resolutions = Screen.resolutions.Select(resolution => new Resolution() { width = resolution.width, height = resolution.height}).Distinct().ToArray();
             _index = 0;
             for (int i = 0; i < _resolutions.Length; i++) {
                 string toadd = _resolutions[i].height + "x" + _resolutions[i].width;
-                _options.Add(toadd);
+                options.Add(toadd);
                 if (_resolutions[i].width == Screen.width && _resolutions[i].height == Screen.height) {
                     _index = i;
                 }
@@ -48,7 +49,7 @@ namespace UI {
             audioMixer.SetFloat("Master", currentVolume);
 
             langDropdown.value = GlobalVars.Language;
-            langDropdown.options = new string[] { "English", "Français", "日本語", "Italiano" }.Select(s => new TMP_Dropdown.OptionData(s)).ToList();
+            langDropdown.options = new string[] { "English", "Français", "日本語"/*, "Italiano" */}.Select(s => new TMP_Dropdown.OptionData(s)).ToList();
         }
 
         // sets the text depending on the language
@@ -66,13 +67,13 @@ namespace UI {
                 _lastBeforeFull = _index;
                 // on windows
                 Screen.fullScreen = true;
-                /*if (SystemInfo.operatingSystem.Contains("Windows")) {
+                if (SystemInfo.operatingSystem.Contains("Windows")) {
                     Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
                 }
                 // on mac
                 else {
                     Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
-                } */
+                }
                 SetResolution(_maxRes);
             }
             else {
@@ -100,6 +101,7 @@ namespace UI {
             GlobalVars.Language = (byte)langIndex;
             Start();
             if (IsTitleScreen) TitleScreen.Start();
+            else PauseMenu.Start();
         }
     }
 }
