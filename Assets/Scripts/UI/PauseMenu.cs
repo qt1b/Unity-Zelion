@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Global;
 using Photon.PhotonUnityNetworking.Code;
 using Photon.PhotonUnityNetworking.Code.Interfaces;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -14,6 +15,19 @@ namespace UI {
         [FormerlySerializedAs("GameObjectUI")] public GameObject gameObjectUI;
         private static readonly int IsMoving = Animator.StringToHash("IsMoving");
         private static readonly int IsAimingBow = Animator.StringToHash("IsAimingBow");
+
+        public TMP_Text PausedTxt;
+        public TMP_Text ResumeTxt;
+        public TMP_Text SettingsTxt;
+        public TMP_Text MainMenuTxt;
+        
+        public void Start() {
+            PausedTxt.text = TextValues.Paused;
+            ResumeTxt.text = TextValues.Resume;
+            SettingsTxt.text = TextValues.Settings;
+            MainMenuTxt.text = TextValues.MainMenu;
+        }
+        
         void Update()
         {
             if(Input.GetKeyDown(KeyCode.Escape)) {

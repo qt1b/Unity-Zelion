@@ -11,7 +11,6 @@ namespace UI {
         private Resolution[] _resolutions;
         private int _lastBeforeFull;
         private int _maxRes;
-        private List<string> _options = new List<string>();
         private int _index;
         public TMPro.TMP_Dropdown resDropdown;
         public AudioMixer audioMixer;
@@ -19,13 +18,24 @@ namespace UI {
         private float currentVolume;
         // Start is called before the first frame update
         public TMPro.TMP_Dropdown langDropdown;
+        public TMP_Text SettingsTxt;
+        public TMP_Text ResolutionTxt;
+        public TMP_Text FullScreenTxt;
+        public TMP_Text VolumeTxt;
+        public TMP_Text LanguageTxt;
+        public TMP_Text BackText;
+
+        public bool IsTitleScreen;
+        public TitleScreen TitleScreen;
+        public PauseMenu PauseMenu;
         
-        void Start() {
+        void Awake() {
+            List<string> options = new List<string>();
             _resolutions = Screen.resolutions.Select(resolution => new Resolution() { width = resolution.width, height = resolution.height}).Distinct().ToArray();
             _index = 0;
             for (int i = 0; i < _resolutions.Length; i++) {
                 string toadd = _resolutions[i].height + "x" + _resolutions[i].width;
-                _options.Add(toadd);
+                options.Add(toadd);
                 if (_resolutions[i].width == Screen.width && _resolutions[i].height == Screen.height) {
                     _index = i;
                 }
@@ -39,7 +49,17 @@ namespace UI {
             audioMixer.SetFloat("Master", currentVolume);
 
             langDropdown.value = GlobalVars.Language;
-            langDropdown.options = new string[] { "English", "Français", "日本語" }.Select(s => new TMP_Dropdown.OptionData(s)).ToList();
+            langDropdown.options = new string[] { "English", "Français", "日本語"/*, "Italiano" */}.Select(s => new TMP_Dropdown.OptionData(s)).ToList();
+        }
+
+        // sets the text depending on the language
+        void Start() {
+            SettingsTxt.text = TextValues.Settings;
+            ResolutionTxt.text = TextValues.Resolution;
+            FullScreenTxt.text = TextValues.FullScreen;
+            VolumeTxt.text = TextValues.Volume;
+            LanguageTxt.text = TextValues.Language;
+            BackText.text = TextValues.Back;
         }
 
         public void SetFullscreen(bool val) {
@@ -47,13 +67,13 @@ namespace UI {
                 _lastBeforeFull = _index;
                 // on windows
                 Screen.fullScreen = true;
-                /*if (SystemInfo.operatingSystem.Contains("Windows")) {
+                if (SystemInfo.operatingSystem.Contains("Windows")) {
                     Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
                 }
                 // on mac
                 else {
                     Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
-                } */
+                }
                 SetResolution(_maxRes);
             }
             else {
@@ -75,6 +95,13 @@ namespace UI {
         public void SetVolume(float volume) {
             audioMixer.SetFloat("Master", volume);
             currentVolume = volume;
+        }
+
+        public void SetLang(int langIndex) {
+            GlobalVars.Language = (byte)langIndex;
+            Start();
+            if (IsTitleScreen) TitleScreen.Start();
+            else PauseMenu.Start();
         }
     }
 }
