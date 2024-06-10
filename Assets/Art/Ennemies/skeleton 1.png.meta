@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3119fe9fa6632144dbcff7a7c5e84d17
+guid: 635840d6b86e93a428a478f17b15b067
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,64 +123,85 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: frog_0
+      name: skeleton 1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 16
-        height: 13
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 973c573a3aa1c244b823bdedf82fa94a
-      internalID: -1010329074
+      spriteID: 7dd3f6b924fdd634da7e2bba60447a63
+      internalID: -667256354
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: frog_1
+      name: skeleton 1_1
       rect:
         serializedVersion: 2
         x: 16
         y: 0
         width: 16
-        height: 13
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d2e5da1c44e03a743bda7215e8d963b0
-      internalID: 1662548956
+      spriteID: 7ef134cf7feeda14d8b3db7ddb8fa2e9
+      internalID: -225048416
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: frog_2
+      name: skeleton 1_2
       rect:
         serializedVersion: 2
         x: 32
         y: 0
         width: 16
-        height: 13
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f4a2f162dca69e240881c4a405559129
-      internalID: -1717921362
+      spriteID: 8cbada4166d1e574aae9f9600995e03a
+      internalID: 124525884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton 1_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0d53c4e78277054cb70cecf34e2cd61
+      internalID: -1544058470
       vertices: []
       indices: 
       edges: []
@@ -196,9 +217,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      frog_0: -1010329074
-      frog_1: 1662548956
-      frog_2: -1717921362
+      skeleton 1_0: -667256354
+      skeleton 1_1: -225048416
+      skeleton 1_2: 124525884
+      skeleton 1_3: -1544058470
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

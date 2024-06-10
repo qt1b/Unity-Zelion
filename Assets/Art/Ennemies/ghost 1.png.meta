@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3119fe9fa6632144dbcff7a7c5e84d17
+guid: 104638f16274a634fb15dedff85baeba
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,64 +123,64 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: frog_0
+      name: ghost 1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 16
-        height: 13
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 973c573a3aa1c244b823bdedf82fa94a
-      internalID: -1010329074
+      spriteID: 3afd941b482f4744c8e624d8304ca0ca
+      internalID: 383647724
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: frog_1
+      name: ghost 1_1
       rect:
         serializedVersion: 2
         x: 16
         y: 0
         width: 16
-        height: 13
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d2e5da1c44e03a743bda7215e8d963b0
-      internalID: 1662548956
+      spriteID: 67190b30291559343b26226848b15561
+      internalID: -1176677497
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: frog_2
+      name: ghost 1_2
       rect:
         serializedVersion: 2
         x: 32
         y: 0
         width: 16
-        height: 13
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f4a2f162dca69e240881c4a405559129
-      internalID: -1717921362
+      spriteID: dbdfb646461ee624ea027dc14dc5a6fb
+      internalID: -823869345
       vertices: []
       indices: 
       edges: []
@@ -196,9 +196,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      frog_0: -1010329074
-      frog_1: 1662548956
-      frog_2: -1717921362
+      ghost 1_0: 383647724
+      ghost 1_1: -1176677497
+      ghost 1_2: -823869345
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
