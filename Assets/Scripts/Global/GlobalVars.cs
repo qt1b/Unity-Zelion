@@ -37,6 +37,8 @@ namespace Global {
 		public static string GameOverSceneName = "GameOver";
 		public static string GameClearSceneName = "GameClear";
 		public static string LobbySceneName = "Lobby";
+		// 0 = en, 1 = fr, 2 = jp
+		public static byte Language = 1;
 		#endregion
 		#region IPunObservable
 		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {

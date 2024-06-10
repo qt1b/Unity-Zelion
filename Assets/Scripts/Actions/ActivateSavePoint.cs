@@ -35,7 +35,9 @@ namespace Actions {
 			// loads the save, hopefully it is synced before this
 			// just in case
 			GlobalVars.SaveId = this.saveID;
-			Player.Player.LocalPlayerInstance.GetComponent<Player.Player>().LoadSaveWithoutPos();
+			Player.Player player = Player.Player.LocalPlayerInstance.GetComponent<Player.Player>();
+			player.LoadSaveWithoutPos();
+			player.Heal(2); // save points heals all players a little bit.
 		}
 	}
 }

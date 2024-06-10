@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 151871583}
   - component: {fileID: 151871582}
   m_Layer: 5
-  m_Name: Back Button
+  m_Name: Back Button 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -855,6 +855,11 @@ MonoBehaviour:
   BeforeLobby: {fileID: 358085676}
   Loading: {fileID: 1324422094}
   InsideLobby: {fileID: 237573748}
+  BackButton1: {fileID: 0}
+  CreateLobby: {fileID: 0}
+  JoinLobby: {fileID: 0}
+  LoadingText: {fileID: 0}
+  BackButton2: {fileID: 0}
 --- !u!1 &1258082727
 GameObject:
   m_ObjectHideFlags: 0
@@ -868,7 +873,7 @@ GameObject:
   - component: {fileID: 1258082730}
   - component: {fileID: 1258082729}
   m_Layer: 5
-  m_Name: Back Button
+  m_Name: Back Button 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

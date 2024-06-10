@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,10 +6,13 @@ namespace Objects {
     public class Sign : MonoBehaviour
     {
         public GameObject dialogBox;
-        public Text dialogText;
+        private TMP_Text dialogText;
+        private bool _validQuestionMark;
+        private Animator _animator;
         public string dialog;
         private bool _playerInRange = false;
         private GameObject _questionMark;
+        private static readonly int Interracting = Animator.StringToHash("interracting");
 
         // script imports, for the player not being able to attack when in front of a sign
         // TODO : render the sign behind the player when y coordinates of the player are behind,
@@ -17,9 +21,9 @@ namespace Objects {
         // then we could use that on a lot of other elements like houses, trees...
 
         // Start is called before the first frame update
-        void Start()
-        {
-            _questionMark = new GameObject();
+        public void Start() {
+            _animator = gameObject.GetComponent<Animator>();
+            dialogText = dialogBox.GetComponentInChildren<TextMeshProUGUI>();
             // Instantiate(questionMark);
             // QuestionMark questionMark = gameObject.AddComponent<QuestionMark>() as QuestionMark;
         }
@@ -32,11 +36,13 @@ namespace Objects {
                 if (dialogBox.activeInHierarchy) {
                     dialogBox.SetActive(false);
                     _questionMark.SetActive(true);
+                    _animator.SetBool(Interracting,false);
                 }
-                else {
+                else if (_validQuestionMark) {
                     dialogBox.SetActive(true);
                     dialogText.text = dialog;
                     _questionMark.SetActive(false);
+                    _animator.SetBool(Interracting,true);
                 }
             }
         }
@@ -44,6 +50,7 @@ namespace Objects {
         void OnTriggerEnter2D(Collider2D other) {
             if (other.CompareTag("Player")) {
                 _playerInRange = true;
+                _validQuestionMark = true;
                 _questionMark = other.transform.GetChild(3).gameObject;
                 _questionMark.SetActive(true);
                 // playerControl.questionMarkActive = true;
@@ -52,10 +59,11 @@ namespace Objects {
         }
 
         private void OnTriggerExit2D(Collider2D other) {
-            if (other.CompareTag("Player")) {
+            if (_validQuestionMark && other.CompareTag("Player")) {
                 _playerInRange = false;
                 dialogBox.SetActive(false);
                 _questionMark.SetActive(false);
+                _animator.SetBool(Interracting,false);
                 // playerControl.questionMarkActive = false;
                 // playerControl.isBusy = false;
             }
