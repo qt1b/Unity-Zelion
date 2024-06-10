@@ -22,6 +22,13 @@ namespace PUN {
 		public GameObject BeforeLobby;
 		public GameObject Loading;
 		public GameObject InsideLobby;
+
+		public Button BackButton1;
+		public Button CreateLobby;
+		public Button JoinLobby;
+		public TMP_Text LoadingText;
+		public Button BackButton2;
+		
 		#endregion
 
 		#region Private Fields
@@ -34,6 +41,10 @@ namespace PUN {
 			PhotonNetwork.OfflineMode = false;
 			PhotonNetwork.ConnectUsingSettings();
 			PhotonNetwork.GameVersion = GlobalVars.GameVersion;
+		}
+
+		public void Start() {
+			
 		}
 
 		// after
@@ -112,8 +123,20 @@ namespace PUN {
 			InsideLobby.SetActive(true);
 			RoomNameText.SetText($"RoomID:{PhotonNetwork.CurrentRoom.Name}");
 			StartGameButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
-			StartGameButton.GetComponentInChildren<TextMeshProUGUI>().text =
-				$"Start a {PhotonNetwork.CurrentRoom.PlayerCount} player game";
+			// depends on the language and the number of players
+			if (GlobalVars.Language == 0) {
+				StartGameButton.GetComponentInChildren<TextMeshProUGUI>().text =
+					$"Start a {PhotonNetwork.CurrentRoom.PlayerCount} player game";
+			}
+			else if (GlobalVars.Language == 1) {
+				StartGameButton.GetComponentInChildren<TextMeshProUGUI>().text =
+					$"Jeu à {PhotonNetwork.CurrentRoom.PlayerCount} joueur" + (PhotonNetwork.CurrentRoom.PlayerCount > 1 ?"s":"");
+			}
+			else if (GlobalVars.Language == 2) {
+				StartGameButton.GetComponentInChildren<TextMeshProUGUI>().text =
+					$"{PhotonNetwork.CurrentRoom.PlayerCount}人で始める。";
+			}
+			else throw new ArgumentException("invalid language value");
 		}
 		public override void OnJoinRoomFailed(short returnCode, string message)
 		{

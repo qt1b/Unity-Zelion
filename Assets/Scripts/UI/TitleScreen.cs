@@ -5,15 +5,32 @@ using Global;
 using Photon.PhotonRealtime.Code;
 using Photon.PhotonUnityNetworking.Code;
 using Photon.PhotonUnityNetworking.Demos.PunBasics_Tutorial.Scripts;
+using TMPro;
 using Unity.Mathematics;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace UI {
 	public class TitleScreen : MonoBehaviourPunCallbacks {
 		// or start ?
 		private bool _soloPlay = false;
+		public Button PlayButton;
+		public Button SettingsButton;
+		public Button ExitButton;
+		public Button SinglePlayerButton;
+		public Button MultiPlayerButton;
+		public Button BackButton;
+
+		public void Start() {
+			PlayButton.GetComponentInChildren<TextMeshProUGUI>().text = TextValues.Play;
+			SettingsButton.GetComponentInChildren<TextMeshProUGUI>().text = TextValues.Settings;
+			ExitButton.GetComponentInChildren<TextMeshProUGUI>().text = TextValues.Exit;
+			SinglePlayerButton.GetComponentInChildren<TextMeshProUGUI>().text = TextValues.SinglePlayer;
+			MultiPlayerButton.GetComponentInChildren<TextMeshProUGUI>().text = TextValues.MultiPlayer;
+			BackButton.GetComponentInChildren<TextMeshProUGUI>().text = TextValues.Back;
+		}
 
 		public void StartSinglePlayer() {
 			//PhotonNetwork.NetworkClientState is ClientState.ConnectedToMasterServer) {

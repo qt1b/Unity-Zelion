@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Global;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -17,6 +18,8 @@ namespace UI {
         //public Slider audioSlider;
         private float currentVolume;
         // Start is called before the first frame update
+        public TMPro.TMP_Dropdown langDropdown;
+        
         void Start() {
             _resolutions = Screen.resolutions.Select(resolution => new Resolution() { width = resolution.width, height = resolution.height}).Distinct().ToArray();
             _index = 0;
@@ -34,6 +37,9 @@ namespace UI {
 
             currentVolume = 0.5f;
             audioMixer.SetFloat("Master", currentVolume);
+
+            langDropdown.value = GlobalVars.Language;
+            langDropdown.options = new string[] { "English", "Français", "日本語" }.Select(s => new TMP_Dropdown.OptionData(s)).ToList();
         }
 
         public void SetFullscreen(bool val) {

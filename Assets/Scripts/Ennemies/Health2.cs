@@ -79,7 +79,6 @@ namespace Ennemies {
 			yield return new WaitForSeconds(secs);
 			PhotonNetwork.Destroy(gameObject);
 		}
-		
 		public void Heal(ushort heal) {
 			_healthBar.Heal(heal);
 			photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,0.3f, 1f, 0.3f, 0.5f);
