@@ -477,8 +477,8 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 310545513
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!114 &163089675229723772
 MonoBehaviour:
@@ -1212,8 +1212,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.0034999847, y: 0.00020003319, z: 0}
-    m_Extent: {x: 5.5019, y: 5.5030003, z: 0}
+    m_Center: {x: 0.0022499561, y: -0.0039000511, z: 0}
+    m_Extent: {x: 5.50675, y: 5.4996, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
