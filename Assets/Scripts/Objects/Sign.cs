@@ -11,7 +11,7 @@ namespace Objects {
         public string dialog;
         private bool _playerInRange = false;
         private GameObject _questionMark;
-        private static readonly int Interracting = Animator.StringToHash("interracting");
+            private static readonly int Interracting = Animator.StringToHash("interracting");
         public bool onlyOnce;
         private bool _interracted;
         // Start is called before the first frame update
@@ -22,7 +22,7 @@ namespace Objects {
 
         // Update is called once per frame
         void Update()
-        {
+        { 
             if (Input.GetKeyDown(KeyCode.F) && _playerInRange && (!onlyOnce || !_interracted)) {
                 // playerControl.questionMarkActive = false;
                 if (dialogBox.activeInHierarchy) {

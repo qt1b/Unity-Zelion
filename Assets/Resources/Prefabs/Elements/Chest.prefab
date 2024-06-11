@@ -293,8 +293,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogBox: {fileID: 0}
-  dialogText: {fileID: 0}
-  dialog: CONENT OF CHEST
+  dialog: chest canvas
+  onlyOnce: 0
 --- !u!95 &-387766266244510798
 Animator:
   serializedVersion: 5

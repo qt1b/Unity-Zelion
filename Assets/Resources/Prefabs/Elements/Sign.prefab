@@ -292,5 +292,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogBox: {fileID: 0}
-  dialogText: {fileID: 0}
-  dialog: This is another example
+  dialog: example1
+  onlyOnce: 0

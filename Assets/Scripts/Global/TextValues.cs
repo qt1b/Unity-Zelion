@@ -7,7 +7,8 @@ namespace Global {
 		// this will allow us to easily locate text and use multilingual values, etc
 		public static Dictionary<string, string[]> DialogsDict = new Dictionary<string, string[]>() {
 			{ "dialog1", new[] { "Dialog 1", "Dialogue 1", "会話１" } },
-			{ "example1", new[] { "Example 1", "Example 1", "第一例" } }
+			{ "example1", new[] { "Example 1", "Example 1", "第一例" } 
+			} ,  {"chest canvas" , new[] { "Content of Chest " , "Contenue du Coffre" , "ze Content of ze chesuto "}}
 
 		};
 		// Title Screen
