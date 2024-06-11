@@ -6,7 +6,9 @@ namespace Global {
 		// we will put here all values used for the dialogues.
 		// this will allow us to easily locate text and use multilingual values, etc
 		public static Dictionary<string, string[]> DialogsDict = new Dictionary<string, string[]>() {
-			{ "dialog1", new[] { "Dialog 1", "Dialogue 1", "会話１" } }
+			{ "dialog1", new[] { "Dialog 1", "Dialogue 1", "会話１" } },
+			{ "example1", new[] { "Example 1", "Example 1", "第一例" } }
+
 		};
 		// Title Screen
 		public static string Play {
