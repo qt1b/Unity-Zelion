@@ -31,6 +31,8 @@ namespace Audio {
 
 				s.source.outputAudioMixerGroup = mixerGroup;
 			}
+			// for convenience
+			DontDestroyOnLoad(gameObject);
 		}
 
 		public void Play(string sound)

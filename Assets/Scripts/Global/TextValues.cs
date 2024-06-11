@@ -6,7 +6,9 @@ namespace Global {
 		// we will put here all values used for the dialogues.
 		// this will allow us to easily locate text and use multilingual values, etc
 		public static Dictionary<string, string[]> DialogsDict = new Dictionary<string, string[]>() {
-			{ "dialog1", new[] { "Dialog 1", "Dialogue 1", "会話１" } }
+			{ "dialog1", new[] { "Dialog 1", "Dialogue 1", "会話１" } },
+			{ "example1", new[] { "Example 1", "Example 1", "第一例" } }
+
 		};
 		// Title Screen
 		public static string Play {
@@ -112,6 +114,22 @@ namespace Global {
 				if (GlobalVars.Language == 0) return "Volume";
 				else if (GlobalVars.Language == 1) return "Volume";
 				else if (GlobalVars.Language == 2) return "音量";
+				else throw new ArgumentException("invalid language value");
+			}
+		}
+		public static string Music {
+			get {
+				if (GlobalVars.Language == 0) return "Music";
+				else if (GlobalVars.Language == 1) return "Musique";
+				else if (GlobalVars.Language == 2) return "音楽";
+				else throw new ArgumentException("invalid language value");
+			}
+		}
+		public static string Sfx {
+			get {
+				if (GlobalVars.Language == 0) return "Sfx";
+				else if (GlobalVars.Language == 1) return "Effets";
+				else if (GlobalVars.Language == 2) return "音量??";
 				else throw new ArgumentException("invalid language value");
 			}
 		}

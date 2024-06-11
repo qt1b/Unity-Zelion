@@ -14,14 +14,21 @@ namespace UI {
         private int _index;
         public TMPro.TMP_Dropdown resDropdown;
         public AudioMixer audioMixer;
-        //public Slider audioSlider;
-        private float currentVolume;
+        public Slider masterSlider;
+        private static float masterVolume;
+        public Slider musicSlider;
+        private static float musicVolume;
+        public Slider sfxSlider;
+        private static float sfxVolume;
+
         // Start is called before the first frame update
         public TMPro.TMP_Dropdown langDropdown;
         public TMP_Text SettingsTxt;
         public TMP_Text ResolutionTxt;
         public TMP_Text FullScreenTxt;
         public TMP_Text VolumeTxt;
+        public TMP_Text MusicTxt;
+        public TMP_Text SfxTxt;
         public TMP_Text LanguageTxt;
         public TMP_Text BackText;
 
@@ -29,7 +36,7 @@ namespace UI {
         public TitleScreen TitleScreen;
         public PauseMenu PauseMenu;
         
-        void Awake() {
+        public void Awake() {
             List<string> options = new List<string>();
             _resolutions = Screen.resolutions.Select(resolution => new Resolution() { width = resolution.width, height = resolution.height}).Distinct().ToArray();
             _index = 0;
@@ -44,12 +51,21 @@ namespace UI {
             resDropdown.value = _index;
             _lastBeforeFull = _index;
             _maxRes = _resolutions.Length - 1;
-
-            currentVolume = 0.5f;
-            audioMixer.SetFloat("Master", currentVolume);
-
+            
             langDropdown.value = GlobalVars.Language;
             langDropdown.options = new string[] { "English", "Français", "日本語"/*, "Italiano" */}.Select(s => new TMP_Dropdown.OptionData(s)).ToList();
+
+            // ~= -6 db
+            if (masterVolume == 0) masterVolume = 0.5f;
+            masterSlider.value = masterVolume;
+            SetMasterVolume(masterVolume);          
+            if (musicVolume == 0) musicVolume = 0.5f;
+            musicSlider.value = musicVolume;
+            SetMusicVolume(musicVolume);          
+            if (sfxVolume == 0) sfxVolume = 0.5f;
+            sfxSlider.value = sfxVolume;
+            SetSfxVolume(sfxVolume);
+
         }
 
         // sets the text depending on the language
@@ -58,6 +74,8 @@ namespace UI {
             ResolutionTxt.text = TextValues.Resolution;
             FullScreenTxt.text = TextValues.FullScreen;
             VolumeTxt.text = TextValues.Volume;
+            MusicTxt.text = TextValues.Music;
+            SfxTxt.text = TextValues.Sfx;
             LanguageTxt.text = TextValues.Language;
             BackText.text = TextValues.Back;
         }
@@ -91,10 +109,23 @@ namespace UI {
                 resolution.height, Screen.fullScreen);
         }
 
+        public void SetAudioMixer(string key,float value) {
+            audioMixer.SetFloat(key, Mathf.Log10(value) * 20);
+        }
+
         // is incomplete
-        public void SetVolume(float volume) {
-            audioMixer.SetFloat("Master", volume);
-            currentVolume = volume;
+        public void SetMasterVolume(float volume) {
+            SetAudioMixer("Master",volume);
+            masterVolume = volume;
+        }
+
+        public void SetMusicVolume(float volume) {
+            SetAudioMixer("Music",volume);
+            musicVolume = volume;
+        }
+        public void SetSfxVolume(float volume) {
+            SetAudioMixer("Sfx", volume);
+            sfxVolume = volume;
         }
 
         public void SetLang(int langIndex) {

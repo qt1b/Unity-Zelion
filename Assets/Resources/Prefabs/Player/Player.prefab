@@ -404,8 +404,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1010022433
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b81fd53411e97ea1ea666100ca213ca7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -478,7 +478,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 310545513
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!114 &163089675229723772
 MonoBehaviour:
@@ -1212,8 +1212,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 0.0041999817, y: -0.0021500587, z: 0}
-    m_Extent: {x: 5.5006, y: 5.50215, z: 0}
+    m_Center: {x: 0.0022499561, y: -0.0039000511, z: 0}
+    m_Extent: {x: 5.50675, y: 5.4996, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -1462,6 +1462,10 @@ PrefabInstance:
     - target: {fileID: 539100572445358203, guid: 2c81f1ccc12b5492d87fcc06bc5511e8, type: 3}
       propertyPath: m_Name
       value: Health_bar
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083854872524997255, guid: 2c81f1ccc12b5492d87fcc06bc5511e8, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1254281394991349956, guid: 2c81f1ccc12b5492d87fcc06bc5511e8, type: 3}
       propertyPath: m_Pivot.x

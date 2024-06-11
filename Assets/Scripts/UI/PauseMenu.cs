@@ -13,6 +13,7 @@ namespace UI {
     public class PauseMenu : MonoBehaviourPunCallbacks {
         public static bool GameIsPaused = false;
         [FormerlySerializedAs("GameObjectUI")] public GameObject gameObjectUI;
+        public GameObject PauseBlur;
         private static readonly int IsMoving = Animator.StringToHash("IsMoving");
         private static readonly int IsAimingBow = Animator.StringToHash("IsAimingBow");
 
@@ -45,6 +46,7 @@ namespace UI {
         }
         [PunRPC]
         public void ResumeRpc() {
+            PauseBlur.SetActive(false);
             GameIsPaused = false;
             gameObjectUI.SetActive(false);
             if (PhotonNetwork.OfflineMode) {
@@ -61,6 +63,7 @@ namespace UI {
 
         [PunRPC]
         public void PauseRpc() {
+            PauseBlur.SetActive(true);
             GameIsPaused = true;
             gameObjectUI.SetActive(true);
             if (PhotonNetwork.OfflineMode) {

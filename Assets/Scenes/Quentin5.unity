@@ -679,7 +679,7 @@ PrefabInstance:
     - target: {fileID: 3657417930718525852, guid: dfd2f13de63541ebe9332e24c5edae4e, type: 3}
       propertyPath: dialogText
       value: 
-      objectReference: {fileID: 2401558861435919931}
+      objectReference: {fileID: 0}
     - target: {fileID: 3657417930718525852, guid: dfd2f13de63541ebe9332e24c5edae4e, type: 3}
       propertyPath: questionMark
       value: 
@@ -914,12 +914,31 @@ MonoBehaviour:
   detectionDistance: 0
   distanceFromPlayer: 0
   distanceFromPlayerMargin: 0
-  shootFrequency: 3
-  meleeFrequency: 3
-  shootRangeMax: 10
-  shootRangeMin: 2
-  meleeRange: 1
+  backWhenPlayerTooClose: 0
+  forwardWhenPlayerTooClose: 0
+  isCharger: 0
+  _chargeParams:
+    speed: 0
+    damage: 0
+    Minfrequency: 0
+    maxFrequency: 0
+    time: 0
+    stopOnCollision: 0
+  isShooter: 0
+  ShootParams:
+    damage: 0
+    shootFrequency: 0
+    shootRangeMax: 0
+    shootRangeMin: 0
+    arrowSpeed: 0
+    startDistance: 0
+  isMelee: 0
+  MeleeParams:
+    meleeDamage: 0
+    meleeFrequency: 0
+    meleeRange: 0
   Agent: {fileID: 0}
+  Rigidbody2D: {fileID: 0}
 --- !u!212 &884015232
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4084,6 +4103,10 @@ PrefabInstance:
     - target: {fileID: 156293282052333141, guid: 98b259ff35e734172a70f873d674218c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 752981552407710132, guid: 98b259ff35e734172a70f873d674218c, type: 3}
+      propertyPath: sceneViewId
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1934687363946744580, guid: 98b259ff35e734172a70f873d674218c, type: 3}
       propertyPath: m_AnchorMax.y
@@ -78763,7 +78786,7 @@ PrefabInstance:
     - target: {fileID: 3657417930718525852, guid: dfd2f13de63541ebe9332e24c5edae4e, type: 3}
       propertyPath: dialogText
       value: 
-      objectReference: {fileID: 2401558861435919931}
+      objectReference: {fileID: 0}
     - target: {fileID: 5708972196261795217, guid: dfd2f13de63541ebe9332e24c5edae4e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -63.99571
@@ -79025,17 +79048,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24a5b8f300f59c4bd9e3ce56edbf78be, type: 3}
---- !u!114 &2401558861435919931 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2401558859930972440, guid: 98b259ff35e734172a70f873d674218c, type: 3}
-  m_PrefabInstance: {fileID: 1517612835}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &7380969000491971753
 PrefabInstance:
   m_ObjectHideFlags: 0

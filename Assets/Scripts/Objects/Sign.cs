@@ -1,3 +1,5 @@
+using System.Collections;
+using Global;
 using TMPro;
 using UnityEngine;
 namespace Objects {
@@ -31,12 +33,22 @@ namespace Objects {
                 }
                 else if (_validQuestionMark) {
                     dialogBox.SetActive(true);
-                    dialogText.text = dialog;
+                    StartCoroutine(WriteText());
                     _questionMark.SetActive(false);
                     _animator.SetBool(Interracting,true);
                 }
             }
         }
+
+        IEnumerator WriteText() {
+            string str = TextValues.DialogsDict[dialog][GlobalVars.Language];
+            dialogText.text = "";
+            foreach (char c in str) {
+                dialogText.text += c;
+                yield return new WaitForSeconds(0.03f * GlobalVars.PlayerSpeed);
+                // audiomgr...
+            }
+        } 
 
         void OnTriggerEnter2D(Collider2D other) {
             if (other.CompareTag("Player") && (!onlyOnce || !_interracted)) {
