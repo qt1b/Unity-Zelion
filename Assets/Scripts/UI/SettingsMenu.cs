@@ -35,6 +35,7 @@ namespace UI {
         public bool IsTitleScreen;
         public TitleScreen TitleScreen;
         public PauseMenu PauseMenu;
+        public GameObject PreviousMenu;
         
         public void Awake() {
             List<string> options = new List<string>();
@@ -80,6 +81,13 @@ namespace UI {
             BackText.text = TextValues.Back;
         }
 
+        void Update() {
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                PreviousMenu.SetActive(true);
+                this.gameObject.SetActive(false);
+            }
+        }
+
         public void SetFullscreen(bool val) {
             if (val) {
                 _lastBeforeFull = _index;
@@ -105,8 +113,7 @@ namespace UI {
         public void SetResolution(int resolutionIndex) {
             _index = resolutionIndex;
             Resolution resolution = _resolutions[resolutionIndex];
-            Screen.SetResolution(resolution.width, 
-                resolution.height, Screen.fullScreen);
+            Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
         }
 
         public void SetAudioMixer(string key,float value) {

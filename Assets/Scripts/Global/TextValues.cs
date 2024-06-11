@@ -113,7 +113,7 @@ namespace Global {
 			get {
 				if (GlobalVars.Language == 0) return "Volume";
 				else if (GlobalVars.Language == 1) return "Volume";
-				else if (GlobalVars.Language == 2) return "音量";
+				else if (GlobalVars.Language == 2) return "主音量";
 				else throw new ArgumentException("invalid language value");
 			}
 		}
@@ -129,7 +129,7 @@ namespace Global {
 			get {
 				if (GlobalVars.Language == 0) return "Sfx";
 				else if (GlobalVars.Language == 1) return "Effets";
-				else if (GlobalVars.Language == 2) return "音量??";
+				else if (GlobalVars.Language == 2) return "効果音";
 				else throw new ArgumentException("invalid language value");
 			}
 		}
