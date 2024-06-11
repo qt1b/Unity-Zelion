@@ -14,10 +14,10 @@ namespace Player {
             Cursor.SetCursor(newCursorTexture, cursorHotSpot, CursorMode.Auto);
         }
         void Start() {
-            cursorTexture = Resources.Load<Texture2D>("Art/Cursors/Cursor Pointer");
-            crosshairTexture = Resources.Load<Texture2D>("Art/Cursors/47");
-            cursorHotSpot = new Vector2(0, 0);
-            crosshairHotSpot = new Vector2(crosshairTexture.width / 2, crosshairTexture.height / 2);
+            // cursorTexture = Resources.Load<Texture2D>("Art/Cursors/Cursor Pointer");
+            // crosshairTexture = Resources.Load<Texture2D>("Art/Cursors/47");
+            // cursorHotSpot = new Vector2(0, 0);
+            // crosshairHotSpot = new Vector2(crosshairTexture.width / 2, crosshairTexture.height / 2);
             Cursor.SetCursor(cursorTexture, cursorHotSpot, CursorMode.Auto);
         }
     }
