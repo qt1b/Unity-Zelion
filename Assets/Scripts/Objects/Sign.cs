@@ -19,7 +19,6 @@ namespace Objects {
             _animator = gameObject.GetComponent<Animator>();
             dialogText = dialogBox.GetComponentInChildren<TextMeshProUGUI>();
         }
-
         // Update is called once per frame
         void Update()
         { 
