@@ -2794,6 +2794,14 @@ PrefabInstance:
       propertyPath: TitleScreen
       value: 
       objectReference: {fileID: 35823808}
+    - target: {fileID: 7438748720801974493, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
+      propertyPath: PreviousMenu
+      value: 
+      objectReference: {fileID: 1199881852}
+    - target: {fileID: 7438748720801974493, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
+      propertyPath: IsTitleScreen
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7518657552161407649, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

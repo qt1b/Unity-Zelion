@@ -41,7 +41,6 @@ namespace UI {
                 }
             }
         }
-        
         public void Resume() {
             photonView.RPC("ResumeRpc", RpcTarget.AllBuffered);
         }
@@ -56,12 +55,11 @@ namespace UI {
             else {
                 Player.Player.LocalPlayerInstance.GetComponent<Animator>().speed = GlobalVars.PlayerSpeed;
             }
+            _settings.gameObject.SetActive(false);
         }
-        
         public void Pause() {
             photonView.RPC("PauseRpc",RpcTarget.AllBuffered);
         }
-
         [PunRPC]
         public void PauseRpc() {
             PauseBlur.SetActive(true);
@@ -85,7 +83,6 @@ namespace UI {
             PhotonNetwork.Disconnect();
             SceneManager.LoadScene(0);
         }
-
         /*
         public void Settings(){
             Debug.Log("settings ");

@@ -15,6 +15,7 @@ namespace PUN {
 	public class GameManager : MonoBehaviourPunCallbacks {
 		#region Public Fields
 		public static GameManager Instance;
+		public static bool WantToDisconnect;
 		public TMP_Text NetworkStatusText;
 		#endregion
 
@@ -47,6 +48,9 @@ namespace PUN {
 				// idk if it works in offline mode
 				PhotonNetwork.ReconnectAndRejoin();
 			}
+			if (!WantToDisconnect) {
+				PhotonNetwork.ReconnectAndRejoin();
+			}
 		}
 
 		/*
@@ -54,8 +58,8 @@ namespace PUN {
 		/// Called when the local player left the room. We need to load the launcher scene.
 		/// </summary>
 		*/
-		public override void OnLeftRoom()
-		{
+		public override void OnLeftRoom() {
+			WantToDisconnect = true;
 			Debug.LogError("OnLeftRoom : Disconnected");
 			SceneManager.LoadScene(0);
 			global::Player.Player.LocalPlayerInstance = null;
@@ -78,6 +82,12 @@ namespace PUN {
 			if (!allowJoining) {
 				PhotonNetwork.CurrentRoom.MaxPlayers = PhotonNetwork.CurrentRoom.PlayerCount;
 			}*/
+		}
+
+		public override void OnMasterClientSwitched(Photon.PhotonRealtime.Code.Player newMasterClient) {
+			if (PhotonNetwork.IsMasterClient) {
+				PhotonNetwork.CurrentRoom.MaxPlayers = PhotonNetwork.CurrentRoom.PlayerCount;
+			}
 		}
 		#endregion
 

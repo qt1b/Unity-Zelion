@@ -92,15 +92,16 @@ namespace UI {
             if (val) {
                 _lastBeforeFull = _index;
                 // on windows
-                Screen.fullScreen = true;
+                /*
                 if (SystemInfo.operatingSystem.Contains("Windows")) {
                     Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
                 }
                 // on mac
                 else {
                     Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
-                }
+                } */
                 SetResolution(_maxRes);
+                Screen.fullScreen = true;
             }
             else {
                 Screen.fullScreen = false;
