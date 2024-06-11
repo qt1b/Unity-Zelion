@@ -27,6 +27,8 @@ namespace UI {
         public TMP_Text ResolutionTxt;
         public TMP_Text FullScreenTxt;
         public TMP_Text VolumeTxt;
+        public TMP_Text MusicTxt;
+        public TMP_Text SfxTxt;
         public TMP_Text LanguageTxt;
         public TMP_Text BackText;
 
@@ -72,6 +74,8 @@ namespace UI {
             ResolutionTxt.text = TextValues.Resolution;
             FullScreenTxt.text = TextValues.FullScreen;
             VolumeTxt.text = TextValues.Volume;
+            MusicTxt.text = TextValues.Music;
+            SfxTxt.text = TextValues.Sfx;
             LanguageTxt.text = TextValues.Language;
             BackText.text = TextValues.Back;
         }

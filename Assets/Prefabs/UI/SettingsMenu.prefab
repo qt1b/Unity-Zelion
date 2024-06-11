@@ -3867,6 +3867,8 @@ MonoBehaviour:
   ResolutionTxt: {fileID: 6599181455981568750}
   FullScreenTxt: {fileID: 5735224764998598960}
   VolumeTxt: {fileID: 555905182555199323}
+  MusicTxt: {fileID: 555905182555199323}
+  SfxTxt: {fileID: 5761868088079201969}
   LanguageTxt: {fileID: 3328001053485694425}
   BackText: {fileID: 1832767333984249739}
   IsTitleScreen: 0

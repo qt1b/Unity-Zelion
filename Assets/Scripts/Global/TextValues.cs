@@ -117,6 +117,22 @@ namespace Global {
 				else throw new ArgumentException("invalid language value");
 			}
 		}
+		public static string Music {
+			get {
+				if (GlobalVars.Language == 0) return "Music";
+				else if (GlobalVars.Language == 1) return "Musique";
+				else if (GlobalVars.Language == 2) return "音楽";
+				else throw new ArgumentException("invalid language value");
+			}
+		}
+		public static string Sfx {
+			get {
+				if (GlobalVars.Language == 0) return "Sfx";
+				else if (GlobalVars.Language == 1) return "Effets";
+				else if (GlobalVars.Language == 2) return "音量??";
+				else throw new ArgumentException("invalid language value");
+			}
+		}
 		public static string Language {
 			get {
 				if (GlobalVars.Language == 0) return "Language";
