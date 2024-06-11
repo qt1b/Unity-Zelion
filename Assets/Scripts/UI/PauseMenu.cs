@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Global;
 using Photon.PhotonUnityNetworking.Code;
 using Photon.PhotonUnityNetworking.Code.Interfaces;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -12,8 +13,22 @@ namespace UI {
     public class PauseMenu : MonoBehaviourPunCallbacks {
         public static bool GameIsPaused = false;
         [FormerlySerializedAs("GameObjectUI")] public GameObject gameObjectUI;
+        public GameObject PauseBlur;
         private static readonly int IsMoving = Animator.StringToHash("IsMoving");
         private static readonly int IsAimingBow = Animator.StringToHash("IsAimingBow");
+
+        public TMP_Text PausedTxt;
+        public TMP_Text ResumeTxt;
+        public TMP_Text SettingsTxt;
+        public TMP_Text MainMenuTxt;
+        
+        public void Start() {
+            PausedTxt.text = TextValues.Paused;
+            ResumeTxt.text = TextValues.Resume;
+            SettingsTxt.text = TextValues.Settings;
+            MainMenuTxt.text = TextValues.MainMenu;
+        }
+        
         void Update()
         {
             if(Input.GetKeyDown(KeyCode.Escape)) {
@@ -31,6 +46,7 @@ namespace UI {
         }
         [PunRPC]
         public void ResumeRpc() {
+            PauseBlur.SetActive(false);
             GameIsPaused = false;
             gameObjectUI.SetActive(false);
             if (PhotonNetwork.OfflineMode) {
@@ -47,6 +63,7 @@ namespace UI {
 
         [PunRPC]
         public void PauseRpc() {
+            PauseBlur.SetActive(true);
             GameIsPaused = true;
             gameObjectUI.SetActive(true);
             if (PhotonNetwork.OfflineMode) {

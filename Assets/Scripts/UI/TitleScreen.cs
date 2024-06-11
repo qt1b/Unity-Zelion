@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Audio;
 using Global;
 using Photon.PhotonRealtime.Code;
 using Photon.PhotonUnityNetworking.Code;
@@ -16,20 +17,24 @@ namespace UI {
 	public class TitleScreen : MonoBehaviourPunCallbacks {
 		// or start ?
 		private bool _soloPlay = false;
-		public Button PlayButton;
-		public Button SettingsButton;
-		public Button ExitButton;
-		public Button SinglePlayerButton;
-		public Button MultiPlayerButton;
-		public Button BackButton;
+		private AudioManager _audioManager;
+		public TMP_Text PlayTxt;
+		public TMP_Text SettingsTxt;
+		public TMP_Text ExitTxt;
+		public TMP_Text SinglePlayerTxt;
+		public TMP_Text MultiPlayerTxt;
+		public TMP_Text BackTxt;
 
+		void Awake() {
+			_audioManager = FindObjectOfType<AudioManager>();
+		}
 		public void Start() {
-			PlayButton.GetComponentInChildren<TextMeshProUGUI>().text = TextValues.Play;
-			SettingsButton.GetComponentInChildren<TextMeshProUGUI>().text = TextValues.Settings;
-			ExitButton.GetComponentInChildren<TextMeshProUGUI>().text = TextValues.Exit;
-			SinglePlayerButton.GetComponentInChildren<TextMeshProUGUI>().text = TextValues.SinglePlayer;
-			MultiPlayerButton.GetComponentInChildren<TextMeshProUGUI>().text = TextValues.MultiPlayer;
-			BackButton.GetComponentInChildren<TextMeshProUGUI>().text = TextValues.Back;
+			PlayTxt.text = TextValues.Play;
+			SettingsTxt.text = TextValues.Settings;
+			ExitTxt.text = TextValues.Exit;
+			SinglePlayerTxt.text = TextValues.SinglePlayer;
+			MultiPlayerTxt.text = TextValues.MultiPlayer;
+			BackTxt.text = TextValues.Back;
 		}
 
 		public void StartSinglePlayer() {
@@ -43,6 +48,7 @@ namespace UI {
 				OnDisconnected(DisconnectCause.None);
 				//OnDisconnected(DisconnectCause.None);
 			}
+			_audioManager.Play("loading1");
 			//else StartCoroutine(WaitAndRestartSingle());
 		}
 
