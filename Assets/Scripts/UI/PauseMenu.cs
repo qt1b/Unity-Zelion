@@ -16,12 +16,13 @@ namespace UI {
         public GameObject PauseBlur;
         private static readonly int IsMoving = Animator.StringToHash("IsMoving");
         private static readonly int IsAimingBow = Animator.StringToHash("IsAimingBow");
+        public Settings _settings;
 
         public TMP_Text PausedTxt;
         public TMP_Text ResumeTxt;
         public TMP_Text SettingsTxt;
         public TMP_Text MainMenuTxt;
-        
+
         public void Start() {
             PausedTxt.text = TextValues.Paused;
             ResumeTxt.text = TextValues.Resume;
@@ -31,7 +32,7 @@ namespace UI {
         
         void Update()
         {
-            if(Input.GetKeyDown(KeyCode.Escape)) {
+            if(!_settings.isActiveAndEnabled && Input.GetKeyDown(KeyCode.Escape)) {
                 if(GameIsPaused){
                     Resume();
                 }
@@ -40,7 +41,6 @@ namespace UI {
                 }
             }
         }
-        
         public void Resume() {
             photonView.RPC("ResumeRpc", RpcTarget.AllBuffered);
         }
@@ -55,12 +55,11 @@ namespace UI {
             else {
                 Player.Player.LocalPlayerInstance.GetComponent<Animator>().speed = GlobalVars.PlayerSpeed;
             }
+            _settings.gameObject.SetActive(false);
         }
-        
         public void Pause() {
             photonView.RPC("PauseRpc",RpcTarget.AllBuffered);
         }
-
         [PunRPC]
         public void PauseRpc() {
             PauseBlur.SetActive(true);
@@ -84,9 +83,16 @@ namespace UI {
             PhotonNetwork.Disconnect();
             SceneManager.LoadScene(0);
         }
-
+        /*
         public void Settings(){
             Debug.Log("settings ");
+            SettingsActivated = true;
+            gameObjectUI.SetActive(false);
         }
+
+        public void ExitSettings() {
+            SettingsActivated = false;
+            gameObjectUI.SetActive(true);
+        } */
     }
 }

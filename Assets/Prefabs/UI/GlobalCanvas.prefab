@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: RESUME
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 0}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
+  m_sharedMaterial: {fileID: -1569975906666680194, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -131,7 +131,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &370984257061752121
@@ -201,8 +201,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: MAIN MENU
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 0}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
+  m_sharedMaterial: {fileID: -1569975906666680194, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -265,7 +265,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &1291482763612107910
@@ -459,8 +459,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: SETTINGS
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 0}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
+  m_sharedMaterial: {fileID: -1569975906666680194, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -523,7 +523,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &1892779383538836789
@@ -563,7 +563,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.000023842, y: -203}
-  m_SizeDelta: {x: 418.4886, y: 70}
+  m_SizeDelta: {x: 450, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7740687765946435735
 CanvasRenderer:
@@ -726,8 +726,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: '- network status text -'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
+  m_sharedMaterial: {fileID: -1569975906666680194, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -828,7 +828,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.000023842, y: 236}
-  m_SizeDelta: {x: 266.5114, y: 50}
+  m_SizeDelta: {x: 700, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4723029510924087842
 CanvasRenderer:
@@ -860,8 +860,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Paused
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 0}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
+  m_sharedMaterial: {fileID: -1569975906666680194, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -892,8 +892,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -924,7 +924,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &2953523203418038244
@@ -1261,7 +1261,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -80}
-  m_SizeDelta: {x: 371, y: 70}
+  m_SizeDelta: {x: 450, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3241560775997710919
 CanvasRenderer:
@@ -1361,6 +1361,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2338507330243436002}
+        m_TargetAssemblyTypeName: UI.PauseMenu, Assembly-CSharp
+        m_MethodName: Settings
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1719,7 +1731,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 35.00001}
-  m_SizeDelta: {x: 350, y: 70}
+  m_SizeDelta: {x: 450, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8120355220079393804
 CanvasRenderer:
@@ -2237,6 +2249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameObjectUI: {fileID: 1370829886882803311}
   PauseBlur: {fileID: 3889744580548695556}
+  _settings: {fileID: 1213751641273299030}
   PausedTxt: {fileID: 3521866553654531693}
   ResumeTxt: {fileID: 6816702614153751790}
   SettingsTxt: {fileID: 1875551223178069001}
@@ -2564,202 +2577,58 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5012104492963124867}
     m_Modifications:
-    - target: {fileID: 555905182555199323, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 555905182555199323, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_overrideHtmlColors
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 555905182555199323, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 555905182555199323, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_enableVertexGradient
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1832767333984249739, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1832767333984249739, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_overrideHtmlColors
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1832767333984249739, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1832767333984249739, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_enableVertexGradient
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2849655157409046467, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2849655157409046467, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_overrideHtmlColors
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2849655157409046467, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2849655157409046467, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_enableVertexGradient
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3328001053485694425, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3328001053485694425, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_overrideHtmlColors
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3328001053485694425, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3328001053485694425, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_enableVertexGradient
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4605562715872006282, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetResolution
-      objectReference: {fileID: 0}
-    - target: {fileID: 4901233326734949206, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetFullscreen
-      objectReference: {fileID: 0}
     - target: {fileID: 5399960683939995349, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
       propertyPath: m_Name
       value: SettingsMenu
       objectReference: {fileID: 0}
-    - target: {fileID: 5399960683939995349, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_IsActive
-      value: 0
+    - target: {fileID: 6085939758869203399, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 5458205815756603376, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5458205815756603376, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_overrideHtmlColors
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5458205815756603376, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_hasFontAssetChanged
+    - target: {fileID: 6085939758869203399, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5458205815756603376, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_enableVertexGradient
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5553654012939974513, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5553654012939974513, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_overrideHtmlColors
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5553654012939974513, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5553654012939974513, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_enableVertexGradient
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5735224764998598960, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5735224764998598960, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_overrideHtmlColors
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5735224764998598960, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5735224764998598960, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_enableVertexGradient
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5854996699220913848, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5981787163645874732, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5981787163645874732, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_overrideHtmlColors
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5981787163645874732, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5981787163645874732, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_enableVertexGradient
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6085939758869203399, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1370829886882803311}
     - target: {fileID: 6085939758869203399, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: SetActive
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 2338507330243436002}
+    - target: {fileID: 6085939758869203399, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6085939758869203399, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: ExitSettings
+      objectReference: {fileID: 0}
+    - target: {fileID: 6085939758869203399, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: UI.PauseMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6085939758869203399, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6085939758869203399, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6118107304152429222, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetVolume
-      objectReference: {fileID: 0}
-    - target: {fileID: 6599181455981568750, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6599181455981568750, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_overrideHtmlColors
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6599181455981568750, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6599181455981568750, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_enableVertexGradient
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7274535726746134298, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7274535726746134298, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_overrideHtmlColors
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7274535726746134298, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7274535726746134298, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_enableVertexGradient
-      value: 0
+      value: SetMusicVolume
       objectReference: {fileID: 0}
     - target: {fileID: 7438748720801974493, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
       propertyPath: PauseMenu
       value: 
       objectReference: {fileID: 2338507330243436002}
+    - target: {fileID: 7438748720801974493, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
+      propertyPath: PreviousMenu
+      value: 
+      objectReference: {fileID: 1370829886882803311}
     - target: {fileID: 7518657552161407649, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2840,15 +2709,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9069743955532105503, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
+--- !u!114 &1213751641273299030 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7438748720801974493, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
+  m_PrefabInstance: {fileID: 8638926783505201291}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4400898106393028190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1df7d8c7cd88e41a1b12740ccfd94142, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &2284452105841080874 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7518657552161407649, guid: 880edc1bf69934f4d82ec44daf4ef9b2, type: 3}
