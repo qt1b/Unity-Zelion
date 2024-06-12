@@ -215,24 +215,22 @@ namespace Player {
 			}
 		}
 
-		/*
-		[PunRPC]
-		public void LoadSaveWPRPC() {
-			if (GlobalVars.SaveLookupArray.GetLength(0) > GlobalVars.SaveId) {
-				_healthBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 2]));
-				if (photonView.IsMine) {
-					_swordUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 5] == "1";
-					_bowUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 6] == "1";
-					_poisonUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 7] == "1";
-					_dashUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 8] == "1";
-					_slowdownUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 9] == "1";
-					_timeFreezeUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 10] == "1";
-					_staminaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 3]));
-					_manaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 4]));
-				}
-				Debug.Log("Loaded Global Save successfully, saveID=" + GlobalVars.SaveId);
+		public void LoadSpecificSave(byte saveID) {
+			_healthBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 2][saveID]);
+			if (photonView.IsMine) {
+				_staminaBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 3][saveID]);
+				_manaBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 4][saveID]);
+				_swordUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 5][saveID] == 1;
+				Debug.Log("loading specific : _sword unlocked =="+_swordUnlocked);
+				_bowUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 6][saveID] == 1;
+				_poisonUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 7][saveID] == 1;
+				_dashUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 8][saveID] == 1;
+				_slowdownUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 9][saveID] == 1;
+				_timeFreezeUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 10][saveID] == 1;
 			}
-		} */
+			Debug.Log("Specific save loaded");
+		}
+		
 
 	#endregion
 		#region MonoBehaviour

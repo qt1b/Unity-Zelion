@@ -5,19 +5,14 @@ using Audio;
 using Global;
 using Photon.PhotonRealtime.Code;
 using Photon.PhotonUnityNetworking.Code;
-using Photon.PhotonUnityNetworking.Demos.PunBasics_Tutorial.Scripts;
 using TMPro;
-using Unity.Mathematics;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace UI {
 	public class TitleScreen : MonoBehaviourPunCallbacks {
 		// or start ?
 		private bool _soloPlay = false;
-		private AudioManager _audioManager;
 		public TMP_Text PlayTxt;
 		public TMP_Text SettingsTxt;
 		public TMP_Text ExitTxt;
@@ -26,7 +21,7 @@ namespace UI {
 		public TMP_Text BackTxt;
 
 		void Awake() {
-			_audioManager = FindObjectOfType<AudioManager>();
+			GlobalVars.CurrentLevelId = 0;
 		}
 		public void Start() {
 			PlayTxt.text = TextValues.Play;
@@ -48,7 +43,7 @@ namespace UI {
 				OnDisconnected(DisconnectCause.None);
 				//OnDisconnected(DisconnectCause.None);
 			}
-			_audioManager.Play("loading1");
+			AudioManager.Instance.Play("loading1");
 			//else StartCoroutine(WaitAndRestartSingle());
 		}
 
@@ -65,7 +60,7 @@ namespace UI {
 		//public void NewGame() => Global.GlobalVars.Continue = false;
 
 		public void LoadLobby() {
-			SceneManager.LoadScene("Scenes/Lobby");
+			SceneManager.LoadScene(GlobalVars.LobbySceneName);
 		}
 
 		public override void OnDisconnected(DisconnectCause cause) {
@@ -76,7 +71,7 @@ namespace UI {
 				PhotonNetwork.GameVersion = GlobalVars.GameVersion;
 				GlobalVars.PlayerList = new List<Player.Player>();
 				GlobalVars.TimeStartedAt = DateTime.UtcNow;
-				PhotonNetwork.LoadLevel(GlobalVars.FirstLevelName);
+				PhotonNetwork.LoadLevel(GlobalVars.LevelsName[0]);
 			}
 		}
 	}

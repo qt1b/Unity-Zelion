@@ -5,7 +5,14 @@ namespace Global {
 	public class TextValues {
 		// we will put here all values used for the dialogues.
 		// this will allow us to easily locate text and use multilingual values, etc
-		public static Dictionary<string, string[]> DialogsDict = new Dictionary<string, string[]>() {
+		public static readonly Dictionary<string, string[]> DialogsDict = new Dictionary<string, string[]>() {
+			{ "tuto1", new[] { "Welcome to Zelion ! Please use the arrow keys or WASD to move, and F to close this dialog.", "Tuto 1", "説明第一" } },
+			{ "lore1", new[] { "Is that you, the hero who will bring back light to Masteria, our country?", "lore 1", "説明第一" } },
+			{ "lore2", new[] { "Is that you, the hero who will bring back light to Masteria, our country?", "lore 2", "説明第一" } },
+			{ "lore3", new[] { "Is that you, the hero who will bring back light to Masteria, our country?", "lore 3", "説明第一" } },
+			{ "lore4", new[] { "Is that you, the hero who will bring back light to Masteria, our country?", "lore 4", "説明第一" } },
+			{ "giveSword", new[] { "O, great hero, please take this sword along your quest. Please find the Zelion, beat Eclipses and bring back the light to these lands.", "lore 1", "説明第一" } },
+			{ "rmq1", new[] { "It seems that when playing in multiplayer, when one player goes to another zone, all the other players are teleported there ! At least that's what I heard...", "rmq 1", "説明第一" } },
 			{ "dialog1", new[] { "Dialog 1", "Dialogue 1", "会話１" } },
 			{ "example1", new[] { "Example 1", "Example 1", "第一例" } }
 

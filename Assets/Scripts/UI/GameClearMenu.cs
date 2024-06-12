@@ -30,7 +30,7 @@ namespace UI {
 			GlobalVars.GameOverCount = 0;
 			GlobalVars.TimeStartedAt = DateTime.UtcNow;
 			// photonView.RPC("LoadDataRPC",RpcTarget.AllBuffered); // may not be necessary ??
-			PhotonNetwork.LoadLevel(GlobalVars.FirstLevelName);
+			PhotonNetwork.LoadLevel(GlobalVars.LevelsName[GlobalVars.CurrentLevelId]);
 		}
 		[PunRPC]
 		public void LoadDataRPC() {
@@ -38,8 +38,6 @@ namespace UI {
 			// Player.Player.LocalPlayerInstance.GetComponent<Player.Player>().LoadSave();
 		}
 		public void MainMenu(){
-			//PhotonNetwork.Destroy(Player.Player.LocalPlayerInstance);
-			//Player.Player.LocalPlayerInstance = null;
 			//PhotonNetwork.Destroy(Player.Player.LocalPlayerInstance);
 			//Player.Player.LocalPlayerInstance = null;
 			PhotonNetwork.LeaveRoom();

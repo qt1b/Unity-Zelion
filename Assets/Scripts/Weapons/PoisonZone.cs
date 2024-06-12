@@ -4,7 +4,7 @@ using Photon.PhotonUnityNetworking.Code;
 using UnityEngine;
 
 namespace Weapons {
-    public class PoisonZone : MonoBehaviour {
+    public class PoisonZone : MonoBehaviourPunCallbacks {
         public ushort damage = 1;
         private float radius = 1.75f; // is 2.5 but the poison zone's scale is 2
         public float timeBetweenHits = .5f;
@@ -13,9 +13,11 @@ namespace Weapons {
         float _currentRemaining;
         float _currentTimeBetweenHits;
         void Awake() {
-            _remaining = duration;
-            ChangeTimeControl(1f);
-            StartCoroutine(Main());
+            if (photonView.IsMine) {
+                _remaining = duration;
+                ChangeTimeControl(1f);
+                StartCoroutine(Main());
+            }
         }
         private IEnumerator Main() {
             while (_currentRemaining >= 0) {
@@ -23,7 +25,7 @@ namespace Weapons {
                 _currentRemaining -= _currentTimeBetweenHits;
                 if (gameObject.GetPhotonView().IsMine ) DamageObjects();
             }
-            DestroyObject();
+            PhotonNetwork.Destroy(gameObject);
         }
         // should be synced over network
         private void DamageObjects() {
@@ -33,11 +35,12 @@ namespace Weapons {
                     health.TakeDamages(damage);
             }
         }
+        /*
         // to be synced
         private void DestroyObject(){
             Destroy(gameObject);
-        }
-        // to by synced ? or maybe not ?
+        } */
+        
         public void ChangeTimeControl(float timeControl) {
             _currentRemaining = _remaining / timeControl;
             _currentTimeBetweenHits = timeBetweenHits / timeControl;
