@@ -6,6 +6,7 @@ using Global;
 using JetBrains.Annotations;
 using Photon.PhotonUnityNetworking.Code;
 using Porperty_Attributes;
+using UI;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -127,7 +128,7 @@ namespace Ennemies
             _canMelee = true;
         }
 
-        private IEnumerator Attack(Player.Player player, Vector3 direciton)
+        private IEnumerator Attack(Player.Player player, Vector3 direction)
         {
             _isMeleeing = true;
             StartCoroutine(CanMeleeReset());
@@ -145,8 +146,7 @@ namespace Ennemies
             _canCharge = true;
         }
 
-        private IEnumerator Charge(Player.Player player, Vector3 direction)
-        {
+        private IEnumerator Charge(Player.Player player, Vector3 direction) {
             _isCharging = true;
             StartCoroutine(CanChargeReset());
             _chargeParams.target = player;
@@ -164,7 +164,7 @@ namespace Ennemies
         private void Refresh()
         {
             List<Player.Player> players = new(GlobalVars.PlayerList);
-            if (players.Count == 0 || IsDoingAnAction)
+            if (players.Count == 0 || IsDoingAnAction || PauseMenu.GameIsPaused || GlobalVars.EnnemySpeed == 0)
                 return;
 
             var pos = transform.position;

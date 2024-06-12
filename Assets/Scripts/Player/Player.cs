@@ -215,6 +215,26 @@ namespace Player {
 			}
 		}
 
+		public void LoadSave2() {
+			byte saveID = GlobalVars.SaveId;
+			transform.position = new Vector3((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 0][saveID],
+				(ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 1][saveID], -1);
+			_healthBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 2][saveID]);
+			if (photonView.IsMine) {
+				_staminaBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 3][saveID]);
+				_manaBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 4][saveID]);
+				_swordUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 5][saveID] == 1;
+				Debug.Log("loading specific : _sword unlocked == "+_swordUnlocked);
+				_bowUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 6][saveID] == 1;
+				_poisonUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 7][saveID] == 1;
+				_dashUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 8][saveID] == 1;
+				_slowdownUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 9][saveID] == 1;
+				_timeFreezeUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 10][saveID] == 1;
+			}
+			Debug.Log("Specific save loaded");
+
+		}
+
 		public void LoadSpecificSave(byte saveID) {
 			_healthBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 2][saveID]);
 			if (photonView.IsMine) {
@@ -241,6 +261,7 @@ namespace Player {
 			_healthBar = GetComponentInChildren<HealthBar>();
 			if (!photonView.IsMine) {
 				gameObject.GetComponentInChildren<Camera>().gameObject.SetActive(false);
+				Destroy(gameObject.GetComponent<Rigidbody2D>());
 				LoadSave();
 				Debug.Log("player awake - is not mine, return");
 				return;
@@ -367,13 +388,13 @@ namespace Player {
 							if (_canThrowPoisonBomb) _poisonZonePreviewRef.SetActive(true);
 							PlacePreviewZone();
 						}
-						else if (CanSlowDownTime && Input.GetKeyDown(KeyCode.LeftControl) &&
+						else if (CanSlowDownTime && Input.GetKeyDown(KeyCode.Q) &&
 						         _manaBar.TryTakeDamages(5)) {
 							// slow down audio effect
 							StartCoroutine(SlowDownTimeFor(4f));
 						}
 						// else some visual and/or audio feedback telling us that we can
-						else if (CanTimeFreeze && Input.GetKeyDown(KeyCode.V) && _manaBar.TryTakeDamages(14)) {
+						else if (CanTimeFreeze && Input.GetKeyDown(KeyCode.E) && _manaBar.TryTakeDamages(14)) {
 							// time freeze audio effect
 							print("time freeze");
 						}

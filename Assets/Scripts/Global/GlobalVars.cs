@@ -69,17 +69,17 @@ namespace Global {
 				new [] {0,0} // timefreeze
 			},
 			{ // level 3
-			new [] {0,0}, // x pos
-			new [] {0,0}, // y pos
-			new [] {6,6}, // Life
-			new [] {2,2}, // stamina
-			new [] {2,2}, // mana
-			new [] {0,1}, // sword unlocked
-			new [] {0,0}, // bow unlocked
-			new [] {0,0}, // poison
-			new [] {0,0}, // dash
-			new [] {0,0}, // slowdown
-			new [] {0,0} // timefreeze
+				new [] {0,0}, // x pos
+				new [] {0,0}, // y pos
+				new [] {6,6}, // Life
+				new [] {2,2}, // stamina
+				new [] {2,2}, // mana
+				new [] {0,1}, // sword unlocked
+				new [] {0,0}, // bow unlocked
+				new [] {0,0}, // poison
+				new [] {0,0}, // dash
+				new [] {0,0}, // slowdown
+				new [] {0,0} // timefreeze
 			},
 			{ // level 4
 				new [] {0,0}, // x pos
@@ -149,7 +149,7 @@ namespace Global {
 		// 6th : Castle
 		// 7th : FinalBoss
 		public static string FirstLevelName = "Quentin6"; // will not delete it as it serves the same purpose and can be useful for debugging
-		public static string[] LevelsName = new[] { "Quentin6", "QuentinFirstLevelIntro", };
+		public static string[] LevelsName = new[] { "QuentinFirstLevelIntro",  "Quentin6", LobbySceneName, GameClearSceneName};
 		public static byte CurrentLevelId = 0;
 		// public static string SecondLevelName = ???; // if needed, maybe we'll keep everything into one scene
 		public static string GameOverSceneName = "GameOver";

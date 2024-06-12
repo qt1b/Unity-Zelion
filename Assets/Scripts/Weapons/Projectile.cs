@@ -38,17 +38,23 @@ namespace Weapons {
             yield return new WaitForSeconds(secs);
             PhotonNetwork.Destroy(gameObject);
         }
+
         void OnTriggerEnter2D(Collider2D other) {
             if (other.gameObject.TryGetComponent(out IHealth health)) {
                 if (photonView.IsMine) health.TakeDamages(damage);
                 _myRigidBody.velocity = Vector3.zero;
                 StartCoroutine(DestroyAfterSecs(.2f));
             }
-            else if (!other.isTrigger && !other.CompareTag("LetProjectilesPass")) {
-                _myRigidBody.velocity = Vector3.zero;
-                StartCoroutine(DestroyAfterSecs(.2f));
+            else if (!other.isTrigger) {
+                if (!other.CompareTag("LetProjectilesPass")) {
+                    _myRigidBody.velocity = Vector3.zero;
+                    StartCoroutine(DestroyAfterSecs(.2f));
+                }
+                else {
+                
+                }
             }
-        }
+    }
 
         /*
         // does not really work, is it bc it needs a rigidbody ?

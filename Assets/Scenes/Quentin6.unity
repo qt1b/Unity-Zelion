@@ -2611,7 +2611,6 @@ GameObject:
   m_Component:
   - component: {fileID: 832797683}
   - component: {fileID: 832797682}
-  - component: {fileID: 832797684}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2647,22 +2646,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &832797684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 832797681}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd5f44bb4e8fe0444817e816791efea0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cursorTexture: {fileID: 0}
-  cursorHotSpot: {x: 0, y: 0}
-  crosshairTexture: {fileID: 0}
-  crosshairHotSpot: {x: 0, y: 0}
 --- !u!1001 &866367523
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -86292,7 +86275,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb240e76765e40a185fcac4b8f4e0c64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SaveID: 1
+  saveID: 0
+  dialog: 
 --- !u!1001 &752708763639962675
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -86451,6 +86435,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4705107598537991836, guid: 2f28fb42d03434768b0958e7739db52c, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5916706808870051553, guid: 2f28fb42d03434768b0958e7739db52c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.58
@@ -86566,6 +86554,10 @@ PrefabInstance:
     - target: {fileID: 8333136469102531956, guid: 2f28fb42d03434768b0958e7739db52c, type: 3}
       propertyPath: _chargeParams.stopOnCollision
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8734303615650653214, guid: 2f28fb42d03434768b0958e7739db52c, type: 3}
+      propertyPath: m_Interactable
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 972708511736462290, guid: 2f28fb42d03434768b0958e7739db52c, type: 3}

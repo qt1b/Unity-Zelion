@@ -538,7 +538,6 @@ GameObject:
   - component: {fileID: 5496411181017010079}
   - component: {fileID: 1786769269898683356}
   - component: {fileID: 6127966832259076807}
-  - component: {fileID: 2978064240634077714}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -857,22 +856,6 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
---- !u!114 &2978064240634077714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3606953177777676834}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd5f44bb4e8fe0444817e816791efea0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cursorTexture: {fileID: 2800000, guid: d961956250a52cf49871077ab85e3e0c, type: 3}
-  cursorHotSpot: {x: 0, y: 0}
-  crosshairTexture: {fileID: 2800000, guid: 4727c174145cd0d458e3207f2dfe2a22, type: 3}
-  crosshairHotSpot: {x: 0, y: 0}
 --- !u!1 &3896342294868247939
 GameObject:
   m_ObjectHideFlags: 0
@@ -1212,8 +1195,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 0.0022499561, y: -0.0039000511, z: 0}
-    m_Extent: {x: 5.50675, y: 5.4996, z: 0}
+    m_Center: {x: -0.00055003166, y: -0.0050001144, z: 0}
+    m_Extent: {x: 5.5007496, y: 5.5036, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -1545,6 +1528,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1254281394991349956, guid: 2c81f1ccc12b5492d87fcc06bc5511e8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1693937564549310615, guid: 2c81f1ccc12b5492d87fcc06bc5511e8, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3458640884885334549, guid: 2c81f1ccc12b5492d87fcc06bc5511e8, type: 3}
+      propertyPath: m_Interactable
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4844662703224168965, guid: 2c81f1ccc12b5492d87fcc06bc5511e8, type: 3}
