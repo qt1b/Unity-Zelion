@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Global {
 	public class GlobalVars : MonoBehaviourPunCallbacks, IPunObservable {
 		// to sync over network
-		public static float PlayerSpeed = 1;
+		// public static float PlayerSpeed = 1;
 		public static float EnnemySpeed = 1;
 		public static byte SaveId = 0; // useful for debugging, will be 0 in the end
 		public static short DeathCount = 0;
@@ -161,13 +161,11 @@ namespace Global {
 		#region IPunObservable
 		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
 			if (stream.IsWriting) {
-				//stream.SendNext(PlayerSpeed);
 				stream.SendNext(EnnemySpeed);
 				stream.SendNext(SaveId);
 				stream.SendNext(CurrentLevelId);
 			}
 			else {
-				//PlayerSpeed = (float)stream.ReceiveNext();
 				EnnemySpeed = (float)stream.ReceiveNext();
 				SaveId = (byte)stream.ReceiveNext();
 				CurrentLevelId = (byte)stream.ReceiveNext();

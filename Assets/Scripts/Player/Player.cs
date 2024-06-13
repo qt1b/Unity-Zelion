@@ -293,7 +293,7 @@ namespace Player {
 			// initializing all needed references
 			_animator = GetComponent<Animator>();
 			_myRigidBody = GetComponent<Rigidbody2D>();
-			_animator.speed = GlobalVars.PlayerSpeed;
+			// _animator.speed = GlobalVars.PlayerSpeed;
 			_swordHitzone = transform.GetChild(0).gameObject;
 			_swordHitzone.SetActive(false);
 			_poisonZoneRef = Resources.Load<GameObject>("Prefabs/Projectiles/PoisonZone");
@@ -478,7 +478,7 @@ namespace Player {
 			// like color
 			// float oldVal = GlobalVars.PlayerSpeed.Value;
 			GlobalVars.EnnemySpeed = 0.5f;
-			_animator.speed = GlobalVars.PlayerSpeed; // to remove if only slowing down enemies
+			// _animator.speed = GlobalVars.PlayerSpeed; // to remove if only slowing down enemies
 			_slowdownAcc += 1;
 			yield return new WaitForSeconds(duration);
 			_slowdownAcc -= 1;
@@ -537,7 +537,7 @@ namespace Player {
 		void UpdateAnimationAndMove() {
 			if (change != Vector2.zero) {
 				// 0.2 f ?
-				_myRigidBody.velocity = (change * (0.2f * initialSpeed * speedModifier * GlobalVars.PlayerSpeed));
+				_myRigidBody.velocity = (change * (0.2f * initialSpeed * speedModifier/* * GlobalVars.PlayerSpeed*/));
 				_animator.SetFloat(MoveX, change.x);
 				_animator.SetFloat(MoveY, change.y);
 				_animator.SetBool(IsMoving, true);
@@ -549,7 +549,7 @@ namespace Player {
 		}
 		public void ChangePlayerControlSpeed(float newSpeedControl) {
 			// GlobalVars.PlayerSpeed.Value  = newSpeedControl;
-			_animator.speed = GlobalVars.PlayerSpeed;
+			// _animator.speed = GlobalVars.PlayerSpeed;
 		}
 		// ReSharper disable Unity.PerformanceAnalysis
 		IEnumerator SwordAttack() {
@@ -564,10 +564,10 @@ namespace Player {
 			// _swordHitzoneCollider.enabled = true;
 			speedModifier = _attackSpeedNerf;
 			// isWielding = true;
-			yield return new WaitForSeconds(SwordTime / GlobalVars.PlayerSpeed);
+			yield return new WaitForSeconds(SwordTime /* GlobalVars.PlayerSpeed */);
 			_swordHitzone.SetActive(false);
 			speedModifier = 1;
-			yield return new WaitForSeconds(SwordAttackCooldown / GlobalVars.PlayerSpeed);
+			yield return new WaitForSeconds(SwordAttackCooldown /* GlobalVars.PlayerSpeed */);
 			_canSwordAttack = true;
 		}
 		IEnumerator ShootArrow() {
@@ -577,7 +577,7 @@ namespace Player {
 			Quaternion rot = Quaternion.Euler(0f, 0f, teta);
 			GameObject arrow = PhotonNetwork.Instantiate("Prefabs/Projectiles/Arrow",transform.position+pos,rot);
 			arrow.GetComponent<Projectile>().SetVelocity(pos);
-			yield return new WaitForSeconds(_bowCooldown / GlobalVars.PlayerSpeed);
+			yield return new WaitForSeconds(_bowCooldown /* GlobalVars.PlayerSpeed*/ );
 			_canShootArrow = true;
 		}
 
@@ -621,7 +621,7 @@ namespace Player {
 			}
 			/*GameObject pZone =*/
 			PhotonNetwork.Instantiate("Prefabs/Projectiles/PoisonZone", new Vector3(position.x + pos.x, position.y + pos.y, 0f), new Quaternion());
-			yield return new WaitForSeconds(_poisonBombCooldown / GlobalVars.PlayerSpeed);
+			yield return new WaitForSeconds(_poisonBombCooldown /* GlobalVars.PlayerSpeed*/ );
 			_canThrowPoisonBomb = true;
 		}
 
@@ -633,10 +633,10 @@ namespace Player {
 				_isDashing = true;
 				speedModifier = _dashPower;
 				photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,1f, 1f, 0.3f, 0.8f, 0.2f); // yellow
-				yield return new WaitForSeconds(_dashTime / GlobalVars.PlayerSpeed);
+				yield return new WaitForSeconds(_dashTime /* GlobalVars.PlayerSpeed*/ );
 				speedModifier = 1;
 				_isDashing = false;
-				yield return new WaitForSeconds(_dashCooldown / GlobalVars.PlayerSpeed);
+				yield return new WaitForSeconds(_dashCooldown /* GlobalVars.PlayerSpeed*/ );
 				_canDash = true;
 			}
 		}
