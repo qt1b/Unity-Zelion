@@ -5,9 +5,10 @@ using UnityEngine;
 
 namespace Player {
 	public class DevCheat : MonoBehaviour {
-		// TODO : Do detach for the final game !!!
+		public bool enable;
 		private void Awake() {
-			Debug.developerConsoleEnabled = false;
+			Debug.developerConsoleEnabled = enable;
+			this.enabled = enable;
 		}
 		private void Update() {
 			if (Input.GetKeyDown(KeyCode.Backslash)) PhotonNetwork.LoadLevel(GlobalVars.LevelsName[4]);

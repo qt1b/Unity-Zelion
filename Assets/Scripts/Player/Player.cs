@@ -9,6 +9,7 @@ using Photon.PhotonUnityNetworking.Code.Interfaces;
 using UI;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using Weapons;
 
 namespace Player {
@@ -22,7 +23,7 @@ namespace Player {
 		[DoNotSerialize] public float speedModifier = 1;
 		[DoNotSerialize] public Vector2 change = Vector2.zero;
 		[DoNotSerialize] public Vector2 notNullChange = new Vector2(0, 1);
-		//[DoNotSerialize] public bool isDead = false;
+		[DoNotSerialize] public bool isDead = false;
 
 		#endregion
 
@@ -246,27 +247,7 @@ namespace Player {
 			Debug.Log("Save without pos loaded");
 
 		}
-
-		public void LoadSave2() {
-			byte saveID = GlobalVars.SaveId;
-			transform.position = new Vector3((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 0][saveID],
-				(ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 1][saveID], -1);
-			_healthBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 2][saveID]);
-			if (photonView.IsMine) {
-				_staminaBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 3][saveID]);
-				_manaBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 4][saveID]);
-				_swordUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 5][saveID] == 1;
-				Debug.Log("loading specific : _sword unlocked == "+_swordUnlocked);
-				_bowUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 6][saveID] == 1;
-				_poisonUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 7][saveID] == 1;
-				_dashUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 8][saveID] == 1;
-				_slowdownUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 9][saveID] == 1;
-				_timeTravelUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 10][saveID] == 1;
-			}
-			Debug.Log("Specific save loaded");
-
-		}
-
+		
 		public void LoadSpecificSave(byte saveID) {
 			_healthBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 2][saveID]);
 			if (photonView.IsMine) {
@@ -292,7 +273,10 @@ namespace Player {
 			GlobalVars.PlayerList.Add(this);
 			_healthBar = GetComponentInChildren<HealthBar>();
 			if (!photonView.IsMine) {
-				gameObject.GetComponentInChildren<Camera>().gameObject.SetActive(false);
+				//gameObject.GetComponentInChildren<Camera>().gameObject.SetActive(false);
+				gameObject.GetComponentInChildren<Camera>().enabled = false;
+				gameObject.GetComponentInChildren<CameraWork>().enabled = false;
+				gameObject.GetComponentInChildren<AudioListener>().enabled = false;
 				Destroy(gameObject.GetComponent<Rigidbody2D>());
 				LoadSave();
 				Debug.Log("player awake - is not mine, return");
@@ -672,9 +656,11 @@ namespace Player {
 				photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,1f, 0.3f, 0.3f, 0.8f, 0.2f);
 			}
 			else {
-				//if (PhotonNetwork.IsMasterClient) PhotonNetwork.LoadLevel(GlobalVars.GameOverSceneName);
 				_healthBar.ChangeCurVal(0);
+				// play some sound
+				isDead = true;
 				if (photonView.IsMine) GameOver();
+				DisableOrEnablePlayer(false);
 			}
 		}
 		public void Heal(ushort heal) {
@@ -682,13 +668,12 @@ namespace Player {
 		}
 		[PunRPC]
 		public void HealRPC(short heal) {
-			_healthBar.Heal((ushort)heal);
-			/*if (isDead) { // Is Dirty, but may work ?
-				GlobalVars.PlayerList.ForEach(p=>p.GetComponent<Camera>().gameObject.SetActive(false));
-				this.GetComponent<Camera>().gameObject.SetActive(true);
-				this.GetComponent<CameraWork>().OnStartFollowing();
+			if (_healthBar.curValue == 0) {
+				DisableOrEnablePlayer(true);
+				if (photonView.IsMine) Revive();
 				isDead = false;
-			} */
+			}
+			_healthBar.Heal((ushort)heal);
 			photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,0.3f, 1f, 0.3f, 0.8f, 0.2f);
 		}
 
@@ -717,17 +702,13 @@ namespace Player {
 		// seems annoying to do...
 		// TODO: change to
 		public void GameOver() {
-			// isDead = true;
-			// idk if this work
 			List<Player> otherPlayers = new List<Player>();
 			foreach (Player player in GlobalVars.PlayerList) {
 				if (!player.photonView.IsMine && player.isActiveAndEnabled) otherPlayers.Add(player);
 			}
 			if (otherPlayers.Count > 0) {
-				var cam = GlobalVars.PlayerList[0].GetComponentInChildren<Camera>();
-				cam.gameObject.SetActive(true);
-				cam.GetComponent<CameraWork>().OnStartFollowing();
-				gameObject.SetActive(false);
+				otherPlayers[0].GetComponentInChildren<Camera>().enabled = true;
+				otherPlayers[0].GetComponentInChildren<AudioListener>().enabled = true;
 			}
 			// no more players are alive, game over screen and return to the title screen
 			else {
@@ -741,12 +722,32 @@ namespace Player {
 			PhotonNetwork.LoadLevel("GameOver");
 		}
 
+		public void DisableOrEnablePlayer(bool val) {
+			GetComponent<Collider2D>().enabled = val;
+			GetComponent<SpriteRenderer>().enabled = val;
+			if (photonView.IsMine) {
+				GetComponentInChildren<Camera>().enabled = val;
+				GetComponentInChildren<AudioListener>().enabled = val;
+			}
+			GetComponentInChildren<Light2D>().enabled = val;
+			GetComponentInChildren<Canvas>().enabled = val;
+			_ghostPlayer.GetComponentInChildren<Light2D>().enabled = val;
+			this.enabled = val;
+		}
+
 		public void Revive() {
-			//isDead = false;
+			gameObject.GetComponentInChildren<Camera>().enabled = true;
+			foreach (Player player in GlobalVars.PlayerList) {
+				if (!photonView.IsMine) {
+					player.GetComponentInChildren<Camera>().enabled = false;
+					player.GetComponentInChildren<AudioListener>().enabled = false;
+				}
+			}
+			/*
 			if (Camera.main is { } cam) {
 				cam.GetComponent<CameraWork>()._player = this; //LocalPlayerInstance.GetComponent<Player>();
 			}
-			else Debug.LogError("CAMERA.main is null => no camera found ???");
+			else Debug.LogError("CAMERA.main is null => no camera found ???"); */
 		}
 
 		IEnumerator ChangeColorWait(Color color, float time) {

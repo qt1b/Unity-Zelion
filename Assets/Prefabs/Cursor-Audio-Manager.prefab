@@ -109,6 +109,15 @@ MonoBehaviour:
     loop: 0
     mixerGroup: {fileID: 8671436623460365603, guid: e8ecfdfec3ce041b4949e2fa8e7528f8, type: 2}
     source: {fileID: 0}
+  - name: slowdownSpell
+    clip: {fileID: 8300000, guid: 9d0b4fdfda82d428b950e198c225ee5f, type: 3}
+    volume: 0.706
+    volumeVariance: 0.2
+    pitch: 1.1
+    pitchVariance: 0.2
+    loop: 0
+    mixerGroup: {fileID: 8671436623460365603, guid: e8ecfdfec3ce041b4949e2fa8e7528f8, type: 2}
+    source: {fileID: 0}
 --- !u!114 &5096419395908160770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,3 +130,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d5639b2dd6047dbabc5f46a9a7dc8c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enable: 1

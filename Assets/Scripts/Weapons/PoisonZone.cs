@@ -1,5 +1,6 @@
 using System.Collections;
 using Ennemies;
+using Interfaces;
 using Photon.PhotonUnityNetworking.Code;
 using UnityEngine;
 
@@ -31,7 +32,7 @@ namespace Weapons {
         private void DamageObjects() {
             Collider2D[] colliders = Physics2D.OverlapCircleAll(gameObject.transform.position, radius);
             foreach (Collider2D col in colliders) {
-                if (col.TryGetComponent(out Health health))
+                if (col.TryGetComponent(out IHealth health))
                     health.TakeDamages(damage);
             }
         }
