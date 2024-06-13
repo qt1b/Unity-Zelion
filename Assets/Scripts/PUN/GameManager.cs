@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using Photon;
 using Photon.PhotonRealtime.Code;
 using Photon.PhotonUnityNetworking.Code;
+using Player;
 using TMPro;
 using Player = Photon.PhotonRealtime.Code.Player;
 
@@ -31,6 +32,7 @@ namespace PUN {
 					Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
 					// we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
 					PhotonNetwork.Instantiate("Prefabs/Player/Player", Vector3.zero, Quaternion.identity, 0);
+					Instantiate(Resources.Load<GhostPlayer>("Prefabs/Player/GhostPlayer"));
 			/*}
 			else {
 				Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);

@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using Actions;
+using Audio;
 using Bars;
 using ExitGames.Client.Photon;
 using Global;
@@ -40,6 +41,7 @@ namespace Player {
 		private bool _dashUnlocked;
 		private bool _slowdownUnlocked;
 		private bool _timeFreezeUnlocked;
+		private bool _timeTravelUnlocked = true; // for testing
 
 		#endregion
 
@@ -51,7 +53,8 @@ namespace Player {
 		bool _canThrowPoisonBomb = true;
 		bool _canSlowDownTime = true;
 		bool _canTimeFreeze = true;
-		public bool _isDashing;
+		private bool _canTimeTravel = true;
+		private bool _isDashing;
 		bool _isAimingArrow;
 		bool _isAimingBomb;
 
@@ -65,6 +68,7 @@ namespace Player {
 		private bool CanPoison => _poisonUnlocked && _canThrowPoisonBomb;
 		private bool CanSlowDownTime => _slowdownUnlocked && _canSlowDownTime;
 		private bool CanTimeFreeze => _timeFreezeUnlocked && _canTimeFreeze;
+		private bool CanTimeTravel => _timeTravelUnlocked && _canTimeTravel;
 
 		#endregion
 
@@ -111,6 +115,7 @@ namespace Player {
 		private Renderer _renderer;
 		private SpriteRenderer _spriteRenderer;
 		private GameObject _arrowPrefab;
+		private GhostPlayer _ghostPlayer;
 
 		#endregion
 
@@ -312,6 +317,12 @@ namespace Player {
 			}
 		} */
 
+		void Start() {
+			if (photonView.IsMine) {
+				_ghostPlayer = FindObjectOfType<GhostPlayer>();
+			}
+		}
+
 		// Update is called once per frame
 		// To Add : Sounds to indicate whether we can use the capacity or not
 		void Update() {
@@ -348,6 +359,7 @@ namespace Player {
 					}
 				}
 				else {
+					_ghostPlayer.gameObject.SetActive(_canTimeTravel);
 					cursorManager.SetCursor(cursorManager.cursorTexture, cursorManager.cursorHotSpot); // same
 					if (_isAimingBomb) {
 						if (!_poisonZonePreviewRef.activeSelf && _canThrowPoisonBomb && _manaBar.CanTakeDamages(10))
@@ -401,6 +413,14 @@ namespace Player {
 						// to remove when we have some enemies
 						else if (Input.GetKeyDown(KeyCode.M)) {
 							this.TakeDamages(2);
+						}
+						else if (CanTimeTravel && Input.GetKeyDown(KeyCode.Z)) {
+							if (_manaBar.TryTakeDamages(7)) {
+								GoBackInTime();
+							}
+							else {
+								//AudioManager.Instance.Play();
+							}
 						}
 					}
 				}
@@ -587,6 +607,10 @@ namespace Player {
 				yield return new WaitForSeconds(_dashCooldown / GlobalVars.PlayerSpeed);
 				_canDash = true;
 			}
+		}
+
+		private void GoBackInTime() {
+			_ghostPlayer.GoBackInTime();
 		}
 
 		// ADD SOUNDS HERE

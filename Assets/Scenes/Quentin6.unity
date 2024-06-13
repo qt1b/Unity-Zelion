@@ -86275,8 +86275,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb240e76765e40a185fcac4b8f4e0c64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveID: 0
   dialog: 
+  dialogBox: {fileID: 0}
 --- !u!1001 &752708763639962675
 PrefabInstance:
   m_ObjectHideFlags: 0

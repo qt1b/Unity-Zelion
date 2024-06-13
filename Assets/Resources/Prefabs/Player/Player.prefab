@@ -729,7 +729,6 @@ MonoBehaviour:
   change: {x: 0, y: 0}
   notNullChange: {x: 0, y: 0}
   isDead: 0
-  _isDashing: 0
   cursorManager: {fileID: 0}
 --- !u!61 &5866050367752138856
 BoxCollider2D:
@@ -1195,8 +1194,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.00055003166, y: -0.0050001144, z: 0}
-    m_Extent: {x: 5.5007496, y: 5.5036, z: 0}
+    m_Center: {x: 0.002300024, y: 0.0011501312, z: 0}
+    m_Extent: {x: 5.5058002, y: 5.50355, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
