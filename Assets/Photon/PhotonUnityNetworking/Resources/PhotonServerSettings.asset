@@ -58,6 +58,7 @@ MonoBehaviour:
   - ResumeRpc
   - NetworkDestroyLightRpc
   - LoadSaveRpc
+  - ResRpc
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

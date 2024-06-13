@@ -17,7 +17,7 @@ namespace Global {
 		// public static string RoomName; // not sure that is useful tbh
 		// static
 		// better to convert it into a 2-dimensional array if we're doing it like this ?
-		public static readonly string SaveLookupData = "X Position; Y Position; Life; Stamina; Mana; Unlocked Sword; Unlocked Bow; Unlocked Poison; Unlocked Dash; Unlocked Slowdown; Unlocked TimeFreeze\n" +
+		public static readonly string SaveLookupData = "X Position; Y Position; Life; Stamina; Mana; Unlocked Sword; Unlocked Bow; Unlocked Poison; Unlocked Dash; Unlocked Slowdown; Unlocked goBackInTime\n" +
 		                                               "0;0;6;2;2;0;0;0;0;0;0\n" +
 		                                               "0;0;12;16;16;1;1;1;1;1;1";
 		// allows us to be sure there is the right amount of data
@@ -37,12 +37,12 @@ namespace Global {
 		 * 7 : Poison
 		 * 8 : Dash
 		 * 9 : Slowdown
-		 * 10: TimeFreeze
+		 * 10: goBackInTime
 		 */
 		// first dim : Level
 		// second dim : Xpos ,etc...
 		public static readonly int[,][] SaveLookupArray2 = new int[7,11][] {
-			{ // level 1
+			{ // level 0
 				new [] {0,0}, // x pos
 				new [] {0,0}, // y pos
 				new [] {6,6}, // Life
@@ -53,7 +53,20 @@ namespace Global {
 				new [] {0,0}, // poison
 				new [] {0,0}, // dash
 				new [] {0,0}, // slowdown
-				new [] {0,0} // timefreeze
+				new [] {0,0} // goBackInTime
+			},
+			{ // level 1
+				new [] {0,0}, // x pos
+				new [] {0,0}, // y pos
+				new [] {20,20}, // Life
+				new [] {20,20}, // stamina
+				new [] {20,20}, // mana
+				new [] {1,1}, // sword unlocked
+				new [] {1,0}, // bow unlocked
+				new [] {1,0}, // poison
+				new [] {1,0}, // dash
+				new [] {1,0}, // slowdown
+				new [] {1,0} // goBackInTime
 			},
 			{ // level 2
 				new [] {0,0}, // x pos
@@ -66,7 +79,7 @@ namespace Global {
 				new [] {0,0}, // poison
 				new [] {0,0}, // dash
 				new [] {0,0}, // slowdown
-				new [] {0,0} // timefreeze
+				new [] {0,0} // goBackInTime
 			},
 			{ // level 3
 				new [] {0,0}, // x pos
@@ -79,7 +92,7 @@ namespace Global {
 				new [] {0,0}, // poison
 				new [] {0,0}, // dash
 				new [] {0,0}, // slowdown
-				new [] {0,0} // timefreeze
+				new [] {0,0} // goBackInTime
 			},
 			{ // level 4
 				new [] {0,0}, // x pos
@@ -92,7 +105,7 @@ namespace Global {
 				new [] {0,0}, // poison
 				new [] {0,0}, // dash
 				new [] {0,0}, // slowdown
-				new [] {0,0} // timefreeze
+				new [] {0,0} // goBackInTime
 			},
 			{ // level 5
 				new [] {0,0}, // x pos
@@ -105,7 +118,7 @@ namespace Global {
 				new [] {0,0}, // poison
 				new [] {0,0}, // dash
 				new [] {0,0}, // slowdown
-				new [] {0,0} // timefreeze
+				new [] {0,0} // goBackInTime
 			},
 			{ // level 6
 				new [] {0,0}, // x pos
@@ -118,26 +131,13 @@ namespace Global {
 				new [] {0,0}, // poison
 				new [] {0,0}, // dash
 				new [] {0,0}, // slowdown
-				new [] {0,0} // timefreeze
-			},
-			{ // level 7
-				new [] {0,0}, // x pos
-				new [] {0,0}, // y pos
-				new [] {6,6}, // Life
-				new [] {2,2}, // stamina
-				new [] {2,2}, // mana
-				new [] {0,1}, // sword unlocked
-				new [] {0,0}, // bow unlocked
-				new [] {0,0}, // poison
-				new [] {0,0}, // dash
-				new [] {0,0}, // slowdown
-				new [] {0,0} // timefreeze
+				new [] {0,0} // goBackInTime
 			},
 		};
 		public static DateTime TimeStartedAt;
 		// not to be synced, maybe to put in player ?
 		public static List<Player.Player> PlayerList = new List<Player.Player>();
-		public static int PlayerId;
+		public static byte PlayerId;
 		public static bool Continue = false;
 		#region Game Constants
 		public static string GameVersion = "0.1";
@@ -148,8 +148,8 @@ namespace Global {
 		// 5th : Boss, again ?
 		// 6th : Castle
 		// 7th : FinalBoss
-		public static string FirstLevelName = "Quentin6"; // will not delete it as it serves the same purpose and can be useful for debugging
-		public static string[] LevelsName = new[] { "QuentinFirstLevelIntro",  "Quentin6", LobbySceneName, GameClearSceneName};
+		//-public static string FirstLevelName = "Quentin6"; // will not delete it as it serves the same purpose and can be useful for debugging
+		public static string[] LevelsName = new[] { "QuentinFirstLevelIntro",  "Quentin6"};
 		public static byte CurrentLevelId = 0;
 		// public static string SecondLevelName = ???; // if needed, maybe we'll keep everything into one scene
 		public static string GameOverSceneName = "GameOver";
@@ -161,13 +161,13 @@ namespace Global {
 		#region IPunObservable
 		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
 			if (stream.IsWriting) {
-				stream.SendNext(PlayerSpeed);
+				//stream.SendNext(PlayerSpeed);
 				stream.SendNext(EnnemySpeed);
 				stream.SendNext(SaveId);
 				stream.SendNext(CurrentLevelId);
 			}
 			else {
-				PlayerSpeed = (float)stream.ReceiveNext();
+				//PlayerSpeed = (float)stream.ReceiveNext();
 				EnnemySpeed = (float)stream.ReceiveNext();
 				SaveId = (byte)stream.ReceiveNext();
 				CurrentLevelId = (byte)stream.ReceiveNext();

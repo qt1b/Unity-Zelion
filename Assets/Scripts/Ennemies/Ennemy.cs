@@ -63,15 +63,23 @@ namespace Ennemies
         private bool IsDoingAnAction => _isCharging || _isMeleeing || _isShooting;
         private float LowerMargin => distanceFromPlayer - distanceFromPlayerMargin;
         private float HigherMargin => distanceFromPlayer + distanceFromPlayerMargin;
-        public float speed => GlobalVars.EnnemySpeed;
 
-        private Coroutine chargeCoroutine;
+        private Coroutine _chargeCoroutine;
+
+        private float _originalSpeed;
+        private float _originalAcc;
+        private float _curTimeScale = 1;
+
+        //[NonSerialized] public static float NewTimeScale;
 
         void Start()
         {
             if (PhotonNetwork.OfflineMode || PhotonNetwork.IsMasterClient) return;
             enabled = false;
             GetComponent<NavMeshAgent>().enabled = false;
+
+            _originalAcc = Agent.acceleration;
+            _originalSpeed = Agent.speed;
         }
 
         public override void OnEnable()
@@ -111,11 +119,11 @@ namespace Ennemies
             var rot = Quaternion.Euler(0f, 0f,
                 Mathf.Atan(direction.y / direction.x) * 180 / Mathf.PI + (direction.x < 0 ? 90 : -90));
             var arr = PhotonNetwork.Instantiate(
-                "Prefabs/Projectiles/Arrow",
+                "Prefabs\t\t\t\t\t\t\t\tAudioManager.Instance.Play(\"unauthorized\");\n/Projectiles/Arrow",
                 initialPos + direction * ShootParams.startDistance, rot);
             var projectile = arr.GetComponent<Projectile>();
             projectile.damage = ShootParams.damage;
-            projectile.SetVelocity(direction);
+            projectile.SetVelocity(direction * GlobalVars.EnnemySpeed);
             projectile.speed = ShootParams.arrowSpeed;
             _isShooting = false;
             yield break;
@@ -161,10 +169,19 @@ namespace Ennemies
 
         #endregion
 
+        private void ModifyTimeScale() {
+            if (_curTimeScale != GlobalVars.EnnemySpeed) {
+                Agent.speed = GlobalVars.EnnemySpeed * _originalSpeed;
+                Agent.acceleration = GlobalVars.EnnemySpeed * _originalAcc;
+                _curTimeScale = GlobalVars.EnnemySpeed;
+            }
+        }
+        
         private void Refresh()
         {
+            ModifyTimeScale();
             List<Player.Player> players = new(GlobalVars.PlayerList);
-            if (players.Count == 0 || IsDoingAnAction || PauseMenu.GameIsPaused || GlobalVars.EnnemySpeed == 0)
+            if (players.Count == 0 || IsDoingAnAction || PauseMenu.GameIsPaused /* || GlobalVars.EnnemySpeed == 0*/)
                 return;
 
             var pos = transform.position;
@@ -185,7 +202,6 @@ namespace Ennemies
             else
                 Agent.ResetPath();
             
-            
             if (isShooter && distance >= ShootParams.shootRangeMin && distance <= ShootParams.shootRangeMax &&
                 _canShoot && (!forwardWhenPlayerTooClose || distance >= LowerMargin))
                 StartCoroutine(Shoot(0, pos, direction.normalized));
@@ -203,7 +219,7 @@ namespace Ennemies
             {
                 if (_chargeParams.stopOnCollision)
                 {
-                    StopCoroutine(chargeCoroutine);
+                    StopCoroutine(_chargeCoroutine);
                     _isCharging = false;
                     Rigidbody2D.velocity = UnityEngine.Vector2.zero;
                 }

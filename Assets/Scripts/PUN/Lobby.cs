@@ -79,7 +79,7 @@ namespace PUN {
 		public void StartGameMulti() {
 			if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) {
 				PhotonNetwork.CurrentRoom.MaxPlayers = PhotonNetwork.CurrentRoom.PlayerCount;
-				PhotonNetwork.LoadLevel(GlobalVars.FirstLevelName);
+				PhotonNetwork.LoadLevel(GlobalVars.LevelsName[0]);
 			}
 		}
 		public void ExitLobby() {
@@ -115,7 +115,7 @@ namespace PUN {
 			Debug.Log("Lobby: OnJoinedRoom");
 			PhotonNetwork.NickName = Environment.UserName;
 			// assigns the right id to the right player
-			GlobalVars.PlayerId = PhotonNetwork.CurrentRoom.PlayerCount-1;
+			GlobalVars.PlayerId = (byte)(PhotonNetwork.CurrentRoom.PlayerCount <= 0 ? 0 : PhotonNetwork.CurrentRoom.PlayerCount - 1);
 			Debug.Log($"joining room with id:{RoomIdInput.text}");
 			Debug.Log("Joined Room : current player ID:"+GlobalVars.PlayerId);
 			PhotonNetwork.JoinRoom(RoomIdInput.text);

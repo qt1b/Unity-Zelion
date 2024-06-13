@@ -18,8 +18,6 @@ namespace Actions {
 				PhotonNetwork.LoadLevel(GlobalVars.LevelsName[GlobalVars.CurrentLevelId]);
 				return;
 			}
-
-			this.enabled = false;
 		}
 	}
 }

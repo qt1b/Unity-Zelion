@@ -21,7 +21,9 @@ namespace Actions {
 		public void Activate() {
 			if (GlobalVars.SaveId != saveID) {
 				GlobalVars.SaveId = this.saveID;
+				photonView.RPC("HealOrResRpc",RpcTarget.AllBuffered);
 				photonView.RPC("LoadSaveRpc",RpcTarget.AllBuffered);
+				GlobalVars.PlayerList.ForEach(p=>p.Heal(4));
 				// photonView.RPC("NetworkDestroyLightRpc", RpcTarget.AllBuffered);
 				this.enabled = false;
 			}
@@ -31,6 +33,14 @@ namespace Actions {
 		public void LoadSaveRpc() {
 			Player.Player.LocalPlayerInstance.GetComponent<Player.Player>().LoadSaveWithoutPos();
 		}
+
+		[PunRPC]
+		public void ResRpc() {
+			GlobalVars.PlayerList.ForEach(p => {
+				if (!p.isActiveAndEnabled) p.gameObject.SetActive(true);
+			});
+		}
+		
 		[PunRPC]
 		public void NetworkDestroyLightRpc() {
 			Debug.Log("Loading Save...");

@@ -1,22 +1,15 @@
-using System;
 using System.Collections;
-using System.IO;
-using System.Linq;
-using Actions;
+using System.Collections.Generic;
 using Audio;
 using Bars;
-using ExitGames.Client.Photon;
 using Global;
 using Interfaces;
-using Photon.PhotonRealtime.Code;
 using Photon.PhotonUnityNetworking.Code;
 using Photon.PhotonUnityNetworking.Code.Interfaces;
 using UI;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Weapons;
-using Object = System.Object;
 
 namespace Player {
 	public class Player : MonoBehaviourPunCallbacks, IHealth, IPunObservable {
@@ -29,7 +22,7 @@ namespace Player {
 		[DoNotSerialize] public float speedModifier = 1;
 		[DoNotSerialize] public Vector2 change = Vector2.zero;
 		[DoNotSerialize] public Vector2 notNullChange = new Vector2(0, 1);
-		[DoNotSerialize] public bool isDead;
+		//[DoNotSerialize] public bool isDead = false;
 
 		#endregion
 
@@ -40,7 +33,6 @@ namespace Player {
 		private bool _poisonUnlocked;
 		private bool _dashUnlocked;
 		private bool _slowdownUnlocked;
-		private bool _timeFreezeUnlocked;
 		private bool _timeTravelUnlocked = true; // for testing
 
 		#endregion
@@ -52,8 +44,7 @@ namespace Player {
 		bool _canShootArrow = true;
 		bool _canThrowPoisonBomb = true;
 		bool _canSlowDownTime = true;
-		bool _canTimeFreeze = true;
-		private bool _canTimeTravel = true;
+		bool _canTimeTravel = true;
 		private bool _isDashing;
 		bool _isAimingArrow;
 		bool _isAimingBomb;
@@ -67,7 +58,6 @@ namespace Player {
 		private bool CanShootArrow => _bowUnlocked && _canShootArrow;
 		private bool CanPoison => _poisonUnlocked && _canThrowPoisonBomb;
 		private bool CanSlowDownTime => _slowdownUnlocked && _canSlowDownTime;
-		private bool CanTimeFreeze => _timeFreezeUnlocked && _canTimeFreeze;
 		private bool CanTimeTravel => _timeTravelUnlocked && _canTimeTravel;
 
 		#endregion
@@ -174,18 +164,19 @@ namespace Player {
 					_poisonUnlocked = args[7] == "1";
 					_dashUnlocked = args[8] == "1";
 					_slowdownUnlocked = args[9] == "1";
-					_timeFreezeUnlocked = args[10] == "1";
+					_timeTravelUnlocked = args[10] == "1";
 					Debug.Log("Loaded Save successfully, saveID=" + GlobalVars.SaveId);
 				}
 			}
 			else throw new NotImplementedException("Unsupported saveID : " + GlobalVars.SaveId);
 			*/
 			// ver 2
+			/*
 			if (GlobalVars.SaveLookupArray.GetLength(0) > GlobalVars.SaveId) {
 				_healthBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 2]));
 				if (photonView.IsMine) {
 					Vector3 pos = new Vector3(int.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 0]),
-						int.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 1]), 0f);
+						int.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 1]) + GlobalVars.PlayerId, 0f);
 					gameObject.transform.position = pos;
 					Camera.main.transform.position = new Vector3(pos.x, pos.y, -1f);
 					_swordUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 5] == "1";
@@ -193,17 +184,37 @@ namespace Player {
 					_poisonUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 7] == "1";
 					_dashUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 8] == "1";
 					_slowdownUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 9] == "1";
-					_timeFreezeUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 10] == "1";
+					_timeTravelUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 10] == "1";
 					_staminaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 3]));
 					_manaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 4]));
 				}
 
 				Debug.Log("Loaded Global Save successfully, saveID=" + GlobalVars.SaveId);
+			}*/
+			// ver 3 , should be the final one
+			byte saveID = GlobalVars.SaveId;
+			_healthBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 2][saveID]);
+			if (photonView.IsMine) {
+				Vector3 pos = new Vector3(GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 0][saveID],
+					GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 1][saveID] + GlobalVars.PlayerId, 0f);
+				transform.position = pos;
+				_staminaBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 3][saveID]);
+				_manaBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 4][saveID]);
+				_swordUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 5][saveID] == 1;
+				Debug.Log("loading specific : _sword unlocked =="+_swordUnlocked);
+				_bowUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 6][saveID] == 1;
+				_poisonUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 7][saveID] == 1;
+				_dashUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 8][saveID] == 1;
+				_slowdownUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 9][saveID] == 1;
+				_timeTravelUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 10][saveID] == 1;
 			}
+			Debug.Log("Save loaded");
+
 		}
 
 		// next ????: should call a rpc to sync the healthbar's max value, etc..
 		public void LoadSaveWithoutPos() {
+			/*
 			if (GlobalVars.SaveLookupArray.GetLength(0) > GlobalVars.SaveId) {
 				_healthBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 2]));
 				if (photonView.IsMine) {
@@ -212,12 +223,28 @@ namespace Player {
 					_poisonUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 7] == "1";
 					_dashUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 8] == "1";
 					_slowdownUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 9] == "1";
-					_timeFreezeUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 10] == "1";
+					_timeTravelUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 10] == "1";
 					_staminaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 3]));
 					_manaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 4]));
 				}
 				Debug.Log("Loaded Global Save successfully, saveID=" + GlobalVars.SaveId);
+			} */
+
+			byte saveID = GlobalVars.SaveId;
+			_healthBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 2][saveID]);
+			if (photonView.IsMine) {
+				_staminaBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 3][saveID]);
+				_manaBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 4][saveID]);
+				_swordUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 5][saveID] == 1;
+				Debug.Log("loading specific : _sword unlocked =="+_swordUnlocked);
+				_bowUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 6][saveID] == 1;
+				_poisonUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 7][saveID] == 1;
+				_dashUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 8][saveID] == 1;
+				_slowdownUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 9][saveID] == 1;
+				_timeTravelUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 10][saveID] == 1;
 			}
+			Debug.Log("Save without pos loaded");
+
 		}
 
 		public void LoadSave2() {
@@ -234,7 +261,7 @@ namespace Player {
 				_poisonUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 7][saveID] == 1;
 				_dashUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 8][saveID] == 1;
 				_slowdownUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 9][saveID] == 1;
-				_timeFreezeUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 10][saveID] == 1;
+				_timeTravelUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 10][saveID] == 1;
 			}
 			Debug.Log("Specific save loaded");
 
@@ -251,7 +278,7 @@ namespace Player {
 				_poisonUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 7][saveID] == 1;
 				_dashUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 8][saveID] == 1;
 				_slowdownUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 9][saveID] == 1;
-				_timeFreezeUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 10][saveID] == 1;
+				_timeTravelUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 10][saveID] == 1;
 			}
 			Debug.Log("Specific save loaded");
 		}
@@ -361,7 +388,12 @@ namespace Player {
 							_poisonZonePreviewRef.SetActive(true);
 						PlacePreviewZone();
 						if (Input.GetKeyUp(KeyCode.Mouse1)) {
-							if (_canThrowPoisonBomb && _manaBar.TryTakeDamages(10)) StartCoroutine(ThrowPoisonBomb());
+							if (_canThrowPoisonBomb && _manaBar.TryTakeDamages(10)) {
+								StartCoroutine(ThrowPoisonBomb());
+							}
+							else {
+								AudioManager.Instance.Play("unauthorized");
+							}
 							_isAimingBomb = false;
 							speedModifier = 1;
 							_animator.SetBool(AimingBomb, false);
@@ -370,51 +402,71 @@ namespace Player {
 					}
 					else {
 						// the sword has not any cost
-						if (CanSwordAttack && Input.GetKeyDown(KeyCode.Space)) {
-							StartCoroutine(SwordAttack());
+						if (Input.GetKeyDown(KeyCode.Space)) {
+							if (CanSwordAttack) {
+								StartCoroutine(SwordAttack());
+							}
+							else {
+								AudioManager.Instance.Play("unauthorized");
+							}
 						}
-						else if (CanDash && Input.GetKeyDown(KeyCode.LeftShift) && _staminaBar.TryTakeDamages(10)) {
-							StartCoroutine(Dash());
+						else if ( Input.GetKeyDown(KeyCode.LeftShift) ) {
+							if (CanDash && _staminaBar.TryTakeDamages(10)) {
+								StartCoroutine(Dash());
+							}
+							else {
+								AudioManager.Instance.Play("unauthorized");
+							}
 						}
-						else if (_bowUnlocked && Input.GetKeyDown(KeyCode.Mouse0)) {
-							_animator.SetBool(AimingBow, true);
-							// bow aiming audio effect
-							_isAimingArrow = true;
-							speedModifier = _attackSpeedNerf;
-							if (_canShootArrow) _arrowPreviewRef.SetActive(true);
-							// PoisonZonePreviewRef.SetActive(true);
-							PlacePreviewArrow();
-							// ArrowPreviewRef.transform.position = transform.position;
+						else if ( Input.GetKeyDown(KeyCode.Mouse0)) {
+							if (_bowUnlocked) {
+								_animator.SetBool(AimingBow, true);
+								// bow aiming audio effect
+								_isAimingArrow = true;
+								speedModifier = _attackSpeedNerf;
+								if (_canShootArrow) _arrowPreviewRef.SetActive(true);
+								// PoisonZonePreviewRef.SetActive(true);
+								PlacePreviewArrow();
+								// ArrowPreviewRef.transform.position = transform.position;
+							}
+							else {
+								AudioManager.Instance.Play("unauthorized");
+							}
 						}
 						// poison zone: audio from the prefab
-						else if (_poisonUnlocked && Input.GetKeyDown(KeyCode.Mouse1)) {
-							_animator.SetBool(AimingBomb, true);
-							// poison aiming audio effect
-							_isAimingBomb = true;
-							speedModifier = _attackSpeedNerf;
-							if (_canThrowPoisonBomb) _poisonZonePreviewRef.SetActive(true);
-							PlacePreviewZone();
+						else if (Input.GetKeyDown(KeyCode.Mouse1)) {
+							if (_poisonUnlocked) {
+								_animator.SetBool(AimingBomb, true);
+								// poison aiming audio effect
+								_isAimingBomb = true;
+								speedModifier = _attackSpeedNerf;
+								if (_canThrowPoisonBomb) _poisonZonePreviewRef.SetActive(true);
+								PlacePreviewZone();
+							}
+							else {
+								AudioManager.Instance.Play("unauthorized");
+							}
 						}
-						else if (CanSlowDownTime && Input.GetKeyDown(KeyCode.Q) &&
-						         _manaBar.TryTakeDamages(5)) {
-							// slow down audio effect
-							StartCoroutine(SlowDownTimeFor(4f));
-						}
-						// else some visual and/or audio feedback telling us that we can
-						else if (CanTimeFreeze && Input.GetKeyDown(KeyCode.E) && _manaBar.TryTakeDamages(14)) {
-							// time freeze audio effect
-							print("time freeze");
+						else if ( Input.GetKeyDown(KeyCode.Q) ){
+							if (CanSlowDownTime &&_manaBar.TryTakeDamages(5)) {
+								AudioManager.Instance.Play("slowdownSpell");
+								StartCoroutine(SlowDownTimeFor(4f));
+							}
+							else {
+								AudioManager.Instance.Play("unauthorized");
+							}
 						}
 						// to remove when we have some enemies
 						else if (Input.GetKeyDown(KeyCode.M)) {
 							this.TakeDamages(2);
 						}
-						else if (CanTimeTravel && Input.GetKeyDown(KeyCode.Z)) {
-							if (_manaBar.TryTakeDamages(7)) {
+						else if ( Input.GetKeyDown(KeyCode.Z)) {
+							if (CanTimeTravel && _manaBar.TryTakeDamages(7)) {
+								AudioManager.Instance.Play("spellTp");
 								GoBackInTime();
 							}
 							else {
-								//AudioManager.Instance.Play();
+								AudioManager.Instance.Play("unauthorized");
 							}
 						}
 					}
@@ -451,6 +503,7 @@ namespace Player {
 				_animator.speed = 1;
 			}
 		}
+		/*
 		IEnumerator TimeFreezeFor(float duration) {
 			_timeFreezeAcc += 1;
 			GlobalVars.EnnemySpeed = 0f;
@@ -459,7 +512,7 @@ namespace Player {
 			if (_timeFreezeAcc == 0) {
 				GlobalVars.EnnemySpeed = 1;
 			}
-		}
+		} */
 		Vector3 GetMouseRelativePos() {
 			Vector3 mousePosition = Input.mousePosition;
 			mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
@@ -618,7 +671,11 @@ namespace Player {
 			if (_healthBar.TryTakeDamagesStrict((ushort)damage)) {
 				photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,1f, 0.3f, 0.3f, 0.8f, 0.2f);
 			}
-			else GameOver();
+			else {
+				//if (PhotonNetwork.IsMasterClient) PhotonNetwork.LoadLevel(GlobalVars.GameOverSceneName);
+				_healthBar.ChangeCurVal(0);
+				if (photonView.IsMine) GameOver();
+			}
 		}
 		public void Heal(ushort heal) {
 			photonView.RPC("HealRPC",RpcTarget.AllBuffered,(short)heal);
@@ -626,6 +683,12 @@ namespace Player {
 		[PunRPC]
 		public void HealRPC(short heal) {
 			_healthBar.Heal((ushort)heal);
+			/*if (isDead) { // Is Dirty, but may work ?
+				GlobalVars.PlayerList.ForEach(p=>p.GetComponent<Camera>().gameObject.SetActive(false));
+				this.GetComponent<Camera>().gameObject.SetActive(true);
+				this.GetComponent<CameraWork>().OnStartFollowing();
+				isDead = false;
+			} */
 			photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,0.3f, 1f, 0.3f, 0.8f, 0.2f);
 		}
 
@@ -651,14 +714,20 @@ namespace Player {
 			photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,0.3f, 1f, 0.3f, 0.8f, 0.2f);
 		}
 
-		// TODO: change to 
+		// seems annoying to do...
+		// TODO: change to
 		public void GameOver() {
-			isDead = true;
-			// idk if this works
-			if (GlobalVars.PlayerList.Any(p => !p.isDead) && GlobalVars.PlayerList.FirstOrDefault(p=>!p.isDead) is {} player) {
-				player.GetComponent<Camera>().gameObject.SetActive(true);
-				this.GetComponent<Camera>().gameObject.SetActive(false);
-				player.GetComponent<CameraWork>().OnStartFollowing();
+			// isDead = true;
+			// idk if this work
+			List<Player> otherPlayers = new List<Player>();
+			foreach (Player player in GlobalVars.PlayerList) {
+				if (!player.photonView.IsMine && player.isActiveAndEnabled) otherPlayers.Add(player);
+			}
+			if (otherPlayers.Count > 0) {
+				var cam = GlobalVars.PlayerList[0].GetComponentInChildren<Camera>();
+				cam.gameObject.SetActive(true);
+				cam.GetComponent<CameraWork>().OnStartFollowing();
+				gameObject.SetActive(false);
 			}
 			// no more players are alive, game over screen and return to the title screen
 			else {
@@ -673,7 +742,7 @@ namespace Player {
 		}
 
 		public void Revive() {
-			isDead = false;
+			//isDead = false;
 			if (Camera.main is { } cam) {
 				cam.GetComponent<CameraWork>()._player = this; //LocalPlayerInstance.GetComponent<Player>();
 			}
@@ -698,14 +767,15 @@ namespace Player {
 			StartCoroutine(ChangeColorWait(new Color(r, g, b, a), time));
 		}
 
-		
 		#region IPunObservable implementation
 		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
 			if (stream.IsWriting) {
 				stream.SendNext((short)_healthBar.curValue);
+				//stream.SendNext(isDead);
 			}
 			else {
 				_healthBar.curValue = (ushort)(short)stream.ReceiveNext();
+				//isDead = (bool)stream.ReceiveNext();
 			}
 		}
 		#endregion*/
