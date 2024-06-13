@@ -13,7 +13,7 @@ namespace Player {
 		private static readonly int MouseY = Animator.StringToHash("MouseY");
 		private static readonly int MouseX = Animator.StringToHash("MouseX");
 		private float _timeLag = 2f;
-		private bool _isOkToMove = true;
+		//private bool _isOkToMove = true;
 		public void Awake() {
 			_animator = gameObject.GetComponent<Animator>();
 			_playeranim = Player.LocalPlayerInstance.GetComponent<Animator>();
@@ -31,25 +31,26 @@ namespace Player {
 			//float animX = _playeranim.GetFloat(MoveX);
 			//float animY = _playeranim.GetFloat(MoveY);
 			yield return new WaitForSeconds(_timeLag);
-			if (_isOkToMove) {
+			// if (_isOkToMove) {
 				gameObject.transform.position = playerPos;
 				_animator.SetFloat(MoveX, moveX);
 				_animator.SetFloat(MoveY, moveY);
 				_animator.SetBool(IsMoving, isMoving);
-			}
-			else {
+			//}
+			/*else {
 				_animator.SetBool(IsMoving,false);
-			}
+			}*/
 		}
 
 		IEnumerator Cooldown() {
 			yield return new WaitForSeconds(_timeLag);
-			_isOkToMove = true;
+			//_isOkToMove = true;
 		}
 
 		public void GoBackInTime() {
 			Player.LocalPlayerInstance.transform.position = this.transform.position;
-			_isOkToMove = false;
+			//_isOkToMove = false;
+			//StartCoroutine(Cooldown());
 		}
 	}
 }
