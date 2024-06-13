@@ -1,4 +1,10 @@
 fileFormatVersion: 2
+<<<<<<< Updated upstream
+=======
+<<<<<<<< HEAD:Assets/Scenes/Quentin6/NavMesh-NavMeshHumanoid.asset.meta
+guid: e1c00bcbbc6af1c4abe56a08ed730d58
+========
+>>>>>>> Stashed changes
 guid: cb0355e13c57749e5aceaf83d50ce671
 NativeFormatImporter:
   externalObjects: {}
