@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace Events {
 	public class OnContact : MonoBehaviour{
-		public List<Type> Types;
+		public Type Type;
 		public IAction Action;
 
 		private void OnTriggerEnter2D(Collider2D other) {
-			if (Types.Any(t => t == other.GetType())) {
+			if (Type == other.GetType()) {
 				Action.Activate();
 			}
 		}

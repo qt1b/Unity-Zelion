@@ -12,9 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Lobby.unity
     guid: 113557aef667e463fa9052a6da631efe
   - enabled: 1
-    path: Assets/Scenes/Quentin5.unity
-    guid: 5238cd3574f514d6aa75b2298def5e78
-  - enabled: 1
     path: Assets/Scenes/GameClear.unity
     guid: 1218667eb68874f95b4f5c006b8a0ace
   - enabled: 1
@@ -23,4 +20,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Louis.unity
     guid: eb7ed962c2ec38b478f1879785d3056a
+  - enabled: 1
+    path: Assets/Scenes/Quentin6.unity
+    guid: 232a9815107ab44d3aa9fac01fb2de45
+  - enabled: 1
+    path: Assets/Scenes/LVL1.unity
+    guid: dbfb44ebf17cebb46adc0916c67bf350
   m_configObjects: {}

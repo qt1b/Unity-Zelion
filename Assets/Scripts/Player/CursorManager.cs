@@ -1,15 +1,13 @@
 using UnityEngine;
 
 namespace Player {
-    public class CursorManager : MonoBehaviour
-    {
+    public class CursorManager : MonoBehaviour {
         [SerializeField] public Texture2D cursorTexture;
         public Vector2 cursorHotSpot;
         [SerializeField] public Texture2D crosshairTexture;
         public Vector2 crosshairHotSpot;
         // Start is called before the first frame update
-        public void SetCursor(Texture2D newCursorTexture, Vector2 hotSpot)
-        {
+        public void SetCursor(Texture2D newCursorTexture, Vector2 hotSpot) {
             cursorHotSpot = hotSpot;
             Cursor.SetCursor(newCursorTexture, cursorHotSpot, CursorMode.Auto);
         }

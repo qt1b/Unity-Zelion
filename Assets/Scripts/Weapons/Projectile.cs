@@ -38,8 +38,22 @@ namespace Weapons {
             yield return new WaitForSeconds(secs);
             PhotonNetwork.Destroy(gameObject);
         }
-        
         void OnTriggerEnter2D(Collider2D other) {
+            if (other.gameObject.TryGetComponent(out IHealth health)) {
+                if (photonView.IsMine) health.TakeDamages(damage);
+                _myRigidBody.velocity = Vector3.zero;
+                StartCoroutine(DestroyAfterSecs(.2f));
+            }
+            else if (!other.isTrigger && !other.CompareTag("LetProjectilesPass")) {
+                _myRigidBody.velocity = Vector3.zero;
+                StartCoroutine(DestroyAfterSecs(.2f));
+            }
+        }
+
+        /*
+        // does not really work, is it bc it needs a rigidbody ?
+        private void OnCollisionEnter2D(Collision2D other) {
+            print("Collision Enter 2D!!");
             if (photonView.IsMine && other.gameObject.TryGetComponent(out IHealth health)) {
                 health.TakeDamages(damage);
             }
@@ -47,18 +61,7 @@ namespace Weapons {
             StartCoroutine(DestroyAfterSecs(.2f));
             //PhotonNetwork.Destroy(gameObject);
             //DestroyGameObj();
-        }
-
-        // does not really work, is it bc it needs a rigidbody ?
-        private void OnCollisionEnter2D(Collision2D other) {
-            print("Collision Enter 2D!!");
-            if (other.gameObject.TryGetComponent(out IHealth health))
-                health.TakeDamages(damage);
-            _myRigidBody.velocity = Vector3.zero;
-            StartCoroutine(DestroyAfterSecs(.2f));
-            //PhotonNetwork.Destroy(gameObject);
-            //DestroyGameObj();
-        }
+        } */
 
         private void DestroyGameObj() {
             StartCoroutine(DestroyAfterSecs(.2f));

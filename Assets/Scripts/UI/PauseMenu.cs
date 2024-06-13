@@ -1,22 +1,38 @@
+using System.Collections;
+using System.Collections.Generic;
+using Global;
 using Photon.PhotonUnityNetworking.Code;
+using Photon.PhotonUnityNetworking.Code.Interfaces;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 namespace UI {
-    public class PauseMenu : MonoBehaviour
-    {
+    // todo : sync the pause menu over the network
+    public class PauseMenu : MonoBehaviourPunCallbacks {
         public static bool GameIsPaused = false;
         [FormerlySerializedAs("GameObjectUI")] public GameObject gameObjectUI;
+        public GameObject PauseBlur;
         private static readonly int IsMoving = Animator.StringToHash("IsMoving");
         private static readonly int IsAimingBow = Animator.StringToHash("IsAimingBow");
-        private static readonly int IsAimingBomb = Animator.StringToHash("IsAimingBomb");
+        public Settings _settings;
 
+        public TMP_Text PausedTxt;
+        public TMP_Text ResumeTxt;
+        public TMP_Text SettingsTxt;
+        public TMP_Text MainMenuTxt;
 
-        // Update is called once per frame
+        public void Start() {
+            PausedTxt.text = TextValues.Paused;
+            ResumeTxt.text = TextValues.Resume;
+            SettingsTxt.text = TextValues.Settings;
+            MainMenuTxt.text = TextValues.MainMenu;
+        }
+        
         void Update()
         {
-            if(Input.GetKeyDown(KeyCode.Escape)) {
+            if(!_settings.isActiveAndEnabled && Input.GetKeyDown(KeyCode.Escape)) {
                 if(GameIsPaused){
                     Resume();
                 }
@@ -25,34 +41,58 @@ namespace UI {
                 }
             }
         }
-        public void Resume(){
-            gameObjectUI.SetActive(false);
-            Time.timeScale = 1f; // wthhhhhhhh this existed all along
+        public void Resume() {
+            photonView.RPC("ResumeRpc", RpcTarget.AllBuffered);
+        }
+        [PunRPC]
+        public void ResumeRpc() {
+            PauseBlur.SetActive(false);
             GameIsPaused = false;
+            gameObjectUI.SetActive(false);
+            if (PhotonNetwork.OfflineMode) {
+                Time.timeScale = 1f; // wth this existed all along
+            }
+            else {
+                Player.Player.LocalPlayerInstance.GetComponent<Animator>().speed = GlobalVars.PlayerSpeed;
+            }
+            _settings.gameObject.SetActive(false);
         }
         public void Pause() {
-            // object not found ? when solo play
-            Animator animator = Player.Player.LocalPlayerInstance.GetComponent<Animator>();
-            animator.SetBool(IsMoving,false);
-            animator.SetBool(IsAimingBow,false);
-            animator.SetBool(IsAimingBomb,false);
-            gameObjectUI.SetActive(true);
-            Time.timeScale = 0f;
+            photonView.RPC("PauseRpc",RpcTarget.AllBuffered);
+        }
+        [PunRPC]
+        public void PauseRpc() {
+            PauseBlur.SetActive(true);
             GameIsPaused = true;
+            gameObjectUI.SetActive(true);
+            if (PhotonNetwork.OfflineMode) {
+                Time.timeScale = 0f;
+            }
+            else {
+                Animator animator = Player.Player.LocalPlayerInstance.GetComponent<Animator>();
+                animator.speed = 0f;
+                animator.SetBool(IsMoving,false);
+                animator.SetBool(IsAimingBow,false);
+                Player.Player.LocalPlayerInstance.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            }
         }
         public void MainMenu(){
-            //PhotonNetwork.Destroy(Player.Player.LocalPlayerInstance);
-            //Player.Player.LocalPlayerInstance = null;
-            // no way do "destroy" a room
-            Resume();
+            Time.timeScale = 1f; // wth this existed all along
+            GameIsPaused = false;
             PhotonNetwork.LeaveRoom();
             PhotonNetwork.Disconnect();
             SceneManager.LoadScene(0);
-            // GameIsPaused = false;
         }
-
+        /*
         public void Settings(){
             Debug.Log("settings ");
+            SettingsActivated = true;
+            gameObjectUI.SetActive(false);
         }
+
+        public void ExitSettings() {
+            SettingsActivated = false;
+            gameObjectUI.SetActive(true);
+        } */
     }
 }

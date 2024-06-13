@@ -23,7 +23,7 @@ namespace Global {
 		// allows us to be sure there is the right amount of data
 		public static readonly string[,] SaveLookupArray = new string[2,11] {
 			{ "0", "0", "6", "2", "2", "0", "0", "0", "0", "0", "0" },
-			{ "0", "0", "12", "16", "16", "1", "1", "1", "1", "1", "1" }
+			{ "22", "-22", "12", "16", "16", "1", "1", "1", "1", "1", "1" }
 		};
 		public static DateTime TimeStartedAt;
 		// not to be synced, maybe to put in player ?
@@ -32,11 +32,13 @@ namespace Global {
 		public static bool Continue = false;
 		#region Game Constants
 		public static string GameVersion = "0.1";
-		public static string FirstLevelName = "Louis";
+		public static string FirstLevelName = "LVL1";
 		// public static string SecondLevelName = ???; // if needed, maybe we'll keep everything into one scene
 		public static string GameOverSceneName = "GameOver";
 		public static string GameClearSceneName = "GameClear";
 		public static string LobbySceneName = "Lobby";
+		// 0 = en, 1 = fr, 2 = jp
+		public static byte Language = 1;
 		#endregion
 		#region IPunObservable
 		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
@@ -52,7 +54,7 @@ namespace Global {
 				// cannot sync this, do we even really need it to be synced ?
 				// PlayerList = (List<Player.Player>)stream.ReceiveNext();
 				SaveId = (byte)stream.ReceiveNext();
-				PlayerId = (int)stream.ReceiveNext();
+				// PlayerId = (int)stream.ReceiveNext();
 			}
 		}
 		#endregion
