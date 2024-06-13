@@ -31,7 +31,7 @@ namespace Weapons {
         [PunRPC]
         public void SetVelocityRPC(Vector3 givenDirection) {
             Direction = givenDirection;
-            _myRigidBody.velocity = Direction * (speed * 0.2f * Global.GlobalVars.PlayerSpeed);
+            _myRigidBody.velocity = Direction * (speed * 0.2f);
         }
         // may be destroyed on every instance ?
         IEnumerator DestroyAfterSecs(float secs) {

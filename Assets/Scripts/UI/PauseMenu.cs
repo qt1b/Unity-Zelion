@@ -53,7 +53,7 @@ namespace UI {
                 Time.timeScale = 1f; // wth this existed all along
             }
             else {
-                Player.Player.LocalPlayerInstance.GetComponent<Animator>().speed = GlobalVars.PlayerSpeed;
+                Player.Player.LocalPlayerInstance.GetComponent<Animator>().speed = 1;
             }
             _settings.gameObject.SetActive(false);
         }

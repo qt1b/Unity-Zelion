@@ -63,7 +63,7 @@ namespace Actions {
                     charCountBeforeSound = _unitsBeforeSound;
                 }
                 charCountBeforeSound--;
-                yield return new WaitForSeconds(0.01f * GlobalVars.PlayerSpeed);
+                yield return new WaitForSeconds(0.01f /* * GlobalVars.PlayerSpeed*/);
             }
             curText = null;
         } 
