@@ -22,7 +22,7 @@ namespace UI {
         public TMP_Text ResumeTxt;
         public TMP_Text SettingsTxt;
         public TMP_Text MainMenuTxt;
-
+        public TMP_Text StatusText; // for the player script (yes)
         public void Start() {
             PausedTxt.text = TextValues.Paused;
             ResumeTxt.text = TextValues.Resume;

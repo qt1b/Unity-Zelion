@@ -21,7 +21,7 @@ namespace Player {
 			_player = Player.LocalPlayerInstance.GetComponent<Player>();
 			_animator = gameObject.GetComponent<Animator>();
 			_playeranim = Player.LocalPlayerInstance.GetComponent<Animator>();
-			_player._ghostPlayer = this;
+			_player.ghostPlayer = this;
 			transform.position = Player.LocalPlayerInstance.transform.position;
 		}
 

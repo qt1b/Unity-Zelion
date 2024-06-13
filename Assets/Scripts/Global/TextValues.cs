@@ -173,5 +173,22 @@ namespace Global {
 				else throw new ArgumentException("invalid language value");
 			}
 		}
+
+		public static string Revived {
+			get {
+				if (GlobalVars.Language == 0) return "Revived!";
+				else if (GlobalVars.Language == 1) return "Réanimé!";
+				else if (GlobalVars.Language == 2) return "生き返えた！";
+				else throw new ArgumentException("invalid language value");
+			}
+		}
+		public static string YouDied {
+			get {
+				if (GlobalVars.Language == 0) return "You Died";
+				else if (GlobalVars.Language == 1) return "Vous êtes mort.";
+				else if (GlobalVars.Language == 2) return "死んでしまった…";
+				else throw new ArgumentException("invalid language value");
+			}
+		}
 	}
 }

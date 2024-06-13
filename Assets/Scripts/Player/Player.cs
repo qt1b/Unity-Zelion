@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Audio;
@@ -6,8 +7,10 @@ using Global;
 using Interfaces;
 using Photon.PhotonUnityNetworking.Code;
 using Photon.PhotonUnityNetworking.Code.Interfaces;
+using TMPro;
 using UI;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using Weapons;
@@ -97,7 +100,6 @@ namespace Player {
 		private Animator _animator;
 		private Rigidbody2D _myRigidBody;
 		private GameObject _arrowPreviewRef;
-		private GameObject _poisonZoneRef;
 		private GameObject _poisonZonePreviewRef;
 		private GameObject _swordHitzone;
 		private HealthBar _healthBar;
@@ -105,14 +107,15 @@ namespace Player {
 		private ManaBar _manaBar;
 		private Renderer _renderer;
 		private SpriteRenderer _spriteRenderer;
-		private GameObject _arrowPrefab;
-		public GhostPlayer _ghostPlayer;
-
+		//private GameObject _poisonZoneRef;
+		//private GameObject _arrowPrefab;
+		[NonSerialized] public GhostPlayer ghostPlayer;
+		public TMP_Text StatusText;
 		#endregion
 
 		#region Cached Values
 
-		private static readonly int Color1 = Shader.PropertyToID("_Color");
+		//private static readonly int Color1 = Shader.PropertyToID("_Color");
 		private static readonly int IsMoving = Animator.StringToHash("IsMoving");
 		private static readonly int MoveY = Animator.StringToHash("MoveY");
 		private static readonly int MoveX = Animator.StringToHash("MoveX");
@@ -120,12 +123,6 @@ namespace Player {
 		private static readonly int MouseX = Animator.StringToHash("MouseX");
 		private static readonly int AimingBomb = Animator.StringToHash("AimingBomb");
 		private static readonly int AimingBow = Animator.StringToHash("AimingBow");
-
-		#endregion
-
-		#region Network Callback References
-
-		// private byte NetworkArrowSpawnRef = 245;
 
 		#endregion
 
@@ -145,54 +142,6 @@ namespace Player {
  * 10: TimeFreeze
  */
 		public void LoadSave() {
-			// Reads from the save Id common to all instances
-			/*
-			var lookupTable = GlobalVars.SaveLookupData.Split('\n').Skip(1).ToArray();
-			if (lookupTable.Length > GlobalVars.SaveId) {
-				string[] args = lookupTable[GlobalVars.SaveId].Split(';');
-				if (args.Length != 11)
-					throw new ArgumentException("the save lookup table is not formatted as expected; saveID=" + GlobalVars.SaveId);
-				else {
-					// should work ? may be better to use transforms manually
-					Vector3 pos =  new Vector3(int.Parse(args[0]), int.Parse(args[1]), 0f);
-					gameObject.transform.position = pos;
-					Camera.main.transform.position = pos;
-					_healthBar.ChangeMaxValue(uint.Parse(args[2]));
-					_staminaBar.ChangeMaxValue(uint.Parse(args[3]));
-					_manaBar.ChangeMaxValue(uint.Parse(args[4]));
-					_swordUnlocked = args[5] == "1";
-					_bowUnlocked = args[6] == "1";
-					_poisonUnlocked = args[7] == "1";
-					_dashUnlocked = args[8] == "1";
-					_slowdownUnlocked = args[9] == "1";
-					_timeTravelUnlocked = args[10] == "1";
-					Debug.Log("Loaded Save successfully, saveID=" + GlobalVars.SaveId);
-				}
-			}
-			else throw new NotImplementedException("Unsupported saveID : " + GlobalVars.SaveId);
-			*/
-			// ver 2
-			/*
-			if (GlobalVars.SaveLookupArray.GetLength(0) > GlobalVars.SaveId) {
-				_healthBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 2]));
-				if (photonView.IsMine) {
-					Vector3 pos = new Vector3(int.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 0]),
-						int.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 1]) + GlobalVars.PlayerId, 0f);
-					gameObject.transform.position = pos;
-					Camera.main.transform.position = new Vector3(pos.x, pos.y, -1f);
-					_swordUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 5] == "1";
-					_bowUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 6] == "1";
-					_poisonUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 7] == "1";
-					_dashUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 8] == "1";
-					_slowdownUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 9] == "1";
-					_timeTravelUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 10] == "1";
-					_staminaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 3]));
-					_manaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 4]));
-				}
-
-				Debug.Log("Loaded Global Save successfully, saveID=" + GlobalVars.SaveId);
-			}*/
-			// ver 3 , should be the final one
 			byte saveID = GlobalVars.SaveId;
 			_healthBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 2][saveID]);
 			if (photonView.IsMine) {
@@ -202,7 +151,6 @@ namespace Player {
 				_staminaBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 3][saveID]);
 				_manaBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 4][saveID]);
 				_swordUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 5][saveID] == 1;
-				Debug.Log("loading specific : _sword unlocked =="+_swordUnlocked);
 				_bowUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 6][saveID] == 1;
 				_poisonUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 7][saveID] == 1;
 				_dashUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 8][saveID] == 1;
@@ -296,8 +244,8 @@ namespace Player {
 			// _animator.speed = GlobalVars.PlayerSpeed;
 			_swordHitzone = transform.GetChild(0).gameObject;
 			_swordHitzone.SetActive(false);
-			_poisonZoneRef = Resources.Load<GameObject>("Prefabs/Projectiles/PoisonZone");
-			_arrowPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/Arrow");
+			//_poisonZoneRef = Resources.Load<GameObject>("Prefabs/Projectiles/PoisonZone");
+			//_arrowPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/Arrow");
 			_arrowPreviewRef = transform.GetChild(1).gameObject;
 			_poisonZonePreviewRef = transform.GetChild(2).gameObject;
 			_staminaBar = FindObjectOfType<StaminaBar>();
@@ -305,6 +253,7 @@ namespace Player {
 			_renderer = gameObject.GetComponent<Renderer>();
 			_spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 			cursorManager = FindObjectOfType<CursorManager>();
+			StatusText = FindObjectOfType<PauseMenu>().StatusText;
 			LoadSave();
 			gameObject.GetComponentInChildren<CameraWork>().OnStartFollowing();
 		}
@@ -547,11 +496,6 @@ namespace Player {
 				_animator.SetBool(IsMoving, false);
 			}
 		}
-		public void ChangePlayerControlSpeed(float newSpeedControl) {
-			// GlobalVars.PlayerSpeed.Value  = newSpeedControl;
-			// _animator.speed = GlobalVars.PlayerSpeed;
-		}
-		// ReSharper disable Unity.PerformanceAnalysis
 		IEnumerator SwordAttack() {
 			// wielding for 100 degrees
 			_canSwordAttack = false;
@@ -642,7 +586,7 @@ namespace Player {
 		}
 
 		private void GoBackInTime() {
-			_ghostPlayer.GoBackInTime();
+			ghostPlayer.GoBackInTime();
 		}
 
 		// ADD SOUNDS HERE
@@ -699,9 +643,7 @@ namespace Player {
 			photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,0.3f, 1f, 0.3f, 0.8f, 0.2f);
 		}
 
-		// seems annoying to do...
-		// TODO: change to
-		public void GameOver() {
+		private void GameOver() {
 			List<Player> otherPlayers = new List<Player>();
 			foreach (Player player in GlobalVars.PlayerList) {
 				if (!player.photonView.IsMine && player.isActiveAndEnabled) otherPlayers.Add(player);
@@ -709,6 +651,8 @@ namespace Player {
 			if (otherPlayers.Count > 0) {
 				otherPlayers[0].GetComponentInChildren<Camera>().enabled = true;
 				otherPlayers[0].GetComponentInChildren<AudioListener>().enabled = true;
+				StatusText.gameObject.SetActive(true);
+				StatusText.text = TextValues.YouDied;
 			}
 			// no more players are alive, game over screen and return to the title screen
 			else {
@@ -722,7 +666,7 @@ namespace Player {
 			PhotonNetwork.LoadLevel("GameOver");
 		}
 
-		public void DisableOrEnablePlayer(bool val) {
+		private void DisableOrEnablePlayer(bool val) {
 			GetComponent<Collider2D>().enabled = val;
 			GetComponent<SpriteRenderer>().enabled = val;
 			if (photonView.IsMine) {
@@ -731,11 +675,11 @@ namespace Player {
 			}
 			GetComponentInChildren<Light2D>().enabled = val;
 			GetComponentInChildren<Canvas>().enabled = val;
-			_ghostPlayer.GetComponentInChildren<Light2D>().enabled = val;
+			ghostPlayer.GetComponentInChildren<Light2D>().enabled = val;
 			this.enabled = val;
 		}
 
-		public void Revive() {
+		private void Revive() {
 			gameObject.GetComponentInChildren<Camera>().enabled = true;
 			foreach (Player player in GlobalVars.PlayerList) {
 				if (!photonView.IsMine) {
@@ -743,11 +687,25 @@ namespace Player {
 					player.GetComponentInChildren<AudioListener>().enabled = false;
 				}
 			}
+			StatusText.text = TextValues.Revived;
+			StartCoroutine(FadeText());
 			/*
 			if (Camera.main is { } cam) {
 				cam.GetComponent<CameraWork>()._player = this; //LocalPlayerInstance.GetComponent<Player>();
 			}
-			else Debug.LogError("CAMERA.main is null => no camera found ???"); */
+			else Debug.LogError("CAMERA.main is null => no camera found ???");
+			*/
+		}
+
+		IEnumerator FadeText() {
+			float fadeLvl = 1f;
+			for (int i = 0; i < 100; i++) {
+				StatusText.color = new Color(1, 1, 1, fadeLvl);
+				fadeLvl -= 0.01f;
+				yield return new WaitForSeconds(0.02f);
+			}
+			StatusText.color = Color.white;
+			StatusText.gameObject.SetActive(false);
 		}
 
 		IEnumerator ChangeColorWait(Color color, float time) {
@@ -779,13 +737,11 @@ namespace Player {
 				//isDead = (bool)stream.ReceiveNext();
 			}
 		}
-		#endregion*/
+		#endregion
 	}
 }
 
 #region Code TrashBin, some scraps that can be useful later in developement
-
-// healing collectibles are not healing and idk why
 /*void CalledOnLevelWasLoaded(int level)
 {
     // check if we are outside the Arena and if it's the case, spawn around the center of the arena in a safe zone
@@ -821,5 +777,4 @@ public override void OnDisable()
     UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
 #endif
 */
-
 #endregion
