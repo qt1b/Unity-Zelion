@@ -34,10 +34,6 @@ namespace Ennemies
         [Tooltip("If the ennemy will close the distance to the player when too close")]
         public bool forwardWhenPlayerTooClose;
 
-        [Tooltip("if the ennemy can charge")] public bool isCharger;
-
-        [SerializeField] private EnnemyChargeParams _charge;
-
         [Header("Attack Parameters")] [Tooltip("If ennemy can shoot arrows")]
         public bool isShooter;
 
@@ -47,6 +43,10 @@ namespace Ennemies
         public bool isMelee;
 
         [SerializeField] private EnnemyMeleeParams _melee;
+        
+        [Tooltip("if the ennemy can charge")] public bool isCharger;
+
+        [SerializeField] private EnnemyChargeParams _charge;
 
         [Space] public NavMeshAgent Agent;
         public Rigidbody2D Rigidbody2D;
