@@ -14,7 +14,8 @@ namespace Global {
 			{ "giveSword", new[] { "O, great hero, please take this sword along your quest. Please find the Zelion, beat Eclipses and bring back the light to these lands.", "lore 1", "説明第一" } },
 			{ "rmq1", new[] { "It seems that when playing in multiplayer, when one player goes to another zone, all the other players are teleported there ! At least that's what I heard...", "rmq 1", "説明第一" } },
 			{ "dialog1", new[] { "Dialog 1", "Dialogue 1", "会話１" } },
-			{ "example1", new[] { "Example 1", "Example 1", "第一例" } }
+			{ "example1", new[] { "Example 1", "Example 1", "第一例" } 
+			} ,  {"chest canvas" , new[] { "Content of Chest " , "Contenue du Coffre" , "ze Content of ze chesuto "}}
 
 		};
 		// Title Screen

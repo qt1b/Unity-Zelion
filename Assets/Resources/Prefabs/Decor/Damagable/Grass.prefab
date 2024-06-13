@@ -170,6 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 1
   deathDuration: 0.7
+  SpriteRenderer: {fileID: 7996526956955088713}
 --- !u!114 &4833979617111659407
 MonoBehaviour:
   m_ObjectHideFlags: 0

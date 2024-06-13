@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5964142158098512852}
   - component: {fileID: 8667425866577383691}
-  - component: {fileID: -3470323481607713423}
   - component: {fileID: 2579481893352279211}
   - component: {fileID: 4190601855909373096}
   - component: {fileID: 3050182033715234899}
@@ -125,6 +124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 5
   deathDuration: 0.5
+  SpriteRenderer: {fileID: 8667425866577383691}
 --- !u!95 &4190601855909373096
 Animator:
   serializedVersion: 5
