@@ -115,7 +115,7 @@ namespace Player {
 		private Renderer _renderer;
 		private SpriteRenderer _spriteRenderer;
 		private GameObject _arrowPrefab;
-		private GhostPlayer _ghostPlayer;
+		public GhostPlayer _ghostPlayer;
 
 		#endregion
 
@@ -316,12 +316,7 @@ namespace Player {
 				Debug.LogError("<Color=Red><a>Missing</a></Color> CameraWork Component", this);
 			}
 		} */
-
-		void Start() {
-			if (photonView.IsMine) {
-				_ghostPlayer = FindObjectOfType<GhostPlayer>();
-			}
-		}
+		
 
 		// Update is called once per frame
 		// To Add : Sounds to indicate whether we can use the capacity or not
@@ -343,6 +338,7 @@ namespace Player {
 				change.Normalize();
 				if (change != Vector2.zero) notNullChange = change;
 				// one attack / 'normal' ability at a time
+				//_ghostPlayer.Display(CanTimeTravel && _manaBar.CanTakeDamages(7));
 				if (_isAimingArrow) {
 					cursorManager.SetCursor(cursorManager.crosshairTexture, cursorManager.crosshairHotSpot); // is not opti
 					if (!_arrowPreviewRef.activeSelf && _canShootArrow && _staminaBar.CanTakeDamages(2)) {
@@ -359,7 +355,6 @@ namespace Player {
 					}
 				}
 				else {
-					_ghostPlayer.gameObject.SetActive(_canTimeTravel);
 					cursorManager.SetCursor(cursorManager.cursorTexture, cursorManager.cursorHotSpot); // same
 					if (_isAimingBomb) {
 						if (!_poisonZonePreviewRef.activeSelf && _canThrowPoisonBomb && _manaBar.CanTakeDamages(10))

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Bars;
 using Global;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ namespace Player {
 	public class GhostPlayer : MonoBehaviour {
 		private Animator _animator;
 		private Animator _playeranim;
+		private Player _player;
+		private SpriteRenderer _spriteRenderer;
 		private static readonly int IsMoving = Animator.StringToHash("IsMoving");
 		private static readonly int MoveY = Animator.StringToHash("MoveY");
 		private static readonly int MoveX = Animator.StringToHash("MoveX");
@@ -15,12 +18,16 @@ namespace Player {
 		private float _timeLag = 2f;
 		//private bool _isOkToMove = true;
 		public void Awake() {
+			_player = Player.LocalPlayerInstance.GetComponent<Player>();
 			_animator = gameObject.GetComponent<Animator>();
 			_playeranim = Player.LocalPlayerInstance.GetComponent<Animator>();
+			_player._ghostPlayer = this;
+			transform.position = Player.LocalPlayerInstance.transform.position;
 		}
 
 		private void Update() {
 			StartCoroutine(MoveAfterTimeLag());
+			//if (_player.GetComponent<ManaBar>().CanTakeDamages(7))
 		}
 
 		IEnumerator MoveAfterTimeLag() {
@@ -51,6 +58,11 @@ namespace Player {
 			Player.LocalPlayerInstance.transform.position = this.transform.position;
 			//_isOkToMove = false;
 			//StartCoroutine(Cooldown());
+		}
+
+		public void Display(bool val) {
+			if (val) _spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
+			else _spriteRenderer.color = new Color(1f, 1f, 1f, 0.3f);
 		}
 	}
 }
