@@ -4,16 +4,16 @@ using UnityEngine;
 
 namespace Events {
 	public class OnContactTag: MonoBehaviour {
-		public IAction Action;
 		public string hitTag;
-
-		void Awake() {
-			Action = gameObject.GetComponent<IAction>();
-		}
+		
+		private bool called;
 		private void OnTriggerEnter2D(Collider2D other) {
-			if (other.CompareTag(hitTag)) {
-				Action.Activate();
+			if (!called && other.CompareTag(hitTag) && gameObject.TryGetComponent(out IAction action)) {
+				called = true;
+				action.Activate();
+				Debug.Log("+level");
 			}
+			this.enabled = false;
 		}
 	}
 }

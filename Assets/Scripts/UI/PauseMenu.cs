@@ -22,7 +22,7 @@ namespace UI {
         public TMP_Text ResumeTxt;
         public TMP_Text SettingsTxt;
         public TMP_Text MainMenuTxt;
-
+        public TMP_Text StatusText; // for the player script (yes)
         public void Start() {
             PausedTxt.text = TextValues.Paused;
             ResumeTxt.text = TextValues.Resume;
@@ -53,7 +53,7 @@ namespace UI {
                 Time.timeScale = 1f; // wth this existed all along
             }
             else {
-                Player.Player.LocalPlayerInstance.GetComponent<Animator>().speed = GlobalVars.PlayerSpeed;
+                Player.Player.LocalPlayerInstance.GetComponent<Animator>().speed = 1;
             }
             _settings.gameObject.SetActive(false);
         }
@@ -79,6 +79,7 @@ namespace UI {
         public void MainMenu(){
             Time.timeScale = 1f; // wth this existed all along
             GameIsPaused = false;
+            GlobalVars.PlayerList.Remove(Player.Player.LocalPlayerInstance.GetComponent<Player.Player>());
             PhotonNetwork.LeaveRoom();
             PhotonNetwork.Disconnect();
             SceneManager.LoadScene(0);

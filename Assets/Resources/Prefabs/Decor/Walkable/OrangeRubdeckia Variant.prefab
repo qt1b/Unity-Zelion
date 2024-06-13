@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &4133175870135986745
+--- !u!1001 &5254921504767633062
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4395742834751688003, guid: 60e7b53c7def65c4aa972392b4da171a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -59.46717
+      value: -46.783356
       objectReference: {fileID: 0}
     - target: {fileID: 4395742834751688003, guid: 60e7b53c7def65c4aa972392b4da171a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -91.04565
+      value: 23.840029
       objectReference: {fileID: 0}
     - target: {fileID: 4395742834751688003, guid: 60e7b53c7def65c4aa972392b4da171a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -51,7 +51,7 @@ PrefabInstance:
     - target: {fileID: 7136553024284191379, guid: 60e7b53c7def65c4aa972392b4da171a, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 1327771734, guid: 642a90b8cb0d0124bbfef3816dd1d628, type: 3}
+      objectReference: {fileID: -574192219, guid: 642a90b8cb0d0124bbfef3816dd1d628, type: 3}
     - target: {fileID: 8287650317211294153, guid: 60e7b53c7def65c4aa972392b4da171a, type: 3}
       propertyPath: m_Name
       value: OrangeRubdeckia Variant

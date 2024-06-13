@@ -2048,34 +2048,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cursor-Audio-Manager
       objectReference: {fileID: 0}
-    - target: {fileID: 8245802512835280513, guid: 94d1ce6d0399a4cb2a346fcfef01c8fa, type: 3}
-      propertyPath: sounds.Array.data[0].clip
-      value: 
-      objectReference: {fileID: 8300000, guid: d1428bffb562b46d9ba2046e14466fee, type: 3}
-    - target: {fileID: 8245802512835280513, guid: 94d1ce6d0399a4cb2a346fcfef01c8fa, type: 3}
-      propertyPath: sounds.Array.data[0].name
-      value: loading1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8245802512835280513, guid: 94d1ce6d0399a4cb2a346fcfef01c8fa, type: 3}
-      propertyPath: sounds.Array.data[0].pitch
-      value: 0.84
-      objectReference: {fileID: 0}
-    - target: {fileID: 8245802512835280513, guid: 94d1ce6d0399a4cb2a346fcfef01c8fa, type: 3}
-      propertyPath: sounds.Array.data[0].volume
-      value: 0.814
-      objectReference: {fileID: 0}
-    - target: {fileID: 8245802512835280513, guid: 94d1ce6d0399a4cb2a346fcfef01c8fa, type: 3}
-      propertyPath: sounds.Array.data[0].mixerGroup
-      value: 
-      objectReference: {fileID: 8671436623460365603, guid: e8ecfdfec3ce041b4949e2fa8e7528f8, type: 2}
-    - target: {fileID: 8245802512835280513, guid: 94d1ce6d0399a4cb2a346fcfef01c8fa, type: 3}
-      propertyPath: sounds.Array.data[0].pitchVariance
-      value: 0.342
-      objectReference: {fileID: 0}
-    - target: {fileID: 8245802512835280513, guid: 94d1ce6d0399a4cb2a346fcfef01c8fa, type: 3}
-      propertyPath: sounds.Array.data[0].volumeVariance
-      value: 0.315
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

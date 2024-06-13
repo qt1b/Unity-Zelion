@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using Photon;
 using Photon.PhotonRealtime.Code;
 using Photon.PhotonUnityNetworking.Code;
+using Player;
 using TMPro;
 using Player = Photon.PhotonRealtime.Code.Player;
 
@@ -21,6 +22,7 @@ namespace PUN {
 
 		#region MonoBehaviour
 		private void Start() {
+			Instance = this;
 			Debug.Log("Game Manager : Starting ...");
 			Instance = this; // useless for now
 			// GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Player/Player");
@@ -31,11 +33,20 @@ namespace PUN {
 					Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
 					// we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
 					PhotonNetwork.Instantiate("Prefabs/Player/Player", Vector3.zero, Quaternion.identity, 0);
+					Instantiate(Resources.Load<GhostPlayer>("Prefabs/Player/GhostPlayer"));
 			/*}
 			else {
 				Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
 			}*/
 			NetworkStatusText.SetText(GenerateNetworkStatusText());
+		}
+
+		public void LoadLevel(string levelName) {
+			photonView.RPC("LoadLevelRpc",RpcTarget.MasterClient,levelName);
+		}
+		[PunRPC]
+		private void LoadLevelRpc(string levelName) {
+			PhotonNetwork.LoadLevel(levelName);
 		}
 		#endregion
 		#region Photon Callbacks
@@ -77,7 +88,10 @@ namespace PUN {
 		public override void OnPlayerLeftRoom(Photon.PhotonRealtime.Code.Player other)
 		{
 			Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName); // seen when other disconnects
-			NetworkStatusText.SetText(GenerateNetworkStatusText());
+			// NetworkStatusText.SetText(GenerateNetworkStatusText()); // to comment at the end
+			if (GlobalVars.PlayerList.Count != 0 && GlobalVars.PlayerList.TrueForAll(p => p.isDead)) {
+				PhotonNetwork.LoadLevel(GlobalVars.GameOverSceneName);
+			}
 			/*
 			if (!allowJoining) {
 				PhotonNetwork.CurrentRoom.MaxPlayers = PhotonNetwork.CurrentRoom.PlayerCount;

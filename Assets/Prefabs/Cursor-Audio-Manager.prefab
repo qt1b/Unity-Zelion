@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 612542405033577963}
   - component: {fileID: 2779968593585456748}
   - component: {fileID: 8245802512835280513}
+  - component: {fileID: 5096419395908160770}
   m_Layer: 0
   m_Name: Cursor-Audio-Manager
   m_TagString: Untagged
@@ -63,12 +64,70 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mixerGroup: {fileID: 24300002, guid: e8ecfdfec3ce041b4949e2fa8e7528f8, type: 2}
   sounds:
-  - name: 
-    clip: {fileID: 0}
-    volume: 0
-    volumeVariance: 0
-    pitch: 0
+  - name: loading1
+    clip: {fileID: 8300000, guid: d1428bffb562b46d9ba2046e14466fee, type: 3}
+    volume: 0.814
+    volumeVariance: 0.315
+    pitch: 0.84
     pitchVariance: 0
     loop: 0
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 8671436623460365603, guid: e8ecfdfec3ce041b4949e2fa8e7528f8, type: 2}
     source: {fileID: 0}
+  - name: text1
+    clip: {fileID: 8300000, guid: a625d5b4d316a45d9a7bfa5d63dbf6d3, type: 3}
+    volume: 0.814
+    volumeVariance: 0.315
+    pitch: 0.84
+    pitchVariance: 0.342
+    loop: 0
+    mixerGroup: {fileID: 8671436623460365603, guid: e8ecfdfec3ce041b4949e2fa8e7528f8, type: 2}
+    source: {fileID: 0}
+  - name: closetxt
+    clip: {fileID: 8300000, guid: 76efc858bff944b19a22fec0d4258818, type: 3}
+    volume: 0.814
+    volumeVariance: 0.315
+    pitch: 0.84
+    pitchVariance: 0
+    loop: 0
+    mixerGroup: {fileID: 8671436623460365603, guid: e8ecfdfec3ce041b4949e2fa8e7528f8, type: 2}
+    source: {fileID: 0}
+  - name: spellTp
+    clip: {fileID: 8300000, guid: f490708177bb54d73840181eaedcd364, type: 3}
+    volume: 0.814
+    volumeVariance: 0.315
+    pitch: 0.84
+    pitchVariance: 0.127
+    loop: 0
+    mixerGroup: {fileID: 8671436623460365603, guid: e8ecfdfec3ce041b4949e2fa8e7528f8, type: 2}
+    source: {fileID: 0}
+  - name: unauthorized
+    clip: {fileID: 8300000, guid: 9669dd824855f4cec8c7762ef31a0641, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1.1
+    pitchVariance: 0.2
+    loop: 0
+    mixerGroup: {fileID: 8671436623460365603, guid: e8ecfdfec3ce041b4949e2fa8e7528f8, type: 2}
+    source: {fileID: 0}
+  - name: slowdownSpell
+    clip: {fileID: 8300000, guid: 9d0b4fdfda82d428b950e198c225ee5f, type: 3}
+    volume: 0.706
+    volumeVariance: 0.2
+    pitch: 1.1
+    pitchVariance: 0.2
+    loop: 0
+    mixerGroup: {fileID: 8671436623460365603, guid: e8ecfdfec3ce041b4949e2fa8e7528f8, type: 2}
+    source: {fileID: 0}
+--- !u!114 &5096419395908160770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3742238888794407432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d5639b2dd6047dbabc5f46a9a7dc8c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enable: 1
