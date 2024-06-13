@@ -14,34 +14,23 @@ namespace Global {
 		public static short GameOverCount = 0;
 		// the INITIAL player count
 		public static byte NbrOfPlayers = 1;
-		// public static string RoomName; // not sure that is useful tbh
-		// static
-		// better to convert it into a 2-dimensional array if we're doing it like this ?
-		public static readonly string SaveLookupData = "X Position; Y Position; Life; Stamina; Mana; Unlocked Sword; Unlocked Bow; Unlocked Poison; Unlocked Dash; Unlocked Slowdown; Unlocked goBackInTime\n" +
-		                                               "0;0;6;2;2;0;0;0;0;0;0\n" +
-		                                               "0;0;12;16;16;1;1;1;1;1;1";
-		// allows us to be sure there is the right amount of data
-		public static readonly string[,] SaveLookupArray = new string[2,11] {
-			{ "0", "0", "6", "2", "2", "0", "0", "0", "0", "0", "0" },
-			{ "22", "-22", "12", "16", "16", "1", "1", "1", "1", "1", "1" }
-		};
-		
-		/* The format of the lookup table:
-		 * 0 : X position (int)
-		 * 1 : Y pos
-		 * 2 : Life (max value, ushort)
-		 * 3 : Stamina
-		 * 4 : Mana
-		 * 5 : Sword is unlocked (bool, formatted as 0 for false, 1 for true)
-		 * 6 : Bow
-		 * 7 : Poison
-		 * 8 : Dash
-		 * 9 : Slowdown
-		 * 10: goBackInTime
-		 */
+
 		// first dim : Level
 		// second dim : Xpos ,etc...
 		public static readonly int[,][] SaveLookupArray2 = new int[7,11][] {
+			{ // level 0 -- TESTING VALUES, for the FOREST
+				new [] {-15,-5}, // x pos
+				new [] {-5,-5}, // y pos
+				new [] {20,20}, // Life
+				new [] {20,20}, // stamina
+				new [] {20,20}, // mana
+				new [] {1,1}, // sword unlocked
+				new [] {1,1}, // bow unlocked
+				new [] {1,1}, // poison
+				new [] {1,1}, // dash
+				new [] {1,1}, // slowdown
+				new [] {1,1} // goBackInTime
+			},
 			{ // level 0 -- TESTING VALUES, for the MINE
 				new [] {-5,-5}, // x pos
 				new [] {-5,-5}, // y pos
@@ -54,19 +43,6 @@ namespace Global {
 				new [] {1,1}, // dash
 				new [] {1,1}, // slowdown
 				new [] {1,1} // goBackInTime
-			},
-			{ // level 1
-				new [] {0,0}, // x pos
-				new [] {0,0}, // y pos
-				new [] {20,20}, // Life
-				new [] {20,20}, // stamina
-				new [] {20,20}, // mana
-				new [] {1,1}, // sword unlocked
-				new [] {1,0}, // bow unlocked
-				new [] {1,0}, // poison
-				new [] {1,0}, // dash
-				new [] {1,0}, // slowdown
-				new [] {1,0} // goBackInTime
 			},
 			{ // level 2
 				new [] {0,0}, // x pos
@@ -149,7 +125,7 @@ namespace Global {
 		// 6th : Castle
 		// 7th : FinalBoss
 		//-public static string FirstLevelName = "Quentin6"; // will not delete it as it serves the same purpose and can be useful for debugging
-		public static string[] LevelsName = new[] {  "Mine","QuentinFirstLevelIntro",  "Quentin6"};
+		public static string[] LevelsName = new[] {  "LVL1_Finale","Mine","QuentinFirstLevelIntro",  "Quentin6"};
 		public static byte CurrentLevelId = 0;
 		// public static string SecondLevelName = ???; // if needed, maybe we'll keep everything into one scene
 		public static string GameOverSceneName = "GameOver";

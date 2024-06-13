@@ -729,7 +729,7 @@ MonoBehaviour:
   change: {x: 0, y: 0}
   notNullChange: {x: 0, y: 0}
   isDead: 0
-  _ghostPlayer: {fileID: 0}
+  StatusText: {fileID: 0}
   cursorManager: {fileID: 0}
 --- !u!61 &5866050367752138856
 BoxCollider2D:
