@@ -10,14 +10,17 @@ using Photon.PhotonRealtime.Code;
 using Photon.PhotonUnityNetworking.Code;
 using Player;
 using TMPro;
-using Player = Photon.PhotonRealtime.Code.Player;
+
+// ALSO ACTS AS A LEVEL LOADER !
 
 namespace PUN {
 	public class GameManager : MonoBehaviourPunCallbacks {
 		#region Public Fields
 		public static GameManager Instance;
 		public static bool WantToDisconnect;
-		public TMP_Text NetworkStatusText;
+		public TMP_Text NetworkStatusText; // TODO : DISABLE for public build
+		public Animator LoaderAnim;
+		private float LoadTime = 0.4f;
 		#endregion
 
 		#region MonoBehaviour
@@ -42,11 +45,17 @@ namespace PUN {
 		}
 
 		public void LoadLevel(string levelName) {
-			photonView.RPC("LoadLevelRpc",RpcTarget.MasterClient,levelName);
+			photonView.RPC("LoaderAnimRpc",RpcTarget.AllBuffered,levelName);
+		}
+
+		IEnumerator LoadAnimRpc(string levelName) {
+			LoaderAnim.SetBool("Start",true);
+			yield return new WaitForSeconds(LoadTime);
+			if (PhotonNetwork.IsMasterClient) PhotonNetwork.LoadLevel(levelName);
 		}
 		[PunRPC]
 		private void LoadLevelRpc(string levelName) {
-			PhotonNetwork.LoadLevel(levelName);
+			StartCoroutine(LoadAnimRpc(levelName));
 		}
 		#endregion
 		#region Photon Callbacks
@@ -88,7 +97,7 @@ namespace PUN {
 		public override void OnPlayerLeftRoom(Photon.PhotonRealtime.Code.Player other)
 		{
 			Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName); // seen when other disconnects
-			// NetworkStatusText.SetText(GenerateNetworkStatusText()); // to comment at the end
+			NetworkStatusText.SetText(GenerateNetworkStatusText()); // to comment at the end
 			if (GlobalVars.PlayerList.Count != 0 && GlobalVars.PlayerList.TrueForAll(p => p.isDead)) {
 				PhotonNetwork.LoadLevel(GlobalVars.GameOverSceneName);
 			}
