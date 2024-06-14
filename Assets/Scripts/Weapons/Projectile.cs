@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Global;
 using Interfaces;
 using Photon.PhotonUnityNetworking.Code;
 using Unity.Netcode;
@@ -18,20 +19,17 @@ namespace Weapons {
         protected Rigidbody2D _myRigidBody;
 
         public List<string> notDamageTags;
+        protected float _curSpeed = 1f;
         
 
         protected static Random _random = new ();
 
-        void Awake() {
+        void Awake()
+        {
+            _curSpeed = GlobalVars.ProjectileSpeed;
             _myRigidBody = GetComponent<Rigidbody2D>();
             // some arrows are not destroying ???
             StartCoroutine(DestroyAfterSecs(dieTime));
-            /*
-         if (IsServer) {
-            myRigidBody.Sleep();
-            Destroy(gameObject);
-        } */
-            // _healthBar = GameObject.FindGameObjectWithTag($"PlayerHealth").GetComponent<HealthBar>();
         }
 
         public void SetVelocity(Vector3 givenDirection) {
@@ -85,6 +83,21 @@ namespace Weapons {
         [PunRPC]
         private void NetworkDestroy() {
             PhotonNetwork.Destroy(this.gameObject);
+        }
+
+        protected void ModifySpeed()
+        {
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (_curSpeed != GlobalVars.ProjectileSpeed)
+            {
+                _myRigidBody.velocity = _myRigidBody.velocity / _curSpeed * GlobalVars.ProjectileSpeed;
+                _curSpeed = GlobalVars.ProjectileSpeed;
+            }
+        }
+
+        void Update()
+        {
+            ModifySpeed();
         }
     }
 }

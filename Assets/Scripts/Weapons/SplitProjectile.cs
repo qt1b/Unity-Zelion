@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Global;
 using JetBrains.Annotations;
 using Photon.PhotonUnityNetworking.Code;
 using UnityEngine;
@@ -19,6 +20,8 @@ namespace Weapons
 
         void Awake()
         {
+            
+            _curSpeed = GlobalVars.ProjectileSpeed;
             _myRigidBody = GetComponent<Rigidbody2D>();
             // some arrows are not destroying ???
             StartCoroutine(DestroyAfterSecs(dieTime));
@@ -37,7 +40,7 @@ namespace Weapons
                     transform.position,
                     UnityEngine.Quaternion.Euler(0, 0, isSubRotated ? rot : 0));
                 var projectile = proj.GetComponent<Projectile>();
-                projectile.SetVelocity(new Vector3(Mathf.Cos(rot * Mathf.Deg2Rad), Mathf.Sin(rot * Mathf.Deg2Rad)));
+                projectile.SetVelocity(new Vector3(Mathf.Cos(rot * Mathf.Deg2Rad), Mathf.Sin(rot * Mathf.Deg2Rad)) * projectile.speed);
             }
             PhotonNetwork.Destroy(gameObject);
         }
