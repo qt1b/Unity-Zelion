@@ -1,21 +1,31 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Interfaces;
 using Photon.PhotonUnityNetworking.Code;
 using Unity.Netcode;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Weapons {
     public class Projectile : MonoBehaviourPunCallbacks {
-        public float speed = 30f;
+        public float speed = 1f;
         public Vector3 Direction { get; set; } = Vector3.zero;
         public ushort damage = 3;
-        Rigidbody2D _myRigidBody;
+
+        public float dieTime = 4f;
+        protected Rigidbody2D _myRigidBody;
+
+        public List<string> notDamageTags;
+        
+
+        protected static Random _random = new ();
 
         void Awake() {
             _myRigidBody = GetComponent<Rigidbody2D>();
             // some arrows are not destroying ???
-            StartCoroutine(DestroyAfterSecs(4f));
+            StartCoroutine(DestroyAfterSecs(dieTime));
             /*
          if (IsServer) {
             myRigidBody.Sleep();
@@ -34,11 +44,15 @@ namespace Weapons {
             _myRigidBody.velocity = Direction * (speed * 0.2f * Global.GlobalVars.PlayerSpeed);
         }
         // may be destroyed on every instance ?
-        IEnumerator DestroyAfterSecs(float secs) {
+        protected IEnumerator DestroyAfterSecs(float secs) {
             yield return new WaitForSeconds(secs);
             PhotonNetwork.Destroy(gameObject);
         }
-        void OnTriggerEnter2D(Collider2D other) {
+        void OnTriggerEnter2D(Collider2D other)
+        {
+            if (notDamageTags.Any(g => other.gameObject.CompareTag(g)))
+                return;
+            
             if (other.gameObject.TryGetComponent(out IHealth health)) {
                 if (photonView.IsMine) health.TakeDamages(damage);
                 _myRigidBody.velocity = Vector3.zero;

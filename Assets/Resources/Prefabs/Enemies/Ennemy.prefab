@@ -9,11 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5916706808870051553}
-  - component: {fileID: 7171061059932024280}
   - component: {fileID: 8333136469102531956}
   - component: {fileID: 515437454711001651}
-  - component: {fileID: 972708511736462290}
-  - component: {fileID: 6811833328416425274}
   - component: {fileID: 2479469135100995070}
   - component: {fileID: 4096839582851789713}
   - component: {fileID: 7021063059098786017}
@@ -46,26 +43,6 @@ Transform:
   - {fileID: 1349780620634264529}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!114 &7171061059932024280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6302025901553710511}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 794692026
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!114 &8333136469102531956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,12 +59,37 @@ MonoBehaviour:
   distanceFromPlayer: 5
   distanceFromPlayerMargin: 1
   backWhenPlayerTooClose: 0
-  shootFrequency: 3
-  meleeFrequency: 3
-  shootRangeMax: 10
-  shootRangeMin: 2
-  meleeRange: 1
+  forwardWhenPlayerTooClose: 0
+  isShooter: 0
+  _shoot:
+    projectileName: 
+    damage: 0
+    maxFrequency: 0
+    minFrequency: 0
+    drawingTime: 0
+    rangeMax: 0
+    rangeMin: 0
+    speed: 0
+    startDistance: 0
+  isMelee: 0
+  _melee:
+    damage: 0
+    minFrequency: 0
+    maxFrequency: 0
+    meleeTime: 0
+    range: 0
+    nbDirections: 0
+    hitbox: {fileID: 0}
+  isCharger: 0
+  _charge:
+    speed: 0
+    damage: 0
+    Minfrequency: 0
+    maxFrequency: 0
+    time: 0
+    stopOnCollision: 0
   Agent: {fileID: 515437454711001651}
+  Rigidbody2D: {fileID: 0}
 --- !u!195 &515437454711001651
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -110,34 +112,6 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &972708511736462290
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6302025901553710511}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 830e2918e9c96d845ba55403ceafc747, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  arrowRef:
-  - {fileID: 1893994839326115280, guid: ad816b496d7cad7d1ac102f28f447180, type: 3}
-  arrowSpeed: 3
-  startDistance: 1
---- !u!114 &6811833328416425274
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6302025901553710511}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c92e8464d770f154fa6368876421ec65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!58 &2479469135100995070
 CircleCollider2D:
   m_ObjectHideFlags: 0

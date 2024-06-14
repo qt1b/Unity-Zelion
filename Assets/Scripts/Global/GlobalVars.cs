@@ -18,10 +18,12 @@ namespace Global {
 		// static
 		// better to convert it into a 2-dimensional array if we're doing it like this ?
 		public static readonly string SaveLookupData = "X Position; Y Position; Life; Stamina; Mana; Unlocked Sword; Unlocked Bow; Unlocked Poison; Unlocked Dash; Unlocked Slowdown; Unlocked TimeFreeze\n" +
+		                                               "-41;39;12;16;16;1;1;1;1;1;1\n" +
 		                                               "0;0;6;2;2;0;0;0;0;0;0\n" +
 		                                               "0;0;12;16;16;1;1;1;1;1;1";
 		// allows us to be sure there is the right amount of data
-		public static readonly string[,] SaveLookupArray = new string[2,11] {
+		public static readonly string[,] SaveLookupArray = new string[3,11] {
+			{ "-41", "39", "12", "16", "16", "1", "1", "1", "1", "1", "1" },
 			{ "0", "0", "6", "2", "2", "0", "0", "0", "0", "0", "0" },
 			{ "22", "-22", "12", "16", "16", "1", "1", "1", "1", "1", "1" }
 		};
@@ -32,7 +34,7 @@ namespace Global {
 		public static bool Continue = false;
 		#region Game Constants
 		public static string GameVersion = "0.1";
-		public static string FirstLevelName = "LVL1";
+		public static string FirstLevelName = "FinalBoss";
 		// public static string SecondLevelName = ???; // if needed, maybe we'll keep everything into one scene
 		public static string GameOverSceneName = "GameOver";
 		public static string GameClearSceneName = "GameClear";
