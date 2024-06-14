@@ -1,23 +1,31 @@
 using System;
 using System.Collections.Generic;
+using Photon.PhotonUnityNetworking.Code;
 
 namespace Global {
 	public class TextValues {
 		// we will put here all values used for the dialogues.
 		// this will allow us to easily locate text and use multilingual values, etc
 		public static readonly Dictionary<string, string[]> DialogsDict = new Dictionary<string, string[]>() {
-			{ "tuto1", new[] { "Welcome to Zelion ! Please use the arrow keys or WASD to move, and F to close this dialog.", "Tuto 1", "説明第一" } },
+			{ "tuto1", new[] { "Welcome to Zelion ! Please use the arrow keys or WASD to move, and F to close this dialog.", "Bienvenue dans Zélion ! Utilise les flèches ou les touches ZQSD pour te déplacer, et la touche F pour fermer ce dialogue et interragir avec le décor.", "説明第一" } },
 			{ "lore1", new[] { "Is that you, the hero who will bring back light to Masteria, our country?", "lore 1", "説明第一" } },
 			{ "lore2", new[] { "Is that you, the hero who will bring back light to Masteria, our country?", "lore 2", "説明第一" } },
 			{ "lore3", new[] { "Is that you, the hero who will bring back light to Masteria, our country?", "lore 3", "説明第一" } },
 			{ "lore4", new[] { "Is that you, the hero who will bring back light to Masteria, our country?", "lore 4", "説明第一" } },
 			{ "giveSword", new[] { "O, great hero, please take this sword along your quest. Please find the Zelion, beat Eclipses and bring back the light to these lands.", "lore 1", "説明第一" } },
-			{ "rmq1", new[] { "It seems that when playing in multiplayer, when one player goes to another zone, all the other players are teleported there ! At least that's what I heard...", "rmq 1", "説明第一" } },
+			{ "rmq1", new[] { "It seems that when playing in multiplayer, when one player goes to another zone, all the other players are teleported there ! At least that's what I heard...", "Il parrait que lorsque l'on joue en multijoueur, lorsque l'un joueur change de zone, l'autre joueur se retrouve emporté avec lui ! Enfin... c'est ce que j'ai entendu.", "説明第一" } },
 			{ "dialog1", new[] { "Dialog 1", "Dialogue 1", "会話１" } },
+			{ "troll1", new[] { $"Are you really {PhotonNetwork.NickName}, the hero ? I can't belive it !", $"Est-ce vraiment toi, {PhotonNetwork.NickName}, le fameux héros ? Je n'en crois pas mes yeux !", $"本当に勇者{PhotonNetwork.NickName}さんですか？信じられない！" } },
 			{ "example1", new[] { "Example 1", "Example 1", "第一例" } 
 			} ,  {"chest canvas" , new[] { "Content of Chest " , "Contenue du Coffre" , "ze Content of ze chesuto "}}
 
 		};
+		public static string GameOverText(string time) {
+			if (GlobalVars.Language == 0) return $"Time elapsed {time}.\nNumber of deaths : {GlobalVars.DeathCount}\nNumber of Game Over : {GlobalVars.GameOverCount}\nNumber of players : {GlobalVars.NbrOfPlayers}";
+			else if (GlobalVars.Language == 1) return $"Temps écoulé: {time}.\nNombre de morts: {GlobalVars.DeathCount}\nNombre de Game Over : {GlobalVars.GameOverCount}\nNombre de joueurs: {GlobalVars.NbrOfPlayers}";
+			else if (GlobalVars.Language == 2) return $"経過した時間：{time}.\n死の回数：{GlobalVars.DeathCount}\nゲームオーバ回数{GlobalVars.GameOverCount}\nプレイヤー数{GlobalVars.NbrOfPlayers}";
+			else throw new ArgumentException("invalid language value");
+		}
 		// Title Screen
 		public static string Play {
 			get {
