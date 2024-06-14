@@ -12,10 +12,7 @@ namespace UI {
 	public class GameClearMenu : MonoBehaviourPunCallbacks {
 		public TMP_Text TimerText;
 		void Awake() {
-			TimerText.text = $"You cleared the game in {UIOperations.FormatTime()}.\n"+
-			                 $"Number of deaths : {GlobalVars.DeathCount}" +
-			                 $"Number of Game Overs : {GlobalVars.GameOverCount}"+
-			                 $"Number of players : {GlobalVars.NbrOfPlayers}";
+			TimerText.text = TextValues.GameClearText(UIOperations.FormatTime());
 		}
 		// WARNING : play From The Beginning !
 		// behaves incorrectly

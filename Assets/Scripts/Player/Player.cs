@@ -226,6 +226,7 @@ namespace Player {
 				gameObject.GetComponentInChildren<CameraWork>().enabled = false;
 				gameObject.GetComponentInChildren<AudioListener>().enabled = false;
 				Destroy(gameObject.GetComponent<Rigidbody2D>());
+				this.enabled = false;
 				LoadSave();
 				Debug.Log("player awake - is not mine, return");
 				return;
@@ -672,11 +673,14 @@ namespace Player {
 			if (photonView.IsMine) {
 				GetComponentInChildren<Camera>().enabled = val;
 				GetComponentInChildren<AudioListener>().enabled = val;
+				this.enabled = val;
+			}
+			else {
+				this.enabled = false;
 			}
 			GetComponentInChildren<Light2D>().enabled = val;
 			GetComponentInChildren<Canvas>().enabled = val;
 			ghostPlayer.GetComponentInChildren<Light2D>().enabled = val;
-			this.enabled = val;
 		}
 
 		private void Revive() {

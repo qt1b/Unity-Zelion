@@ -10,10 +10,7 @@ namespace UI {
 		public TMP_Text TimerText;
 		void Awake() {
 			GlobalVars.GameOverCount += 1;
-			TimerText.text = $"Time elapsed {UIOperations.FormatTime()}.\n"+
-			                 $"Number of deaths : {GlobalVars.DeathCount}" +
-			                 $"Number of Game Overs : {GlobalVars.GameOverCount}"+
-			                 $"Number of players : {GlobalVars.NbrOfPlayers}";
+			TimerText.text = TextValues.GameOverText(UIOperations.FormatTime());
 		}
 		// WARING : play From Last Checkpoint !
 		public void PlayAgain() {
