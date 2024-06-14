@@ -13,7 +13,7 @@ namespace Global {
 			{ "lore3", new[] { "Is that you, the hero who will bring back light to Masteria, our country?", "lore 3", "説明第一" } },
 			{ "lore4", new[] { "Is that you, the hero who will bring back light to Masteria, our country?", "lore 4", "説明第一" } },
 			{ "giveSword", new[] { "O, great hero, please take this sword along your quest. Please find the Zelion, beat Eclipses and bring back the light to these lands.", "lore 1", "説明第一" } },
-			{ "rmq1", new[] { "It seems that when playing in multiplayer, when one player goes to another zone, all the other players are teleported there ! At least that's what I heard...", "Il parait que lorsque l'on joue en multijoueur, quand l'un joueur change de zone, l'autre joueur se retrouve emporté avec lui ! Enfin... c'est ce que j'ai entendu.", "説明第一" } },
+			{ "rmq1", new[] { "It seems that when playing in multiplayer, when one player goes to another zone, all the other players are teleported there ! At least that's what I heard...", "Il parait que lorsque l'on joue en multijoueur, quand l'un joueur change de zone, l'autre joueur se retrouve emporté avec lui ! Enfin... c'est ce que j'ai entendu.", "他のプレイヤーが次のエリアに行くと、君もそこに飛ばされるらしいぜ！聞いた話によると、ね..." } },
 			{ "dialog1", new[] { "Dialog 1", "Dialogue 1", "会話１" } },
 			{ "troll1", new[] { $"Are you really {PhotonNetwork.NickName}, the hero ? I can't belive it !", $"Est-ce vraiment toi, {PhotonNetwork.NickName}, le fameux héros ? Je n'en crois pas mes yeux !", $"本当に勇者{PhotonNetwork.NickName}さんですか？信じられない！" } },
 			{ "example1", new[] { "Example 1", "Example 1", "第一例" } 
@@ -202,6 +202,56 @@ namespace Global {
 				if (GlobalVars.Language == 0) return "You Died";
 				else if (GlobalVars.Language == 1) return "Vous êtes mort.";
 				else if (GlobalVars.Language == 2) return "死んでしまった…";
+				else throw new ArgumentException("invalid language value");
+			}
+		}
+
+		public static string Hour {
+			get {
+				if (GlobalVars.Language == 0) return "hour";
+				else if (GlobalVars.Language == 1) return "heure";
+				else if (GlobalVars.Language == 2) return "時";
+				else throw new ArgumentException("invalid language value");
+			}
+		}
+		public static string Minute {
+			get {
+				if (GlobalVars.Language == 0) return "minute";
+				else if (GlobalVars.Language == 1) return "minute";
+				else if (GlobalVars.Language == 2) return "分";
+				else throw new ArgumentException("invalid language value");
+			}
+		}
+		public static string Second {
+			get {
+				if (GlobalVars.Language == 0) return "second";
+				else if (GlobalVars.Language == 1) return "seconde";
+				else if (GlobalVars.Language == 2) return "秒";
+				else throw new ArgumentException("invalid language value");
+			}
+		}
+		public static string And {
+			get {
+				if (GlobalVars.Language == 0) return "and";
+				else if (GlobalVars.Language == 1) return "et";
+				else if (GlobalVars.Language == 2) return "と";
+				else throw new ArgumentException("invalid language value");
+			}
+		}
+
+		public static string Congratulations {
+			get {
+				if (GlobalVars.Language == 0) return "Congratulation";
+				else if (GlobalVars.Language == 1) return "Félicitations";
+				else if (GlobalVars.Language == 2) return "おめでとう！";
+				else throw new ArgumentException("invalid language value");
+			}
+		}
+		public static string GameOver {
+			get {
+				if (GlobalVars.Language == 0) return "Game Over";
+				else if (GlobalVars.Language == 1) return "Game Over";
+				else if (GlobalVars.Language == 2) return "ゲームオーバー";
 				else throw new ArgumentException("invalid language value");
 			}
 		}

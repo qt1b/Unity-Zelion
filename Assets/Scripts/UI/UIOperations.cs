@@ -1,5 +1,7 @@
 using System;
+using Global;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,9 +21,10 @@ namespace UI {
 		public static string FormatTime()
 		{
 			TimeSpan res = DateTime.UtcNow - Global.GlobalVars.TimeStartedAt;
-			// idk if the format is valid, may be worth to do some checks to cleanup the output
-			return String.Format("{0:%h} hours {0:%m} minutes and {0:%s} seconds", res);
-			// return res.ToString("hh':'mm':'ss"); // 00:03:48
+			return String.Format((res.Hours > 0 ? res.Hours + " " + TextValues.Hour + (res.Hours > 1 && GlobalVars.Language != 2 ? "s ":" ") : "")
+			                     + (res.Minutes > 0 ? res.Minutes + " " + TextValues.Minute + (res.Minutes > 1 && GlobalVars.Language != 2 ? "s":"") : "") 
+			                     + (res.Minutes > 0 || res.Hours > 0 ? TextValues.And  + " ": "" )
+								+ (res.Seconds > 0 ? res.Seconds + " " + TextValues.Second + (res.Seconds > 1 && GlobalVars.Language != 2 ? "s":"") : ""));
 		}
 	}
 }
