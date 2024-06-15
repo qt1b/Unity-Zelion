@@ -30,9 +30,10 @@ namespace Global {
 				new [] {1,1}, // dash
 				new [] {1,1}, // slowdown
 				new [] {1,1} // goBackInTime
-			},			{ // level 0 -- TESTING VALUES, for the MINE
-				new [] {-5,-5}, // x pos
-				new [] {-5,-5}, // y pos
+			},
+			{ // level 0 -- TESTING VALUES, for the MINE
+				new [] {-75,-75}, // x pos
+				new [] {11,-5}, // y pos
 				new [] {20,20}, // Life
 				new [] {20,20}, // stamina
 				new [] {20,20}, // mana
@@ -42,7 +43,8 @@ namespace Global {
 				new [] {1,1}, // dash
 				new [] {1,1}, // slowdown
 				new [] {1,1} // goBackInTime
-			},			{ // level 0 -- TESTING VALUES, for the FOREST
+			},
+			{ // level 0 -- TESTING VALUES, for the FOREST
 				new [] {-15,-5}, // x pos
 				new [] {-5,-5}, // y pos
 				new [] {20,20}, // Life
@@ -79,7 +81,7 @@ namespace Global {
 				new [] {0,0}, // poison
 				new [] {0,0}, // dash
 				new [] {0,0}, // slowdown
-				new [] {0,0} // goBackInTime
+				new [] {0,0}  // goBackInTime
 			},
 			{ // level 3
 				new [] {0,0}, // x pos

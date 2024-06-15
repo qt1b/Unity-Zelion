@@ -157,7 +157,7 @@ namespace Player {
 				_slowdownUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 9][saveID] == 1;
 				_timeTravelUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 10][saveID] == 1;
 			}
-			Debug.Log("Save loaded");
+			Debug.Log($"Save loaded, saveID={GlobalVars.SaveId}, levelID={GlobalVars.CurrentLevelId}");
 
 		}
 
