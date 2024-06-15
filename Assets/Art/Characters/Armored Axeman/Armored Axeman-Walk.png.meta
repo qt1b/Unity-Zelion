@@ -121,7 +121,175 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Armored Axeman-Walk_0
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 92018e248dc945a44a1e4e270b3062f0
+      internalID: -851836071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Walk_1
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08c07d83434075d40a29062533c3a1c0
+      internalID: -1719137401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Walk_3
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf470fb4c7a35c04dbb4d80af11a8b01
+      internalID: 553188749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Walk_4
+      rect:
+        serializedVersion: 2
+        x: 318
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a14f5c301194da46b5f07f1690e45b5
+      internalID: 941412597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Walk_6
+      rect:
+        serializedVersion: 2
+        x: 419
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 774b9a09d07b11b47912a9c2d4320854
+      internalID: 2119712328
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Walk_7
+      rect:
+        serializedVersion: 2
+        x: 519
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b713acee2e53b4346b353b1842968c92
+      internalID: -583694361
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Walk_8
+      rect:
+        serializedVersion: 2
+        x: 619
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8cf05b6b3cd48be4eaf54d750858adae
+      internalID: -1757402163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Walk_9
+      rect:
+        serializedVersion: 2
+        x: 719
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 527324f97628e2d40a5fb9871c4c9f9a
+      internalID: -161714217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -132,7 +300,17 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Armored Axeman-Walk_0: -851836071
+      Armored Axeman-Walk_1: -1719137401
+      Armored Axeman-Walk_2: 652286232
+      Armored Axeman-Walk_3: 553188749
+      Armored Axeman-Walk_4: 941412597
+      Armored Axeman-Walk_5: 2113016480
+      Armored Axeman-Walk_6: 2119712328
+      Armored Axeman-Walk_7: -583694361
+      Armored Axeman-Walk_8: -1757402163
+      Armored Axeman-Walk_9: -161714217
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

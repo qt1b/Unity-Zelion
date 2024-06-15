@@ -121,7 +121,91 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Armored Axeman-Death-left_0
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bbbd6628d1375646b3edb6609507367
+      internalID: 492278524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Death-left_2
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7629eb0da816c944ea4a29cc92be6904
+      internalID: -589094754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Death-left_4
+      rect:
+        serializedVersion: 2
+        x: 218
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39dfcf6a78782cf4fbe378341800b6e4
+      internalID: 2135916994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Death-left_5
+      rect:
+        serializedVersion: 2
+        x: 317
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca9cf946c17212b4d954de7803180acf
+      internalID: -1889233111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -132,7 +216,13 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Armored Axeman-Death-left_0: 492278524
+      Armored Axeman-Death-left_1: -587983132
+      Armored Axeman-Death-left_2: -589094754
+      Armored Axeman-Death-left_3: -1588996509
+      Armored Axeman-Death-left_4: 2135916994
+      Armored Axeman-Death-left_5: -1889233111
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
