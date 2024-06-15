@@ -701,6 +701,7 @@ namespace Player {
 			*/
 		}
 
+		// for displaying of Game Over Text, among others
 		IEnumerator FadeText() {
 			float fadeLvl = 1f;
 			for (int i = 0; i < 100; i++) {
@@ -734,11 +735,10 @@ namespace Player {
 		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
 			if (stream.IsWriting) {
 				stream.SendNext((short)_healthBar.curValue);
-				//stream.SendNext(isDead);
 			}
 			else {
-				_healthBar.curValue = (ushort)(short)stream.ReceiveNext();
-				//isDead = (bool)stream.ReceiveNext();
+				ushort ncurValue = (ushort)(short)stream.ReceiveNext();
+				if (ncurValue != _healthBar.curValue) _healthBar.ChangeCurVal(ncurValue);
 			}
 		}
 		#endregion

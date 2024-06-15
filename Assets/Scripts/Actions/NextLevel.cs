@@ -7,15 +7,15 @@ using UnityEngine;
 namespace Actions {
 	public class NextLevel : MonoBehaviourPunCallbacks, IAction {
 		public void Activate() {
+			// TODO : Comment
 			Debug.Log("next level activated");
-			GlobalVars.CurrentLevelId += 1;
-			GlobalVars.SaveId = 0;
 			Debug.Log("current level id ="+GlobalVars.CurrentLevelId);
-			if (GlobalVars.CurrentLevelId == GlobalVars.LevelsName.Length) {
+			Debug.Log("next level id ="+GlobalVars.CurrentLevelId+1+", max level ID: "+GlobalVars.LevelsName.Length);
+			if (GlobalVars.CurrentLevelId+1 == GlobalVars.LevelsName.Length) {
 				GameManager.Instance.LoadLevel(GlobalVars.LevelsName[GlobalVars.CurrentLevelId]);
 			}
 			else {
-				GameManager.Instance.LoadLevel(GlobalVars.LevelsName[GlobalVars.CurrentLevelId]);
+				GameManager.Instance.LoadLevel(GlobalVars.LevelsName[GlobalVars.CurrentLevelId+1]);
 			}
 		}
 	}
