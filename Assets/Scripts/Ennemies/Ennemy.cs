@@ -39,11 +39,12 @@ namespace Ennemies
 
         [SerializeField] private EnnemyShootParams _shoot;
 
+        [Space(5f)]
         [Tooltip("If ennemy do short distance attacks")]
         public bool isMelee;
 
         [SerializeField] private EnnemyMeleeParams _melee;
-        
+        [Space(3f)]
         [Tooltip("if the ennemy can charge")] public bool isCharger;
 
         [SerializeField] private EnnemyChargeParams _charge;
@@ -67,11 +68,19 @@ namespace Ennemies
         private Coroutine currentAction;
         public bool IsMoving => Agent.velocity != Vector3.zero || _isCharging;
 
+        private Animator _animator;
+        private static readonly int MoveY = Animator.StringToHash("MoveY");
+        private static readonly int MoveX = Animator.StringToHash("MoveX");
+        private static readonly int IsDrawing = Animator.StringToHash("IsDrawing");
+        private static readonly int IsCharging = Animator.StringToHash("IsCharging");
+        private static readonly int IsMeleeing = Animator.StringToHash("IsMeleeing");
+
         private void Start()
         {
             if (PhotonNetwork.OfflineMode || PhotonNetwork.IsMasterClient) return;
             enabled = false;
             GetComponent<NavMeshAgent>().enabled = false;
+            _animator = GetComponent<Animator>();
         }
 
         public override void OnEnable()
@@ -229,10 +238,18 @@ namespace Ennemies
             }
         }
 
+        private void UpdateAnimator()
+        {
+            _animator.SetFloat(MoveX, _isCharging ?Rigidbody2D.velocity.x : Agent.velocity.x);
+            _animator.SetBool(IsCharging, _isCharging);
+            _animator.SetBool(IsMeleeing, _isMeleeing);
+            _animator.SetBool(IsDrawing, _isShooting);
+        }
+
         private void Refresh()
         {
-            List<Player.Player> players = new(GlobalVars.PlayerList);
-            if (players.Count == 0 || IsDoingAnAction)
+            var players = GlobalVars.PlayerList.Where(g => g.GetComponent<Player.Player>().IsAlive());
+            if (!players.Any() || IsDoingAnAction)
                 return;
             var pos = transform.position;
             players = players.OrderBy(g => (g.transform.position - pos).sqrMagnitude).ToList();

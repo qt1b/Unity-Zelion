@@ -101,8 +101,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a56dadb68b52e54a8c8518e35554819, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 30
+  speed: 5.24
   damage: 3
+  dieTime: 4
+  notDamageTags:
+  - Player
 --- !u!58 &1338577184756033329
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -176,7 +179,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
