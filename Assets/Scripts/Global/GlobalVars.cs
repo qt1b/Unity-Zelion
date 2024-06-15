@@ -125,7 +125,7 @@ namespace Global {
 		// 6th : Castle
 		// 7th : FinalBoss
 		//-public static string FirstLevelName = "Quentin6"; // will not delete it as it serves the same purpose and can be useful for debugging
-		public static string[] LevelsName = new[] { "QuentinFirstLevelIntro","LVL1_Finale","Mine", "Quentin6"};
+		public static string[] LevelsName = new[] { "QuentinFirstLevelIntro","LVL1_Finale","Mine", "Chateau", "vrai_chateau"};
 		public static byte CurrentLevelId = 0;
 		// public static string SecondLevelName = ???; // if needed, maybe we'll keep everything into one scene
 		public static string GameOverSceneName = "GameOver";
