@@ -1,6 +1,7 @@
 using System;
 using Global;
 using Photon.PhotonUnityNetworking.Code;
+using PUN;
 using UnityEngine;
 
 namespace Player {
@@ -13,23 +14,28 @@ namespace Player {
 		private void Update() {
 			if (Input.GetKeyDown(KeyCode.Backslash)) {
 				GlobalVars.CurrentLevelId = 4;
-				PhotonNetwork.LoadLevel(GlobalVars.LevelsName[4]);
+				GlobalVars.SaveId = 0;
+				GameManager.Instance.LoadLevel(GlobalVars.LevelsName[4]);
 			}
 			else if (Input.GetKeyDown(KeyCode.RightBracket)) {
 				GlobalVars.CurrentLevelId = 3;
-				PhotonNetwork.LoadLevel(GlobalVars.LevelsName[3]);
+				GlobalVars.SaveId = 0;
+				GameManager.Instance.LoadLevel(GlobalVars.LevelsName[3]);
 			}
 			else if (Input.GetKeyDown(KeyCode.LeftBracket)) {
 				GlobalVars.CurrentLevelId = 2;
-				PhotonNetwork.LoadLevel(GlobalVars.LevelsName[2]);
+				GlobalVars.SaveId = 0;
+				GameManager.Instance.LoadLevel(GlobalVars.LevelsName[2]);
 			}
 			else if (Input.GetKeyDown(KeyCode.P)) {
 				GlobalVars.CurrentLevelId = 1;
-				PhotonNetwork.LoadLevel(GlobalVars.LevelsName[1]);
+				GlobalVars.SaveId = 0;
+				GameManager.Instance.LoadLevel(GlobalVars.LevelsName[1]);
 			}
 			else if (Input.GetKeyDown(KeyCode.O)) {
 				GlobalVars.CurrentLevelId = 0;
-				PhotonNetwork.LoadLevel(GlobalVars.LevelsName[0]);
+				GlobalVars.SaveId = 0;
+				GameManager.Instance.LoadLevel(GlobalVars.LevelsName[0]);
 			}
 		}
 	}

@@ -18,7 +18,7 @@ namespace Global {
 		// first dim : Level
 		// second dim : Xpos ,etc...
 		public static readonly int[,][] SaveLookupArray2 = new int[7,11][] {
-			{ // level 0 -- TESTING VALUES, for the MINE
+			{ // level 0 -- TESTING VALUES, for the TUTORIAL
 				new [] {-5,-5}, // x pos
 				new [] {-5,-5}, // y pos
 				new [] {20,20}, // Life
@@ -31,9 +31,9 @@ namespace Global {
 				new [] {1,1}, // slowdown
 				new [] {1,1} // goBackInTime
 			},
-			{ // level 0 -- TESTING VALUES, for the MINE
+			{ // level 1 -- TESTING VALUES, for the FOREST // second save for unlocking the arc, positions should never be loaded
 				new [] {-75,-75}, // x pos
-				new [] {11,-5}, // y pos
+				new [] {11,11}, // y pos
 				new [] {20,20}, // Life
 				new [] {20,20}, // stamina
 				new [] {20,20}, // mana
@@ -44,8 +44,8 @@ namespace Global {
 				new [] {1,1}, // slowdown
 				new [] {1,1} // goBackInTime
 			},
-			{ // level 0 -- TESTING VALUES, for the FOREST
-				new [] {-15,-5}, // x pos
+			{ // level 2 -- TESTING VALUES, for the MINE
+				new [] {-15,-15}, // x pos
 				new [] {-5,-5}, // y pos
 				new [] {20,20}, // Life
 				new [] {20,20}, // stamina
@@ -57,9 +57,9 @@ namespace Global {
 				new [] {1,1}, // slowdown
 				new [] {1,1} // goBackInTime
 			},
-			{ // level 0 -- TESTING VALUES, for the MINE
-				new [] {-5,-5}, // x pos
-				new [] {-5,-5}, // y pos
+			{ // level 3 -- TESTING VALUES, for the GARDEN (of the castle)
+				new [] {-237,-237}, // x pos
+				new [] {-46,-46}, // y pos
 				new [] {20,20}, // Life
 				new [] {20,20}, // stamina
 				new [] {20,20}, // mana
@@ -70,22 +70,22 @@ namespace Global {
 				new [] {1,1}, // slowdown
 				new [] {1,1} // goBackInTime
 			},
-			{ // level 2
-				new [] {0,0}, // x pos
-				new [] {0,0}, // y pos
-				new [] {6,6}, // Life
-				new [] {2,2}, // stamina
-				new [] {2,2}, // mana
-				new [] {0,1}, // sword unlocked
-				new [] {0,0}, // bow unlocked
-				new [] {0,0}, // poison
-				new [] {0,0}, // dash
-				new [] {0,0}, // slowdown
-				new [] {0,0}  // goBackInTime
+			{ // level 3.5 -- TESTING VALUES, for the CASTLE
+				new [] {-237,-237}, // x pos
+				new [] {-48,-48}, // y pos
+				new [] {20,20}, // Life
+				new [] {20,20}, // stamina
+				new [] {20,20}, // mana
+				new [] {1,1}, // sword unlocked
+				new [] {1,1}, // bow unlocked
+				new [] {1,1}, // poison
+				new [] {1,1}, // dash
+				new [] {1,1}, // slowdown
+				new [] {1,1} // goBackInTime
 			},
-			{ // level 3
-				new [] {0,0}, // x pos
-				new [] {0,0}, // y pos
+			{ // level --
+				new [] {-237,0}, // x pos
+				new [] {-48,0}, // y pos
 				new [] {6,6}, // Life
 				new [] {2,2}, // stamina
 				new [] {2,2}, // mana
@@ -96,7 +96,7 @@ namespace Global {
 				new [] {0,0}, // slowdown
 				new [] {0,0} // goBackInTime
 			},
-			{ // level 4
+			{ // level --
 				new [] {0,0}, // x pos
 				new [] {0,0}, // y pos
 				new [] {6,6}, // Life

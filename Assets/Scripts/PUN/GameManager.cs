@@ -21,22 +21,27 @@ namespace PUN {
 		public TMP_Text NetworkStatusText; // TODO : DISABLE for public build
 		public Animator LoaderAnim;
 		private float LoadTime = 0.4f;
+		private static readonly int Start1 = Animator.StringToHash("Start");
+
 		#endregion
 
 		#region MonoBehaviour
+
+		private void Awake() {
+			Instance = this;  //gameObject.GetComponent<GameManager>();
+		}
+
 		private void Start() {
-			Instance = this;
 			Debug.Log("Game Manager : Starting ...");
-			Instance = this; // useless for now
 			// GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Player/Player");
 			// decided not to keep the instance of the player between scenes for now
 			// if (global::Player.Player.LocalPlayerInstance == null) {
-					GlobalVars.PlayerList = new();
-					if (Global.GlobalVars.GameOverCount == 0) Global.GlobalVars.TimeStartedAt = DateTime.UtcNow;
-					Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
-					// we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-					PhotonNetwork.Instantiate("Prefabs/Player/Player", Vector3.zero, Quaternion.identity, 0);
-					Instantiate(Resources.Load<GhostPlayer>("Prefabs/Player/GhostPlayer"));
+			GlobalVars.PlayerList = new();
+			if (Global.GlobalVars.GameOverCount == 0) Global.GlobalVars.TimeStartedAt = DateTime.UtcNow;
+			Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
+			// we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
+			PhotonNetwork.Instantiate("Prefabs/Player/Player", Vector3.zero, Quaternion.identity, 0);
+			Instantiate(Resources.Load<GhostPlayer>("Prefabs/Player/GhostPlayer"));
 			/*}
 			else {
 				Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
@@ -45,11 +50,11 @@ namespace PUN {
 		}
 
 		public void LoadLevel(string levelName) {
-			photonView.RPC("LoaderAnimRpc",RpcTarget.AllBuffered,levelName);
+			photonView.RPC("LoadLevelRpc",RpcTarget.AllBuffered,levelName);
 		}
 
 		IEnumerator LoadAnimRpc(string levelName) {
-			LoaderAnim.SetBool("Start",true);
+			LoaderAnim.SetBool(Start1,true);
 			yield return new WaitForSeconds(LoadTime);
 			if (PhotonNetwork.IsMasterClient) PhotonNetwork.LoadLevel(levelName);
 		}
@@ -68,7 +73,7 @@ namespace PUN {
 				// idk if it works in offline mode
 				PhotonNetwork.ReconnectAndRejoin();
 			}
-			if (!WantToDisconnect) {
+			else if (!WantToDisconnect) {
 				PhotonNetwork.ReconnectAndRejoin();
 			}
 		}

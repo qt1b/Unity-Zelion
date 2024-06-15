@@ -29,4 +29,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LVL1_Finale.unity
     guid: c7e737a50e31562458ada1f64645f265
+  - enabled: 1
+    path: Assets/Scenes/Chateau.unity
+    guid: 6745fb0e4483c8a44b2a850a02319000
+  - enabled: 1
+    path: Assets/Scenes/vrai_chateau.unity
+    guid: 877d60fa49aa197498b8bca83180bcd4
   m_configObjects: {}
