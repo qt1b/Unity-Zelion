@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/Scenes/LVL1.unity.meta
 guid: dbfb44ebf17cebb46adc0916c67bf350
 DefaultImporter:
+========
+guid: e565422dec4d40e4e92f04f8cf75427f
+PrefabImporter:
+>>>>>>>> Stashed changes:Assets/Resources/Prefabs/Elements/ChestEmpty.prefab.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

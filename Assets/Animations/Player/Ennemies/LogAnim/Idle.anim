@@ -21,6 +21,7 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
+<<<<<<< Updated upstream:Assets/Animations/Player/Ennemies/LogAnim/Idle.anim
       value: {fileID: 727434059, guid: e5817b145ce2a3cde968f1adfe57b7b9, type: 3}
     - time: 0.3
       value: {fileID: 1715075277, guid: e5817b145ce2a3cde968f1adfe57b7b9, type: 3}
@@ -28,6 +29,25 @@ AnimationClip:
       value: {fileID: 576555920, guid: e5817b145ce2a3cde968f1adfe57b7b9, type: 3}
     - time: 0.9
       value: {fileID: 1821928751, guid: e5817b145ce2a3cde968f1adfe57b7b9, type: 3}
+=======
+      value: {fileID: 21300000, guid: 3aa2d73c6f6ddb148b6c1d0057f1d561, type: 3}
+    - time: 0.1
+      value: {fileID: 21300000, guid: 3ffa0610ef34db541be4b013f20a48be, type: 3}
+    - time: 0.21666667
+      value: {fileID: 21300000, guid: 30aa2aa4334b19b4a80293a3d81ccdc3, type: 3}
+    - time: 0.3
+      value: {fileID: 21300000, guid: fde281b01a227c24eb02accfcfdd8230, type: 3}
+    - time: 0.43333334
+      value: {fileID: 21300000, guid: 9da7b31658cde0545b23e22d36b6317d, type: 3}
+    - time: 0.51666665
+      value: {fileID: 21300000, guid: 62f1e835a239fb54ea8613596848b5b0, type: 3}
+    - time: 0.6333333
+      value: {fileID: 21300000, guid: 73fd3939484b45c4b88069e44b467d9b, type: 3}
+    - time: 0.73333335
+      value: {fileID: 21300000, guid: 292fb786344bfce499460302aae06a5b, type: 3}
+    - time: 0.8333333
+      value: {fileID: 21300000, guid: 292fb786344bfce499460302aae06a5b, type: 3}
+>>>>>>> Stashed changes:Assets/Animations/Player/Ennemies/Sandworm/Attack_Right_Sandworm.anim
     attribute: m_Sprite
     path: 
     classID: 212
@@ -50,16 +70,32 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
+<<<<<<< Updated upstream:Assets/Animations/Player/Ennemies/LogAnim/Idle.anim
     - {fileID: 727434059, guid: e5817b145ce2a3cde968f1adfe57b7b9, type: 3}
     - {fileID: 1715075277, guid: e5817b145ce2a3cde968f1adfe57b7b9, type: 3}
     - {fileID: 576555920, guid: e5817b145ce2a3cde968f1adfe57b7b9, type: 3}
     - {fileID: 1821928751, guid: e5817b145ce2a3cde968f1adfe57b7b9, type: 3}
+=======
+    - {fileID: 21300000, guid: 3aa2d73c6f6ddb148b6c1d0057f1d561, type: 3}
+    - {fileID: 21300000, guid: 3ffa0610ef34db541be4b013f20a48be, type: 3}
+    - {fileID: 21300000, guid: 30aa2aa4334b19b4a80293a3d81ccdc3, type: 3}
+    - {fileID: 21300000, guid: fde281b01a227c24eb02accfcfdd8230, type: 3}
+    - {fileID: 21300000, guid: 9da7b31658cde0545b23e22d36b6317d, type: 3}
+    - {fileID: 21300000, guid: 62f1e835a239fb54ea8613596848b5b0, type: 3}
+    - {fileID: 21300000, guid: 73fd3939484b45c4b88069e44b467d9b, type: 3}
+    - {fileID: 21300000, guid: 292fb786344bfce499460302aae06a5b, type: 3}
+    - {fileID: 21300000, guid: 292fb786344bfce499460302aae06a5b, type: 3}
+>>>>>>> Stashed changes:Assets/Animations/Player/Ennemies/Sandworm/Attack_Right_Sandworm.anim
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
+<<<<<<< Updated upstream:Assets/Animations/Player/Ennemies/LogAnim/Idle.anim
     m_StopTime: 0.9166666
+=======
+    m_StopTime: 0.84999996
+>>>>>>> Stashed changes:Assets/Animations/Player/Ennemies/Sandworm/Attack_Right_Sandworm.anim
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
