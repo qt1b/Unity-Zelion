@@ -1,0 +1,16 @@
+=============== INSTALLATION NOTICE OF ZELION =================
+
+Thanks for buying ZELION, our game.
+Here are some instructions to get our game running on your computer.
+
+1. Open the "install.exe" file
+2. Follow the instructions given by the program
+3. ZELION is now sucessfully installed on your computer !
+
+
+If you ever want to uninstall ZELION, please follow the following instructions :
+
+1. Select ZELION from the start menu
+2. Right click on the game icon and select "Uninstall"
+3. The uninstallation wizard is now opend, please follow the instructions given to you
+4. ZELION is now removed from your computer !
