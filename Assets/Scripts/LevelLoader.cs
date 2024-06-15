@@ -14,6 +14,7 @@ public class LevelLoader : MonoBehaviour
     {
         if (Input.GetKeyDown("o"))
         {
+            Debug.Log("i am changing scene");
             LoadNextLvl(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
