@@ -61,13 +61,13 @@ namespace Ennemies {
 
 		[PunRPC]
 		public void DieRPC() {
+			if (gameObject.TryGetComponent(out Collider2D component)) {
+				component.enabled = false;
+			}
 			if (gameObject.TryGetComponent(out Ennemy ennemy)) {
 				ennemy.StopAllCoroutines();
 				ennemy.Agent.destination = ennemy.transform.position;
 				ennemy.enabled = false;
-			}
-			if (gameObject.TryGetComponent(out Collider2D component)) {
-				component.enabled = false;
 			}
 			if (gameObject.TryGetComponent(out Animator animator)) {
 				animator.SetBool(Death,true);

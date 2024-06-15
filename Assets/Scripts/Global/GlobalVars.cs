@@ -18,20 +18,7 @@ namespace Global {
 		// first dim : Level
 		// second dim : Xpos ,etc...
 		public static readonly int[,][] SaveLookupArray2 = new int[7,11][] {
-			{ // level 0 -- TESTING VALUES, for the FOREST
-				new [] {-15,-5}, // x pos
-				new [] {-5,-5}, // y pos
-				new [] {20,20}, // Life
-				new [] {20,20}, // stamina
-				new [] {20,20}, // mana
-				new [] {1,1}, // sword unlocked
-				new [] {1,1}, // bow unlocked
-				new [] {1,1}, // poison
-				new [] {1,1}, // dash
-				new [] {1,1}, // slowdown
-				new [] {1,1} // goBackInTime
-			},
-			{ // level 0 -- TESTING VALUES, for the MINE
+			{ // level 0 -- TESTING VALUES, for the TUTORIAL
 				new [] {-5,-5}, // x pos
 				new [] {-5,-5}, // y pos
 				new [] {20,20}, // Life
@@ -44,7 +31,72 @@ namespace Global {
 				new [] {1,1}, // slowdown
 				new [] {1,1} // goBackInTime
 			},
-			{ // level 2
+			{ // level 1 -- TESTING VALUES, for the FOREST // second save for unlocking the arc, positions should never be loaded
+				new [] {-75,-75}, // x pos
+				new [] {11,11}, // y pos
+				new [] {20,20}, // Life
+				new [] {20,20}, // stamina
+				new [] {20,20}, // mana
+				new [] {1,1}, // sword unlocked
+				new [] {1,1}, // bow unlocked
+				new [] {1,1}, // poison
+				new [] {1,1}, // dash
+				new [] {1,1}, // slowdown
+				new [] {1,1} // goBackInTime
+			},
+			{ // level 2 -- TESTING VALUES, for the MINE
+				new [] {-15,-15}, // x pos
+				new [] {-5,-5}, // y pos
+				new [] {20,20}, // Life
+				new [] {20,20}, // stamina
+				new [] {20,20}, // mana
+				new [] {1,1}, // sword unlocked
+				new [] {1,1}, // bow unlocked
+				new [] {1,1}, // poison
+				new [] {1,1}, // dash
+				new [] {1,1}, // slowdown
+				new [] {1,1} // goBackInTime
+			},
+			{ // level 3 -- TESTING VALUES, for the GARDEN (of the castle)
+				new [] {-237,-237}, // x pos
+				new [] {-46,-46}, // y pos
+				new [] {20,20}, // Life
+				new [] {20,20}, // stamina
+				new [] {20,20}, // mana
+				new [] {1,1}, // sword unlocked
+				new [] {1,1}, // bow unlocked
+				new [] {1,1}, // poison
+				new [] {1,1}, // dash
+				new [] {1,1}, // slowdown
+				new [] {1,1} // goBackInTime
+			},
+			{ // level 3.5 -- TESTING VALUES, for the CASTLE
+				new [] {-237,-237}, // x pos
+				new [] {-48,-48}, // y pos
+				new [] {20,20}, // Life
+				new [] {20,20}, // stamina
+				new [] {20,20}, // mana
+				new [] {1,1}, // sword unlocked
+				new [] {1,1}, // bow unlocked
+				new [] {1,1}, // poison
+				new [] {1,1}, // dash
+				new [] {1,1}, // slowdown
+				new [] {1,1} // goBackInTime
+			},
+			{ // level --
+				new [] {-237,0}, // x pos
+				new [] {-48,0}, // y pos
+				new [] {6,6}, // Life
+				new [] {2,2}, // stamina
+				new [] {2,2}, // mana
+				new [] {0,1}, // sword unlocked
+				new [] {0,0}, // bow unlocked
+				new [] {0,0}, // poison
+				new [] {0,0}, // dash
+				new [] {0,0}, // slowdown
+				new [] {0,0} // goBackInTime
+			},
+			{ // level --
 				new [] {0,0}, // x pos
 				new [] {0,0}, // y pos
 				new [] {6,6}, // Life
@@ -56,59 +108,7 @@ namespace Global {
 				new [] {0,0}, // dash
 				new [] {0,0}, // slowdown
 				new [] {0,0} // goBackInTime
-			},
-			{ // level 3
-				new [] {0,0}, // x pos
-				new [] {0,0}, // y pos
-				new [] {6,6}, // Life
-				new [] {2,2}, // stamina
-				new [] {2,2}, // mana
-				new [] {0,1}, // sword unlocked
-				new [] {0,0}, // bow unlocked
-				new [] {0,0}, // poison
-				new [] {0,0}, // dash
-				new [] {0,0}, // slowdown
-				new [] {0,0} // goBackInTime
-			},
-			{ // level 4
-				new [] {0,0}, // x pos
-				new [] {0,0}, // y pos
-				new [] {6,6}, // Life
-				new [] {2,2}, // stamina
-				new [] {2,2}, // mana
-				new [] {0,1}, // sword unlocked
-				new [] {0,0}, // bow unlocked
-				new [] {0,0}, // poison
-				new [] {0,0}, // dash
-				new [] {0,0}, // slowdown
-				new [] {0,0} // goBackInTime
-			},
-			{ // level 5
-				new [] {0,0}, // x pos
-				new [] {0,0}, // y pos
-				new [] {6,6}, // Life
-				new [] {2,2}, // stamina
-				new [] {2,2}, // mana
-				new [] {0,1}, // sword unlocked
-				new [] {0,0}, // bow unlocked
-				new [] {0,0}, // poison
-				new [] {0,0}, // dash
-				new [] {0,0}, // slowdown
-				new [] {0,0} // goBackInTime
-			},
-			{ // level 6
-				new [] {0,0}, // x pos
-				new [] {0,0}, // y pos
-				new [] {6,6}, // Life
-				new [] {2,2}, // stamina
-				new [] {2,2}, // mana
-				new [] {0,1}, // sword unlocked
-				new [] {0,0}, // bow unlocked
-				new [] {0,0}, // poison
-				new [] {0,0}, // dash
-				new [] {0,0}, // slowdown
-				new [] {0,0} // goBackInTime
-			},
+			}
 		};
 		public static DateTime TimeStartedAt;
 		// not to be synced, maybe to put in player ?
@@ -125,7 +125,7 @@ namespace Global {
 		// 6th : Castle
 		// 7th : FinalBoss
 		//-public static string FirstLevelName = "Quentin6"; // will not delete it as it serves the same purpose and can be useful for debugging
-		public static string[] LevelsName = new[] {  "LVL1_Finale","Mine","QuentinFirstLevelIntro",  "Quentin6"};
+		public static string[] LevelsName = new[] { "QuentinFirstLevelIntro","LVL1_Finale","Mine", "Chateau", "vrai_chateau"};
 		public static byte CurrentLevelId = 0;
 		// public static string SecondLevelName = ???; // if needed, maybe we'll keep everything into one scene
 		public static string GameOverSceneName = "GameOver";

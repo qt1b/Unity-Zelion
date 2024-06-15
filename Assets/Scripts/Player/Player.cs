@@ -157,7 +157,7 @@ namespace Player {
 				_slowdownUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 9][saveID] == 1;
 				_timeTravelUnlocked = GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 10][saveID] == 1;
 			}
-			Debug.Log("Save loaded");
+			Debug.Log($"Save loaded, saveID={GlobalVars.SaveId}, levelID={GlobalVars.CurrentLevelId}");
 
 		}
 
@@ -226,6 +226,7 @@ namespace Player {
 				gameObject.GetComponentInChildren<CameraWork>().enabled = false;
 				gameObject.GetComponentInChildren<AudioListener>().enabled = false;
 				Destroy(gameObject.GetComponent<Rigidbody2D>());
+				this.enabled = false;
 				LoadSave();
 				Debug.Log("player awake - is not mine, return");
 				return;
@@ -672,11 +673,14 @@ namespace Player {
 			if (photonView.IsMine) {
 				GetComponentInChildren<Camera>().enabled = val;
 				GetComponentInChildren<AudioListener>().enabled = val;
+				this.enabled = val;
+			}
+			else {
+				this.enabled = false;
 			}
 			GetComponentInChildren<Light2D>().enabled = val;
 			GetComponentInChildren<Canvas>().enabled = val;
 			ghostPlayer.GetComponentInChildren<Light2D>().enabled = val;
-			this.enabled = val;
 		}
 
 		private void Revive() {

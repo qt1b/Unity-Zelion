@@ -3,15 +3,13 @@ using UnityEngine;
 
 namespace Events {
 	public class OnHit : MonoBehaviour, IHealth {
-		public IAction Action;
+		private IAction _action;
 		void Awake() {
-			Action = gameObject.GetComponent<IAction>();
+			_action = gameObject.GetComponent<IAction>();
 		}
 		public void TakeDamages(ushort damage) {
-			Action.Activate();
+			_action.Activate();
 		}
-
-		// do nothing
 		public void Heal(ushort heal) { }
 	}
 }

@@ -183,7 +183,7 @@ MonoBehaviour:
   m_text: Exit
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
-  m_sharedMaterial: {fileID: 3662673604366894914, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
+  m_sharedMaterial: {fileID: -1569975906666680194, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -317,7 +317,7 @@ MonoBehaviour:
   m_text: Game Over
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
-  m_sharedMaterial: {fileID: 3662673604366894914, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
+  m_sharedMaterial: {fileID: -1569975906666680194, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -584,7 +584,7 @@ MonoBehaviour:
   m_text: You cleared the game in
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
-  m_sharedMaterial: {fileID: 3662673604366894914, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
+  m_sharedMaterial: {fileID: -1569975906666680194, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1189,7 +1189,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &3613136137399164719
 GameObject:
   m_ObjectHideFlags: 0
@@ -1344,7 +1344,7 @@ MonoBehaviour:
   m_text: Title screen
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
-  m_sharedMaterial: {fileID: 3662673604366894914, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
+  m_sharedMaterial: {fileID: -1569975906666680194, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1685,7 +1685,7 @@ MonoBehaviour:
   m_text: Restart from last save
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
-  m_sharedMaterial: {fileID: 3662673604366894914, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
+  m_sharedMaterial: {fileID: -1569975906666680194, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1945,7 +1945,7 @@ MonoBehaviour:
   m_text: Settings
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
-  m_sharedMaterial: {fileID: 3662673604366894914, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
+  m_sharedMaterial: {fileID: -1569975906666680194, guid: 1c975ce94e0554cdb910fe346365a140, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
