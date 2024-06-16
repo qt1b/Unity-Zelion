@@ -19,16 +19,18 @@ public class FollowProjectile : Projectile
         _myRigidBody = GetComponent<Rigidbody2D>();
         // some arrows are not destroying ???
         StartCoroutine(DestroyAfterSecs(dieTime));
+        
     }
     void Update()
     {
         ModifySpeed();
 
-        if (_players.Count == 0) return;
-        var closestPlayer = _players.OrderBy(g => (g.transform.position - transform.position).sqrMagnitude).First();
+        var closestPlayer = GlobalVars.PlayerList.Where(g => g.GetComponent<Player.Player>().IsAlive())
+            .OrderBy(g => (g.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
+        if (closestPlayer is null) return;
         
         Vector3 vel3 = _myRigidBody.velocity;
-        vel3 = Vector3.RotateTowards(vel3, (closestPlayer.transform.position - transform.position).normalized * speed, 2 * Mathf.PI * angularSpeed * Time.deltaTime * _curSpeed, 200f);
+        vel3 = Vector3.RotateTowards(vel3, (closestPlayer.transform.position - transform.position).normalized * speed, 2 * Mathf.PI * angularSpeed * Time.deltaTime * _curSpeed, .002f);
 
 
         _myRigidBody.velocity = vel3;
