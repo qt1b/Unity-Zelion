@@ -48,7 +48,7 @@ namespace Global {
 			},
 			{ // level 2 -- TESTING VALUES, for the MINE
 				new [] {-67,-15}, // x pos
-				new [] {31,-5}, // y pos
+				new [] {45,-5}, // y pos
 				new [] {20,20}, // Life
 				new [] {20,20}, // stamina
 				new [] {20,20}, // mana

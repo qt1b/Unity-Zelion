@@ -19,6 +19,8 @@ namespace Global {
 			{ "example1", new[] { "Example 1", "Example 1", "第一例" } 
 			} ,  {"chest canvas" , new[] { "Content of Chest " , "Contenue du Coffre" , "ze Content of ze chesuto "}}
 			,  {"Empty_Chest" , new[] { "It looks empty." , "Il semble vide." , "空っぽに見える"}}
+			,  {"mine_south" , new[] { "Flee the south of the mine, there are strange noises and a horrible creature is rampaging..." , "Fuis le sud de la mine, il y a des bruits bizarres et une horrible créature se déchaîne..." , "鉱山の南から逃げて、奇妙な音が聞こえて、恐ろしい生き物が暴れている..."}}
+			,  {"Locked_chest" , new[] { "The chest is locked." , "le coffre est verouillé." , "鍵がかかっています"}}
 			,  {"Dialog_NPC_Red" , new[] { "Leaving already ?" , "Tu pars déjà?" , "もう行くのですか？"}}
 			,  {"Dialog_NPC_Green" , new[] { "Don't get lost in the dark, only God knows what's in there." , "Ne te perds pas dans l'obscurité, seul Dieu sait ce qu'il y a à l'intérieur." , "暗闇で迷わないで、そこに何があるかは神のみぞ知る。"}}
 			,  {"Dialog_NPC_Blue" , new[] { "The light of God will guide you out of this darkness, have faith in him." , "La lumière de Dieu vous guidera hors de cette obscurité, ayez foi en lui." , "神の光があなたをこの暗闇から導いてくれるでしょう。神を信じてください。"}}
