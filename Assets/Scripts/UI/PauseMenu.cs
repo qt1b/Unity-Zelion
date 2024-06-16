@@ -79,6 +79,7 @@ namespace UI {
         public void MainMenu(){
             Time.timeScale = 1f; // wth this existed all along
             GameIsPaused = false;
+            GlobalVars.TimeStartedAt = null;
             GlobalVars.PlayerList.Remove(Player.Player.LocalPlayerInstance.GetComponent<Player.Player>());
             PhotonNetwork.LeaveRoom();
             PhotonNetwork.Disconnect();

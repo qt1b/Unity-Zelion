@@ -37,7 +37,7 @@ namespace PUN {
 			// decided not to keep the instance of the player between scenes for now
 			// if (global::Player.Player.LocalPlayerInstance == null) {
 			GlobalVars.PlayerList = new();
-			if (Global.GlobalVars.GameOverCount == 0) Global.GlobalVars.TimeStartedAt = DateTime.UtcNow;
+			if (GlobalVars.TimeStartedAt is null) Global.GlobalVars.TimeStartedAt = DateTime.UtcNow;
 			Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
 			// we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
 			PhotonNetwork.Instantiate("Prefabs/Player/Player", Vector3.zero, Quaternion.identity, 0);
@@ -59,12 +59,12 @@ namespace PUN {
 			if (PhotonNetwork.IsMasterClient) {
 				// should be fine here, but can be dangerous bc of networking
 				GlobalVars.CurrentLevelId += 1;
-				GlobalVars.SaveId = 0;
 				PhotonNetwork.LoadLevel(levelName);
 			}
 		}
 		[PunRPC]
 		private void LoadLevelRpc(string levelName) {
+			GlobalVars.SaveId = 0; // better here
 			StartCoroutine(LoadAnimRpc(levelName));
 		}
 		#endregion

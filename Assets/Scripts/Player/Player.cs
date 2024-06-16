@@ -579,34 +579,39 @@ namespace Player {
 
 		// ADD SOUNDS HERE
 		public void TakeDamages(ushort damage) {
-			photonView.RPC("TakeDmgRPC",RpcTarget.AllBuffered,(short)damage);
+			if (damage > 0) {
+				if (_healthBar.TryTakeDamagesStrict(damage)) {
+					photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,1f, 0.3f, 0.3f, 0.8f, 0.2f);
+				}
+				else {
+					_healthBar.ChangeCurVal(0);
+					photonView.RPC("TakeDmgRPC",RpcTarget.AllBuffered);
+				}
+			}
 		}
 
 		[PunRPC]
-		public void TakeDmgRPC(short damage) {
-			if (_healthBar.TryTakeDamagesStrict((ushort)damage)) {
-				photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,1f, 0.3f, 0.3f, 0.8f, 0.2f);
-			}
-			else {
-				_healthBar.ChangeCurVal(0);
-				// play some sound
-				isDead = true;
-				if (photonView.IsMine) GameOver();
-				DisableOrEnablePlayer(false);
-			}
+		public void TakeDmgRPC() {
+			isDead = true;
+			if (photonView.IsMine) GameOver();
+			DisableOrEnablePlayer(false);
 		}
+
 		public void Heal(ushort heal) {
-			photonView.RPC("HealRPC",RpcTarget.AllBuffered,(short)heal);
-		}
-		[PunRPC]
-		public void HealRPC(short heal) {
-			if (_healthBar.curValue == 0) {
-				DisableOrEnablePlayer(true);
-				if (photonView.IsMine) Revive();
-				isDead = false;
+			if (heal != 0) {
+				if (_healthBar.curValue == 0) {
+					photonView.RPC("HealRPC", RpcTarget.AllBuffered);
+				}
+				_healthBar.Heal(heal);
+				photonView.RPC("ChangeColorWaitRpc", RpcTarget.AllBuffered, 0.3f, 1f, 0.3f, 0.8f, 0.2f);
 			}
-			_healthBar.Heal((ushort)heal);
-			photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,0.3f, 1f, 0.3f, 0.8f, 0.2f);
+		}
+
+		[PunRPC]
+		public void HealRPC() {
+			DisableOrEnablePlayer(true);
+			if (photonView.IsMine) Revive();
+			isDead = false;
 		}
 
 		// these ones are not used over network
@@ -634,7 +639,7 @@ namespace Player {
 		private void GameOver() {
 			List<Player> otherPlayers = new List<Player>();
 			foreach (Player player in GlobalVars.PlayerList) {
-				if (!player.photonView.IsMine && player.isActiveAndEnabled) otherPlayers.Add(player);
+				if (!player.photonView.IsMine && player._healthBar.curValue != 0) otherPlayers.Add(player);
 			}
 			if (otherPlayers.Count > 0) {
 				otherPlayers[0].GetComponentInChildren<Camera>().enabled = true;
