@@ -13,8 +13,6 @@ namespace Bars {
 
         #region Fields
 
-        
-
         public Slider slider;
         public Slider damageBar;
         public float speed = 0.0125f;

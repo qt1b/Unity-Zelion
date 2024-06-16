@@ -29,6 +29,7 @@ namespace UI {
 		public void MainMenu(){
 			//PhotonNetwork.Destroy(Player.Player.LocalPlayerInstance);
 			//Player.Player.LocalPlayerInstance = null;
+			GlobalVars.TimeStartedAt = null;
 			PhotonNetwork.LeaveRoom();
 			PhotonNetwork.Disconnect();
 			SceneManager.LoadScene(0);
