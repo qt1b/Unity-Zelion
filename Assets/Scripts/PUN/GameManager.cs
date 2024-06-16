@@ -59,12 +59,12 @@ namespace PUN {
 			if (PhotonNetwork.IsMasterClient) {
 				// should be fine here, but can be dangerous bc of networking
 				GlobalVars.CurrentLevelId += 1;
-				GlobalVars.SaveId = 0;
 				PhotonNetwork.LoadLevel(levelName);
 			}
 		}
 		[PunRPC]
 		private void LoadLevelRpc(string levelName) {
+			GlobalVars.SaveId = 0; // better here
 			StartCoroutine(LoadAnimRpc(levelName));
 		}
 		#endregion
