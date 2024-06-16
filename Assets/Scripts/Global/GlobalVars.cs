@@ -112,7 +112,7 @@ namespace Global {
 				new [] {0,0} // goBackInTime
 			}
 		};
-		public static DateTime TimeStartedAt;
+		public static DateTime? TimeStartedAt = null;
 		// not to be synced, maybe to put in player ?
 		public static List<Player.Player> PlayerList = new List<Player.Player>();
 		public static byte PlayerId;

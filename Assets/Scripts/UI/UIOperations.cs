@@ -1,7 +1,6 @@
 using System;
 using Global;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,13 +17,28 @@ namespace UI {
 			button.GetComponent<TMP_Text>().color = new Color(0.2f, 0.2f, 0.2f);
 			// same
 		}
-		public static string FormatTime()
-		{
-			TimeSpan res = DateTime.UtcNow - Global.GlobalVars.TimeStartedAt;
-			return String.Format((res.Hours > 0 ? res.Hours + " " + TextValues.Hour + (res.Hours > 1 && GlobalVars.Language != 2 ? "s ":" ") : "")
-			                     + (res.Minutes > 0 ? res.Minutes + " " + TextValues.Minute + (res.Minutes > 1 && GlobalVars.Language != 2 ? "s":"") : "") 
-			                     + (res.Minutes > 0 || res.Hours > 0 ? TextValues.And  + " ": "" )
-								+ (res.Seconds > 0 ? res.Seconds + " " + TextValues.Second + (res.Seconds > 1 && GlobalVars.Language != 2 ? "s":"") : ""));
+
+		public static string FormatTime() {
+			if (GlobalVars.TimeStartedAt is {} timeStarted) {
+				TimeSpan res = DateTime.UtcNow - timeStarted;
+				return String.Format(
+					(res.Hours > 0
+						? res.Hours + " " + TextValues.Hour + (res.Hours > 1 && GlobalVars.Language != 2 ? "s " : " ")
+						: "")
+					+ (res.Minutes > 0
+						? res.Minutes + " " + TextValues.Minute +
+						  (res.Minutes > 1 && GlobalVars.Language != 2 ? "s" : "")
+						: "")
+					+ (res.Minutes > 0 || res.Hours > 0 ? TextValues.And + " " : "")
+					+ (res.Seconds > 0
+						? res.Seconds + " " + TextValues.Second +
+						  (res.Seconds > 1 && GlobalVars.Language != 2 ? "s" : "")
+						: ""));
+			}
+			else {
+				// throw new ArgumentException;
+				return "";
+			}
 		}
 	}
 }

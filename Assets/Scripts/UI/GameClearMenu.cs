@@ -25,7 +25,7 @@ namespace UI {
 			GlobalVars.DeathCount = 0;
 			GlobalVars.NbrOfPlayers = (byte)PhotonNetwork.CurrentRoom.PlayerCount;
 			GlobalVars.GameOverCount = 0;
-			GlobalVars.TimeStartedAt = DateTime.UtcNow;
+			GlobalVars.TimeStartedAt = null;
 			// photonView.RPC("LoadDataRPC",RpcTarget.AllBuffered); // may not be necessary ??
 			PhotonNetwork.LoadLevel(GlobalVars.LevelsName[GlobalVars.CurrentLevelId]);
 		}
@@ -37,6 +37,7 @@ namespace UI {
 		public void MainMenu(){
 			//PhotonNetwork.Destroy(Player.Player.LocalPlayerInstance);
 			//Player.Player.LocalPlayerInstance = null;
+			GlobalVars.TimeStartedAt = null;
 			PhotonNetwork.LeaveRoom();
 			PhotonNetwork.Disconnect();
 			SceneManager.LoadScene(0);
