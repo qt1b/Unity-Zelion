@@ -21,8 +21,8 @@ namespace Global {
 		// second dim : Xpos ,etc...
 		public static readonly int[,][] SaveLookupArray2 = new int[7,11][] {
 			{ // level 0 -- TESTING VALUES, for the TUTORIAL
-				new [] {-5,-5}, // x pos
-				new [] {-5,-5}, // y pos
+				new [] {0,0}, // x pos
+				new [] {0,0}, // y pos
 				new [] {20,20}, // Life
 				new [] {20,20}, // stamina
 				new [] {20,20}, // mana
@@ -34,13 +34,13 @@ namespace Global {
 				new [] {1,1} // goBackInTime
 			},
 			{ // level 1 -- TESTING VALUES, for the FOREST // second save for unlocking the arc, positions should never be loaded
-				new [] {-17,-75}, // x pos
-				new [] {-4,11}, // y pos
+				new [] {-16,0}, // x pos
+				new [] {-3,0}, // y pos
 				new [] {20,20}, // Life
 				new [] {20,20}, // stamina
 				new [] {20,20}, // mana
 				new [] {1,1}, // sword unlocked
-				new [] {1,1}, // bow unlocked
+				new [] {0,1}, // bow unlocked
 				new [] {1,1}, // poison
 				new [] {1,1}, // dash
 				new [] {1,1}, // slowdown
