@@ -50,12 +50,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f86f6f0221b1c1e43aac5f38c72d03bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 4
   damage: 3
   dieTime: 4
   notDamageTags:
   - Boss
-  angularSpeed: 0.3
+  angularSpeed: 0.17
 --- !u!212 &-6426979222437063179
 SpriteRenderer:
   m_ObjectHideFlags: 0

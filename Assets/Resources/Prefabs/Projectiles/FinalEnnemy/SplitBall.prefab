@@ -50,14 +50,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2533ba54c4c184447ad7277dc9d0de18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 30
+  speed: 5.24
   damage: 3
-  dieTime: 4
+  dieTime: 1.04
   notDamageTags:
   - Boss
   subProjectilePath: FinalEnnemy/SmallFireBall
-  nbSplitProjectiles: 0
-  subDamage: 0
+  nbSplitProjectiles: 7
+  subDamage: 1
   isSubRotated: 0
 --- !u!212 &-6426979222437063179
 SpriteRenderer:
