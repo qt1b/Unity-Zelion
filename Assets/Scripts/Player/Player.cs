@@ -10,7 +10,6 @@ using Photon.PhotonUnityNetworking.Code.Interfaces;
 using TMPro;
 using UI;
 using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using Weapons;
@@ -161,24 +160,7 @@ namespace Player {
 
 		}
 
-		// next ????: should call a rpc to sync the healthbar's max value, etc..
 		public void LoadSaveWithoutPos() {
-			/*
-			if (GlobalVars.SaveLookupArray.GetLength(0) > GlobalVars.SaveId) {
-				_healthBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 2]));
-				if (photonView.IsMine) {
-					_swordUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 5] == "1";
-					_bowUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 6] == "1";
-					_poisonUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 7] == "1";
-					_dashUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 8] == "1";
-					_slowdownUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 9] == "1";
-					_timeTravelUnlocked = GlobalVars.SaveLookupArray[GlobalVars.SaveId, 10] == "1";
-					_staminaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 3]));
-					_manaBar.ChangeMaxValue(ushort.Parse(GlobalVars.SaveLookupArray[GlobalVars.SaveId, 4]));
-				}
-				Debug.Log("Loaded Global Save successfully, saveID=" + GlobalVars.SaveId);
-			} */
-
 			byte saveID = GlobalVars.SaveId;
 			_healthBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 2][saveID]);
 			if (photonView.IsMine) {
@@ -195,9 +177,8 @@ namespace Player {
 			Debug.Log("Save without pos loaded");
 
 		}
-		
 		public void LoadSpecificSave(byte saveID) {
-			_healthBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 2][saveID]);
+			photonView.RPC("HealthMaxLoadRpc",RpcTarget.AllBuffered,saveID);
 			if (photonView.IsMine) {
 				_staminaBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 3][saveID]);
 				_manaBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 4][saveID]);
@@ -211,7 +192,10 @@ namespace Player {
 			}
 			Debug.Log("Specific save loaded");
 		}
-		
+		[PunRPC]
+		private void HealthMaxLoadRpc(byte saveID) {
+			_healthBar.ChangeMaxValue((ushort)GlobalVars.SaveLookupArray2[GlobalVars.CurrentLevelId, 2][saveID]);
+		}
 
 	#endregion
 		#region MonoBehaviour
@@ -733,13 +717,12 @@ namespace Player {
 		void ChangeColorWaitRpc(float r, float g, float b, float a, float time) {
 			StartCoroutine(ChangeColorWait(new Color(r, g, b, a), time));
 		}
-		
+
 		public bool IsAlive()
 		{
 			return _healthBar.curValue > 0;
 		}
 
-		
 		#region IPunObservable implementation
 		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
 			if (stream.IsWriting) {

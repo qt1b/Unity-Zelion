@@ -11,7 +11,7 @@ namespace Global {
 		public static float EnnemySpeed = 1f;
 		public static float ProjectileSpeed = 1f;
 		public static float ProjectileRefreshTime = .1f;
-		public static byte SaveId = 1; // useful for debugging, will be 0 in the end
+		public static byte SaveId = 0; // useful for debugging, will be 0 in the end
 		public static short DeathCount = 0;
 		public static short GameOverCount = 0;
 		// the INITIAL player count
@@ -26,7 +26,7 @@ namespace Global {
 				new [] {20,20}, // Life
 				new [] {20,20}, // stamina
 				new [] {20,20}, // mana
-				new [] {1,1}, // sword unlocked
+				new [] {0,1}, // sword unlocked
 				new [] {1,1}, // bow unlocked
 				new [] {1,1}, // poison
 				new [] {1,1}, // dash
@@ -34,8 +34,8 @@ namespace Global {
 				new [] {1,1} // goBackInTime
 			},
 			{ // level 1 -- TESTING VALUES, for the FOREST // second save for unlocking the arc, positions should never be loaded
-				new [] {-75,-75}, // x pos
-				new [] {11,11}, // y pos
+				new [] {-17,-75}, // x pos
+				new [] {-4,11}, // y pos
 				new [] {20,20}, // Life
 				new [] {20,20}, // stamina
 				new [] {20,20}, // mana
@@ -48,7 +48,7 @@ namespace Global {
 			},
 			{ // level 2 -- TESTING VALUES, for the MINE
 				new [] {-67,-15}, // x pos
-				new [] {31,-5}, // y pos
+				new [] {30,-5}, // y pos
 				new [] {20,20}, // Life
 				new [] {20,20}, // stamina
 				new [] {20,20}, // mana

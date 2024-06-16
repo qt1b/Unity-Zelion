@@ -72,6 +72,9 @@ namespace Ennemies {
 			if (gameObject.TryGetComponent(out Animator animator)) {
 				animator.SetBool(Death,true);
 			}
+			if (gameObject.TryGetComponent(out IAction action)) {
+				action.Activate();
+			}
 			if (this.photonView.IsMine && PhotonNetwork.IsConnected) {
 				StartCoroutine(DestroyAfterSecs(deathDuration));
 			}

@@ -15,14 +15,13 @@ namespace Ennemies {
         // for every 16hp of every enemy, we get an orb
         // could be a little more smooth if elements were to go progressively to their place
         public static void Activate(uint value,Vector3 position) {
-            // uint nbr = value / 16; // what we will use
-            uint nbr = value;
+            uint nbr = (value/16) +1; // kind of a 'roof + 1'
             for (int i = 0; i < nbr; i++) {
                 Vector3 pos;
                 do {
                     pos = position + Random.Range(0.5f, 2.5f) *
                         new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0).normalized;
-                } while (Physics.OverlapSphere(pos, 0.1f).Length != 0);
+                } while (Physics.OverlapSphere(pos, 0.6f).Length != 0);
                 PhotonNetwork.Instantiate("Prefabs/Collectibles/"+_collectibles[Random.Range(0,3)] ,
                     pos,
                     Quaternion.identity);

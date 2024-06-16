@@ -127,7 +127,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 19
-        y: 5
+        y: 36
         width: 64
         height: 64
       alignment: 0
@@ -148,7 +148,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 118
-        y: 7
+        y: 36
         width: 64
         height: 64
       alignment: 0
@@ -168,8 +168,8 @@ TextureImporter:
       name: Armored Axeman-Attack02_2
       rect:
         serializedVersion: 2
-        x: 216
-        y: 7
+        x: 218
+        y: 36
         width: 64
         height: 64
       alignment: 0
@@ -189,8 +189,8 @@ TextureImporter:
       name: Armored Axeman-Attack02_3
       rect:
         serializedVersion: 2
-        x: 315
-        y: 7
+        x: 318
+        y: 36
         width: 64
         height: 64
       alignment: 0
@@ -211,7 +211,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 420
-        y: 7
+        y: 36
         width: 64
         height: 64
       alignment: 0
@@ -231,8 +231,8 @@ TextureImporter:
       name: Armored Axeman-Attack02_6
       rect:
         serializedVersion: 2
-        x: 519
-        y: 7
+        x: 522
+        y: 36
         width: 64
         height: 64
       alignment: 0
@@ -252,8 +252,8 @@ TextureImporter:
       name: Armored Axeman-Attack02_8
       rect:
         serializedVersion: 2
-        x: 620
-        y: 7
+        x: 621
+        y: 36
         width: 64
         height: 64
       alignment: 0
@@ -273,8 +273,8 @@ TextureImporter:
       name: Armored Axeman-Attack02_9
       rect:
         serializedVersion: 2
-        x: 715
-        y: 7
+        x: 718
+        y: 36
         width: 64
         height: 64
       alignment: 0
@@ -295,7 +295,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 820
-        y: 7
+        y: 36
         width: 64
         height: 64
       alignment: 0
