@@ -66,8 +66,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.0022999644, y: 0.0049000382, z: 0}
-    m_Extent: {x: 1.5055001, y: 1.246, z: 0}
+    m_Center: {x: 0.0022500157, y: 0.0041499734, z: 0}
+    m_Extent: {x: 1.50425, y: 1.2448499, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -231,6 +231,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 90
   damage: 3
+  dieTime: 4
+  notDamageTags: []
 --- !u!50 &8005479345053348494
 Rigidbody2D:
   serializedVersion: 4

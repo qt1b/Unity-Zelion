@@ -12,13 +12,11 @@ GameObject:
   - component: {fileID: 6439616405391608931}
   - component: {fileID: 2000551768567254865}
   - component: {fileID: 1125725282502623868}
-  - component: {fileID: 6572044932027026337}
   - component: {fileID: 5873283468099784028}
   - component: {fileID: 4776135846805149780}
   - component: {fileID: 2474270136817323887}
   - component: {fileID: 315498804674678429}
   - component: {fileID: 109667614679697199}
-  - component: {fileID: 199450782877730893}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Ennemy
@@ -91,6 +89,7 @@ MonoBehaviour:
     stopOnCollision: 0
   Agent: {fileID: 109667614679697199}
   Rigidbody2D: {fileID: 2474270136817323887}
+  _animator: {fileID: 1165391834359267910}
 --- !u!114 &2000551768567254865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6949be19b1e473690d650efea80ade9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 18
   deathDuration: 0.31
 --- !u!58 &1125725282502623868
 CircleCollider2D:
@@ -140,27 +139,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.5}
   serializedVersion: 2
   m_Radius: 0.5000501
---- !u!95 &6572044932027026337
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 710605349892215168}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: cf12213e839432941ac889861f297ecc, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &5873283468099784028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,7 +161,7 @@ MonoBehaviour:
   - {fileID: 2000551768567254865}
   - {fileID: 4776135846805149780}
   - {fileID: 315498804674678429}
-  - {fileID: 199450782877730893}
+  - {fileID: 8365450735885118660}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -268,36 +246,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 0
---- !u!114 &199450782877730893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 710605349892215168}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters:
-  - Type: 1
-    SynchronizeType: 0
-    Name: MoveX
-  - Type: 4
-    SynchronizeType: 0
-    Name: IsDrawing
-  - Type: 4
-    SynchronizeType: 0
-    Name: IsMeleeing
-  - Type: 4
-    SynchronizeType: 0
-    Name: IsCharging
-  m_SynchronizeLayers:
-  - SynchronizeType: 0
-    LayerIndex: 0
 --- !u!1 &3254987705310643045
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,6 +546,8 @@ GameObject:
   m_Component:
   - component: {fileID: 223266847486756827}
   - component: {fileID: 4686358294254700501}
+  - component: {fileID: 1165391834359267910}
+  - component: {fileID: 8365450735885118660}
   m_Layer: 0
   m_Name: SpriteRenderer
   m_TagString: Untagged
@@ -661,7 +611,7 @@ SpriteRenderer:
   m_SortingLayerID: -700938773
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -823869345, guid: 104638f16274a634fb15dedff85baeba, type: 3}
+  m_Sprite: {fileID: 383647724, guid: 104638f16274a634fb15dedff85baeba, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -672,6 +622,60 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1165391834359267910
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5984021117826322297}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 937cde270c054da448db7eb1c33feec4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8365450735885118660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5984021117826322297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 2
+    Name: IsMovingRight
+  - Type: 4
+    SynchronizeType: 2
+    Name: IsMovingLeft
+  - Type: 4
+    SynchronizeType: 1
+    Name: IsCharging
+  - Type: 4
+    SynchronizeType: 1
+    Name: IsDrawing
+  - Type: 4
+    SynchronizeType: 1
+    Name: IsMeleeing
+  m_SynchronizeLayers:
+  - SynchronizeType: 2
+    LayerIndex: 0
 --- !u!1001 &9149017769109728899
 PrefabInstance:
   m_ObjectHideFlags: 0

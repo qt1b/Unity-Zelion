@@ -26,7 +26,7 @@ namespace Ennemies {
 				maxHealth = (ushort)short.MaxValue;
 			}
 			_healthBar.ChangeMaxValue(maxHealth);
-			_spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+			_spriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>();
 		}
 
 		// should avoid doing any rpcs, need to see if this updates fast enough

@@ -19,7 +19,20 @@ namespace Global {
 
 		// first dim : Level
 		// second dim : Xpos ,etc...
-		public static readonly int[,][] SaveLookupArray2 = new int[7,11][] {
+		public static readonly int[,][] SaveLookupArray2 = new int[8,11][] {
+			{ // level 0 -- TESTING VALUES, for the TUTORIAL
+				new [] {0, 0}, // x pos
+				new [] {0, 0}, // y pos
+				new [] {20,20}, // Life
+				new [] {20,20}, // stamina
+				new [] {20,20}, // mana
+				new [] {0,1}, // sword unlocked
+				new [] {1,1}, // bow unlocked
+				new [] {1,1}, // poison
+				new [] {1,1}, // dash
+				new [] {1,1}, // slowdown
+				new [] {1,1} // goBackInTime
+			},
 			{ // level 0 -- TESTING VALUES, for the TUTORIAL
 				new [] {-5,-5}, // x pos
 				new [] {-5,-5}, // y pos
@@ -127,7 +140,7 @@ namespace Global {
 		// 6th : Castle
 		// 7th : FinalBoss
 		//-public static string FirstLevelName = "Quentin6"; // will not delete it as it serves the same purpose and can be useful for debugging
-		public static string[] LevelsName = new[] { "QuentinFirstLevelIntro","LVL1_Finale","Mine", "Chateau", "vrai_chateau"};
+		public static string[] LevelsName = new[] {"FinalBoss", "QuentinFirstLevelIntro","LVL1_Finale","Mine", "Chateau", "vrai_chateau"};
 		public static byte CurrentLevelId = 0;
 		// public static string SecondLevelName = ???; // if needed, maybe we'll keep everything into one scene
 		public static string GameOverSceneName = "GameOver";

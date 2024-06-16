@@ -51,6 +51,7 @@ namespace Ennemies
 
         [Space] public NavMeshAgent Agent;
         public Rigidbody2D Rigidbody2D;
+        [SerializeField] private Animator _animator;
 
         private bool _isShooting;
         private bool _canShoot = true;
@@ -66,11 +67,9 @@ namespace Ennemies
         public float speed => GlobalVars.EnnemySpeed;
 
         private Coroutine currentAction;
-        public bool IsMoving => Agent.velocity != Vector3.zero || _isCharging;
 
-        private Animator _animator;
-        private static readonly int MoveY = Animator.StringToHash("MoveY");
-        private static readonly int MoveX = Animator.StringToHash("MoveX");
+        private static readonly int IsMovingLeft = Animator.StringToHash("IsMovingLeft");
+        private static readonly int IsMovingRight = Animator.StringToHash("IsMovingRight");
         private static readonly int IsDrawing = Animator.StringToHash("IsDrawing");
         private static readonly int IsCharging = Animator.StringToHash("IsCharging");
         private static readonly int IsMeleeing = Animator.StringToHash("IsMeleeing");
@@ -80,7 +79,8 @@ namespace Ennemies
             if (PhotonNetwork.OfflineMode || PhotonNetwork.IsMasterClient) return;
             enabled = false;
             GetComponent<NavMeshAgent>().enabled = false;
-            _animator = GetComponent<Animator>();
+            if (_animator is null)
+                _animator = GetComponent<Animator>();
         }
 
         public override void OnEnable()
@@ -137,6 +137,7 @@ namespace Ennemies
         private IEnumerator Shoot(Vector3 initialPos, Vector3 direction)
         {
             _isShooting = true;
+            UpdateAnimator();
             StartCoroutine(CanShootReset());
             // animator for shooting here
             yield return new WaitForSeconds(_shoot.drawingTime);
@@ -162,6 +163,7 @@ namespace Ennemies
         private IEnumerator Attack(Player.Player player, Vector3 direciton)
         {
             _isMeleeing = true;
+            UpdateAnimator();
             StartCoroutine(CanMeleeReset());
 
             _melee.hitbox.transform.eulerAngles = new Vector3(0, 0, GetHitboxRotation(direciton));
@@ -186,6 +188,7 @@ namespace Ennemies
         private IEnumerator Charge(Player.Player player, Vector3 direction)
         {
             _isCharging = true;
+            UpdateAnimator();
             StartCoroutine(CanChargeReset());
             Agent.ResetPath();
             Rigidbody2D.sleepMode = RigidbodySleepMode2D.StartAwake;
@@ -240,7 +243,9 @@ namespace Ennemies
 
         private void UpdateAnimator()
         {
-            _animator.SetFloat(MoveX, _isCharging ?Rigidbody2D.velocity.x : Agent.velocity.x);
+            _animator.SetBool(IsMovingLeft, _isCharging ?Rigidbody2D.velocity.x <= 0 : Agent.velocity.x <= 0);
+            _animator.SetBool(IsMovingRight, _isCharging ? Rigidbody2D.velocity.x > 0 || (Rigidbody2D.velocity.y != 0 && Rigidbody2D.velocity.x == 0) : 
+                Agent.velocity.x > 0 || (Agent.velocity.y != 0 && Agent.velocity.x == 0));
             _animator.SetBool(IsCharging, _isCharging);
             _animator.SetBool(IsMeleeing, _isMeleeing);
             _animator.SetBool(IsDrawing, _isShooting);
@@ -248,6 +253,7 @@ namespace Ennemies
 
         private void Refresh()
         {
+            UpdateAnimator();
             var players = GlobalVars.PlayerList.Where(g => g.GetComponent<Player.Player>().IsAlive());
             if (!players.Any() || IsDoingAnAction)
                 return;
