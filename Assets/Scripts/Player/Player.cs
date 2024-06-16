@@ -429,11 +429,14 @@ namespace Player {
 			// float oldVal = GlobalVars.PlayerSpeed.Value;
 			GlobalVars.EnnemySpeed = 0.5f;
 			// _animator.speed = GlobalVars.PlayerSpeed; // to remove if only slowing down enemies
+			GlobalVars.ProjectileSpeed = 0.5f;
+			_animator.speed = GlobalVars.PlayerSpeed; // to remove if only slowing down enemies
 			_slowdownAcc += 1;
 			yield return new WaitForSeconds(duration);
 			_slowdownAcc -= 1;
 			if (_slowdownAcc == 0) {
 				GlobalVars.EnnemySpeed = 1;
+				GlobalVars.ProjectileSpeed = 1;
 				_animator.speed = 1;
 			}
 		}
@@ -730,7 +733,13 @@ namespace Player {
 		void ChangeColorWaitRpc(float r, float g, float b, float a, float time) {
 			StartCoroutine(ChangeColorWait(new Color(r, g, b, a), time));
 		}
+		
+		public bool IsAlive()
+		{
+			return _healthBar.curValue > 0;
+		}
 
+		
 		#region IPunObservable implementation
 		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
 			if (stream.IsWriting) {

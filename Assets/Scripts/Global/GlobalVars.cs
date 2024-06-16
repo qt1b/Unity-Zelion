@@ -7,9 +7,11 @@ using UnityEngine;
 namespace Global {
 	public class GlobalVars : MonoBehaviourPunCallbacks, IPunObservable {
 		// to sync over network
-		// public static float PlayerSpeed = 1;
-		public static float EnnemySpeed = 1;
-		public static byte SaveId = 0; // useful for debugging, will be 0 in the end
+		public static float PlayerSpeed = 1f;
+		public static float EnnemySpeed = 1f;
+		public static float ProjectileSpeed = 1f;
+		public static float ProjectileRefreshTime = .1f;
+		public static byte SaveId = 1; // useful for debugging, will be 0 in the end
 		public static short DeathCount = 0;
 		public static short GameOverCount = 0;
 		// the INITIAL player count
