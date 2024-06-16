@@ -56,7 +56,12 @@ namespace PUN {
 		IEnumerator LoadAnimRpc(string levelName) {
 			LoaderAnim.SetBool(Start1,true);
 			yield return new WaitForSeconds(LoadTime);
-			if (PhotonNetwork.IsMasterClient) PhotonNetwork.LoadLevel(levelName);
+			if (PhotonNetwork.IsMasterClient) {
+				// should be fine here, but can be dangerous bc of networking
+				GlobalVars.CurrentLevelId += 1;
+				GlobalVars.SaveId = 0;
+				PhotonNetwork.LoadLevel(levelName);
+			}
 		}
 		[PunRPC]
 		private void LoadLevelRpc(string levelName) {

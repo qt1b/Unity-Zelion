@@ -113,5 +113,7 @@ namespace Ennemies {
             }
             else if (baseColor != Color.white) _spriteRenderer.color = baseColor;
         }
+
+        public bool IsAlive() => _hp > 0;
     }
 }

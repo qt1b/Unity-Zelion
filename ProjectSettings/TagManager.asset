@@ -10,7 +10,7 @@ TagManager:
   - PlayerHealth
   - Ennemy
   - LetProjectilesPass
-  - StatusText
+  - Boss
   layers:
   - Default
   - TransparentFX

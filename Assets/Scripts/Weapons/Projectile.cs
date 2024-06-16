@@ -1,27 +1,35 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Global;
 using Interfaces;
 using Photon.PhotonUnityNetworking.Code;
 using Unity.Netcode;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Weapons {
     public class Projectile : MonoBehaviourPunCallbacks {
-        public float speed = 30f;
+        public float speed = 1f;
         public Vector3 Direction { get; set; } = Vector3.zero;
         public ushort damage = 3;
-        Rigidbody2D _myRigidBody;
 
-        void Awake() {
+        public float dieTime = 4f;
+        protected Rigidbody2D _myRigidBody;
+
+        public List<string> notDamageTags;
+        protected float _curSpeed = 1f;
+        
+
+        protected static Random _random = new ();
+
+        void Awake()
+        {
+            _curSpeed = GlobalVars.ProjectileSpeed;
             _myRigidBody = GetComponent<Rigidbody2D>();
             // some arrows are not destroying ???
-            StartCoroutine(DestroyAfterSecs(4f));
-            /*
-         if (IsServer) {
-            myRigidBody.Sleep();
-            Destroy(gameObject);
-        } */
-            // _healthBar = GameObject.FindGameObjectWithTag($"PlayerHealth").GetComponent<HealthBar>();
+            StartCoroutine(DestroyAfterSecs(dieTime));
         }
 
         public void SetVelocity(Vector3 givenDirection) {
@@ -34,12 +42,15 @@ namespace Weapons {
             _myRigidBody.velocity = Direction * (speed * 0.2f);
         }
         // may be destroyed on every instance ?
-        IEnumerator DestroyAfterSecs(float secs) {
+        protected IEnumerator DestroyAfterSecs(float secs) {
             yield return new WaitForSeconds(secs);
             PhotonNetwork.Destroy(gameObject);
         }
 
-        void OnTriggerEnter2D(Collider2D other) {
+        void OnTriggerEnter2D(Collider2D other)
+        {
+            if (notDamageTags.Any(g => other.gameObject.CompareTag(g)))
+                return;
             if (other.gameObject.TryGetComponent(out IHealth health)) {
                 if (photonView.IsMine) health.TakeDamages(damage);
                 _myRigidBody.velocity = Vector3.zero;
@@ -77,6 +88,21 @@ namespace Weapons {
         [PunRPC]
         private void NetworkDestroy() {
             PhotonNetwork.Destroy(this.gameObject);
+        }
+
+        protected void ModifySpeed()
+        {
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (_curSpeed != GlobalVars.ProjectileSpeed)
+            {
+                _myRigidBody.velocity = _myRigidBody.velocity / _curSpeed * GlobalVars.ProjectileSpeed;
+                _curSpeed = GlobalVars.ProjectileSpeed;
+            }
+        }
+
+        void Update()
+        {
+            ModifySpeed();
         }
     }
 }
