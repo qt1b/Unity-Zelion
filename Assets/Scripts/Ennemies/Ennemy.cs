@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Global;
+using Interfaces;
 using JetBrains.Annotations;
 using Photon.PhotonUnityNetworking.Code;
 using Porperty_Attributes;
@@ -210,7 +211,7 @@ namespace Ennemies
                     var playerPos = other.gameObject.transform.position;
                     var directionPlayer = (playerPos - gameObject.transform.position).normalized;
                     var curDirection = Rigidbody2D.velocity.normalized;
-                    if (_charge.stopOnCollision)
+                    if (_charge.stopOnCollision) // always true, else it instant-kills
                     {
                         StopCoroutine(currentAction);
                         _isCharging = false;
@@ -348,6 +349,7 @@ namespace Ennemies
 
         [SerializeAs("Charge time")] public float time;
 
-        [Tooltip("Stops to player")] public bool stopOnCollision;
+        //[Tooltip("Stops to player")] public bool stopOnCollision;
+        public bool stopOnCollision = true; // else it instant-kills the player
     }
 }

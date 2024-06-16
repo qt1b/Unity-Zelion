@@ -33,23 +33,10 @@ namespace Global {
 				new [] {1,1}, // slowdown
 				new [] {1,1} // goBackInTime
 			},
-			{ // level 0 -- TESTING VALUES, for the TUTORIAL
-				new [] {0,-999}, // x pos
-				new [] {0,-999}, // y pos
-				new [] {20,20}, // Life
-				new [] {20,20}, // stamina
-				new [] {20,20}, // mana
-				new [] {0,1}, // sword unlocked
-				new [] {1,1}, // bow unlocked
-				new [] {1,1}, // poison
-				new [] {1,1}, // dash
-				new [] {1,1}, // slowdown
-				new [] {1,1} // goBackInTime
-			},
 			{ // level 1 -- TESTING VALUES, for the FOREST // second save for unlocking the arc, positions should never be loaded
 				new [] {-16,-998}, // x pos
 				new [] {-3,-998}, // y pos
-				new [] {20,20}, // Life
+				new [] {60,20}, // Life
 				new [] {20,20}, // stamina
 				new [] {20,20}, // mana
 				new [] {1,1}, // sword unlocked
@@ -58,6 +45,19 @@ namespace Global {
 				new [] {1,1}, // dash
 				new [] {1,1}, // slowdown
 				new [] {1,1} // goBackInTime
+			},
+			{ // level 1.5 -- TESTING VALUES, for the FOREST BOSS
+				new [] {-3}, // x pos
+				new [] {11}, // y pos
+				new [] {20}, // Life
+				new [] {20}, // stamina
+				new [] {20}, // mana
+				new [] {1}, // sword unlocked
+				new [] {1}, // bow unlocked
+				new [] {0}, // poison
+				new [] {1}, // dash
+				new [] {0}, // slowdown
+				new [] {0} // goBackInTime
 			},
 			{ // level 2 -- TESTING VALUES, for the MINE
 				new [] {-67,-997}, // x pos
@@ -72,6 +72,19 @@ namespace Global {
 				new [] {1,1}, // slowdown
 				new [] {1,1} // goBackInTime
 			},
+			{ // level 2.5 -- for the BOSS of the MINE
+				new [] {0,0}, // x pos
+				new [] {0,0}, // y pos
+				new [] {6,6}, // Life
+				new [] {2,2}, // stamina
+				new [] {2,2}, // mana
+				new [] {0,1}, // sword unlocked
+				new [] {0,0}, // bow unlocked
+				new [] {0,0}, // poison
+				new [] {0,0}, // dash
+				new [] {0,0}, // slowdown
+				new [] {0,0} // goBackInTime
+			},
 			{ // level 3 -- TESTING VALUES, for the GARDEN (of the castle)
 				new [] {-237,-996}, // x pos
 				new [] {-46,-996}, // y pos
@@ -85,7 +98,7 @@ namespace Global {
 				new [] {1,1}, // slowdown
 				new [] {1,1} // goBackInTime
 			},
-			{ // level 3.5 -- TESTING VALUES, for the CASTLE
+			{ // level 3.2 -- TESTING VALUES, for the CASTLE
 				new [] {-237,-995}, // x pos
 				new [] {-48,-995}, // y pos
 				new [] {20,20}, // Life
@@ -98,22 +111,9 @@ namespace Global {
 				new [] {1,1}, // slowdown
 				new [] {1,1} // goBackInTime
 			},
-			{ // level --
+			{ // level 3.5 -- for the FINAL BOSS
 				new [] {-237,-994}, // x pos
 				new [] {-48,-994}, // y pos
-				new [] {6,6}, // Life
-				new [] {2,2}, // stamina
-				new [] {2,2}, // mana
-				new [] {0,1}, // sword unlocked
-				new [] {0,0}, // bow unlocked
-				new [] {0,0}, // poison
-				new [] {0,0}, // dash
-				new [] {0,0}, // slowdown
-				new [] {0,0} // goBackInTime
-			},
-			{ // level --
-				new [] {0,0}, // x pos
-				new [] {0,0}, // y pos
 				new [] {6,6}, // Life
 				new [] {2,2}, // stamina
 				new [] {2,2}, // mana
@@ -140,7 +140,7 @@ namespace Global {
 		// 6th : Castle
 		// 7th : FinalBoss
 		//-public static string FirstLevelName = "Quentin6"; // will not delete it as it serves the same purpose and can be useful for debugging
-		public static string[] LevelsName = new[] {"FinalBoss", "QuentinFirstLevelIntro","LVL1_Finale","Mine", "Chateau", "vrai_chateau"};
+		public static string[] LevelsName = new[] {"QuentinFirstLevelIntro","LVL1_Finale","BossForet","Mine","BossMine", "Chateau", "vrai_chateau","FinalBoss"};
 		public static byte CurrentLevelId = 0;
 		// public static string SecondLevelName = ???; // if needed, maybe we'll keep everything into one scene
 		public static string GameOverSceneName = "GameOver";
