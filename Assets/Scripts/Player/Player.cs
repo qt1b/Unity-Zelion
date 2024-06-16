@@ -579,34 +579,39 @@ namespace Player {
 
 		// ADD SOUNDS HERE
 		public void TakeDamages(ushort damage) {
-			photonView.RPC("TakeDmgRPC",RpcTarget.AllBuffered,(short)damage);
+			if (damage > 0) {
+				if (_healthBar.TryTakeDamagesStrict(damage)) {
+					photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,1f, 0.3f, 0.3f, 0.8f, 0.2f);
+				}
+				else {
+					_healthBar.ChangeCurVal(0);
+					photonView.RPC("TakeDmgRPC",RpcTarget.AllBuffered,(short)damage);
+				}
+			}
 		}
 
 		[PunRPC]
 		public void TakeDmgRPC(short damage) {
-			if (_healthBar.TryTakeDamagesStrict((ushort)damage)) {
-				photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,1f, 0.3f, 0.3f, 0.8f, 0.2f);
-			}
-			else {
-				_healthBar.ChangeCurVal(0);
-				// play some sound
-				isDead = true;
-				if (photonView.IsMine) GameOver();
-				DisableOrEnablePlayer(false);
-			}
+			isDead = true;
+			if (photonView.IsMine) GameOver();
+			DisableOrEnablePlayer(false);
 		}
+
 		public void Heal(ushort heal) {
-			photonView.RPC("HealRPC",RpcTarget.AllBuffered,(short)heal);
+			if (heal != 0) {
+				if (_healthBar.curValue == 0) {
+					photonView.RPC("HealRPC", RpcTarget.AllBuffered, (short)heal);
+				}
+				_healthBar.Heal(heal);
+				photonView.RPC("ChangeColorWaitRpc", RpcTarget.AllBuffered, 0.3f, 1f, 0.3f, 0.8f, 0.2f);
+			}
 		}
+
 		[PunRPC]
 		public void HealRPC(short heal) {
-			if (_healthBar.curValue == 0) {
-				DisableOrEnablePlayer(true);
-				if (photonView.IsMine) Revive();
-				isDead = false;
-			}
-			_healthBar.Heal((ushort)heal);
-			photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,0.3f, 1f, 0.3f, 0.8f, 0.2f);
+			DisableOrEnablePlayer(true);
+			if (photonView.IsMine) Revive();
+			isDead = false;
 		}
 
 		// these ones are not used over network

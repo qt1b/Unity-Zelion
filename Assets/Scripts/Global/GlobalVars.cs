@@ -21,8 +21,8 @@ namespace Global {
 		// second dim : Xpos ,etc...
 		public static readonly int[,][] SaveLookupArray2 = new int[7,11][] {
 			{ // level 0 -- TESTING VALUES, for the TUTORIAL
-				new [] {0,0}, // x pos
-				new [] {0,0}, // y pos
+				new [] {0,-999}, // x pos
+				new [] {0,-999}, // y pos
 				new [] {20,20}, // Life
 				new [] {20,20}, // stamina
 				new [] {20,20}, // mana
@@ -34,8 +34,8 @@ namespace Global {
 				new [] {1,1} // goBackInTime
 			},
 			{ // level 1 -- TESTING VALUES, for the FOREST // second save for unlocking the arc, positions should never be loaded
-				new [] {-16,0}, // x pos
-				new [] {-3,0}, // y pos
+				new [] {-16,-998}, // x pos
+				new [] {-3,-998}, // y pos
 				new [] {20,20}, // Life
 				new [] {20,20}, // stamina
 				new [] {20,20}, // mana
@@ -47,8 +47,8 @@ namespace Global {
 				new [] {1,1} // goBackInTime
 			},
 			{ // level 2 -- TESTING VALUES, for the MINE
-				new [] {-67,-15}, // x pos
-				new [] {30,-5}, // y pos
+				new [] {-67,-997}, // x pos
+				new [] {30,-997}, // y pos
 				new [] {20,20}, // Life
 				new [] {20,20}, // stamina
 				new [] {20,20}, // mana
@@ -60,8 +60,8 @@ namespace Global {
 				new [] {1,1} // goBackInTime
 			},
 			{ // level 3 -- TESTING VALUES, for the GARDEN (of the castle)
-				new [] {-237,-237}, // x pos
-				new [] {-46,-46}, // y pos
+				new [] {-237,-996}, // x pos
+				new [] {-46,-996}, // y pos
 				new [] {20,20}, // Life
 				new [] {20,20}, // stamina
 				new [] {20,20}, // mana
@@ -73,8 +73,8 @@ namespace Global {
 				new [] {1,1} // goBackInTime
 			},
 			{ // level 3.5 -- TESTING VALUES, for the CASTLE
-				new [] {-237,-237}, // x pos
-				new [] {-48,-48}, // y pos
+				new [] {-237,-995}, // x pos
+				new [] {-48,-995}, // y pos
 				new [] {20,20}, // Life
 				new [] {20,20}, // stamina
 				new [] {20,20}, // mana
@@ -86,8 +86,8 @@ namespace Global {
 				new [] {1,1} // goBackInTime
 			},
 			{ // level --
-				new [] {-237,0}, // x pos
-				new [] {-48,0}, // y pos
+				new [] {-237,-994}, // x pos
+				new [] {-48,-994}, // y pos
 				new [] {6,6}, // Life
 				new [] {2,2}, // stamina
 				new [] {2,2}, // mana
