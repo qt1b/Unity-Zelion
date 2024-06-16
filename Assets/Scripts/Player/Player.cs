@@ -585,13 +585,13 @@ namespace Player {
 				}
 				else {
 					_healthBar.ChangeCurVal(0);
-					photonView.RPC("TakeDmgRPC",RpcTarget.AllBuffered,(short)damage);
+					photonView.RPC("TakeDmgRPC",RpcTarget.AllBuffered);
 				}
 			}
 		}
 
 		[PunRPC]
-		public void TakeDmgRPC(short damage) {
+		public void TakeDmgRPC() {
 			isDead = true;
 			if (photonView.IsMine) GameOver();
 			DisableOrEnablePlayer(false);
@@ -600,7 +600,7 @@ namespace Player {
 		public void Heal(ushort heal) {
 			if (heal != 0) {
 				if (_healthBar.curValue == 0) {
-					photonView.RPC("HealRPC", RpcTarget.AllBuffered, (short)heal);
+					photonView.RPC("HealRPC", RpcTarget.AllBuffered);
 				}
 				_healthBar.Heal(heal);
 				photonView.RPC("ChangeColorWaitRpc", RpcTarget.AllBuffered, 0.3f, 1f, 0.3f, 0.8f, 0.2f);
@@ -608,7 +608,7 @@ namespace Player {
 		}
 
 		[PunRPC]
-		public void HealRPC(short heal) {
+		public void HealRPC() {
 			DisableOrEnablePlayer(true);
 			if (photonView.IsMine) Revive();
 			isDead = false;
@@ -639,7 +639,7 @@ namespace Player {
 		private void GameOver() {
 			List<Player> otherPlayers = new List<Player>();
 			foreach (Player player in GlobalVars.PlayerList) {
-				if (!player.photonView.IsMine && player.isActiveAndEnabled) otherPlayers.Add(player);
+				if (!player.photonView.IsMine && player._healthBar.curValue != 0) otherPlayers.Add(player);
 			}
 			if (otherPlayers.Count > 0) {
 				otherPlayers[0].GetComponentInChildren<Camera>().enabled = true;
