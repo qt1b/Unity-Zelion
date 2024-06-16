@@ -7,28 +7,24 @@ namespace Global {
 		// we will put here all values used for the dialogues.
 		// this will allow us to easily locate text and use multilingual values, etc
 		public static readonly Dictionary<string, string[]> DialogsDict = new Dictionary<string, string[]>() {
-			{ "tuto1", new[] { "Welcome to Zelion ! Please use the arrow keys or WASD to move, and F to close this dialog.", "Bienvenue dans Zélion ! Utilise les flèches ou les touches ZQSD pour te déplacer, et la touche F pour fermer ce dialogue et interragir avec le décor.", "説明第一" } },
-			{ "lore1", new[] { "Is that you, the hero who will bring back light to Masteria, our country?", "lore 1", "説明第一" } },
-			{ "lore2", new[] { "Is that you, the hero who will bring back light to Masteria, our country?", "lore 2", "説明第一" } },
-			{ "lore3", new[] { "Is that you, the hero who will bring back light to Masteria, our country?", "lore 3", "説明第一" } },
-			{ "lore4", new[] { "Is that you, the hero who will bring back light to Masteria, our country?", "lore 4", "説明第一" } },
-			{ "giveSword", new[] { "O, great hero, please take this sword along your quest. Please find the Zelion, beat Eclipses and bring back the light to these lands.", "lore 1", "説明第一" } },
-			{ "rmq1", new[] { "It seems that when playing in multiplayer, when one player goes to another zone, all the other players are teleported there ! At least that's what I heard...", "Il parait que lorsque l'on joue en multijoueur, quand un joueur change de zone, l'autre joueur se retrouve emporté avec lui ! Enfin... c'est ce que j'ai entendu.", "他のプレイヤーが次のエリアに行くと、君もそこに飛ばされるらしいぜ！聞いた話によると、ね..." } },
-			{ "dialog1", new[] { "Dialog 1", "Dialogue 1", "会話１" } },
-			//{ "troll1", new[] { $"Are you really {PhotonNetwork.NickName}, the hero ? I can't belive it !", $"Est-ce vraiment toi, {PhotonNetwork.NickName}, le fameux héros ? Je n'en crois pas mes yeux !", $"本当に勇者{PhotonNetwork.NickName}さんですか？信じられない！" } },
-			{ "example1", new[] { "Example 1", "Example 1", "第一例" } 
-			} ,  {"chest canvas" , new[] { "Content of Chest " , "Contenue du Coffre" , "ze Content of ze chesuto "}}
-			,  {"Empty_Chest" , new[] { "It looks empty." , "Il semble vide." , "空っぽに見える"}}
-			,  {"mine_south" , new[] { "Flee the south of the mine, there are strange noises and a horrible creature is rampaging..." , "Fuis le sud de la mine, il y a des bruits bizarres et une horrible créature se déchaîne..." , "鉱山の南から逃げて、奇妙な音が聞こえて、恐ろしい生き物が暴れている..."}}
-			,  {"Locked_chest" , new[] { "The chest is locked." , "le coffre est verouillé." , "鍵がかかっています"}}
-			,  {"Dialog_NPC_Red" , new[] { "Leaving already ?" , "Tu pars déjà?" , "もう行くのですか？"}}
+			{ "tuto1", new[] { "Welcome to Zelion ! Please use the arrow keys or WASD to move, and F to close this dialog and interact with elements.", "Bienvenue dans Zélion ! Utilise les flèches ou les touches ZQSD pour te déplacer, et la touche F pour fermer ce dialogue et interragir avec le décor.", "ZELIONへようこそ！矢印やWASDを使って動いて、Fキーを使ってこのダイアログを閉じて、人々と話せる。" } }
+			, { "lore1", new[] { "6 Years ago, the Eclipse stole the sun and plunged this world into darkness. Everyone has put their hopes on you. C'mon, what are you waiting for!", "Il y a 6 ans, Eclipse a volé le soleil, et plongé notre monde dans la pénombre. Tout le monde crois en toi, pars, noble héros!", "６年前、エクリプスは太陽を奪え、この世界を深い闇にくらま。皆が君のことを信じているよ！さぁ、行きなさい！" } }
+			, { "lore2", new[] { "Is that you, the hero who will bring back light to Masteria, our country?", "Est-ce donc toi, le héros qui va rétablir la lumière sur Masteria, notre pays ?", "君が勇者か？お願い、マステリア、僕らの国に、光を戻させてくれ！" } }
+			, { "lore3", new[] { "Don't you should have a weapon ? Please talk to the blue guy on the store", "Ne serais tu pas mieux avec une arme ? Va parler à la personne au manteau bleu derrière le comptoir.", "ねぇ、武器を持った方が良くない？店員の青いやつに話してみてください。" } }
+			, { "lore4", new[] { "Be wary, the dark forest is full of monsters !", "Sois prudent, la forêt tenebreuse est remplie de monstres !", "暗闇の森はモンスターにあふれている。気を付けてください！" } }
+			, { "giveSword", new[] { "O, great hero, please take this sword along your quest. Please find the Zelion, beat Eclipses and bring back the light to these lands.", "Ô grand héros, prend cette épée avec toi au long de ta quête. Trouve le ZELION, et bat Éclipse afin de rétablir la lumière sur ces terres.", "勇者よ、この剣を取ってください。ZELIONを見つけ、エクリプスを倒してください。" } }
+			, { "rmq1", new[] { "It seems that when playing in multiplayer, when one player goes to another zone, all the other players are teleported there ! At least that's what I heard...", "Il parait que lorsque l'on joue en multijoueur, quand un joueur change de zone, l'autre joueur se retrouve emporté avec lui ! Enfin... c'est ce que j'ai entendu.", "他のプレイヤーが次のエリアに行くと、君もそこに飛ばされるらしいぜ！聞いた話によると、ね..." } }
+			, {"chest canvas" , new[] { "Content of Chest " , "Contenue du Coffre" , "宝箱の内容"}}
+			, {"Empty_Chest" , new[] { "It looks empty." , "Il semble vide." , "空っぽに見える"}}
+			, {"mine_south" , new[] { "Flee the south of the mine, there are strange noises and a horrible creature is rampaging..." , "Fuis le sud de la mine, il y a des bruits bizarres et une horrible créature se déchaîne..." , "鉱山の南から逃げて、奇妙な音が聞こえて、恐ろしい生き物が暴れている..."}}
+			, {"Locked_chest" , new[] { "The chest is locked." , "le coffre est verouillé." , "鍵がかかっています"}}
+			, {"Dialog_NPC_Red" , new[] { "Leaving already ?" , "Tu pars déjà?" , "もう行くのですか？"}}
 			//,  {"Dialog_NPC_Green" , new[] { "Don't get lost in the dark, only God knows what's in there." , "Ne te perds pas dans l'obscurité, seul Dieu sait ce qu'il y a à l'intérieur." , "暗闇で迷わないで、そこに何があるかは神のみぞ知る。"}}
-			,  {"Dialog_NPC_Green" , new[] { "The light of God will guide you out of this darkness, have faith in him." , "La lumière de Dieu vous guidera hors de cette obscurité, ayez foi en lui." , "神の光があなたをこの暗闇から導いてくれるでしょう。神を信じてください。"}}
-			,  {"Dialog_NPC_Blue" , new[] { "If you ever find a bow, you can aim by maintaining the left click pressed, and shoot by and release the left click." , "Si jamais tu trouve un arc, tu peux viser avec en maintenant le clic droit, et tirer en le relachant." , "弓を見つかったら、左クリックを推して狙って、右クリックを放して射る事が出来る。"}}
-			,  {"giveBow" , new[] { "There is an old bow in the rusty chest, could be useful." , "Il y a un vieux arc dans le coffre rouillé, il pourrait être utile." , "錆びた箱の中に古い弓がある、役に立つかもしれない"}}
+			, {"Dialog_NPC_Green" , new[] { "The light of God will guide you out of this darkness, have faith in him." , "La lumière de Dieu vous guidera hors de cette obscurité, ayez foi en lui." , "神の光があなたをこの暗闇から導いてくれるでしょう。神を信じてください。"}}
+			, {"Dialog_NPC_Blue" , new[] { "If you ever find a bow, you can aim by maintaining the left click pressed, and shoot by and release the left click." , "Si jamais tu trouve un arc, tu peux viser avec en maintenant le clic droit, et tirer en le relachant." , "弓を見つかったら、左クリックを推して狙って、右クリックを放して射る事が出来る。"}}
+			, {"giveBow" , new[] { "There is an old bow in the rusty chest, could be useful." , "Il y a un vieux arc dans le coffre rouillé, il pourrait être utile." , "錆びた箱の中に古い弓がある、役に立つかもしれない"}}
 			, {"swordTutorial",new []{"You can wield a sword by pressing the SPACE button !","Tu peux utiliser l'épée en appuyant sur la barre ESPACE !","スペースキーを使って、剣を使うことが出来る。"}}
 			, {"forestAhead",new []{"On your right, the Dark Forest.","Tu peux utiliser l'épée en appuyant sur la barre ESPACE !","スペースキーを使って、剣を使うことが出来る。"}}
-
 		};
 		public static string GameOverText(string time) {
 			if (GlobalVars.Language == 0) return $"Time elapsed {time}.\nNumber of deaths : {GlobalVars.DeathCount}\nNumber of Game Over : {GlobalVars.GameOverCount}\nNumber of players : {GlobalVars.NbrOfPlayers}";
