@@ -105,7 +105,7 @@ MonoBehaviour:
   damage: 3
   dieTime: 4
   notDamageTags:
-  - Player
+  - Boss
 --- !u!58 &1338577184756033329
 CircleCollider2D:
   m_ObjectHideFlags: 0
