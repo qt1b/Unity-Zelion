@@ -121,7 +121,259 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Armored Axeman-Attack03_0
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69f52beda0628b04a90a5bd4ce527c4a
+      internalID: 1784590698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Attack03_1
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c93047e04b0fde4c8a975c72f9aca96
+      internalID: 562442629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Attack03_3
+      rect:
+        serializedVersion: 2
+        x: 219
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 888b1cd5e0d37f74eadc79b457a7b180
+      internalID: 65118325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Attack03_4
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d614a5df927cc5479e4b2b8c171a4ff
+      internalID: 373831921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Attack03_6
+      rect:
+        serializedVersion: 2
+        x: 418
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f9fb309192450a44974f58e0a591bba
+      internalID: -1178878267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Attack03_7
+      rect:
+        serializedVersion: 2
+        x: 518
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 66167fcfc33718d46b5cac378d5e71c0
+      internalID: -1235555980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Attack03_9
+      rect:
+        serializedVersion: 2
+        x: 619
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82313186325699c49bc0d7e7b207782f
+      internalID: 368121909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Attack03_11
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: faa684e429c6aa84fa6dc5ebf05b9aef
+      internalID: -1813526811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Attack03_12
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fadf2dc707c7fac4a9e577e1aa69a75f
+      internalID: -1788283869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Attack03_14
+      rect:
+        serializedVersion: 2
+        x: 921
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 98b129b93b7e58746b6440663db5b421
+      internalID: 95043979
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Attack03_15
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba824390d679f4b4298b68a284251aa2
+      internalID: 1442644064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Attack03_16
+      rect:
+        serializedVersion: 2
+        x: 1120
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45f1010664e2f84408459cff9acb0aef
+      internalID: 1382215803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -132,7 +384,24 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Armored Axeman-Attack03_0: 1784590698
+      Armored Axeman-Attack03_1: 562442629
+      Armored Axeman-Attack03_10: -1886860003
+      Armored Axeman-Attack03_11: -1813526811
+      Armored Axeman-Attack03_12: -1788283869
+      Armored Axeman-Attack03_13: 1211831667
+      Armored Axeman-Attack03_14: 95043979
+      Armored Axeman-Attack03_15: 1442644064
+      Armored Axeman-Attack03_16: 1382215803
+      Armored Axeman-Attack03_2: 902689530
+      Armored Axeman-Attack03_3: 65118325
+      Armored Axeman-Attack03_4: 373831921
+      Armored Axeman-Attack03_5: -12474426
+      Armored Axeman-Attack03_6: -1178878267
+      Armored Axeman-Attack03_7: -1235555980
+      Armored Axeman-Attack03_8: 602525123
+      Armored Axeman-Attack03_9: 368121909
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

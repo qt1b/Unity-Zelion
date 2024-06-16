@@ -126,12 +126,12 @@ TextureImporter:
       name: Armored Axeman-Attack01-left_3
       rect:
         serializedVersion: 2
-        x: 34
+        x: 216
         y: 36
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -144,36 +144,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Armored Axeman-Attack01-left_5
-      rect:
-        serializedVersion: 2
-        x: 127
-        y: 36
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ad635a3e59129b6428ff56d422de7056
-      internalID: 933798055
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Armored Axeman-Attack01-left_6
       rect:
         serializedVersion: 2
-        x: 227
-        y: 35
-        width: 32
-        height: 32
+        x: 416
+        y: 36
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -189,12 +168,12 @@ TextureImporter:
       name: Armored Axeman-Attack01-left_7
       rect:
         serializedVersion: 2
-        x: 326
+        x: 519
         y: 36
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -210,12 +189,12 @@ TextureImporter:
       name: Armored Axeman-Attack01-left_9
       rect:
         serializedVersion: 2
-        x: 415
-        y: 37
-        width: 45
-        height: 37
+        x: 717
+        y: 36
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -228,85 +207,106 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Armored Axeman-Attack01-left_11
+      name: Armored Axeman-Attack01-left_0
       rect:
         serializedVersion: 2
-        x: 536
-        y: 37
-        width: 32
-        height: 32
+        x: 17
+        y: 36
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3c3eed8c62765c74fbe49c094f51a392
-      internalID: -115317442
+      spriteID: c912c7a682c0076458a6e7d660671c15
+      internalID: -1050068561
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Armored Axeman-Attack01-left_12
+      name: Armored Axeman-Attack01-left_2
       rect:
         serializedVersion: 2
-        x: 633
+        x: 116
         y: 36
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dfc8229684f701e44b61d44f7a6b6cb4
-      internalID: -99321102
+      spriteID: 40198ee49d2a3df4c82fd8685413ee1d
+      internalID: 69268582
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Armored Axeman-Attack01-left_13
+      name: Armored Axeman-Attack01-left_4
       rect:
         serializedVersion: 2
-        x: 734
+        x: 315
         y: 36
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d79d77e5d1d2d084a886be5efaa4c429
-      internalID: 970361801
+      spriteID: 65a983d25f10b674cbef9a097229feb7
+      internalID: -1808827524
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Armored Axeman-Attack01-left_14
+      name: Armored Axeman-Attack01-left_8
       rect:
         serializedVersion: 2
-        x: 830
+        x: 618
         y: 36
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3227af10bea807f40bde5ca114a40ace
-      internalID: 1380693469
+      spriteID: 254cf740fce916f4ea8341d6b829cb18
+      internalID: 313524782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armored Axeman-Attack01-left_10
+      rect:
+        serializedVersion: 2
+        x: 817
+        y: 36
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 36278859e5f44a841ab8af0dc97f49fb
+      internalID: 1189657149
       vertices: []
       indices: 
       edges: []
@@ -325,10 +325,6 @@ TextureImporter:
       Armored Axeman-Attack01-left_0: -1050068561
       Armored Axeman-Attack01-left_1: 1332437315
       Armored Axeman-Attack01-left_10: 1189657149
-      Armored Axeman-Attack01-left_11: -115317442
-      Armored Axeman-Attack01-left_12: -99321102
-      Armored Axeman-Attack01-left_13: 970361801
-      Armored Axeman-Attack01-left_14: 1380693469
       Armored Axeman-Attack01-left_2: 69268582
       Armored Axeman-Attack01-left_3: 1737121788
       Armored Axeman-Attack01-left_4: -1808827524
