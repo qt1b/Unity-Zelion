@@ -16,7 +16,6 @@ namespace PUN {
 		// TODO : change more UI elements, in function of if the player is masterClient, what it can do, etc
 		// does not use photon's lobby system, may be worth the try ?
 		#region Public Fields
-		public Button JoinButton;
 		public TMP_InputField RoomIdInput;
 		public TMP_Text RoomNameText;
 		public Button StartGameButton;

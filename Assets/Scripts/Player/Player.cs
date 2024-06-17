@@ -514,7 +514,7 @@ namespace Player {
 			GameObject arrow = PhotonNetwork.Instantiate("Prefabs/Projectiles/Arrow",transform.position+pos,rot);
 			var proj = arrow.GetComponent<Projectile>();
 			proj.SetVelocity(pos);
-			proj.damage = (arrowDmg != 0 ? (ushort)3 : arrowDmg);
+			proj.damage = (arrowDmg == 0 ? (ushort)3 : arrowDmg);
 			yield return new WaitForSeconds(_bowCooldown /* GlobalVars.PlayerSpeed*/ );
 			_canShootArrow = true;
 		}
@@ -559,7 +559,7 @@ namespace Player {
 			}
 			/*GameObject pZone =*/
 			GameObject pZone = PhotonNetwork.Instantiate("Prefabs/Projectiles/PoisonZone", new Vector3(position.x + pos.x, position.y + pos.y, 0f), new Quaternion());
-			pZone.GetComponent<PoisonZone>().damage = (poisonDmg != 0 ? (ushort)1 : poisonDmg);
+			pZone.GetComponent<PoisonZone>().damage = (poisonDmg == 0 ? (ushort)1 : poisonDmg);
 			yield return new WaitForSeconds(_poisonBombCooldown /* GlobalVars.PlayerSpeed*/ );
 			_canThrowPoisonBomb = true;
 		}
@@ -737,8 +737,8 @@ namespace Player {
 		public void InstaKill(bool val) {
 			if (val) {
 				this.GetComponentInChildren<InflictDammage>().damage = (ushort)short.MaxValue;
-				arrowDmg = (ushort)short.MaxValue;
-				poisonDmg = (ushort)short.MaxValue;
+				arrowDmg = (ushort)(short.MaxValue - 3);
+				poisonDmg = (ushort)(short.MaxValue - 3);
 			}
 			else {
 				this.GetComponentInChildren<InflictDammage>().damage = 7;
