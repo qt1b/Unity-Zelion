@@ -350,6 +350,6 @@ namespace Ennemies
         [SerializeAs("Charge time")] public float time;
 
         //[Tooltip("Stops to player")] public bool stopOnCollision;
-        public bool stopOnCollision = true; // else it instant-kills the player
+        [NonSerialized]public bool stopOnCollision = true; // else it instant-kills the player
     }
 }

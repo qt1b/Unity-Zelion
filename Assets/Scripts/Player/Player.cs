@@ -580,7 +580,6 @@ namespace Player {
 					photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,1f, 0.3f, 0.3f, 0.8f, 0.2f);
 				}
 				else {
-					_healthBar.ChangeCurVal(0);
 					photonView.RPC("TakeDmgRPC",RpcTarget.AllBuffered);
 				}
 			}

@@ -61,7 +61,7 @@ namespace Bars {
         }
         public bool TryTakeDamagesStrict(ushort damages) {
             TakeDamages(damages);
-            return damages == curValue;
+            return curValue != 0;
         }
 
         public void TakeDamages(ushort damages) {
