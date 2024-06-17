@@ -47,8 +47,8 @@ namespace Global {
 				new [] {1,1} // goBackInTime
 			},
 			{ // level 1.5 -- TESTING VALUES, for the FOREST BOSS
-				new [] {-3}, // x pos
-				new [] {11}, // y pos
+				new [] {-10}, // x pos
+				new [] {17}, // y pos
 				new [] {20}, // Life
 				new [] {20}, // stamina
 				new [] {20}, // mana
