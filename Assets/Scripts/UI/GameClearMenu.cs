@@ -34,15 +34,11 @@ namespace UI {
 		// WARNING : play From The Beginning !
 		// behaves incorrectly
 		public void PlayAgain() {
+			GlobalVars.CleanUpVars();
 			photonView.RPC("PlayAgainRPC",RpcTarget.MasterClient);
 		}
 		[PunRPC]
 		public void PlayAgainRPC() {
-			GlobalVars.SaveId = 0; // from the beginning
-			GlobalVars.DeathCount = 0;
-			GlobalVars.NbrOfPlayers = (byte)PhotonNetwork.CurrentRoom.PlayerCount;
-			GlobalVars.GameOverCount = 0;
-			GlobalVars.TimeStartedAt = null;
 			// photonView.RPC("LoadDataRPC",RpcTarget.AllBuffered); // may not be necessary ??
 			PhotonNetwork.LoadLevel(GlobalVars.LevelsName[GlobalVars.CurrentLevelId]);
 		}
@@ -54,7 +50,7 @@ namespace UI {
 		public void MainMenu(){
 			//PhotonNetwork.Destroy(Player.Player.LocalPlayerInstance);
 			//Player.Player.LocalPlayerInstance = null;
-			GlobalVars.TimeStartedAt = null;
+			GlobalVars.CleanUpVars();
 			PhotonNetwork.LeaveRoom();
 			PhotonNetwork.Disconnect();
 			SceneManager.LoadScene(0);

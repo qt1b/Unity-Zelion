@@ -151,7 +151,13 @@ namespace Global {
 		#endregion
 
 		public static void CleanUpVars() {
-			GameOverCount = 0;
+			GlobalVars.SaveId = 0; // from the beginning
+			GlobalVars.DeathCount = 0;
+			GlobalVars.NbrOfPlayers = (byte)PhotonNetwork.CurrentRoom.PlayerCount;
+			GlobalVars.GameOverCount = 0;
+			GlobalVars.CurrentLevelId = 0;
+			GlobalVars.TimeStartedAt = null;
+
 		}
 		#region IPunObservable
 		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {

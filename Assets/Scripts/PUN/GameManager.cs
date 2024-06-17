@@ -32,13 +32,13 @@ namespace PUN {
 		}
 
 		private void Start() {
-			Debug.Log("Game Manager : Starting ...");
+			// Debug.Log("Game Manager : Starting ...");
 			// GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Player/Player");
 			// decided not to keep the instance of the player between scenes for now
 			// if (global::Player.Player.LocalPlayerInstance == null) {
 			GlobalVars.PlayerList = new();
 			if (GlobalVars.TimeStartedAt is null) Global.GlobalVars.TimeStartedAt = DateTime.UtcNow;
-			Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
+			// Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
 			// we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
 			PhotonNetwork.Instantiate("Prefabs/Player/Player", Vector3.zero, Quaternion.identity, 0);
 			Instantiate(Resources.Load<GhostPlayer>("Prefabs/Player/GhostPlayer"));
@@ -71,9 +71,9 @@ namespace PUN {
 		#region Photon Callbacks
 
 		public override void OnDisconnected(DisconnectCause cause) {
-			Debug.LogError("DISCONNECTED !!");
+			// Debug.LogError("DISCONNECTED !!");
 			if (PhotonNetwork.OfflineMode is true) {
-				Debug.LogError("Offline mode Activated, trying to reconnect ??");
+				// Debug.LogError("Offline mode Activated, trying to reconnect ??");
 				// do not Disconnect !!!
 				// idk if it works in offline mode
 				PhotonNetwork.ReconnectAndRejoin();
@@ -90,7 +90,7 @@ namespace PUN {
 		*/
 		public override void OnLeftRoom() {
 			WantToDisconnect = true;
-			Debug.LogError("OnLeftRoom : Disconnected");
+			// Debug.LogError("OnLeftRoom : Disconnected");
 			SceneManager.LoadScene(0);
 			global::Player.Player.LocalPlayerInstance = null;
 			Destroy(gameObject); // destroys this very game manager

@@ -766,8 +766,8 @@ namespace Player {
 				stream.SendNext((short)_healthBar.curValue);
 			}
 			else {
-				ushort ncurValue = (ushort)(short)stream.ReceiveNext();
-				if (ncurValue != _healthBar.curValue) _healthBar.ChangeCurVal(ncurValue);
+				_healthBar.ChangeCurVal((ushort)(short)stream.ReceiveNext());
+				// if (ncurValue != _healthBar.curValue) _healthBar.ChangeCurVal(ncurValue);
 			}
 		}
 		#endregion
