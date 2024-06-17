@@ -60,8 +60,8 @@ namespace Global {
 				new [] {0} // goBackInTime
 			},
 			{ // level 2 -- TESTING VALUES, for the MINE
-				new [] {-67,-997}, // x pos
-				new [] {30,-997}, // y pos
+				new [] {-67,-67}, // x pos
+				new [] {30,-30}, // y pos
 				new [] {20,20}, // Life
 				new [] {20,20}, // stamina
 				new [] {20,20}, // mana
@@ -86,8 +86,8 @@ namespace Global {
 				new [] {0} // goBackInTime
 			},
 			{ // level 3 -- TESTING VALUES, for the GARDEN (of the castle)
-				new [] {-237,-996}, // x pos
-				new [] {-46,-996}, // y pos
+				new [] {-237,-237}, // x pos
+				new [] {-46,-46}, // y pos
 				new [] {20,20}, // Life
 				new [] {20,20}, // stamina
 				new [] {20,20}, // mana
@@ -99,8 +99,8 @@ namespace Global {
 				new [] {1,1} // goBackInTime
 			},
 			{ // level 3.2 -- TESTING VALUES, for the CASTLE
-				new [] {-237,-995}, // x pos
-				new [] {-48,-995}, // y pos
+				new [] {-237,-237}, // x pos
+				new [] {-48,-48}, // y pos
 				new [] {20,20}, // Life
 				new [] {20,20}, // stamina
 				new [] {20,20}, // mana
@@ -112,8 +112,8 @@ namespace Global {
 				new [] {1,1} // goBackInTime
 			},
 			{ // level 3.5 -- for the FINAL BOSS
-				new [] {-237,-994}, // x pos
-				new [] {-48,-994}, // y pos
+				new [] {-237,-237}, // x pos
+				new [] {-48,-48}, // y pos
 				new [] {6,6}, // Life
 				new [] {2,2}, // stamina
 				new [] {2,2}, // mana
