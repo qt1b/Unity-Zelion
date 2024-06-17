@@ -15,6 +15,7 @@ namespace Actions {
         private TMP_Text dialogText;
         private static byte _unitsBeforeSound = 5;
         [CanBeNull]private Coroutine curText;
+        private bool once;
         
         public void Start() {
             dialogText = dialogBox.GetComponentInChildren<TextMeshProUGUI>();
@@ -70,7 +71,10 @@ namespace Actions {
 
         
         void OnTriggerEnter2D(Collider2D other) {
-            //OnTriggerExit2D(other);
+            if (!dialogBox.activeInHierarchy && !once) {
+                activateDialog();
+                once = true;
+            }
         }
 
 
