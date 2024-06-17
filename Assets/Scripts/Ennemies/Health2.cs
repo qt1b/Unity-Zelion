@@ -46,7 +46,6 @@ namespace Ennemies {
 
 		public void TakeDamages(ushort damage) {
 			if (_healthBar.TryTakeDamagesStrict(damage)) {
-				_healthBar.TakeDamages(damage);
 				photonView.RPC("ChangeColorWaitRpc", RpcTarget.AllBuffered, 1f, 0.3f, 0.3f, 0.5f);
 			}
 			else Die();

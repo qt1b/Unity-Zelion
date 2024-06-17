@@ -338,7 +338,7 @@ namespace Player {
 						}
 						else if ( Input.GetKeyDown(KeyCode.Mouse0)) {
 							if (_bowUnlocked) {
-								_animator.SetBool(AimingBow, true);
+								// _animator.SetBool(AimingBow, true);
 								// bow aiming audio effect
 								_isAimingArrow = true;
 								speedModifier = _attackSpeedNerf;
@@ -352,21 +352,17 @@ namespace Player {
 							}
 						}
 						// poison zone: audio from the prefab
-						else if (Input.GetKeyDown(KeyCode.Mouse1)) {
-							if (_poisonUnlocked) {
-								_animator.SetBool(AimingBomb, true);
+						else if (Input.GetKeyDown(KeyCode.Mouse1) && _poisonUnlocked) {
+								//_animator.SetBool(AimingBomb, true);
 								// poison aiming audio effect
 								_isAimingBomb = true;
 								speedModifier = _attackSpeedNerf;
 								if (_canThrowPoisonBomb) _poisonZonePreviewRef.SetActive(true);
+								else AudioManager.Instance.Play("unauthorized");
 								PlacePreviewZone();
-							}
-							else {
-								AudioManager.Instance.Play("unauthorized");
-							}
 						}
-						else if ( Input.GetKeyDown(KeyCode.Q) ){
-							if (CanSlowDownTime &&_manaBar.TryTakeDamages(5)) {
+						else if ( Input.GetKeyDown(KeyCode.Q) && CanSlowDownTime){
+							if (_manaBar.TryTakeDamages(5)) {
 								AudioManager.Instance.Play("slowdownSpell");
 								StartCoroutine(SlowDownTimeFor(4f));
 							}
@@ -411,9 +407,9 @@ namespace Player {
 			// will be enemy speed, using player speed to test the property
 			// like color
 			// float oldVal = GlobalVars.PlayerSpeed.Value;
-			GlobalVars.EnnemySpeed = 0.5f;
+			GlobalVars.EnnemySpeed = 0.2f;
 			// _animator.speed = GlobalVars.PlayerSpeed; // to remove if only slowing down enemies
-			GlobalVars.ProjectileSpeed = 0.5f;
+			GlobalVars.ProjectileSpeed = 0.2f;
 			_animator.speed = GlobalVars.PlayerSpeed; // to remove if only slowing down enemies
 			_slowdownAcc += 1;
 			yield return new WaitForSeconds(duration);
@@ -584,7 +580,6 @@ namespace Player {
 					photonView.RPC("ChangeColorWaitRpc",RpcTarget.AllBuffered,1f, 0.3f, 0.3f, 0.8f, 0.2f);
 				}
 				else {
-					_healthBar.ChangeCurVal(0);
 					photonView.RPC("TakeDmgRPC",RpcTarget.AllBuffered);
 				}
 			}

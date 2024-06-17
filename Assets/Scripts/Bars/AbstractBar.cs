@@ -60,11 +60,8 @@ namespace Bars {
             else return false;
         }
         public bool TryTakeDamagesStrict(ushort damages) {
-            if (damages < curValue) {
-                TakeDamages(damages);
-                return true;
-            }
-            else return false;
+            TakeDamages(damages);
+            return curValue != 0;
         }
 
         public void TakeDamages(ushort damages) {

@@ -30,10 +30,13 @@ EditorBuildSettings:
     path: Assets/Scenes/Chateau.unity
     guid: 6745fb0e4483c8a44b2a850a02319000
   - enabled: 1
+    path: Assets/Scenes/BossForet.unity
+    guid: 3f067ebcb2026e04b93494ade1fe00ee
+  - enabled: 1
     path: Assets/Scenes/vrai_chateau.unity
     guid: 877d60fa49aa197498b8bca83180bcd4
   - enabled: 1
-    path: Assets/Scenes/BoosForet.unity
+    path: Assets/Scenes/BossMine.unity
     guid: 24d3a6b21f8d8c646b0cee9d9a73cd29
   - enabled: 1
     path: Assets/Scenes/FinalBoss.unity
