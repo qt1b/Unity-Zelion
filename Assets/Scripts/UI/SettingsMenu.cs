@@ -93,7 +93,7 @@ namespace UI {
             AudioManager.Instance.Play("click2");
         }        
         public void Clic1() {
-            AudioManager.Instance.Play("click1");
+            //AudioManager.Instance.Play("click1");
         }
         public void SetFullscreen(bool val) {
             if (val) {

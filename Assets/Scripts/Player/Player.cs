@@ -736,12 +736,12 @@ namespace Player {
 
 		public void InstaKill(bool val) {
 			if (val) {
-				this.GetComponentInChildren<InflictDammage>().damage = (ushort)short.MaxValue;
+				gameObject.GetComponentInChildren<InflictDammage>().damage = (ushort)short.MaxValue;
 				arrowDmg = (ushort)(short.MaxValue - 3);
 				poisonDmg = (ushort)(short.MaxValue - 3);
 			}
 			else {
-				this.GetComponentInChildren<InflictDammage>().damage = 7;
+				gameObject.GetComponentInChildren<InflictDammage>().damage = 7;
 				arrowDmg = 0;
 				poisonDmg = 0;
 			}
