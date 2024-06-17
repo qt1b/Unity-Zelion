@@ -5,6 +5,7 @@ using System.Linq;
 using Global;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Weapons;
 
 [Serializable]
@@ -30,7 +31,8 @@ public class FollowProjectile : Projectile
         if (closestPlayer is null) return;
         
         Vector3 vel3 = _myRigidBody.velocity;
-        vel3 = Vector3.RotateTowards(vel3, (closestPlayer.transform.position - transform.position).normalized * speed, 2 * Mathf.PI * angularSpeed * Time.deltaTime * _curSpeed, .002f);
+        vel3 = Vector3.RotateTowards(vel3, (closestPlayer.transform.position - transform.position).normalized * speed, 
+            2 * Mathf.PI * angularSpeed * Time.deltaTime * _curSpeed, .0025f);
 
 
         _myRigidBody.velocity = vel3;
