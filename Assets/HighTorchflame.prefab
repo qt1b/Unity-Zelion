@@ -143,13 +143,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flame
       objectReference: {fileID: 0}
+    - target: {fileID: 6763702301022514258, guid: 22dc5ce3164490e44a3d4fbc18e87638, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7288149523530713447, guid: 22dc5ce3164490e44a3d4fbc18e87638, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.01737976
+      value: 0.001
       objectReference: {fileID: 0}
     - target: {fileID: 7288149523530713447, guid: 22dc5ce3164490e44a3d4fbc18e87638, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.36805344
+      value: 0.46
       objectReference: {fileID: 0}
     - target: {fileID: 7288149523530713447, guid: 22dc5ce3164490e44a3d4fbc18e87638, type: 3}
       propertyPath: m_LocalPosition.z
