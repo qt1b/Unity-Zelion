@@ -28,7 +28,7 @@ namespace Global {
 			, {"Dialog_NPC_Green" , new[] { "If you ever find a bow, you can aim by maintaining the left click pressed, and shoot by and release the left click." , "Si jamais tu trouve un arc, tu peux viser avec en maintenant le clic droit, et tirer en le relachant." , "弓を見つかったら、左クリックを推して狙って、右クリックを放して射る事が出来る。"}}
 			, {"giveBow" , new[] { "There is an old bow in the rusty chest, could be useful." , "Il y a un vieux arc dans le coffre rouillé, il pourrait être utile." , "錆びた箱の中に古い弓がある、役に立つかもしれない"}}
 			, {"swordTutorial",new []{"You can wield a sword by pressing the SPACE button !","Tu peux utiliser l'épée en appuyant sur la barre ESPACE !","スペースキーを使って、剣を使うことが出来る。"}}
-			, {"forestAhead",new []{"On your right, the Dark Forest.","Sur votre droite, la forêt ténébreuse.","右には：暗闇の村。"}}
+			, {"forestAhead",new []{"The Dark Forest ahead.","La forêt ténébreuse devant.","右には：暗闇の村。"}}
 		};
 		public static string GameOverText(string time) {
 			if (GlobalVars.Language == 0) return $"Time elapsed {time}.\nNumber of deaths : {GlobalVars.DeathCount}\nNumber of Game Over : {GlobalVars.GameOverCount}\nNumber of players : {GlobalVars.NbrOfPlayers}";
