@@ -15,6 +15,7 @@ namespace Actions {
         private TMP_Text dialogText;
         private static byte _unitsBeforeSound = 5;
         [CanBeNull]private Coroutine curText;
+        private bool once;
         
         public void Start() {
             dialogText = dialogBox.GetComponentInChildren<TextMeshProUGUI>();
@@ -48,9 +49,12 @@ namespace Actions {
         }
 
         private void DisableDialog() {
-            dialogBox.SetActive(false);
             if (curText is not null)
                 StopCoroutine(curText);
+            dialogText.text = "";
+            dialogBox.SetActive(false);
+            this.enabled = false;
+            Destroy(gameObject);
         }
         public IEnumerator WriteText() {
             string[] dialogArray = TextValues.DialogsDict[dialog];
@@ -70,13 +74,17 @@ namespace Actions {
 
         
         void OnTriggerEnter2D(Collider2D other) {
-            //OnTriggerExit2D(other);
+            if (!other.isTrigger && other.CompareTag("Player") && !dialogBox.activeInHierarchy && !once) {
+                activateDialog();
+                once = true;
+            }
         }
 
 
         private void OnTriggerExit2D(Collider2D other) {
             if (!other.isTrigger && other.gameObject.CompareTag("Player")) {
                     DisableDialog();
+                    once = true;
             }
         }
     }

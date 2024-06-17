@@ -123,6 +123,8 @@ namespace Player {
 		private static readonly int AimingBomb = Animator.StringToHash("AimingBomb");
 		private static readonly int AimingBow = Animator.StringToHash("AimingBow");
 
+		[NonSerialized] public ushort arrowDmg;
+		[NonSerialized] public ushort poisonDmg;
 		#endregion
 
 		#region Player Save management
@@ -500,7 +502,9 @@ namespace Player {
 			float teta = Mathf.Atan(pos.y / pos.x) * 180 / Mathf.PI - (pos.x > 0 ? 90 : -90);
 			Quaternion rot = Quaternion.Euler(0f, 0f, teta);
 			GameObject arrow = PhotonNetwork.Instantiate("Prefabs/Projectiles/Arrow",transform.position+pos,rot);
-			arrow.GetComponent<Projectile>().SetVelocity(pos);
+			var proj = arrow.GetComponent<Projectile>();
+			proj.SetVelocity(pos);
+			proj.damage = (arrowDmg != 0 ? (ushort)3 : arrowDmg);
 			yield return new WaitForSeconds(_bowCooldown /* GlobalVars.PlayerSpeed*/ );
 			_canShootArrow = true;
 		}
@@ -544,7 +548,8 @@ namespace Player {
 				pos = _maxBombDist * pos.normalized;
 			}
 			/*GameObject pZone =*/
-			PhotonNetwork.Instantiate("Prefabs/Projectiles/PoisonZone", new Vector3(position.x + pos.x, position.y + pos.y, 0f), new Quaternion());
+			GameObject pZone = PhotonNetwork.Instantiate("Prefabs/Projectiles/PoisonZone", new Vector3(position.x + pos.x, position.y + pos.y, 0f), new Quaternion());
+			pZone.GetComponent<PoisonZone>().damage = (poisonDmg != 0 ? (ushort)1 : poisonDmg);
 			yield return new WaitForSeconds(_poisonBombCooldown /* GlobalVars.PlayerSpeed*/ );
 			_canThrowPoisonBomb = true;
 		}
@@ -717,6 +722,19 @@ namespace Player {
 		public bool IsAlive()
 		{
 			return _healthBar.curValue > 0;
+		}
+
+		public void InstaKill(bool val) {
+			if (val) {
+				this.GetComponentInChildren<InflictDammage>().damage = (ushort)short.MaxValue;
+				arrowDmg = (ushort)short.MaxValue;
+				poisonDmg = (ushort)short.MaxValue;
+			}
+			else {
+				this.GetComponentInChildren<InflictDammage>().damage = 7;
+				arrowDmg = 0;
+				poisonDmg = 0;
+			}
 		}
 
 		#region IPunObservable implementation

@@ -19,6 +19,7 @@ namespace Ennemies {
 		#endregion
 
 		private void Start() {
+			maxHealth = (ushort)(maxHealth * (PhotonNetwork.CurrentRoom.PlayerCount > 0 ? PhotonNetwork.CurrentRoom.PlayerCount : 1));
 			_healthBar = GetComponentInChildren<HealthBar>();
 			if (maxHealth > short.MaxValue) {
 				// is necessary to avoid errors while syncing hp's value

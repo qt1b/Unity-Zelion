@@ -10,7 +10,7 @@ namespace Ennemies {
     public class Health : MonoBehaviourPunCallbacks, IPunObservable, IHealth
     {
         #region Fields
-        public uint maxHealth;
+        public ushort maxHealth;
         private uint _hp;
         public float deathDuration;
         private SpriteRenderer _spriteRenderer; // to change color when hit
@@ -19,12 +19,12 @@ namespace Ennemies {
         #endregion
 
         #region MonoBehaviours
-        void Awake()
-        {
+        void Awake() {
+            maxHealth = (ushort)(maxHealth * (PhotonNetwork.CurrentRoom.PlayerCount > 0 ? PhotonNetwork.CurrentRoom.PlayerCount : 1));
             if (maxHealth > short.MaxValue) {
                 // is necessary to avoid errors while syncing hp's value
                 Debug.LogError("max value is too big, resizing it to short's max value");
-                maxHealth = (uint)short.MaxValue;
+                maxHealth = (ushort)short.MaxValue;
             }
             _hp = maxHealth;
             if (_spriteRenderer is null)

@@ -27,11 +27,11 @@ namespace Global {
 				new [] {20,20}, // stamina
 				new [] {20,20}, // mana
 				new [] {0,1}, // sword unlocked
-				new [] {1,1}, // bow unlocked
-				new [] {1,1}, // poison
+				new [] {0,0}, // bow unlocked
+				new [] {0,0}, // poison
 				new [] {1,1}, // dash
-				new [] {1,1}, // slowdown
-				new [] {1,1} // goBackInTime
+				new [] {0,0}, // slowdown
+				new [] {0,0} // goBackInTime
 			},
 			{ // level 1 -- TESTING VALUES, for the FOREST // second save for unlocking the arc, positions should never be loaded
 				new [] {-16,-998}, // x pos
@@ -41,10 +41,10 @@ namespace Global {
 				new [] {20,20}, // mana
 				new [] {1,1}, // sword unlocked
 				new [] {0,1}, // bow unlocked
-				new [] {1,1}, // poison
+				new [] {0,0}, // poison
 				new [] {1,1}, // dash
-				new [] {1,1}, // slowdown
-				new [] {1,1} // goBackInTime
+				new [] {0,0}, // slowdown
+				new [] {0,0} // goBackInTime
 			},
 			{ // level 1.5 -- TESTING VALUES, for the FOREST BOSS
 				new [] {5}, // x pos
@@ -69,21 +69,21 @@ namespace Global {
 				new [] {1,1}, // bow unlocked
 				new [] {1,1}, // poison
 				new [] {1,1}, // dash
-				new [] {1,1}, // slowdown
+				new [] {0,0}, // slowdown
 				new [] {1,1} // goBackInTime
 			},
 			{ // level 2.5 -- for the BOSS of the MINE
 				new [] {-4}, // x pos
-				new [] {11}, // y pos
-				new [] {6}, // Life
-				new [] {2}, // stamina
-				new [] {2}, // mana
-				new [] {0}, // sword unlocked
-				new [] {0}, // bow unlocked
-				new [] {0}, // poison
-				new [] {0}, // dash
+				new [] {46}, // y pos
+				new [] {20}, // Life
+				new [] {20}, // stamina
+				new [] {20}, // mana
+				new [] {1}, // sword unlocked
+				new [] {1}, // bow unlocked
+				new [] {1}, // poison
+				new [] {1}, // dash
 				new [] {0}, // slowdown
-				new [] {0} // goBackInTime
+				new [] {1} // goBackInTime
 			},
 			{ // level 3 -- TESTING VALUES, for the GARDEN (of the castle)
 				new [] {-237,-237}, // x pos
@@ -95,34 +95,34 @@ namespace Global {
 				new [] {1,1}, // bow unlocked
 				new [] {1,1}, // poison
 				new [] {1,1}, // dash
-				new [] {1,1}, // slowdown
+				new [] {0,0}, // slowdown
 				new [] {1,1} // goBackInTime
 			},
 			{ // level 3.2 -- TESTING VALUES, for the CASTLE
-				new [] {-237,-237}, // x pos
-				new [] {-48,-48}, // y pos
-				new [] {20,20}, // Life
-				new [] {20,20}, // stamina
-				new [] {20,20}, // mana
-				new [] {1,1}, // sword unlocked
-				new [] {1,1}, // bow unlocked
-				new [] {1,1}, // poison
-				new [] {1,1}, // dash
-				new [] {1,1}, // slowdown
-				new [] {1,1} // goBackInTime
+				new [] {-237}, // x pos
+				new [] {-48}, // y pos
+				new [] {20}, // Life
+				new [] {20}, // stamina
+				new [] {20}, // mana
+				new [] {1}, // sword unlocked
+				new [] {1}, // bow unlocked
+				new [] {1}, // poison
+				new [] {1}, // dash
+				new [] {0}, // slowdown
+				new [] {1} // goBackInTime
 			},
 			{ // level 3.5 -- for the FINAL BOSS
-				new [] {-237,-237}, // x pos
-				new [] {-48,-48}, // y pos
-				new [] {6,6}, // Life
-				new [] {2,2}, // stamina
-				new [] {2,2}, // mana
-				new [] {0,1}, // sword unlocked
-				new [] {0,0}, // bow unlocked
-				new [] {0,0}, // poison
-				new [] {0,0}, // dash
-				new [] {0,0}, // slowdown
-				new [] {0,0} // goBackInTime
+				new [] {-237}, // x pos
+				new [] {-48}, // y pos
+				new [] {6}, // Life
+				new [] {2}, // stamina
+				new [] {2}, // mana
+				new [] {1}, // sword unlocked
+				new [] {1}, // bow unlocked
+				new [] {1}, // poison
+				new [] {1}, // dash
+				new [] {0}, // slowdown
+				new [] {1} // goBackInTime
 			}
 		};
 		public static DateTime? TimeStartedAt = null;

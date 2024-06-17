@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Weapons {
     public class InflictDammage : MonoBehaviour {
-        public ushort damage = 3; 
+        public ushort damage = 7;
         // can friendly fire
         private void OnTriggerEnter2D(Collider2D other) {
             if (other.TryGetComponent(out IHealth health)) {
