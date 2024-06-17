@@ -76,7 +76,7 @@ MonoBehaviour:
     minFrequency: 1.2
     maxFrequency: 2
     meleeTime: 0.1
-    range: 0.5
+    range: 1
     nbDirections: 4
     hitbox: {fileID: 3254987705310643045}
   isCharger: 0
@@ -86,7 +86,6 @@ MonoBehaviour:
     Minfrequency: 5
     maxFrequency: 7
     time: 3.5
-    stopOnCollision: 0
   Agent: {fileID: 109667614679697199}
   Rigidbody2D: {fileID: 2474270136817323887}
   _animator: {fileID: 1165391834359267910}
