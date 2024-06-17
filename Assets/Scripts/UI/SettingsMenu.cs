@@ -101,10 +101,10 @@ namespace UI {
                     Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
                 } */
                 SetResolution(_maxRes);
-                Screen.fullScreen = true;
+                Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
             }
             else {
-                Screen.fullScreen = false;
+                Screen.fullScreenMode = FullScreenMode.Windowed;
                 //Debug.LogError("fullscreen : False");
                 //Screen.fullScreenMode = FullScreenMode.Windowed;
                 SetResolution(_lastBeforeFull);

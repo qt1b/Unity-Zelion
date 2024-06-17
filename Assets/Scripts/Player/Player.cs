@@ -407,9 +407,9 @@ namespace Player {
 			// will be enemy speed, using player speed to test the property
 			// like color
 			// float oldVal = GlobalVars.PlayerSpeed.Value;
-			GlobalVars.EnnemySpeed = 0.5f;
+			GlobalVars.EnnemySpeed = 0.2f;
 			// _animator.speed = GlobalVars.PlayerSpeed; // to remove if only slowing down enemies
-			GlobalVars.ProjectileSpeed = 0.5f;
+			GlobalVars.ProjectileSpeed = 0.2f;
 			_animator.speed = GlobalVars.PlayerSpeed; // to remove if only slowing down enemies
 			_slowdownAcc += 1;
 			yield return new WaitForSeconds(duration);

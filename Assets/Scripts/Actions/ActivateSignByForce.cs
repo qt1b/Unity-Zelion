@@ -68,21 +68,16 @@ namespace Actions {
             curText = null;
         } 
 
-        /*
+        
         void OnTriggerEnter2D(Collider2D other) {
-            if (!other.isTrigger && other.CompareTag("Player") && (!onlyOnce || !_interracted ) {
-                _playerInRange = true;
-            }
+            //OnTriggerExit2D(other);
         }
 
 
         private void OnTriggerExit2D(Collider2D other) {
             if (!other.isTrigger && other.gameObject.CompareTag("Player")) {
-                _playerInRange = false;
-                if (dialogBox.activeInHierarchy) {
                     DisableDialog();
-                }
             }
-        } */
+        }
     }
 }

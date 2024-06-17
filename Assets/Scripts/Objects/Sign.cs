@@ -43,7 +43,7 @@ namespace Objects {
                         if (gameObject.TryGetComponent(out IAction action)) {
                             action.Activate();
                         }
-                        _questionMark.SetActive(true);
+                        _questionMark.SetActive(!onlyOnce);
                         AudioManager.Instance.Play("closetxt");
                     }
                 }
