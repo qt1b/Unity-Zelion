@@ -49,9 +49,12 @@ namespace Actions {
         }
 
         private void DisableDialog() {
-            dialogBox.SetActive(false);
             if (curText is not null)
                 StopCoroutine(curText);
+            dialogText.text = "";
+            dialogBox.SetActive(false);
+            this.enabled = false;
+            Destroy(gameObject);
         }
         public IEnumerator WriteText() {
             string[] dialogArray = TextValues.DialogsDict[dialog];
