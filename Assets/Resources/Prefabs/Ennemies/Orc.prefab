@@ -86,7 +86,6 @@ MonoBehaviour:
     Minfrequency: 5
     maxFrequency: 7
     time: 3.5
-    stopOnCollision: 0
   Agent: {fileID: 109667614679697199}
   Rigidbody2D: {fileID: 2474270136817323887}
   _animator: {fileID: 1165391834359267910}
@@ -608,7 +607,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -700938773
+  m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 1303929, guid: ab08b123a646a2c4c8a5caa9eafbd56b, type: 3}

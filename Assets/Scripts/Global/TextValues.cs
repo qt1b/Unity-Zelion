@@ -14,10 +14,14 @@ namespace Global {
 			, { "lore4", new[] { "Be wary, the dark forest is full of monsters !", "Sois prudent, la forêt tenebreuse est remplie de monstres !", "暗闇の森はモンスターにあふれている。気を付けてください！" } }
 			, { "giveSword", new[] { "O, great hero, please take this sword along your quest. Please find the Zelion, beat Eclipses and bring back the light to these lands.", "Ô grand héros, prend cette épée avec toi au long de ta quête. Trouve le ZELION, et bat Éclipse afin de rétablir la lumière sur ces terres.", "勇者よ、この剣を取ってください。ZELIONを見つけ、エクリプスを倒してください。" } }
 			, { "rmq1", new[] { "It seems that when playing in multiplayer, when one player goes to another zone, all the other players are teleported there ! At least that's what I heard...", "Il parait que lorsque l'on joue en multijoueur, quand un joueur change de zone, l'autre joueur se retrouve emporté avec lui ! Enfin... c'est ce que j'ai entendu.", "他のプレイヤーが次のエリアに行くと、君もそこに飛ばされるらしいぜ！聞いた話によると、ね..." } }
-			, { "tip1", new []{ "You can dash by pressing SHIFT!","Tu peux accelerer pour un court instant en appuyant sur MAJ!","SHIFTを押すことで突撃出来るよ！"}}
+			, { "tip1", new []{ "You can dash by pressing SHIFT! But be wary, as it uses lots of stamina.","Tu peux accelerer pour un court instant en appuyant sur MAJ! Cependant méfies toi, cela utilise beaucoup d'endurance.","SHIFTを押すことで突撃出来るよ！でもそれはを消費するので、気を付けな。"}}
+			, { "tip12", new []{ "Do you see the red bar on top of your head? This is your life. You would never want this to be empty.","Tu peux accelerer pour un court instant en appuyant sur MAJ!","SHIFTを押すことで突撃出来るよ！"}}
+			, { "tip13", new []{ "Do you see the two bars at the top left of the screen ? The blue one is your mana and the green one is your stamina. Be wary of these when using capacities ! ","Tu vois les deux barres en haut de ton écran ? En bleu est ton niveau de mana, et en vert ton endurance.","画面の右上にそれを見えるかい？青い物はマナで、緑の物は体力。"}}
+			, { "tip14", new []{ "When breaking thing or killing ennemies, try to pick up what drops out of them. These have great benefits","Tu peux accelerer pour un court instant en appuyant sur MAJ!","SHIFTを押すことで突撃出来るよ！"}}
 			, { "tip2", new []{ "You can throw a poison potion with the LEFT CLICK.","Tu peux lancer une potion de poison avec le CLIC DROIT !","SHIFTを押すことで突撃出来るよ！"}}
 			, { "tip3", new []{ "You can slowdown time by pressing Q!","Tu peux rallentir le temps en appuyant sur A!","SHIFTを押すことで突撃出来るよ！"}}
 			, { "tip4", new []{ "You can go back to your previous position by pressing Z !","Tu peux retourner à ta position précedente en appuyant sur W!","SHIFTを押すことで突撃出来るよ！"}}
+			, { "boss", new []{ "You feel a menacing presence...","Vous sentez une présence menacante...","威嚇的な気配を感じる..."}}
 			, {"chest canvas" , new[] { "Content of Chest " , "Contenue du Coffre" , "宝箱の内容"}}
 			, {"Empty_Chest" , new[] { "It looks empty." , "Il semble vide." , "空っぽに見える"}}
 			, {"mine_south" , new[] { "Flee the south of the mine, there are strange noises and a horrible creature is rampaging..." , "Fuis le sud de la mine, il y a des bruits bizarres et une horrible créature se déchaîne..." , "鉱山の南から逃げて、奇妙な音が聞こえて、恐ろしい生き物が暴れている..."}}
@@ -25,7 +29,7 @@ namespace Global {
 			, {"Dialog_NPC_Red" , new[] { "Leaving already ?" , "Tu pars déjà?" , "もう行くのですか？"}}
 			//,  {"Dialog_NPC_Green" , new[] { "Don't get lost in the dark, only God knows what's in there." , "Ne te perds pas dans l'obscurité, seul Dieu sait ce qu'il y a à l'intérieur." , "暗闇で迷わないで、そこに何があるかは神のみぞ知る。"}}
 			, {"Dialog_NPC_Blue" , new[] { "The light of God will guide you out of this darkness, have faith in him." , "La lumière de Dieu vous guidera hors de cette obscurité, ayez foi en lui." , "神の光があなたをこの暗闇から導いてくれるでしょう。神を信じてください。"}}
-			, {"Dialog_NPC_Green" , new[] { "If you ever find a bow, you can aim by maintaining the left click pressed, and shoot by and release the left click." , "Si jamais tu trouve un arc, tu peux viser avec en maintenant le clic droit, et tirer en le relachant." , "弓を見つかったら、左クリックを推して狙って、右クリックを放して射る事が出来る。"}}
+			, {"Dialog_NPC_Green" , new[] { "If you ever find a bow, you can aim by maintaining the LEFT CLICK pressed, and shoot by and release the LEFT CLICK." , "Si jamais tu trouve un arc, tu peux viser avec en maintenant le CLIC DROIT, et tirer en le relachant." , "弓を見つかったら、左クリックを推して狙って、右クリックを放して射る事が出来る。"}}
 			, {"giveBow" , new[] { "There is an old bow in the rusty chest, could be useful." , "Il y a un vieux arc dans le coffre rouillé, il pourrait être utile." , "錆びた箱の中に古い弓がある、役に立つかもしれない"}}
 			, {"swordTutorial",new []{"You can wield a sword by pressing the SPACE button !","Tu peux utiliser l'épée en appuyant sur la barre ESPACE !","スペースキーを使って、剣を使うことが出来る。"}}
 			, {"forestAhead",new []{"The Dark Forest ahead.","La forêt ténébreuse devant.","右には：暗闇の村。"}}
@@ -108,7 +112,7 @@ namespace Global {
 				else throw new ArgumentException("invalid language value");
 			}
 		}
-		public static string RoomNameInput {
+		public static string RoomName {
 			get {
 				if (GlobalVars.Language == 0) return "Room Name";
 				else if (GlobalVars.Language == 1) return "Nom de la salle";

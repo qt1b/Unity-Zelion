@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using Global;
 using Photon.PhotonRealtime.Code;
 using Photon.PhotonUnityNetworking.Code;
@@ -23,11 +24,12 @@ namespace PUN {
 		public GameObject Loading;
 		public GameObject InsideLobby;
 
-		public Button BackButton1;
-		public Button CreateLobby;
-		public Button JoinLobby;
+		public TMP_Text BackButton1;
+		public TMP_Text CreateLobby;
+		public TMP_Text JoinLobby;
 		public TMP_Text LoadingText;
-		public Button BackButton2;
+		public TMP_Text BackButton2;
+		public TMP_Text InputText;
 		
 		#endregion
 
@@ -44,7 +46,12 @@ namespace PUN {
 		}
 
 		public void Start() {
-			
+			BackButton1.text = TextValues.Back;
+			BackButton2.text = TextValues.Back;
+			CreateLobby.text = TextValues.CreateLobby;
+			JoinLobby.text = TextValues.JoinLobby;
+			InputText.text = TextValues.RoomName + "...";
+			LoadingText.text = TextValues.Loading;
 		}
 
 		// after
@@ -58,6 +65,7 @@ namespace PUN {
 		}
 		public void JoinRoom() {
 			if (RoomIdInput.text.Length != 4 || !RoomIdInput.text.ToCharArray().All(char.IsDigit)) return;
+			if (PhotonNetwork.IsConnectedAndReady)AudioManager.Instance.Play("loading1");
 			Debug.Log("trying to join room, id:"+RoomIdInput.text);
 			PhotonNetwork.JoinRoom(RoomIdInput.text);
 			BeforeLobby.SetActive(false);
@@ -66,6 +74,7 @@ namespace PUN {
 		// TODO : fix the bug that requires us to click on the button two times to create a room
 		public void CreateRoom() {
 			_creatingRoom = true;
+			if (PhotonNetwork.IsConnectedAndReady) AudioManager.Instance.Play("loading1");
 			_roomName = GenerateRoomName();
 			Debug.Log("trying to join room, id:"+_roomName);
 			PhotonNetwork.CreateRoom(_roomName,new RoomOptions(){MaxPlayers = 4});
@@ -79,6 +88,7 @@ namespace PUN {
 		public void StartGameMulti() {
 			if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) {
 				PhotonNetwork.CurrentRoom.MaxPlayers = PhotonNetwork.CurrentRoom.PlayerCount;
+				AudioManager.Instance.Play("loading2");
 				PhotonNetwork.LoadLevel(GlobalVars.LevelsName[0]);
 			}
 		}
