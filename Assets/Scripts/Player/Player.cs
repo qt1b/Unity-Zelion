@@ -370,10 +370,6 @@ namespace Player {
 								AudioManager.Instance.Play("unauthorized");
 							}
 						}
-						// to remove when we have some enemies
-						else if (Input.GetKeyDown(KeyCode.M)) {
-							this.TakeDamages(2);
-						}
 						else if ( Input.GetKeyDown(KeyCode.Z)) {
 							if (CanTimeTravel && _manaBar.TryTakeDamages(7)) {
 								AudioManager.Instance.Play("spellTp");

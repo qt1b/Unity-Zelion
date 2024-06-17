@@ -40,9 +40,6 @@ namespace Objects {
                     }
                     else {
                         DisableDialog();
-                        if (gameObject.TryGetComponent(out IAction action)) {
-                            action.Activate();
-                        }
                         _questionMark.SetActive(!onlyOnce);
                         AudioManager.Instance.Play("closetxt");
                     }
@@ -60,6 +57,9 @@ namespace Objects {
                 StopCoroutine(curText);
             curText = StartCoroutine(WriteText());
             _questionMark.SetActive(false);
+            if (gameObject.TryGetComponent(out IAction action)) {
+                action.Activate();
+            }
             if (gameObject.TryGetComponent(out Animator animator)) animator.SetBool(Interracting,true);
         }
 
