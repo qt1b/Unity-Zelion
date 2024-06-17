@@ -218,13 +218,6 @@ namespace Ennemies
                         StopCoroutine(currentAction);
                         _isCharging = false;
                         Rigidbody2D.velocity = UnityEngine.Vector2.zero;
-                        playerRigidbody.AddForce(-curDirection * .1f);
-                    }
-                    else
-                    {
-                        playerRigidbody.AddForce(curDirection.y * directionPlayer.y > curDirection.x * directionPlayer.x
-                            ? new UnityEngine.Vector2(curDirection.y, -curDirection.x * .1f)
-                            : new UnityEngine.Vector2(-curDirection.y, curDirection.x) * .1f);
                     }
 
                     other.gameObject.GetComponent<Player.Player>().TakeDamages(_charge.damage);
