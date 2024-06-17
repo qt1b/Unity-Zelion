@@ -492,7 +492,7 @@ namespace Player {
 		IEnumerator SwordAttack() {
 			// wielding for 100 degrees
 			_canSwordAttack = false;
-			photonView.RPC("SwordSetActiveRpc",RpcTarget.AllBuffered,true);
+			_swordHitzone.SetActive(true);
 			// does not seem to work when the player has not yet moved
 			float currentSwordRot = Mathf.Atan(notNullChange.y / notNullChange.x) * 180 / Mathf.PI +
 			                        (notNullChange.x >= 0 ? 0 : 180);
@@ -501,6 +501,9 @@ namespace Player {
 			// _swordHitzoneCollider.enabled = true;
 			speedModifier = _attackSpeedNerf;
 			// isWielding = true;
+			// buffering things is not useful for us
+			// will keep it "JUST IN CASE"
+			photonView.RPC("SwordSetActiveRpc",RpcTarget.OthersBuffered,true);
 			yield return new WaitForSeconds(SwordTime /* GlobalVars.PlayerSpeed */);
 			photonView.RPC("SwordSetActiveRpc",RpcTarget.AllBuffered,false);
 			speedModifier = 1;
