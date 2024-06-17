@@ -64,6 +64,7 @@ namespace Objects {
         }
 
         private void DisableDialog() {
+            _interracted = true;
             dialogBox.SetActive(false);
             if (curText is not null)
                 StopCoroutine(curText);
