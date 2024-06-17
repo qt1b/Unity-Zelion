@@ -19,10 +19,13 @@ namespace Weapons {
         protected Rigidbody2D _myRigidBody;
 
         public List<string> notDamageTags;
+        public float colDeathTime = .2f;
         protected float _curSpeed = 1f;
         
 
         protected static Random _random = new ();
+
+        private bool _noDamage = false;
 
         void Awake()
         {
@@ -49,23 +52,24 @@ namespace Weapons {
 
         void OnTriggerEnter2D(Collider2D other)
         {
-            if (notDamageTags.Any(g => other.gameObject.CompareTag(g)))
+            if (_noDamage || notDamageTags.Any(g => other.gameObject.CompareTag(g)))
                 return;
-            if (other.gameObject.TryGetComponent(out IHealth health)) {
+            if (other.gameObject.TryGetComponent(out IHealth health))
+            {
+                _noDamage = true;
                 if (photonView.IsMine) health.TakeDamages(damage);
                 _myRigidBody.velocity = Vector3.zero;
-                StartCoroutine(DestroyAfterSecs(.2f));
+                StartCoroutine(DestroyAfterSecs(colDeathTime));
             }
             else if (!other.isTrigger) {
-                if (!other.CompareTag("LetProjectilesPass")) {
+                if (!other.CompareTag("LetProjectilesPass"))
+                {
+                    _noDamage = true;
                     _myRigidBody.velocity = Vector3.zero;
-                    StartCoroutine(DestroyAfterSecs(.2f));
+                    StartCoroutine(DestroyAfterSecs(colDeathTime));
                 }
-                else {
-                
-                }
-            }
-    }
+            } 
+        }
 
         /*
         // does not really work, is it bc it needs a rigidbody ?
@@ -81,7 +85,7 @@ namespace Weapons {
         } */
 
         private void DestroyGameObj() {
-            StartCoroutine(DestroyAfterSecs(.2f));
+            StartCoroutine(DestroyAfterSecs(colDeathTime));
             //GetComponent<PhotonView>().RPC("NetworkDestroy", RpcTarget.AllBuffered);
         }
 
