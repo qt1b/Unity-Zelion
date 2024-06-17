@@ -294,7 +294,14 @@ namespace Player {
 
 					PlacePreviewArrow();
 					if (Input.GetKeyUp(KeyCode.Mouse0)) {
-						if (_canShootArrow && _staminaBar.TryTakeDamages(2)) StartCoroutine(ShootArrow());
+						if (_canShootArrow) {
+							if (_staminaBar.TryTakeDamages(2)) {
+								StartCoroutine(ShootArrow());
+							}
+							else {
+								AudioManager.Instance.Play("unauthorized");
+							}
+						}
 						_isAimingArrow = false;
 						speedModifier = 1;
 						_arrowPreviewRef.SetActive(false);
@@ -308,12 +315,15 @@ namespace Player {
 							_poisonZonePreviewRef.SetActive(true);
 						PlacePreviewZone();
 						if (Input.GetKeyUp(KeyCode.Mouse1)) {
-							if (_canThrowPoisonBomb && _manaBar.TryTakeDamages(10)) {
-								StartCoroutine(ThrowPoisonBomb());
+							if (_canThrowPoisonBomb) {
+								if (_manaBar.TryTakeDamages(10)) {
+									StartCoroutine(ThrowPoisonBomb());
+								}
+								else {
+									AudioManager.Instance.Play("unauthorized");
+								}
 							}
-							else {
-								AudioManager.Instance.Play("unauthorized");
-							}
+
 							_isAimingBomb = false;
 							speedModifier = 1;
 							_animator.SetBool(AimingBomb, false);

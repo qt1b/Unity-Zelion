@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using Global;
 using TMPro;
 using UnityEngine;
@@ -88,6 +89,12 @@ namespace UI {
             }
         }
 
+        public void Click() {
+            AudioManager.Instance.Play("click2");
+        }        
+        public void Clic1() {
+            AudioManager.Instance.Play("click1");
+        }
         public void SetFullscreen(bool val) {
             if (val) {
                 _lastBeforeFull = _index;
