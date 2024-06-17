@@ -29,7 +29,7 @@ namespace Global {
 			, {"Dialog_NPC_Red" , new[] { "Leaving already ?" , "Tu pars déjà?" , "もう行くのですか？"}}
 			//,  {"Dialog_NPC_Green" , new[] { "Don't get lost in the dark, only God knows what's in there." , "Ne te perds pas dans l'obscurité, seul Dieu sait ce qu'il y a à l'intérieur." , "暗闇で迷わないで、そこに何があるかは神のみぞ知る。"}}
 			, {"Dialog_NPC_Blue" , new[] { "The light of God will guide you out of this darkness, have faith in him." , "La lumière de Dieu vous guidera hors de cette obscurité, ayez foi en lui." , "神の光があなたをこの暗闇から導いてくれるでしょう。神を信じてください。"}}
-			, {"Dialog_NPC_Green" , new[] { "If you ever find a bow, you can aim by maintaining the LEFT CLICK pressed, and shoot by and release the LEFT CLICK." , "Si jamais tu trouve un arc, tu peux viser avec en maintenant le CLIC DROIT, et tirer en le relachant." , "弓を見つかったら、左クリックを推して狙って、右クリックを放して射る事が出来る。"}}
+			, {"Dialog_NPC_Green" , new[] { "If you ever find a bow, you can aim by maintaining the LEFT CLICK pressed, and shoot by and release the LEFT CLICK." , "Si jamais tu trouve un arc, tu peux viser avec en maintenant le CLIC GAUCHE, et tirer en le relachant." , "弓を見つかったら、左クリックを推して狙って、左クリックを放して射る事が出来る。"}}
 			, {"giveBow" , new[] { "There is an old bow in the rusty chest, could be useful." , "Il y a un vieux arc dans le coffre rouillé, il pourrait être utile." , "錆びた箱の中に古い弓がある、役に立つかもしれない"}}
 			, {"swordTutorial",new []{"You can wield a sword by pressing the SPACE button !","Tu peux utiliser l'épée en appuyant sur la barre ESPACE !","スペースキーを使って、剣を使うことが出来る。"}}
 			, {"forestAhead",new []{"The Dark Forest ahead.","La forêt ténébreuse devant.","右には：暗闇の村。"}}
@@ -268,6 +268,30 @@ namespace Global {
 				if (GlobalVars.Language == 0) return "Game Over";
 				else if (GlobalVars.Language == 1) return "Game Over";
 				else if (GlobalVars.Language == 2) return "ゲームオーバー";
+				else throw new ArgumentException("invalid language value");
+			}
+		}
+		public static string Retry {
+			get {
+				if (GlobalVars.Language == 0) return "Retry";
+				else if (GlobalVars.Language == 1) return "Recommencer";
+				else if (GlobalVars.Language == 2) return "リートライ";
+				else throw new ArgumentException("invalid language value");
+			}
+		}
+		public static string RestartLast {
+			get {
+				if (GlobalVars.Language == 0) return "Restart from the last save";
+				else if (GlobalVars.Language == 1) return "Recommencer depuis la dernière sauvegarde";
+				else if (GlobalVars.Language == 2) return "最新のセーブからやり直す";
+				else throw new ArgumentException("invalid language value");
+			}
+		}
+		public static string RestartBeginning {
+			get {
+				if (GlobalVars.Language == 0) return "Restart from the Begining";
+				else if (GlobalVars.Language == 1) return "Recommencer depuis le début";
+				else if (GlobalVars.Language == 2) return "最初からやり直す";
 				else throw new ArgumentException("invalid language value");
 			}
 		}

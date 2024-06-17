@@ -206,6 +206,8 @@ namespace Player {
 			//Debug.Log("player awake");
 			GlobalVars.PlayerList.Add(this);
 			_healthBar = GetComponentInChildren<HealthBar>();
+			_swordHitzone = transform.GetChild(0).gameObject;
+			_swordHitzone.SetActive(false);
 			if (!photonView.IsMine) {
 				//gameObject.GetComponentInChildren<Camera>().gameObject.SetActive(false);
 				gameObject.GetComponentInChildren<Camera>().enabled = false;
@@ -229,8 +231,6 @@ namespace Player {
 			_animator = GetComponent<Animator>();
 			_myRigidBody = GetComponent<Rigidbody2D>();
 			// _animator.speed = GlobalVars.PlayerSpeed;
-			_swordHitzone = transform.GetChild(0).gameObject;
-			_swordHitzone.SetActive(false);
 			//_poisonZoneRef = Resources.Load<GameObject>("Prefabs/Projectiles/PoisonZone");
 			//_arrowPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/Arrow");
 			_arrowPreviewRef = transform.GetChild(1).gameObject;
@@ -268,9 +268,8 @@ namespace Player {
 		// Update is called once per frame
 		// To Add : Sounds to indicate whether we can use the capacity or not
 		void Update() {
-			// Debug.Log("updating player ...");
-			// && PhotonNetwork.IsConnected is for debugging purposes
-			if ((!photonView.IsMine && PhotonNetwork.IsConnected) || PauseMenu.GameIsPaused) {
+			// for perf, to disable AFTER ???
+			if (/*(!photonView.IsMine && PhotonNetwork.IsConnected) ||*/ PauseMenu.GameIsPaused) {
 				/*Debug.LogWarning($"Update : Return !! \n" +
 				                 $"photonView.IsMine={photonView.IsMine},\n" +
 				                 $"PhotonNetwork.IsConnected={PhotonNetwork.IsConnected},\n" +
@@ -373,6 +372,7 @@ namespace Player {
 								else AudioManager.Instance.Play("unauthorized");
 								PlacePreviewZone();
 						}
+						/*
 						else if ( Input.GetKeyDown(KeyCode.Q) && CanSlowDownTime){
 							if (_manaBar.TryTakeDamages(5)) {
 								AudioManager.Instance.Play("slowdownSpell");
@@ -381,7 +381,7 @@ namespace Player {
 							else {
 								AudioManager.Instance.Play("unauthorized");
 							}
-						}
+						} */
 						else if ( Input.GetKeyDown(KeyCode.Z)) {
 							if (CanTimeTravel && _manaBar.TryTakeDamages(7)) {
 								AudioManager.Instance.Play("spellTp");
@@ -411,6 +411,7 @@ namespace Player {
 		// no callbacks in the player script
 		#endregion
 		// they may overlap
+		/*
 		IEnumerator SlowDownTimeFor(float duration) {
 			// will be enemy speed, using player speed to test the property
 			// like color
@@ -427,7 +428,7 @@ namespace Player {
 				GlobalVars.ProjectileSpeed = 1;
 				_animator.speed = 1;
 			}
-		}
+		}*/
 		/*
 		IEnumerator TimeFreezeFor(float duration) {
 			_timeFreezeAcc += 1;
@@ -491,7 +492,7 @@ namespace Player {
 		IEnumerator SwordAttack() {
 			// wielding for 100 degrees
 			_canSwordAttack = false;
-			_swordHitzone.SetActive(true);
+			photonView.RPC("SwordSetActiveRpc",RpcTarget.AllBuffered,true);
 			// does not seem to work when the player has not yet moved
 			float currentSwordRot = Mathf.Atan(notNullChange.y / notNullChange.x) * 180 / Mathf.PI +
 			                        (notNullChange.x >= 0 ? 0 : 180);
@@ -501,10 +502,15 @@ namespace Player {
 			speedModifier = _attackSpeedNerf;
 			// isWielding = true;
 			yield return new WaitForSeconds(SwordTime /* GlobalVars.PlayerSpeed */);
-			_swordHitzone.SetActive(false);
+			photonView.RPC("SwordSetActiveRpc",RpcTarget.AllBuffered,false);
 			speedModifier = 1;
 			yield return new WaitForSeconds(SwordAttackCooldown /* GlobalVars.PlayerSpeed */);
 			_canSwordAttack = true;
+		}
+
+		[PunRPC]
+		private void SwordSetActiveRpc(bool val) {
+			_swordHitzone.SetActive(val);
 		}
 		IEnumerator ShootArrow() {
 			_canShootArrow = false;

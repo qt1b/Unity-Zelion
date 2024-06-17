@@ -1,18 +1,35 @@
 using System;
 using System.Collections.Generic;
+using Audio;
 using Global;
 using Photon.PhotonUnityNetworking.Code;
 using Photon.PhotonUnityNetworking.Demos.PunBasics_Tutorial.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using WebSocketSharp;
 
 // add settings ? if needed ?
 namespace UI {
 	public class GameClearMenu : MonoBehaviourPunCallbacks {
 		public TMP_Text TimerText;
+		public TMP_Text CongratsText;
+		public TMP_Text RestartText;
+		public TMP_Text MainMenuText;
+		public TMP_Text ExitText;
+		
 		void Awake() {
 			TimerText.text = TextValues.GameClearText(UIOperations.FormatTime());
+		}
+
+		void Start() {
+			CongratsText.text = TextValues.Congratulations;
+			RestartText.text = TextValues.RestartBeginning;
+			MainMenuText.text = TextValues.MainMenu;
+			ExitText.text = TextValues.Exit;
+		}
+		public void Click() {
+			AudioManager.Instance.Play("click2");
 		}
 		// WARNING : play From The Beginning !
 		// behaves incorrectly

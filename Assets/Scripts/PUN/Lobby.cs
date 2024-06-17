@@ -60,7 +60,7 @@ namespace PUN {
 		#region Public Functions
 
 		public void Click() {
-			AudioManager.Instance.Play("click");
+			AudioManager.Instance.Play("click2");
 		}
 		
 		public static string GenerateRoomName() {
@@ -106,6 +106,10 @@ namespace PUN {
 		public void ExitLobby() {
 			Debug.Log("exiting room");
 			PhotonNetwork.LeaveRoom();
+			InsideLobby.SetActive(false);
+			Loading.SetActive(false);
+			BeforeLobby.SetActive(true);
+			sound_done = false;
 		}
 
 		public void TrimAndActivate(string str) {

@@ -10,7 +10,7 @@ namespace Player {
 	public class DevCheat : MonoBehaviour {
 		public bool enable;
 		private void Awake() {
-			Debug.developerConsoleEnabled = enable;
+			Debug.developerConsoleEnabled = false;
 			this.enabled = enable;
 		}
 		private void Update() {
