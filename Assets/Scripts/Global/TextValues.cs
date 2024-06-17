@@ -29,6 +29,8 @@ namespace Global {
 			, {"giveBow" , new[] { "There is an old bow in the rusty chest, could be useful." , "Il y a un vieux arc dans le coffre rouillé, il pourrait être utile." , "錆びた箱の中に古い弓がある、役に立つかもしれない"}}
 			, {"swordTutorial",new []{"You can wield a sword by pressing the SPACE button !","Tu peux utiliser l'épée en appuyant sur la barre ESPACE !","スペースキーを使って、剣を使うことが出来る。"}}
 			, {"forestAhead",new []{"The Dark Forest ahead.","La forêt ténébreuse devant.","右には：暗闇の村。"}}
+			, {"givepotion",new []{"A mysterious potion... I wonder what effects it might have. It's better to keep it safe","Une potion mystérieuse... Je me demande quels effets elle pourrait avoir. Il vaut mieux la garder précieusement.","これは何だろう？謎のポーションだ...どんな効果があるのか気になるな。大事に取っておいた方がいい"}}
+			, {"givepower" , new[] { "You feel your body changing, the feeling of time passing around you is strange." , "Tu sens ton corps changer, la sensation du temps qui passe autour de toi est étrange." , "体が変わっていくのを感じる。周りの時間が過ぎていく感覚が奇妙だ。"}}
 		};
 		public static string GameOverText(string time) {
 			if (GlobalVars.Language == 0) return $"Time elapsed {time}.\nNumber of deaths : {GlobalVars.DeathCount}\nNumber of Game Over : {GlobalVars.GameOverCount}\nNumber of players : {GlobalVars.NbrOfPlayers}";
