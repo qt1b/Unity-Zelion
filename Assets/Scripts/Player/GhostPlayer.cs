@@ -48,12 +48,12 @@ namespace Player {
 				_animator.SetBool(IsMoving,false);
 			}*/
 		}
-
+/*
 		IEnumerator Cooldown() {
 			yield return new WaitForSeconds(_timeLag);
 			//_isOkToMove = true;
 		}
-
+*/
 		public void GoBackInTime() {
 			Player.LocalPlayerInstance.transform.position = this.transform.position;
 			//_isOkToMove = false;

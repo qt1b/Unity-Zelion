@@ -18,7 +18,7 @@ namespace Global {
 			, { "tip13", new []{ "Do you see the two bars at the top left of the screen ? The blue one is your mana and the green one is your stamina. Be wary of these when using capacities ! ","Tu vois les deux barres en haut de ton écran ? En bleu est ton niveau de mana, et en vert ton endurance.","画面の右上にそれを見えるかい？青い物はマナで、緑の物は体力。"}}
 			, { "tip14", new []{ "When breaking thing or killing ennemies, try to pick up what drops out of them. These have great benefits","Tu peux accelerer pour un court instant en appuyant sur MAJ!","SHIFTを押すことで突撃出来るよ！"}}
 			, { "boss", new []{ "You feel a menacing presence...","Vous sentez une présence menacante...","威嚇的な気配を感じる..."}}
-			, { "tip1", new []{ "You can dash by pressing SHIFT!","Tu peux accelerer pour un court instant en appuyant sur MAJ!","SHIFTを押すことで突撃出来るよ！"}}
+			, { "tip1", new []{ "You can dash by pressing SHIFT! But be wary, as it uses lots of stamina.","Tu peux accelerer pour un court instant en appuyant sur MAJ! Cependant méfies toi, cela utilise beaucoup d'endurance.","SHIFTを押すことで突撃出来るよ！でもそれはを消費するので、気を付けな。"}}
 			, { "tip2", new []{ "You can throw a poison potion with the RIGHT CLICK.","Tu peux lancer une potion de poison avec le CLIC DROIT !","右クリックで毒のポーションを投げることができます。"}}
 			, { "tip3", new []{ "You can slowdown time by pressing Q!","Tu peux rallentir le temps en appuyant sur A!","Qキーを押すと、時間を遅くすることができます！"}}
 			, { "tip4", new []{ "You can go back to your previous position by pressing Z !","Tu peux retourner à ta position précedente en appuyant sur W!","Zキーを押すと、元の位置に戻ることができます！"}}

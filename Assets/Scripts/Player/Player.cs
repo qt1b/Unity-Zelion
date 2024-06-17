@@ -294,7 +294,14 @@ namespace Player {
 
 					PlacePreviewArrow();
 					if (Input.GetKeyUp(KeyCode.Mouse0)) {
-						if (_canShootArrow && _staminaBar.TryTakeDamages(2)) StartCoroutine(ShootArrow());
+						if (_canShootArrow) {
+							if (_staminaBar.TryTakeDamages(2)) {
+								StartCoroutine(ShootArrow());
+							}
+							else {
+								AudioManager.Instance.Play("unauthorized");
+							}
+						}
 						_isAimingArrow = false;
 						speedModifier = 1;
 						_arrowPreviewRef.SetActive(false);
@@ -308,12 +315,15 @@ namespace Player {
 							_poisonZonePreviewRef.SetActive(true);
 						PlacePreviewZone();
 						if (Input.GetKeyUp(KeyCode.Mouse1)) {
-							if (_canThrowPoisonBomb && _manaBar.TryTakeDamages(10)) {
-								StartCoroutine(ThrowPoisonBomb());
+							if (_canThrowPoisonBomb) {
+								if (_manaBar.TryTakeDamages(10)) {
+									StartCoroutine(ThrowPoisonBomb());
+								}
+								else {
+									AudioManager.Instance.Play("unauthorized");
+								}
 							}
-							else {
-								AudioManager.Instance.Play("unauthorized");
-							}
+
 							_isAimingBomb = false;
 							speedModifier = 1;
 							_animator.SetBool(AimingBomb, false);
@@ -504,7 +514,7 @@ namespace Player {
 			GameObject arrow = PhotonNetwork.Instantiate("Prefabs/Projectiles/Arrow",transform.position+pos,rot);
 			var proj = arrow.GetComponent<Projectile>();
 			proj.SetVelocity(pos);
-			proj.damage = (arrowDmg != 0 ? (ushort)3 : arrowDmg);
+			proj.damage = (arrowDmg == 0 ? (ushort)3 : arrowDmg);
 			yield return new WaitForSeconds(_bowCooldown /* GlobalVars.PlayerSpeed*/ );
 			_canShootArrow = true;
 		}
@@ -549,7 +559,7 @@ namespace Player {
 			}
 			/*GameObject pZone =*/
 			GameObject pZone = PhotonNetwork.Instantiate("Prefabs/Projectiles/PoisonZone", new Vector3(position.x + pos.x, position.y + pos.y, 0f), new Quaternion());
-			pZone.GetComponent<PoisonZone>().damage = (poisonDmg != 0 ? (ushort)1 : poisonDmg);
+			pZone.GetComponent<PoisonZone>().damage = (poisonDmg == 0 ? (ushort)1 : poisonDmg);
 			yield return new WaitForSeconds(_poisonBombCooldown /* GlobalVars.PlayerSpeed*/ );
 			_canThrowPoisonBomb = true;
 		}
@@ -726,12 +736,12 @@ namespace Player {
 
 		public void InstaKill(bool val) {
 			if (val) {
-				this.GetComponentInChildren<InflictDammage>().damage = (ushort)short.MaxValue;
-				arrowDmg = (ushort)short.MaxValue;
-				poisonDmg = (ushort)short.MaxValue;
+				gameObject.GetComponentInChildren<InflictDammage>().damage = (ushort)short.MaxValue;
+				arrowDmg = (ushort)(short.MaxValue - 3);
+				poisonDmg = (ushort)(short.MaxValue - 3);
 			}
 			else {
-				this.GetComponentInChildren<InflictDammage>().damage = 7;
+				gameObject.GetComponentInChildren<InflictDammage>().damage = 7;
 				arrowDmg = 0;
 				poisonDmg = 0;
 			}

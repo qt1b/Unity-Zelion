@@ -16,7 +16,6 @@ namespace PUN {
 		// TODO : change more UI elements, in function of if the player is masterClient, what it can do, etc
 		// does not use photon's lobby system, may be worth the try ?
 		#region Public Fields
-		public Button JoinButton;
 		public TMP_InputField RoomIdInput;
 		public TMP_Text RoomNameText;
 		public Button StartGameButton;
@@ -30,7 +29,8 @@ namespace PUN {
 		public TMP_Text LoadingText;
 		public TMP_Text BackButton2;
 		public TMP_Text InputText;
-		
+
+		private bool sound_done;
 		#endregion
 
 		#region Private Fields
@@ -58,6 +58,11 @@ namespace PUN {
 		#endregion
 
 		#region Public Functions
+
+		public void Click() {
+			AudioManager.Instance.Play("click");
+		}
+		
 		public static string GenerateRoomName() {
 			string roomName = Random.Range(0,10000).ToString("0000");
 			//Debug.Log($"generated RoomName:{roomName}");
@@ -65,7 +70,10 @@ namespace PUN {
 		}
 		public void JoinRoom() {
 			if (RoomIdInput.text.Length != 4 || !RoomIdInput.text.ToCharArray().All(char.IsDigit)) return;
-			if (PhotonNetwork.IsConnectedAndReady)AudioManager.Instance.Play("loading1");
+			if (!sound_done) {
+				AudioManager.Instance.Play("loading1");
+				sound_done = true;
+			}
 			Debug.Log("trying to join room, id:"+RoomIdInput.text);
 			PhotonNetwork.JoinRoom(RoomIdInput.text);
 			BeforeLobby.SetActive(false);
@@ -74,7 +82,10 @@ namespace PUN {
 		// TODO : fix the bug that requires us to click on the button two times to create a room
 		public void CreateRoom() {
 			_creatingRoom = true;
-			if (PhotonNetwork.IsConnectedAndReady) AudioManager.Instance.Play("loading1");
+			if (!sound_done) {
+				AudioManager.Instance.Play("loading1");
+				sound_done = true;
+			}
 			_roomName = GenerateRoomName();
 			Debug.Log("trying to join room, id:"+_roomName);
 			PhotonNetwork.CreateRoom(_roomName,new RoomOptions(){MaxPlayers = 4});
@@ -131,7 +142,7 @@ namespace PUN {
 			PhotonNetwork.JoinRoom(RoomIdInput.text);
 			Loading.SetActive(false);
 			InsideLobby.SetActive(true);
-			RoomNameText.SetText($"RoomID:{PhotonNetwork.CurrentRoom.Name}");
+			RoomNameText.SetText($"{TextValues.RoomName}:{PhotonNetwork.CurrentRoom.Name}");
 			StartGameButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
 			// depends on the language and the number of players
 			if (GlobalVars.Language == 0) {

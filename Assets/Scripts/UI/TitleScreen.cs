@@ -20,6 +20,9 @@ namespace UI {
 		public TMP_Text MultiPlayerTxt;
 		public TMP_Text BackTxt;
 
+		public void Click() {
+			AudioManager.Instance.Play("click2");
+		}
 		void Awake() {
 			GlobalVars.CurrentLevelId = 0;
 		}
