@@ -55,8 +55,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectionDistance: 17.6
-  distanceFromPlayer: 0.5
-  distanceFromPlayerMargin: 0.2
+  distanceFromPlayer: 1.5
+  distanceFromPlayerMargin: 0.5
   backWhenPlayerTooClose: 0
   forwardWhenPlayerTooClose: 0
   isShooter: 0
@@ -73,10 +73,10 @@ MonoBehaviour:
   isMelee: 1
   _melee:
     damage: 6
-    minFrequency: 1
-    maxFrequency: 2
+    minFrequency: 0.9
+    maxFrequency: 1
     meleeTime: 0.2
-    range: 0.5
+    range: 1.5
     nbDirections: 4
     hitbox: {fileID: 3254987705310643045}
   isCharger: 0
@@ -86,7 +86,6 @@ MonoBehaviour:
     Minfrequency: 5
     maxFrequency: 7
     time: 3.5
-    stopOnCollision: 0
   Agent: {fileID: 109667614679697199}
   Rigidbody2D: {fileID: 2474270136817323887}
   _animator: {fileID: 1165391834359267910}
@@ -261,7 +260,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2546022487054476174
 Transform:
   m_ObjectHideFlags: 0
@@ -465,18 +464,18 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 907802891
+  m_SortingLayer: -1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 1387108339, guid: f055473a1269a6fa8b06f98b02945453, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.4375, y: 2.4375}
+  m_Size: {x: 0.1875, y: 0.5625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!60 &7798789310533789706
@@ -508,35 +507,32 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.4375, y: 2.4375}
-    newSize: {x: 1.4375, y: 2.4375}
+    oldSize: {x: 0.1875, y: 0.5625}
+    newSize: {x: 0.1875, y: 0.5625}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -1.8609408, y: 1.6221232}
-      - {x: -1.2055343, y: 1.3848164}
-      - {x: -0.38824913, y: 0.8793517}
-      - {x: -0.20760784, y: 0.36223093}
-      - {x: -0.03482607, y: -0.05167288}
-      - {x: -0.087795705, y: -0.5538086}
-      - {x: -0.64493, y: -1.0308554}
-      - {x: -1.4236786, y: -1.3040987}
-      - {x: -0.6496014, y: -1.4186617}
-      - {x: 0.3922928, y: -0.78750134}
-      - {x: 0.64208347, y: -0.33062613}
-      - {x: 0.59370464, y: 0.5533673}
-      - {x: -0.14483511, y: 1.4546577}
-      - {x: -1.327261, y: 1.819803}
+    - - {x: 0.4768791, y: 1.6421113}
+      - {x: -0.43975654, y: 1.7984086}
+      - {x: -0.7892479, y: 1.8837855}
+      - {x: -1.5503494, y: 1.6899345}
+      - {x: -0.4068569, y: 0.42539656}
+      - {x: -0.7575255, y: -1.1205889}
+      - {x: -1.837836, y: -1.6611859}
+      - {x: -0.28842106, y: -1.4856656}
+      - {x: 0.93704426, y: -0.8562232}
+      - {x: 0.95161074, y: -0.78282136}
+      - {x: 1.0328732, y: 0.6933142}
   m_UseDelaunayMesh: 0
 --- !u!1 &5984021117826322297
 GameObject:

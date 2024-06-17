@@ -14,14 +14,14 @@ namespace Global {
 			, { "lore4", new[] { "Be wary, the dark forest is full of monsters !", "Sois prudent, la forêt tenebreuse est remplie de monstres !", "暗闇の森はモンスターにあふれている。気を付けてください！" } }
 			, { "giveSword", new[] { "O, great hero, please take this sword along your quest. Please find the Zelion, beat Eclipses and bring back the light to these lands.", "Ô grand héros, prend cette épée avec toi au long de ta quête. Trouve le ZELION, et bat Éclipse afin de rétablir la lumière sur ces terres.", "勇者よ、この剣を取ってください。ZELIONを見つけ、エクリプスを倒してください。" } }
 			, { "rmq1", new[] { "It seems that when playing in multiplayer, when one player goes to another zone, all the other players are teleported there ! At least that's what I heard...", "Il parait que lorsque l'on joue en multijoueur, quand un joueur change de zone, l'autre joueur se retrouve emporté avec lui ! Enfin... c'est ce que j'ai entendu.", "他のプレイヤーが次のエリアに行くと、君もそこに飛ばされるらしいぜ！聞いた話によると、ね..." } }
-			, { "tip1", new []{ "You can dash by pressing SHIFT! But be wary, as it uses lots of stamina.","Tu peux accelerer pour un court instant en appuyant sur MAJ! Cependant méfies toi, cela utilise beaucoup d'endurance.","SHIFTを押すことで突撃出来るよ！でもそれはを消費するので、気を付けな。"}}
 			, { "tip12", new []{ "Do you see the red bar on top of your head? This is your life. You would never want this to be empty.","Tu peux accelerer pour un court instant en appuyant sur MAJ!","SHIFTを押すことで突撃出来るよ！"}}
 			, { "tip13", new []{ "Do you see the two bars at the top left of the screen ? The blue one is your mana and the green one is your stamina. Be wary of these when using capacities ! ","Tu vois les deux barres en haut de ton écran ? En bleu est ton niveau de mana, et en vert ton endurance.","画面の右上にそれを見えるかい？青い物はマナで、緑の物は体力。"}}
 			, { "tip14", new []{ "When breaking thing or killing ennemies, try to pick up what drops out of them. These have great benefits","Tu peux accelerer pour un court instant en appuyant sur MAJ!","SHIFTを押すことで突撃出来るよ！"}}
-			, { "tip2", new []{ "You can throw a poison potion with the LEFT CLICK.","Tu peux lancer une potion de poison avec le CLIC DROIT !","SHIFTを押すことで突撃出来るよ！"}}
-			, { "tip3", new []{ "You can slowdown time by pressing Q!","Tu peux rallentir le temps en appuyant sur A!","SHIFTを押すことで突撃出来るよ！"}}
-			, { "tip4", new []{ "You can go back to your previous position by pressing Z !","Tu peux retourner à ta position précedente en appuyant sur W!","SHIFTを押すことで突撃出来るよ！"}}
 			, { "boss", new []{ "You feel a menacing presence...","Vous sentez une présence menacante...","威嚇的な気配を感じる..."}}
+			, { "tip1", new []{ "You can dash by pressing SHIFT!","Tu peux accelerer pour un court instant en appuyant sur MAJ!","SHIFTを押すことで突撃出来るよ！"}}
+			, { "tip2", new []{ "You can throw a poison potion with the RIGHT CLICK.","Tu peux lancer une potion de poison avec le CLIC DROIT !","右クリックで毒のポーションを投げることができます。"}}
+			, { "tip3", new []{ "You can slowdown time by pressing Q!","Tu peux rallentir le temps en appuyant sur A!","Qキーを押すと、時間を遅くすることができます！"}}
+			, { "tip4", new []{ "You can go back to your previous position by pressing Z !","Tu peux retourner à ta position précedente en appuyant sur W!","Zキーを押すと、元の位置に戻ることができます！"}}
 			, {"chest canvas" , new[] { "Content of Chest " , "Contenue du Coffre" , "宝箱の内容"}}
 			, {"Empty_Chest" , new[] { "It looks empty." , "Il semble vide." , "空っぽに見える"}}
 			, {"mine_south" , new[] { "Flee the south of the mine, there are strange noises and a horrible creature is rampaging..." , "Fuis le sud de la mine, il y a des bruits bizarres et une horrible créature se déchaîne..." , "鉱山の南から逃げて、奇妙な音が聞こえて、恐ろしい生き物が暴れている..."}}
@@ -33,6 +33,8 @@ namespace Global {
 			, {"giveBow" , new[] { "There is an old bow in the rusty chest, could be useful." , "Il y a un vieux arc dans le coffre rouillé, il pourrait être utile." , "錆びた箱の中に古い弓がある、役に立つかもしれない"}}
 			, {"swordTutorial",new []{"You can wield a sword by pressing the SPACE button !","Tu peux utiliser l'épée en appuyant sur la barre ESPACE !","スペースキーを使って、剣を使うことが出来る。"}}
 			, {"forestAhead",new []{"The Dark Forest ahead.","La forêt ténébreuse devant.","右には：暗闇の村。"}}
+			, {"givepotion",new []{"A mysterious potion... I wonder what effects it might have. It's better to keep it safe","Une potion mystérieuse... Je me demande quels effets elle pourrait avoir. Il vaut mieux la garder précieusement.","これは何だろう？謎のポーションだ...どんな効果があるのか気になるな。大事に取っておいた方がいい"}}
+			, {"givepower" , new[] { "You feel your body changing, the feeling of time passing around you is strange." , "Tu sens ton corps changer, la sensation du temps qui passe autour de toi est étrange." , "体が変わっていくのを感じる。周りの時間が過ぎていく感覚が奇妙だ。"}}
 		};
 		public static string GameOverText(string time) {
 			if (GlobalVars.Language == 0) return $"Time elapsed {time}.\nNumber of deaths : {GlobalVars.DeathCount}\nNumber of Game Over : {GlobalVars.GameOverCount}\nNumber of players : {GlobalVars.NbrOfPlayers}";
