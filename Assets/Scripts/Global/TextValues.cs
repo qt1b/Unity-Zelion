@@ -15,9 +15,9 @@ namespace Global {
 			, { "giveSword", new[] { "O, great hero, please take this sword along your quest. Please find the Zelion, beat Eclipses and bring back the light to these lands.", "Ô grand héros, prend cette épée avec toi au long de ta quête. Trouve le ZELION, et bat Éclipse afin de rétablir la lumière sur ces terres.", "勇者よ、この剣を取ってください。ZELIONを見つけ、エクリプスを倒してください。" } }
 			, { "rmq1", new[] { "It seems that when playing in multiplayer, when one player goes to another zone, all the other players are teleported there ! At least that's what I heard...", "Il parait que lorsque l'on joue en multijoueur, quand un joueur change de zone, l'autre joueur se retrouve emporté avec lui ! Enfin... c'est ce que j'ai entendu.", "他のプレイヤーが次のエリアに行くと、君もそこに飛ばされるらしいぜ！聞いた話によると、ね..." } }
 			, { "tip1", new []{ "You can dash by pressing SHIFT!","Tu peux accelerer pour un court instant en appuyant sur MAJ!","SHIFTを押すことで突撃出来るよ！"}}
-			, { "tip2", new []{ "You can throw a poison potion with the LEFT CLICK.","Tu peux lancer une potion de poison avec le CLIC DROIT !","SHIFTを押すことで突撃出来るよ！"}}
+			, { "tip2", new []{ "You can throw a poison potion with the RIGHT CLICK.","Tu peux lancer une potion de poison avec le CLIC DROIT !","右クリックで毒のポーションを投げることができます。"}}
 			, { "tip3", new []{ "You can slowdown time by pressing Q!","Tu peux rallentir le temps en appuyant sur A!","SHIFTを押すことで突撃出来るよ！"}}
-			, { "tip4", new []{ "You can go back to your previous position by pressing Z !","Tu peux retourner à ta position précedente en appuyant sur W!","SHIFTを押すことで突撃出来るよ！"}}
+			, { "tip4", new []{ "You can go back to your previous position by pressing Z !","Tu peux retourner à ta position précedente en appuyant sur W!","Zキーを押すと、元の位置に戻ることができます！"}}
 			, {"chest canvas" , new[] { "Content of Chest " , "Contenue du Coffre" , "宝箱の内容"}}
 			, {"Empty_Chest" , new[] { "It looks empty." , "Il semble vide." , "空っぽに見える"}}
 			, {"mine_south" , new[] { "Flee the south of the mine, there are strange noises and a horrible creature is rampaging..." , "Fuis le sud de la mine, il y a des bruits bizarres et une horrible créature se déchaîne..." , "鉱山の南から逃げて、奇妙な音が聞こえて、恐ろしい生き物が暴れている..."}}
