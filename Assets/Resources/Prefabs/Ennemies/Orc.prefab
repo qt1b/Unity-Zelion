@@ -70,7 +70,7 @@ MonoBehaviour:
     rangeMin: 0
     speed: 0
     startDistance: 0
-  isMelee: 0
+  isMelee: 1
   _melee:
     damage: 3
     minFrequency: 0.9
@@ -79,14 +79,13 @@ MonoBehaviour:
     range: 0.7
     nbDirections: 4
     hitbox: {fileID: 3254987705310643045}
-  isCharger: 1
+  isCharger: 0
   _charge:
     speed: 5
     damage: 2
     Minfrequency: 5
     maxFrequency: 7
     time: 3.5
-    stopOnCollision: 0
   Agent: {fileID: 109667614679697199}
   Rigidbody2D: {fileID: 2474270136817323887}
   _animator: {fileID: 1165391834359267910}

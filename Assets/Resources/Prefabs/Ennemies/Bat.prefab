@@ -59,7 +59,7 @@ MonoBehaviour:
   distanceFromPlayerMargin: 0.4
   backWhenPlayerTooClose: 1
   forwardWhenPlayerTooClose: 0
-  isShooter: 0
+  isShooter: 1
   _shoot:
     projectileName: BatBall
     damage: 2
@@ -86,7 +86,6 @@ MonoBehaviour:
     Minfrequency: 5
     maxFrequency: 7
     time: 3.5
-    stopOnCollision: 0
   Agent: {fileID: 109667614679697199}
   Rigidbody2D: {fileID: 2474270136817323887}
   _animator: {fileID: 1165391834359267910}
