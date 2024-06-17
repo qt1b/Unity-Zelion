@@ -96,26 +96,15 @@ namespace UI {
             //AudioManager.Instance.Play("click1");
         }
         public void SetFullscreen(bool val) {
+            Screen.fullScreen = val;
+            /* 
             if (val) {
                 _lastBeforeFull = _index;
-                // on windows
-                /*
-                if (SystemInfo.operatingSystem.Contains("Windows")) {
-                    Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
-                }
-                // on mac
-                else {
-                    Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
-                } */
                 SetResolution(_maxRes);
-                Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
             }
             else {
-                Screen.fullScreenMode = FullScreenMode.Windowed;
-                //Debug.LogError("fullscreen : False");
-                //Screen.fullScreenMode = FullScreenMode.Windowed;
                 SetResolution(_lastBeforeFull);
-            }
+            } */
         }
 
         public void SetResolution(int resolutionIndex) {
