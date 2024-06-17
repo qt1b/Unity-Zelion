@@ -245,6 +245,10 @@ namespace Player {
 			gameObject.GetComponentInChildren<CameraWork>().OnStartFollowing();
 		}
 
+		void Start() {
+			ghostPlayer.enabled = _canTimeTravel;
+		}
+
 		/*
 		/// <summary>
 		/// MonoBehaviour method called on GameObject by Unity during initialization phase.
@@ -382,8 +386,8 @@ namespace Player {
 								AudioManager.Instance.Play("unauthorized");
 							}
 						} */
-						else if ( Input.GetKeyDown(KeyCode.Z)) {
-							if (CanTimeTravel && _manaBar.TryTakeDamages(7)) {
+						else if ( Input.GetKeyDown(KeyCode.Z) && CanTimeTravel) {
+							if (_manaBar.TryTakeDamages(7)) {
 								AudioManager.Instance.Play("spellTp");
 								GoBackInTime();
 							}

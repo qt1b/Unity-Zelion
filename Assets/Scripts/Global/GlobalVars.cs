@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Global {
 	public class GlobalVars : MonoBehaviourPunCallbacks, IPunObservable {
 		// to sync over network
-		public static float PlayerSpeed = 1f;
+		// public static float PlayerSpeed = 1f;
 		public static float EnnemySpeed = 1f;
 		public static float ProjectileSpeed = 1f;
 		public static float ProjectileRefreshTime = .1f;
@@ -60,17 +60,17 @@ namespace Global {
 				new [] {0} // goBackInTime
 			},
 			{ // level 2 -- TESTING VALUES, for the MINE
-				new [] {-67,-67}, // x pos
-				new [] {30,-30}, // y pos
-				new [] {20,20}, // Life
-				new [] {20,20}, // stamina
-				new [] {20,20}, // mana
-				new [] {1,1}, // sword unlocked
-				new [] {1,1}, // bow unlocked
-				new [] {1,1}, // poison
-				new [] {1,1}, // dash
-				new [] {0,0}, // slowdown
-				new [] {1,1} // goBackInTime
+				new [] {-67}, // x pos
+				new [] {30}, // y pos
+				new [] {40}, // Life
+				new [] {20}, // stamina
+				new [] {20}, // mana
+				new [] {1}, // sword unlocked
+				new [] {1}, // bow unlocked
+				new [] {1}, // poison
+				new [] {1}, // dash
+				new [] {0}, // slowdown
+				new [] {1} // goBackInTime
 			},
 			{ // level 2.5 -- for the BOSS of the MINE
 				new [] {-4}, // x pos
@@ -149,6 +149,10 @@ namespace Global {
 		// 0 = en, 1 = fr, 2 = jp
 		public static byte Language = 0;
 		#endregion
+
+		public static void CleanUpVars() {
+			GameOverCount = 0;
+		}
 		#region IPunObservable
 		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
 			if (stream.IsWriting) {

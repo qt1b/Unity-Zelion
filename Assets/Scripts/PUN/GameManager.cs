@@ -18,7 +18,7 @@ namespace PUN {
 		#region Public Fields
 		public static GameManager Instance;
 		public static bool WantToDisconnect;
-		public TMP_Text NetworkStatusText; // TODO : DISABLE for public build
+		// public TMP_Text NetworkStatusText; // TODO : DISABLE for public build
 		public Animator LoaderAnim;
 		private float LoadTime = 0.4f;
 		private static readonly int Start1 = Animator.StringToHash("Start");
@@ -46,7 +46,7 @@ namespace PUN {
 			else {
 				Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
 			}*/
-			NetworkStatusText.SetText(GenerateNetworkStatusText());
+			// NetworkStatusText.SetText(GenerateNetworkStatusText());
 		}
 
 		public void LoadLevel(string levelName) {
@@ -98,16 +98,17 @@ namespace PUN {
 		/*
 		// are not being used ? idk
 		*/
+		/*
 		public override void OnPlayerEnteredRoom(Photon.PhotonRealtime.Code.Player other)
 		{
 			Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
-			NetworkStatusText.SetText(GenerateNetworkStatusText());
-		}
+			// NetworkStatusText.SetText(GenerateNetworkStatusText());
+		} */
 
 		public override void OnPlayerLeftRoom(Photon.PhotonRealtime.Code.Player other)
 		{
-			Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName); // seen when other disconnects
-			NetworkStatusText.SetText(GenerateNetworkStatusText()); // to comment at the end
+			//Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName); // seen when other disconnects
+			//NetworkStatusText.SetText(GenerateNetworkStatusText()); // to comment at the end
 			if (GlobalVars.PlayerList.Count != 0 && GlobalVars.PlayerList.TrueForAll(p => p.isDead)) {
 				PhotonNetwork.LoadLevel(GlobalVars.GameOverSceneName);
 			}

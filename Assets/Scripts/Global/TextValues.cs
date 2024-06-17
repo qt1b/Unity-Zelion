@@ -281,7 +281,7 @@ namespace Global {
 		}
 		public static string RestartLast {
 			get {
-				if (GlobalVars.Language == 0) return "Restart from the last save";
+				if (GlobalVars.Language == 0) return "Restart from last save";
 				else if (GlobalVars.Language == 1) return "Recommencer depuis la dernière sauvegarde";
 				else if (GlobalVars.Language == 2) return "最新のセーブからやり直す";
 				else throw new ArgumentException("invalid language value");

@@ -21,7 +21,7 @@ namespace UI {
 
 		void Start() {
 			GameOverText.text = TextValues.GameOver;
-			RestartText.text = TextValues.RestartLast;
+			RestartText.text = TextValues.Retry;
 			MainMenuText.text = TextValues.MainMenu;
 			ExitText.text = TextValues.Exit;
 		}

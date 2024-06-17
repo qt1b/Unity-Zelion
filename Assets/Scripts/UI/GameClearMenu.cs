@@ -24,7 +24,7 @@ namespace UI {
 
 		void Start() {
 			CongratsText.text = TextValues.Congratulations;
-			RestartText.text = TextValues.RestartBeginning;
+			RestartText.text = TextValues.Retry;
 			MainMenuText.text = TextValues.MainMenu;
 			ExitText.text = TextValues.Exit;
 		}
