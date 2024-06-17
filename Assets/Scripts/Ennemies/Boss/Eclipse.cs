@@ -54,6 +54,8 @@ namespace Ennemies{
         private const float FollowTimeEnd = 2f;
 
         private bool isIncanting = false;
+        private Animator _animator;
+        private static readonly int IsInc = Animator.StringToHash("IsIncanting");
 
         private void Awake()
         {
@@ -65,6 +67,7 @@ namespace Ennemies{
             else
             {
                 _attacks = new List<Attack> { FollowAttack };
+                _animator = gameObject.GetComponentInChildren<Animator>();
                 InvokeRepeating(nameof(Refresh), .1f, .1f);
             }
         }
@@ -96,6 +99,7 @@ namespace Ennemies{
         {
             isIncanting = true;
             yield return new WaitForSeconds(tripleBasicReloadTime);
+            _animator.SetBool(IsInc, true);
             var direction = target.transform.position - transform.position;
             Shoot(direction, Basic);
             Shoot(Rotate(direction, tripleBasicAngle), Basic);
@@ -103,12 +107,14 @@ namespace Ennemies{
             yield return new WaitForSeconds(timeTripleBasic);
             Tp();
             isIncanting = false;
+            _animator.SetBool(IsInc, false);
         }
 
         private IEnumerator MultipleSplit(GameObject target)
         {
             isIncanting = true;
             yield return new WaitForSeconds(multipleSplitReloadTime - multipleSplitTimeBetweenShoot);
+            _animator.SetBool(IsInc, true);
             for (int i = 0; i < multipleSplitNumber; i++)
             {
                 yield return new WaitForSeconds(multipleSplitTimeBetweenShoot);
@@ -119,13 +125,15 @@ namespace Ennemies{
             yield return new WaitForSeconds(multipleSplitEndTime);
             Tp();
             isIncanting = false;
+            _animator.SetBool(IsInc, false);
         }
 
         private IEnumerator VortexAttack(GameObject target)
         {
             isIncanting = true;
-
             yield return new WaitForSeconds(vortexReloadTime - vortexTimeBetweenShots);
+            _animator.SetBool(IsInc, true);
+
 
             var curDir = target.transform.position - transform.position;
             for (int i = 0; i < vortexNumberOfShots; i++)
@@ -136,6 +144,7 @@ namespace Ennemies{
             }
 
             yield return new WaitForSeconds(vortexTimeEnd);
+            _animator.SetBool(IsInc, false);
             Tp();
 
             isIncanting = false;
@@ -147,6 +156,7 @@ namespace Ennemies{
 
             isIncanting = true;
             yield return new WaitForSeconds(FollowReloadTime - FollowTimeBetween);
+            _animator.SetBool(IsInc, true);
 
             for (int i = 0; i < FollowNumber; i++)
             {
@@ -158,6 +168,7 @@ namespace Ennemies{
             }
 
             yield return new WaitForSeconds(FollowTimeEnd);
+            _animator.SetBool(IsInc, false);
             Tp();
             isIncanting = false;
 
