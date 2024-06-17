@@ -138,13 +138,14 @@ namespace Ennemies
         private IEnumerator Shoot(Vector3 initialPos, Vector3 direction)
         {
             _isShooting = true;
+            _animator.SetBool(IsDrawing, true);
             UpdateAnimator();
             StartCoroutine(CanShootReset());
             // animator for shooting here
             yield return new WaitForSeconds(_shoot.drawingTime);
             StartCoroutine(ShootAux(initialPos, direction));
             _isShooting = false;
-            yield break;
+            _animator.SetBool(IsDrawing, false);
         }
 
         private IEnumerator CanMeleeReset()
@@ -164,18 +165,18 @@ namespace Ennemies
         private IEnumerator Attack(Player.Player player, Vector3 direciton)
         {
             _isMeleeing = true;
-            UpdateAnimator();
+            _animator.SetBool(IsMeleeing, true);
             StartCoroutine(CanMeleeReset());
-
             _melee.hitbox.transform.eulerAngles = new Vector3(0, 0, GetHitboxRotation(direciton));
-            _melee.hitbox.SetActive(true);
             // animator for melee here
 
+            foreach (var player1 in GlobalVars.PlayerList.Where(g => (g.transform.position- transform.position).sqrMagnitude <= _melee.range))
+                player1.TakeDamages(_melee.damage);
 
             yield return new WaitForSeconds(_melee.meleeTime);
-            _melee.hitbox.SetActive(false);
 
             _isMeleeing = false;
+            _animator.SetBool(IsMeleeing, false);
         }
 
         private IEnumerator CanChargeReset()
@@ -197,6 +198,7 @@ namespace Ennemies
             yield return new WaitForSeconds(_charge.time);
             Rigidbody2D.velocity = new UnityEngine.Vector2();
             _isCharging = false;
+            UpdateAnimator();
         }
 
         #endregion
@@ -216,13 +218,6 @@ namespace Ennemies
                         StopCoroutine(currentAction);
                         _isCharging = false;
                         Rigidbody2D.velocity = UnityEngine.Vector2.zero;
-                        playerRigidbody.AddForce(-curDirection * .1f);
-                    }
-                    else
-                    {
-                        playerRigidbody.AddForce(curDirection.y * directionPlayer.y > curDirection.x * directionPlayer.x
-                            ? new UnityEngine.Vector2(curDirection.y, -curDirection.x * .1f)
-                            : new UnityEngine.Vector2(-curDirection.y, curDirection.x) * .1f);
                     }
 
                     other.gameObject.GetComponent<Player.Player>().TakeDamages(_charge.damage);
@@ -247,14 +242,10 @@ namespace Ennemies
             _animator.SetBool(IsMovingLeft, _isCharging ?Rigidbody2D.velocity.x <= 0 : Agent.velocity.x <= 0);
             _animator.SetBool(IsMovingRight, _isCharging ? Rigidbody2D.velocity.x > 0 || (Rigidbody2D.velocity.y != 0 && Rigidbody2D.velocity.x == 0) : 
                 Agent.velocity.x > 0 || (Agent.velocity.y != 0 && Agent.velocity.x == 0));
-            _animator.SetBool(IsCharging, _isCharging);
-            _animator.SetBool(IsMeleeing, _isMeleeing);
-            _animator.SetBool(IsDrawing, _isShooting);
         }
 
         private void Refresh()
         {
-            UpdateAnimator();
             var players = GlobalVars.PlayerList.Where(g => g.GetComponent<Player.Player>().IsAlive());
             if (!players.Any() || IsDoingAnAction)
                 return;
@@ -286,6 +277,8 @@ namespace Ennemies
 
             if (isCharger && _canCharge)
                 currentAction = StartCoroutine(Charge(player, direction));
+            
+            UpdateAnimator();
         }
     }
 

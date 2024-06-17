@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 368448378532064159}
   - component: {fileID: 8154649222941693859}
   - component: {fileID: 3297366125470586161}
+  - component: {fileID: 6595847798868964427}
   m_Layer: 0
   m_Name: FollowBall
   m_TagString: Untagged
@@ -97,8 +98,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  m_Color: {r: 0.9528302, g: 0.049439307, b: 0.049439307, a: 1}
+  m_Sprite: {fileID: -1310386968, guid: 6c5691172a2911d4e9242673dae8c929, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -226,3 +227,18 @@ MonoBehaviour:
   m_SynchronizeAngularVelocity: 0
   m_TeleportEnabled: 0
   m_TeleportIfDistanceGreaterThan: 3
+--- !u!111 &6595847798868964427
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3212963817573579755}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 6a447fdd15636444793fd20c7a4c2a7b, type: 2}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
