@@ -71,7 +71,7 @@ namespace Actions {
 
         
         void OnTriggerEnter2D(Collider2D other) {
-            if (!dialogBox.activeInHierarchy && !once) {
+            if (!other.isTrigger && other.CompareTag("Player") && !dialogBox.activeInHierarchy && !once) {
                 activateDialog();
                 once = true;
             }
@@ -81,6 +81,7 @@ namespace Actions {
         private void OnTriggerExit2D(Collider2D other) {
             if (!other.isTrigger && other.gameObject.CompareTag("Player")) {
                     DisableDialog();
+                    once = true;
             }
         }
     }
