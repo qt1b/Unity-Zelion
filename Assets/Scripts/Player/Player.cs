@@ -335,16 +335,11 @@ namespace Player {
 					}
 					else {
 						// the sword has not any cost
-						if (Input.GetKeyDown(KeyCode.Space)) {
-							if (CanSwordAttack) {
-								StartCoroutine(SwordAttack());
-							}
-							else {
-								AudioManager.Instance.Play("unauthorized");
-							}
+						if (Input.GetKeyDown(KeyCode.Space) && CanSwordAttack) {
+							StartCoroutine(SwordAttack());
 						}
-						else if ( Input.GetKeyDown(KeyCode.LeftShift) ) {
-							if (CanDash && _staminaBar.TryTakeDamages(10)) {
+						else if ( Input.GetKeyDown(KeyCode.LeftShift) && CanDash ) {
+							if (_staminaBar.TryTakeDamages(7)) {
 								StartCoroutine(Dash());
 							}
 							else {

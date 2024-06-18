@@ -23,9 +23,9 @@ namespace Global {
 			{ // level 0 -- TESTING VALUES, for the TUTORIAL
 				new [] {-15, -15}, // x pos
 				new [] {0, 0}, // y pos
-				new [] {20,20}, // Life
-				new [] {20,20}, // stamina
-				new [] {20,20}, // mana
+				new [] {30,30}, // Life
+				new [] {25,25}, // stamina
+				new [] {25,25}, // mana
 				new [] {0,1}, // sword unlocked
 				new [] {0,0}, // bow unlocked
 				new [] {0,0}, // poison
@@ -36,9 +36,9 @@ namespace Global {
 			{ // level 1 -- TESTING VALUES, for the FOREST // second save for unlocking the arc, positions should never be loaded
 				new [] {-16,-998}, // x pos
 				new [] {-3,-998}, // y pos
-				new [] {20,20}, // Life
-				new [] {20,20}, // stamina
-				new [] {20,20}, // mana
+				new [] {30,30}, // Life
+				new [] {25,25}, // stamina
+				new [] {25,25}, // mana
 				new [] {1,1}, // sword unlocked
 				new [] {0,1}, // bow unlocked
 				new [] {0,0}, // poison
@@ -49,9 +49,9 @@ namespace Global {
 			{ // level 1.5 -- TESTING VALUES, for the FOREST BOSS
 				new [] {-17}, // x pos
 				new [] {0}, // y pos
-				new [] {20}, // Life
-				new [] {20}, // stamina
-				new [] {20}, // mana
+				new [] {30}, // Life
+				new [] {25}, // stamina
+				new [] {25}, // mana
 				new [] {1}, // sword unlocked
 				new [] {1}, // bow unlocked
 				new [] {0}, // poison
@@ -62,9 +62,9 @@ namespace Global {
 			{ // level 2 -- TESTING VALUES, for the MINE
 				new [] {-67}, // x pos
 				new [] {30}, // y pos
-				new [] {40}, // Life
-				new [] {20}, // stamina
-				new [] {20}, // mana
+				new [] {50}, // Life
+				new [] {35}, // stamina
+				new [] {35}, // mana
 				new [] {1}, // sword unlocked
 				new [] {1}, // bow unlocked
 				new [] {1}, // poison
@@ -75,9 +75,9 @@ namespace Global {
 			{ // level 2.5 -- for the BOSS of the MINE
 				new [] {-4}, // x pos
 				new [] {46}, // y pos
-				new [] {20}, // Life
-				new [] {20}, // stamina
-				new [] {20}, // mana
+				new [] {50}, // Life
+				new [] {35}, // stamina
+				new [] {35}, // mana
 				new [] {1}, // sword unlocked
 				new [] {1}, // bow unlocked
 				new [] {1}, // poison
@@ -88,9 +88,9 @@ namespace Global {
 			{ // level 3 -- TESTING VALUES, for the GARDEN (of the castle)
 				new [] {-237}, // x pos
 				new [] {-46}, // y pos
-				new [] {20}, // Life
-				new [] {20}, // stamina
-				new [] {20}, // mana
+				new [] {80}, // Life
+				new [] {35}, // stamina
+				new [] {35}, // mana
 				new [] {1}, // sword unlocked
 				new [] {1}, // bow unlocked
 				new [] {1}, // poison
@@ -101,9 +101,9 @@ namespace Global {
 			{ // level 3.2 -- TESTING VALUES, for the CASTLE
 				new [] {-237}, // x pos
 				new [] {-48}, // y pos
-				new [] {20}, // Life
-				new [] {20}, // stamina
-				new [] {20}, // mana
+				new [] {80}, // Life
+				new [] {45}, // stamina
+				new [] {45}, // mana
 				new [] {1}, // sword unlocked
 				new [] {1}, // bow unlocked
 				new [] {1}, // poison
@@ -114,9 +114,9 @@ namespace Global {
 			{ // level 3.5 -- for the FINAL BOSS
 				new [] {0}, // x pos
 				new [] {0}, // y pos
-				new [] {20,}, // Life
-				new [] {20}, // stamina
-				new [] {20}, // mana
+				new [] {80}, // Life
+				new [] {45}, // stamina
+				new [] {45}, // mana
 				new [] {1}, // sword unlocked
 				new [] {1}, // bow unlocked
 				new [] {1}, // poison
@@ -160,6 +160,7 @@ namespace Global {
 
 		}
 		#region IPunObservable
+		// idk if enemy speed ever changes
 		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
 			if (stream.IsWriting) {
 				stream.SendNext(EnnemySpeed);
