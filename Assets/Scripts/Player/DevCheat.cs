@@ -54,6 +54,7 @@ namespace Player {
 					Player.LocalPlayerInstance.GetComponent<Player>().LoadSaveWithoutPos();
 					(GlobalVars.SaveId,GlobalVars.CurrentLevelId) = (oldsave,oldcurrent);
 				}
+				/*
 				else if (Input.GetKeyDown(KeyCode.Slash)) {
 					Player p = Player.LocalPlayerInstance.GetComponent<Player>();
 					p.GetComponentInChildren<HealthBar>().ChangeMaxValue((ushort)short.MaxValue);
@@ -68,7 +69,7 @@ namespace Player {
 				}
 				else if (Input.GetKeyDown(KeyCode.Equals)) {
 					Player.LocalPlayerInstance.GetComponent<Player>().InstaKill(true);
-				}
+				} */
 				/* else if (Input.GetKeyDown(KeyCode.O)) { // LEVEL 0 : NO HOTKEYS AS THE SAVE SYSTEM IS meh
 	GameManager.Instance.LoadLevel(GlobalVars.LevelsName[0]);
 	GlobalVars.CurrentLevelId = 0; // may load the values of the level 1, DO NOT USE IT

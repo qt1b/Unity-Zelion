@@ -122,9 +122,6 @@ namespace Player {
 		private static readonly int MouseX = Animator.StringToHash("MouseX");
 		private static readonly int AimingBomb = Animator.StringToHash("AimingBomb");
 		private static readonly int AimingBow = Animator.StringToHash("AimingBow");
-
-		[NonSerialized] public ushort arrowDmg;
-		[NonSerialized] public ushort poisonDmg;
 		#endregion
 
 		#region Player Save management
@@ -502,9 +499,9 @@ namespace Player {
 			// isWielding = true;
 			// buffering things is not useful for us
 			// will keep it "JUST IN CASE"
-			yield return new WaitForSeconds(0.08f);
+			yield return new WaitForSeconds(0.3f);
 			photonView.RPC("SwordSetActiveRpc",RpcTarget.OthersBuffered,true);
-			yield return new WaitForSeconds(SwordTime/* GlobalVars.PlayerSpeed */);
+			yield return new WaitForSeconds(SwordTime-0.3f/* GlobalVars.PlayerSpeed */);
 			photonView.RPC("SwordSetActiveRpc",RpcTarget.AllBuffered,false);
 			speedModifier = 1;
 			yield return new WaitForSeconds(SwordAttackCooldown /* GlobalVars.PlayerSpeed */);
@@ -523,7 +520,6 @@ namespace Player {
 			GameObject arrow = PhotonNetwork.Instantiate("Prefabs/Projectiles/Arrow",transform.position+pos,rot);
 			var proj = arrow.GetComponent<Projectile>();
 			proj.SetVelocity(pos);
-			proj.damage = (arrowDmg == 0 ? (ushort)3 : arrowDmg);
 			yield return new WaitForSeconds(_bowCooldown /* GlobalVars.PlayerSpeed*/ );
 			_canShootArrow = true;
 		}
@@ -568,7 +564,6 @@ namespace Player {
 			}
 			/*GameObject pZone =*/
 			GameObject pZone = PhotonNetwork.Instantiate("Prefabs/Projectiles/PoisonZone", new Vector3(position.x + pos.x, position.y + pos.y, 0f), new Quaternion());
-			pZone.GetComponent<PoisonZone>().damage = (poisonDmg == 0 ? (ushort)1 : poisonDmg);
 			yield return new WaitForSeconds(_poisonBombCooldown /* GlobalVars.PlayerSpeed*/ );
 			_canThrowPoisonBomb = true;
 		}
@@ -741,19 +736,6 @@ namespace Player {
 		public bool IsAlive()
 		{
 			return _healthBar.curValue > 0;
-		}
-
-		public void InstaKill(bool val) {
-			if (val) {
-				gameObject.GetComponentInChildren<InflictDammage>().damage = (ushort)short.MaxValue;
-				arrowDmg = (ushort)(short.MaxValue - 3);
-				poisonDmg = (ushort)(short.MaxValue - 3);
-			}
-			else {
-				gameObject.GetComponentInChildren<InflictDammage>().damage = 7;
-				arrowDmg = 0;
-				poisonDmg = 0;
-			}
 		}
 
 		#region IPunObservable implementation
