@@ -234,6 +234,7 @@ MonoBehaviour:
   dieTime: 4
   notDamageTags:
   - Ennemy
+  colDeathTime: 0.2
 --- !u!50 &8005479345053348494
 Rigidbody2D:
   serializedVersion: 4

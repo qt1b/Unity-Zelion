@@ -502,8 +502,9 @@ namespace Player {
 			// isWielding = true;
 			// buffering things is not useful for us
 			// will keep it "JUST IN CASE"
+			yield return new WaitForSeconds(0.08f);
 			photonView.RPC("SwordSetActiveRpc",RpcTarget.OthersBuffered,true);
-			yield return new WaitForSeconds(SwordTime /* GlobalVars.PlayerSpeed */);
+			yield return new WaitForSeconds(SwordTime/* GlobalVars.PlayerSpeed */);
 			photonView.RPC("SwordSetActiveRpc",RpcTarget.AllBuffered,false);
 			speedModifier = 1;
 			yield return new WaitForSeconds(SwordAttackCooldown /* GlobalVars.PlayerSpeed */);
