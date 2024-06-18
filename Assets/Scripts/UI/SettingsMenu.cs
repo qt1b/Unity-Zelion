@@ -32,6 +32,7 @@ namespace UI {
         public TMP_Text SfxTxt;
         public TMP_Text LanguageTxt;
         public TMP_Text BackText;
+        public TMP_Text StatusText;
 
         public bool IsTitleScreen;
         public TitleScreen TitleScreen;
@@ -135,8 +136,13 @@ namespace UI {
         public void SetLang(int langIndex) {
             GlobalVars.Language = (byte)langIndex;
             Start();
-            if (IsTitleScreen) TitleScreen.Start();
-            else PauseMenu.Start();
+            if (IsTitleScreen) {
+                TitleScreen.Start();
+            }
+            else {
+                PauseMenu.Start();
+                StatusText.text = TextValues.YouDied;
+            }
         }
     }
 }

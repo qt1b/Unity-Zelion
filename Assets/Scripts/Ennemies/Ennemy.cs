@@ -7,6 +7,7 @@ using Interfaces;
 using JetBrains.Annotations;
 using Photon.PhotonUnityNetworking.Code;
 using Porperty_Attributes;
+using UI;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -249,6 +250,10 @@ namespace Ennemies
             var players = GlobalVars.PlayerList.Where(g => g.GetComponent<Player.Player>().IsAlive());
             if (!players.Any() || IsDoingAnAction)
                 return;
+            if (PauseMenu.GameIsPaused) {
+                Agent.SetDestination(gameObject.transform.position);
+                return;
+            }
             var pos = transform.position;
             players = players.OrderBy(g => (g.transform.position - pos).sqrMagnitude).ToList();
             var player = players.First();

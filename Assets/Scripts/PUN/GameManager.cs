@@ -8,19 +8,21 @@ using UnityEngine.SceneManagement;
 using Photon;
 using Photon.PhotonRealtime.Code;
 using Photon.PhotonUnityNetworking.Code;
+using Photon.PhotonUnityNetworking.Code.Interfaces;
 using Player;
 using TMPro;
 
 // ALSO ACTS AS A LEVEL LOADER !
 
 namespace PUN {
-	public class GameManager : MonoBehaviourPunCallbacks {
+	public class GameManager : MonoBehaviourPunCallbacks, IPunObservable {
 		#region Public Fields
 		public static GameManager Instance;
 		public static bool WantToDisconnect;
 		// public TMP_Text NetworkStatusText; // TODO : DISABLE for public build
 		public Animator LoaderAnim;
-		private float LoadTime = 0.4f;
+		private float LoadTime = 0.7f;
+		[NonSerialized]public bool Loading;
 		private static readonly int Start1 = Animator.StringToHash("Start");
 
 		#endregion
@@ -50,7 +52,14 @@ namespace PUN {
 		}
 
 		public void LoadLevel(string levelName) {
+			photonView.RPC("SetRightValues",RpcTarget.AllBuffered,GlobalVars.CurrentLevelId);
 			photonView.RPC("LoadLevelRpc",RpcTarget.AllBuffered,levelName);
+		}
+
+		[PunRPC]
+		private void SetRightValues(byte nLevelId) {
+			GlobalVars.SaveId = 0;
+			GlobalVars.CurrentLevelId = nLevelId;
 		}
 
 		IEnumerator LoadAnimRpc(string levelName) {
@@ -58,15 +67,15 @@ namespace PUN {
 			yield return new WaitForSeconds(LoadTime);
 			if (PhotonNetwork.IsMasterClient) {
 				// should be fine here, but can be dangerous bc of networking
-				GlobalVars.CurrentLevelId += 1;
 				PhotonNetwork.LoadLevel(levelName);
 			}
 		}
 		[PunRPC]
 		private void LoadLevelRpc(string levelName) {
-			GlobalVars.SaveId = 0; // better here
+			Loading = true;
 			StartCoroutine(LoadAnimRpc(levelName));
 		}
+
 		#endregion
 		#region Photon Callbacks
 
@@ -133,5 +142,14 @@ namespace PUN {
 		}
 
 		#endregion
+
+		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
+			if (stream.IsWriting) {
+				stream.SendNext(Loading);
+			}
+			else {
+				Loading = (bool)stream.ReceiveNext();
+			}
+		}
 	}
 }

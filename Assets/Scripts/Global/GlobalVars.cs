@@ -34,8 +34,8 @@ namespace Global {
 				new [] {0,0} // goBackInTime
 			},
 			{ // level 1 -- TESTING VALUES, for the FOREST // second save for unlocking the arc, positions should never be loaded
-				new [] {-16,-998}, // x pos
-				new [] {-3,-998}, // y pos
+				new [] {-16,-16}, // x pos
+				new [] {-5,-5}, // y pos
 				new [] {30,30}, // Life
 				new [] {25,25}, // stamina
 				new [] {25,25}, // mana
@@ -61,8 +61,8 @@ namespace Global {
 			},
 			{ // level 2 -- TESTING VALUES, for the MINE
 				new [] {-67}, // x pos
-				new [] {30}, // y pos
-				new [] {50}, // Life
+				new [] {19}, // y pos
+				new [] {40}, // Life
 				new [] {35}, // stamina
 				new [] {35}, // mana
 				new [] {1}, // sword unlocked
@@ -74,8 +74,8 @@ namespace Global {
 			},
 			{ // level 2.5 -- for the BOSS of the MINE
 				new [] {-4}, // x pos
-				new [] {46}, // y pos
-				new [] {50}, // Life
+				new [] {44}, // y pos
+				new [] {40}, // Life
 				new [] {35}, // stamina
 				new [] {35}, // mana
 				new [] {1}, // sword unlocked
@@ -88,9 +88,9 @@ namespace Global {
 			{ // level 3 -- TESTING VALUES, for the GARDEN (of the castle)
 				new [] {-237}, // x pos
 				new [] {-46}, // y pos
-				new [] {80}, // Life
-				new [] {35}, // stamina
-				new [] {35}, // mana
+				new [] {50}, // Life
+				new [] {45}, // stamina
+				new [] {45}, // mana
 				new [] {1}, // sword unlocked
 				new [] {1}, // bow unlocked
 				new [] {1}, // poison
@@ -101,7 +101,7 @@ namespace Global {
 			{ // level 3.2 -- TESTING VALUES, for the CASTLE
 				new [] {-237}, // x pos
 				new [] {-48}, // y pos
-				new [] {80}, // Life
+				new [] {50}, // Life
 				new [] {45}, // stamina
 				new [] {45}, // mana
 				new [] {1}, // sword unlocked
@@ -113,8 +113,8 @@ namespace Global {
 			},
 			{ // level 3.5 -- for the FINAL BOSS
 				new [] {0}, // x pos
-				new [] {0}, // y pos
-				new [] {80}, // Life
+				new [] {-2}, // y pos
+				new [] {50}, // Life
 				new [] {45}, // stamina
 				new [] {45}, // mana
 				new [] {1}, // sword unlocked

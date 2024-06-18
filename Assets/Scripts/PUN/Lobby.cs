@@ -30,12 +30,12 @@ namespace PUN {
 		public TMP_Text BackButton2;
 		public TMP_Text InputText;
 
-		private bool sound_done;
 		#endregion
 
 		#region Private Fields
-		private string _roomName;
+		private string _roomName = "";
 		private bool _creatingRoom;
+		private bool sound_done;
 		#endregion
 		#region MonoBehaviour
 		private void Awake() {
@@ -74,8 +74,9 @@ namespace PUN {
 				AudioManager.Instance.Play("loading1");
 				sound_done = true;
 			}
-			Debug.Log("trying to join room, id:"+RoomIdInput.text);
-			PhotonNetwork.JoinRoom(RoomIdInput.text);
+			//Debug.Log("trying to join room, id:"+RoomIdInput.text);
+			_roomName = RoomIdInput.text;
+			PhotonNetwork.JoinRoom(_roomName);
 			BeforeLobby.SetActive(false);
 			Loading.SetActive(true);
 		}
@@ -104,12 +105,13 @@ namespace PUN {
 			}
 		}
 		public void ExitLobby() {
-			Debug.Log("exiting room");
+			// Debug.Log("exiting room");
 			PhotonNetwork.LeaveRoom();
-			InsideLobby.SetActive(false);
-			Loading.SetActive(false);
-			BeforeLobby.SetActive(true);
+			//InsideLobby.SetActive(false);
+			//Loading.SetActive(false);
+			//BeforeLobby.SetActive(true);
 			sound_done = false;
+			_roomName = "";
 		}
 
 		public void TrimAndActivate(string str) {
@@ -127,7 +129,7 @@ namespace PUN {
 		public override void OnConnectedToMaster() {
 			Debug.Log("Lobby: OnConnectedToMaster");
 			if (_creatingRoom) CreateRoom();
-			else JoinRoom();
+			else if (_roomName.Length == 4) JoinRoom();
 		}
 
 		public override void OnCreatedRoom() {

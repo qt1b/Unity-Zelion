@@ -11,11 +11,15 @@ namespace Actions {
 			//Debug.Log("next level activated");
 			//Debug.Log("current level id ="+GlobalVars.CurrentLevelId);
 			//Debug.Log("next level id ="+GlobalVars.CurrentLevelId+1+", max level ID: "+GlobalVars.LevelsName.Length);
-			if (GlobalVars.CurrentLevelId + 1 >= GlobalVars.LevelsName.Length) {
-				GameManager.Instance.LoadLevel(GlobalVars.GameClearSceneName);
-			}
-			else {
-				GameManager.Instance.LoadLevel(GlobalVars.LevelsName[GlobalVars.CurrentLevelId+1]);
+			if (PhotonNetwork.IsMasterClient && !FindObjectOfType<GameManager>().Loading) {
+				GlobalVars.CurrentLevelId += 1;
+				GlobalVars.SaveId = 0;
+				if (GlobalVars.CurrentLevelId >= GlobalVars.LevelsName.Length) {
+					GameManager.Instance.LoadLevel(GlobalVars.GameClearSceneName);
+				}
+				else {
+					GameManager.Instance.LoadLevel(GlobalVars.LevelsName[GlobalVars.CurrentLevelId]);
+				}
 			}
 		}
 	}
