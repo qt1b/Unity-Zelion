@@ -104,7 +104,7 @@ namespace Player {
 		private HealthBar _healthBar;
 		private StaminaBar _staminaBar;
 		private ManaBar _manaBar;
-		private Renderer _renderer;
+		// private Renderer _renderer;
 		private SpriteRenderer _spriteRenderer;
 		//private GameObject _poisonZoneRef;
 		//private GameObject _arrowPrefab;
@@ -208,6 +208,7 @@ namespace Player {
 			_healthBar = GetComponentInChildren<HealthBar>();
 			_swordHitzone = transform.GetChild(0).gameObject;
 			_swordHitzone.SetActive(false);
+			_spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 			if (!photonView.IsMine) {
 				//gameObject.GetComponentInChildren<Camera>().gameObject.SetActive(false);
 				gameObject.GetComponentInChildren<Camera>().enabled = false;
@@ -237,8 +238,7 @@ namespace Player {
 			_poisonZonePreviewRef = transform.GetChild(2).gameObject;
 			_staminaBar = FindObjectOfType<StaminaBar>();
 			_manaBar = FindObjectOfType<ManaBar>();
-			_renderer = gameObject.GetComponent<Renderer>();
-			_spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+			// _renderer = gameObject.GetComponent<Renderer>();
 			cursorManager = FindObjectOfType<CursorManager>();
 			StatusText = FindObjectOfType<PauseMenu>().StatusText;
 			LoadSave();
@@ -720,7 +720,7 @@ namespace Player {
 		}
 
 		IEnumerator ChangeColorWait(Color color, float time) {
-			Color baseColor = _renderer.material.color;
+			Color baseColor = _spriteRenderer.color; //.material.color;
 			_colorAcc += 1;
 			_spriteRenderer.color = (color);
 			yield return new WaitForSeconds(time);
