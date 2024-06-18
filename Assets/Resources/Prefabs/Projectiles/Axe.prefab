@@ -137,6 +137,7 @@ MonoBehaviour:
   dieTime: 7
   notDamageTags:
   - Ennemy
+  colDeathTime: 0.2
 --- !u!212 &5074508070971003244
 SpriteRenderer:
   m_ObjectHideFlags: 0
