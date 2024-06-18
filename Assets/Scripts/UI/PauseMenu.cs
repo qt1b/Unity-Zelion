@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Audio;
 using Global;
 using Photon.PhotonUnityNetworking.Code;
 using Photon.PhotonUnityNetworking.Code.Interfaces;
@@ -29,7 +30,9 @@ namespace UI {
             SettingsTxt.text = TextValues.Settings;
             MainMenuTxt.text = TextValues.MainMenu;
         }
-        
+        public void Click() {
+            AudioManager.Instance.Play("click2");
+        }
         void Update()
         {
             if(!_settings.isActiveAndEnabled && Input.GetKeyDown(KeyCode.Escape)) {
@@ -79,8 +82,7 @@ namespace UI {
         public void MainMenu(){
             Time.timeScale = 1f; // wth this existed all along
             GameIsPaused = false;
-            GlobalVars.TimeStartedAt = null;
-            GlobalVars.PlayerList.Remove(Player.Player.LocalPlayerInstance.GetComponent<Player.Player>());
+            GlobalVars.CleanUpVars();
             PhotonNetwork.LeaveRoom();
             PhotonNetwork.Disconnect();
             SceneManager.LoadScene(0);

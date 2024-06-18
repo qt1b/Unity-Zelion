@@ -104,7 +104,7 @@ namespace Player {
 		private HealthBar _healthBar;
 		private StaminaBar _staminaBar;
 		private ManaBar _manaBar;
-		private Renderer _renderer;
+		// private Renderer _renderer;
 		private SpriteRenderer _spriteRenderer;
 		//private GameObject _poisonZoneRef;
 		//private GameObject _arrowPrefab;
@@ -122,9 +122,6 @@ namespace Player {
 		private static readonly int MouseX = Animator.StringToHash("MouseX");
 		private static readonly int AimingBomb = Animator.StringToHash("AimingBomb");
 		private static readonly int AimingBow = Animator.StringToHash("AimingBow");
-
-		[NonSerialized] public ushort arrowDmg;
-		[NonSerialized] public ushort poisonDmg;
 		#endregion
 
 		#region Player Save management
@@ -206,6 +203,9 @@ namespace Player {
 			//Debug.Log("player awake");
 			GlobalVars.PlayerList.Add(this);
 			_healthBar = GetComponentInChildren<HealthBar>();
+			_swordHitzone = transform.GetChild(0).gameObject;
+			_swordHitzone.SetActive(false);
+			_spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 			if (!photonView.IsMine) {
 				//gameObject.GetComponentInChildren<Camera>().gameObject.SetActive(false);
 				gameObject.GetComponentInChildren<Camera>().enabled = false;
@@ -229,20 +229,21 @@ namespace Player {
 			_animator = GetComponent<Animator>();
 			_myRigidBody = GetComponent<Rigidbody2D>();
 			// _animator.speed = GlobalVars.PlayerSpeed;
-			_swordHitzone = transform.GetChild(0).gameObject;
-			_swordHitzone.SetActive(false);
 			//_poisonZoneRef = Resources.Load<GameObject>("Prefabs/Projectiles/PoisonZone");
 			//_arrowPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/Arrow");
 			_arrowPreviewRef = transform.GetChild(1).gameObject;
 			_poisonZonePreviewRef = transform.GetChild(2).gameObject;
 			_staminaBar = FindObjectOfType<StaminaBar>();
 			_manaBar = FindObjectOfType<ManaBar>();
-			_renderer = gameObject.GetComponent<Renderer>();
-			_spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+			// _renderer = gameObject.GetComponent<Renderer>();
 			cursorManager = FindObjectOfType<CursorManager>();
 			StatusText = FindObjectOfType<PauseMenu>().StatusText;
 			LoadSave();
 			gameObject.GetComponentInChildren<CameraWork>().OnStartFollowing();
+		}
+
+		void Start() {
+			ghostPlayer.enabled = _canTimeTravel;
 		}
 
 		/*
@@ -268,9 +269,8 @@ namespace Player {
 		// Update is called once per frame
 		// To Add : Sounds to indicate whether we can use the capacity or not
 		void Update() {
-			// Debug.Log("updating player ...");
-			// && PhotonNetwork.IsConnected is for debugging purposes
-			if ((!photonView.IsMine && PhotonNetwork.IsConnected) || PauseMenu.GameIsPaused) {
+			// for perf, to disable AFTER ???
+			if (/*(!photonView.IsMine && PhotonNetwork.IsConnected) ||*/ PauseMenu.GameIsPaused) {
 				/*Debug.LogWarning($"Update : Return !! \n" +
 				                 $"photonView.IsMine={photonView.IsMine},\n" +
 				                 $"PhotonNetwork.IsConnected={PhotonNetwork.IsConnected},\n" +
@@ -332,16 +332,11 @@ namespace Player {
 					}
 					else {
 						// the sword has not any cost
-						if (Input.GetKeyDown(KeyCode.Space)) {
-							if (CanSwordAttack) {
-								StartCoroutine(SwordAttack());
-							}
-							else {
-								AudioManager.Instance.Play("unauthorized");
-							}
+						if (Input.GetKeyDown(KeyCode.Space) && CanSwordAttack) {
+							StartCoroutine(SwordAttack());
 						}
-						else if ( Input.GetKeyDown(KeyCode.LeftShift) ) {
-							if (CanDash && _staminaBar.TryTakeDamages(10)) {
+						else if ( Input.GetKeyDown(KeyCode.LeftShift) && CanDash ) {
+							if (_staminaBar.TryTakeDamages(7)) {
 								StartCoroutine(Dash());
 							}
 							else {
@@ -373,6 +368,7 @@ namespace Player {
 								else AudioManager.Instance.Play("unauthorized");
 								PlacePreviewZone();
 						}
+						/*
 						else if ( Input.GetKeyDown(KeyCode.Q) && CanSlowDownTime){
 							if (_manaBar.TryTakeDamages(5)) {
 								AudioManager.Instance.Play("slowdownSpell");
@@ -381,9 +377,9 @@ namespace Player {
 							else {
 								AudioManager.Instance.Play("unauthorized");
 							}
-						}
-						else if ( Input.GetKeyDown(KeyCode.Z)) {
-							if (CanTimeTravel && _manaBar.TryTakeDamages(7)) {
+						} */
+						else if ( Input.GetKeyDown(KeyCode.Z) && CanTimeTravel) {
+							if (_manaBar.TryTakeDamages(7)) {
 								AudioManager.Instance.Play("spellTp");
 								GoBackInTime();
 							}
@@ -411,6 +407,7 @@ namespace Player {
 		// no callbacks in the player script
 		#endregion
 		// they may overlap
+		/*
 		IEnumerator SlowDownTimeFor(float duration) {
 			// will be enemy speed, using player speed to test the property
 			// like color
@@ -427,7 +424,7 @@ namespace Player {
 				GlobalVars.ProjectileSpeed = 1;
 				_animator.speed = 1;
 			}
-		}
+		}*/
 		/*
 		IEnumerator TimeFreezeFor(float duration) {
 			_timeFreezeAcc += 1;
@@ -500,11 +497,20 @@ namespace Player {
 			// _swordHitzoneCollider.enabled = true;
 			speedModifier = _attackSpeedNerf;
 			// isWielding = true;
-			yield return new WaitForSeconds(SwordTime /* GlobalVars.PlayerSpeed */);
-			_swordHitzone.SetActive(false);
+			// buffering things is not useful for us
+			// will keep it "JUST IN CASE"
+			yield return new WaitForSeconds(0.3f);
+			photonView.RPC("SwordSetActiveRpc",RpcTarget.OthersBuffered,true);
+			yield return new WaitForSeconds(SwordTime-0.3f/* GlobalVars.PlayerSpeed */);
+			photonView.RPC("SwordSetActiveRpc",RpcTarget.AllBuffered,false);
 			speedModifier = 1;
 			yield return new WaitForSeconds(SwordAttackCooldown /* GlobalVars.PlayerSpeed */);
 			_canSwordAttack = true;
+		}
+
+		[PunRPC]
+		private void SwordSetActiveRpc(bool val) {
+			_swordHitzone.SetActive(val);
 		}
 		IEnumerator ShootArrow() {
 			_canShootArrow = false;
@@ -514,7 +520,6 @@ namespace Player {
 			GameObject arrow = PhotonNetwork.Instantiate("Prefabs/Projectiles/Arrow",transform.position+pos,rot);
 			var proj = arrow.GetComponent<Projectile>();
 			proj.SetVelocity(pos);
-			proj.damage = (arrowDmg == 0 ? (ushort)3 : arrowDmg);
 			yield return new WaitForSeconds(_bowCooldown /* GlobalVars.PlayerSpeed*/ );
 			_canShootArrow = true;
 		}
@@ -559,7 +564,6 @@ namespace Player {
 			}
 			/*GameObject pZone =*/
 			GameObject pZone = PhotonNetwork.Instantiate("Prefabs/Projectiles/PoisonZone", new Vector3(position.x + pos.x, position.y + pos.y, 0f), new Quaternion());
-			pZone.GetComponent<PoisonZone>().damage = (poisonDmg == 0 ? (ushort)1 : poisonDmg);
 			yield return new WaitForSeconds(_poisonBombCooldown /* GlobalVars.PlayerSpeed*/ );
 			_canThrowPoisonBomb = true;
 		}
@@ -712,7 +716,7 @@ namespace Player {
 		}
 
 		IEnumerator ChangeColorWait(Color color, float time) {
-			Color baseColor = _renderer.material.color;
+			Color baseColor = _spriteRenderer.color; //.material.color;
 			_colorAcc += 1;
 			_spriteRenderer.color = (color);
 			yield return new WaitForSeconds(time);
@@ -734,27 +738,14 @@ namespace Player {
 			return _healthBar.curValue > 0;
 		}
 
-		public void InstaKill(bool val) {
-			if (val) {
-				gameObject.GetComponentInChildren<InflictDammage>().damage = (ushort)short.MaxValue;
-				arrowDmg = (ushort)(short.MaxValue - 3);
-				poisonDmg = (ushort)(short.MaxValue - 3);
-			}
-			else {
-				gameObject.GetComponentInChildren<InflictDammage>().damage = 7;
-				arrowDmg = 0;
-				poisonDmg = 0;
-			}
-		}
-
 		#region IPunObservable implementation
 		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
 			if (stream.IsWriting) {
 				stream.SendNext((short)_healthBar.curValue);
 			}
 			else {
-				ushort ncurValue = (ushort)(short)stream.ReceiveNext();
-				if (ncurValue != _healthBar.curValue) _healthBar.ChangeCurVal(ncurValue);
+				_healthBar.ChangeCurVal((ushort)(short)stream.ReceiveNext());
+				// if (ncurValue != _healthBar.curValue) _healthBar.ChangeCurVal(ncurValue);
 			}
 		}
 		#endregion

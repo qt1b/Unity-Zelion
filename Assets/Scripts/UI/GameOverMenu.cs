@@ -1,3 +1,4 @@
+using Audio;
 using Global;
 using Photon.PhotonUnityNetworking.Code;
 using TMPro;
@@ -8,11 +9,27 @@ namespace UI {
 	public class GameOverMenu : MonoBehaviourPunCallbacks
 	{
 		public TMP_Text TimerText;
+		public TMP_Text GameOverText;
+		public TMP_Text RestartText;
+		public TMP_Text MainMenuText;
+		public TMP_Text ExitText;
+
 		void Awake() {
 			GlobalVars.GameOverCount += 1;
 			TimerText.text = TextValues.GameOverText(UIOperations.FormatTime());
 		}
-		// WARING : play From Last Checkpoint !
+
+		void Start() {
+			GameOverText.text = TextValues.GameOver;
+			RestartText.text = TextValues.Retry;
+			MainMenuText.text = TextValues.MainMenu;
+			ExitText.text = TextValues.Exit;
+		}
+		public void Click() {
+			AudioManager.Instance.Play("click2");
+		}
+
+		// WARNING : play From Last Checkpoint !
 		public void PlayAgain() {
 			photonView.RPC("PlayAgainRPC",RpcTarget.MasterClient);
 		}
@@ -29,7 +46,7 @@ namespace UI {
 		public void MainMenu(){
 			//PhotonNetwork.Destroy(Player.Player.LocalPlayerInstance);
 			//Player.Player.LocalPlayerInstance = null;
-			GlobalVars.TimeStartedAt = null;
+			GlobalVars.CleanUpVars();
 			PhotonNetwork.LeaveRoom();
 			PhotonNetwork.Disconnect();
 			SceneManager.LoadScene(0);

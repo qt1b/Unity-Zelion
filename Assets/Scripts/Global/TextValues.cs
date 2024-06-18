@@ -7,7 +7,7 @@ namespace Global {
 		// we will put here all values used for the dialogues.
 		// this will allow us to easily locate text and use multilingual values, etc
 		public static readonly Dictionary<string, string[]> DialogsDict = new Dictionary<string, string[]>() {
-			{ "tuto1", new[] { "Welcome to Zelion ! Please use the arrow keys or WASD to move, and F to close this dialog and interact with elements.", "Bienvenue dans Zélion ! Utilise les flèches ou les touches ZQSD pour te déplacer, et la touche F pour fermer ce dialogue et interragir avec le décor.", "ZELIONへようこそ！矢印やWASDを使って動いて、Fキーを使ってこのダイアログを閉じて、人々と話せる。" } }
+			{ "tuto1", new[] { "Welcome to Zelion ! Please use the arrow keys or WASD to move, and F to close this dialog and interact with elements.", "Bienvenue dans Zélion ! Utilise les flèches ou les touches ZQSD pour te déplacer, et la touche F pour fermer ce dialogue et interragir avec le décor.", "ZELIONへようこそ！矢印やWASDで動いて、Fキーでこのダイアログを閉じて、人々と話せる。" } }
 			, { "lore1", new[] { "6 Years ago, the Eclipse stole the sun and plunged this world into darkness. Everyone has put their hopes on you. C'mon, what are you waiting for!", "Il y a 6 ans, Eclipse a volé le soleil, et plongé notre monde dans la pénombre. Tout le monde crois en toi, pars, noble héros!", "６年前、エクリプスは太陽を奪え、この世界を深い闇にくらま。皆が君のことを信じているよ！" } }
 			, { "lore2", new[] { "Is that you, the hero who will bring back light to Masteria, our country?", "Est-ce donc toi, le héros qui va rétablir la lumière sur Masteria, notre pays ?", "君が勇者か？お願い、マステリア、僕らの国に、光を戻させてくれ！" } }
 			, { "lore3", new[] { "Don't you should have a weapon ? Please talk to the Warrior beside the statue ", "Ne serais tu pas mieux avec une arme ? Va parler à au combattant a côté de la statue.", "ねぇ、武器を持った方が良くないか？像の隣にいる戦士に話しかけてみて。" } }
@@ -16,7 +16,7 @@ namespace Global {
 			, { "rmq1", new[] { "It seems that when playing in multiplayer, when one player goes to another zone, all the other players are teleported there ! At least that's what I heard...", "Il parait que lorsque l'on joue en multijoueur, quand un joueur change de zone, l'autre joueur se retrouve emporté avec lui ! Enfin... c'est ce que j'ai entendu.", "他のプレイヤーが次のエリアに行くと、君もそこに飛ばされるらしいぜ！聞いた話によると、ね..." } }
 			, { "tip12", new []{ "Do you see the red bar on top of your head? This is your life. You would never want this to be empty.","Tu peux accelerer pour un court instant en appuyant sur MAJ!","SHIFTを押すことで突撃出来るよ！"}}
 			, { "tip13", new []{ "Do you see the two bars at the top left of the screen ? The blue one is your mana and the green one is your stamina. Be wary of these when using capacities ! ","Tu vois les deux barres en haut de ton écran ? En bleu est ton niveau de mana, et en vert ton endurance.","画面の右上にそれを見えるかい？青い物はマナで、緑の物は体力。"}}
-			, { "tip14", new []{ "When breaking thing or killing ennemies, try to pick up what drops out of them. These have great benefits","Tu peux accelerer pour un court instant en appuyant sur MAJ!","SHIFTを押すことで突撃出来るよ！"}}
+			//, { "tip14", new []{ "When breaking thing or killing ennemies, try to pick up what drops out of them. These have great benefits","Tu peux accelerer pour un court instant en appuyant sur MAJ!","SHIFTを押すことで突撃出来るよ！"}}
 			, { "boss", new []{ "You feel a menacing presence...","Vous sentez une présence menacante...","威嚇的な気配を感じる..."}}
 			, { "tip1", new []{ "You can dash by pressing SHIFT! But be wary, as it uses lots of stamina.","Tu peux accelerer pour un court instant en appuyant sur MAJ! Cependant méfies toi, cela utilise beaucoup d'endurance.","SHIFTを押すことで突撃出来るよ！でもそれはを消費するので、気を付けな。"}}
 			, { "tip2", new []{ "You can throw a poison potion with the RIGHT CLICK.","Tu peux lancer une potion de poison avec le CLIC DROIT !","右クリックで毒のポーションを投げることができます。"}}
@@ -29,7 +29,7 @@ namespace Global {
 			, {"Dialog_NPC_Red" , new[] { "Leaving already ?" , "Tu pars déjà?" , "もう行くのですか？"}}
 			//,  {"Dialog_NPC_Green" , new[] { "Don't get lost in the dark, only God knows what's in there." , "Ne te perds pas dans l'obscurité, seul Dieu sait ce qu'il y a à l'intérieur." , "暗闇で迷わないで、そこに何があるかは神のみぞ知る。"}}
 			, {"Dialog_NPC_Blue" , new[] { "The light of God will guide you out of this darkness, have faith in him." , "La lumière de Dieu vous guidera hors de cette obscurité, ayez foi en lui." , "神の光があなたをこの暗闇から導いてくれるでしょう。神を信じてください。"}}
-			, {"Dialog_NPC_Green" , new[] { "If you ever find a bow, you can aim by maintaining the LEFT CLICK pressed, and shoot by and release the LEFT CLICK." , "Si jamais tu trouve un arc, tu peux viser avec en maintenant le CLIC DROIT, et tirer en le relachant." , "弓を見つかったら、左クリックを推して狙って、右クリックを放して射る事が出来る。"}}
+			, {"Dialog_NPC_Green" , new[] { "If you ever find a bow, you can aim by maintaining the LEFT CLICK pressed, and shoot by and release the LEFT CLICK." , "Si jamais tu trouve un arc, tu peux viser avec en maintenant le CLIC GAUCHE, et tirer en le relachant." , "弓を見つかったら、左クリックを推して狙って、左クリックを放して射る事が出来る。"}}
 			, {"giveBow" , new[] { "There is an old bow in the rusty chest, could be useful." , "Il y a un vieux arc dans le coffre rouillé, il pourrait être utile." , "錆びた箱の中に古い弓がある、役に立つかもしれない"}}
 			, {"swordTutorial",new []{"You can wield a sword by pressing the SPACE button !","Tu peux utiliser l'épée en appuyant sur la barre ESPACE !","スペースキーを使って、剣を使うことが出来る。"}}
 			, {"forestAhead",new []{"The Dark Forest ahead.","La forêt ténébreuse devant.","右には：暗闇の村。"}}
@@ -100,16 +100,16 @@ namespace Global {
 		// Lobby
 		public static string JoinLobby {
 			get {
-				if (GlobalVars.Language == 0) return "Join";
-				else if (GlobalVars.Language == 1) return "Rejoindre";
-				else if (GlobalVars.Language == 2) return "ルームを参加する";
+				if (GlobalVars.Language == 0) return "Join a room";
+				else if (GlobalVars.Language == 1) return "Rejoindre une salle";
+				else if (GlobalVars.Language == 2) return "ルームに参加する";
 				else throw new ArgumentException("invalid language value");
 			}
 		}
 		public static string CreateLobby {
 			get {
-				if (GlobalVars.Language == 0) return "Create";
-				else if (GlobalVars.Language == 1) return "Créer";
+				if (GlobalVars.Language == 0) return "Create a Room";
+				else if (GlobalVars.Language == 1) return "Créer un salle";
 				else if (GlobalVars.Language == 2) return "ルームを作る";
 				else throw new ArgumentException("invalid language value");
 			}
@@ -268,6 +268,30 @@ namespace Global {
 				if (GlobalVars.Language == 0) return "Game Over";
 				else if (GlobalVars.Language == 1) return "Game Over";
 				else if (GlobalVars.Language == 2) return "ゲームオーバー";
+				else throw new ArgumentException("invalid language value");
+			}
+		}
+		public static string Retry {
+			get {
+				if (GlobalVars.Language == 0) return "Retry";
+				else if (GlobalVars.Language == 1) return "Recommencer";
+				else if (GlobalVars.Language == 2) return "リートライ";
+				else throw new ArgumentException("invalid language value");
+			}
+		}
+		public static string RestartLast {
+			get {
+				if (GlobalVars.Language == 0) return "Restart from last save";
+				else if (GlobalVars.Language == 1) return "Recommencer depuis la dernière sauvegarde";
+				else if (GlobalVars.Language == 2) return "最新のセーブからやり直す";
+				else throw new ArgumentException("invalid language value");
+			}
+		}
+		public static string RestartBeginning {
+			get {
+				if (GlobalVars.Language == 0) return "Restart from the Begining";
+				else if (GlobalVars.Language == 1) return "Recommencer depuis le début";
+				else if (GlobalVars.Language == 2) return "最初からやり直す";
 				else throw new ArgumentException("invalid language value");
 			}
 		}

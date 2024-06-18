@@ -32,6 +32,7 @@ namespace UI {
         public TMP_Text SfxTxt;
         public TMP_Text LanguageTxt;
         public TMP_Text BackText;
+        public TMP_Text StatusText;
 
         public bool IsTitleScreen;
         public TitleScreen TitleScreen;
@@ -96,26 +97,15 @@ namespace UI {
             //AudioManager.Instance.Play("click1");
         }
         public void SetFullscreen(bool val) {
+            Screen.fullScreen = val;
+            /* 
             if (val) {
                 _lastBeforeFull = _index;
-                // on windows
-                /*
-                if (SystemInfo.operatingSystem.Contains("Windows")) {
-                    Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
-                }
-                // on mac
-                else {
-                    Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
-                } */
                 SetResolution(_maxRes);
-                Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
             }
             else {
-                Screen.fullScreenMode = FullScreenMode.Windowed;
-                //Debug.LogError("fullscreen : False");
-                //Screen.fullScreenMode = FullScreenMode.Windowed;
                 SetResolution(_lastBeforeFull);
-            }
+            } */
         }
 
         public void SetResolution(int resolutionIndex) {
@@ -146,8 +136,13 @@ namespace UI {
         public void SetLang(int langIndex) {
             GlobalVars.Language = (byte)langIndex;
             Start();
-            if (IsTitleScreen) TitleScreen.Start();
-            else PauseMenu.Start();
+            if (IsTitleScreen) {
+                TitleScreen.Start();
+            }
+            else {
+                PauseMenu.Start();
+                StatusText.text = TextValues.YouDied;
+            }
         }
     }
 }

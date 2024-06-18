@@ -8,19 +8,21 @@ using UnityEngine.SceneManagement;
 using Photon;
 using Photon.PhotonRealtime.Code;
 using Photon.PhotonUnityNetworking.Code;
+using Photon.PhotonUnityNetworking.Code.Interfaces;
 using Player;
 using TMPro;
 
 // ALSO ACTS AS A LEVEL LOADER !
 
 namespace PUN {
-	public class GameManager : MonoBehaviourPunCallbacks {
+	public class GameManager : MonoBehaviourPunCallbacks, IPunObservable {
 		#region Public Fields
 		public static GameManager Instance;
 		public static bool WantToDisconnect;
-		public TMP_Text NetworkStatusText; // TODO : DISABLE for public build
+		// public TMP_Text NetworkStatusText; // TODO : DISABLE for public build
 		public Animator LoaderAnim;
-		private float LoadTime = 0.4f;
+		private float LoadTime = 0.7f;
+		[NonSerialized]public bool Loading;
 		private static readonly int Start1 = Animator.StringToHash("Start");
 
 		#endregion
@@ -32,13 +34,13 @@ namespace PUN {
 		}
 
 		private void Start() {
-			Debug.Log("Game Manager : Starting ...");
+			// Debug.Log("Game Manager : Starting ...");
 			// GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Player/Player");
 			// decided not to keep the instance of the player between scenes for now
 			// if (global::Player.Player.LocalPlayerInstance == null) {
 			GlobalVars.PlayerList = new();
 			if (GlobalVars.TimeStartedAt is null) Global.GlobalVars.TimeStartedAt = DateTime.UtcNow;
-			Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
+			// Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
 			// we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
 			PhotonNetwork.Instantiate("Prefabs/Player/Player", Vector3.zero, Quaternion.identity, 0);
 			Instantiate(Resources.Load<GhostPlayer>("Prefabs/Player/GhostPlayer"));
@@ -46,11 +48,18 @@ namespace PUN {
 			else {
 				Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
 			}*/
-			NetworkStatusText.SetText(GenerateNetworkStatusText());
+			// NetworkStatusText.SetText(GenerateNetworkStatusText());
 		}
 
 		public void LoadLevel(string levelName) {
+			photonView.RPC("SetRightValues",RpcTarget.AllBuffered,GlobalVars.CurrentLevelId);
 			photonView.RPC("LoadLevelRpc",RpcTarget.AllBuffered,levelName);
+		}
+
+		[PunRPC]
+		private void SetRightValues(byte nLevelId) {
+			GlobalVars.SaveId = 0;
+			GlobalVars.CurrentLevelId = nLevelId;
 		}
 
 		IEnumerator LoadAnimRpc(string levelName) {
@@ -58,22 +67,22 @@ namespace PUN {
 			yield return new WaitForSeconds(LoadTime);
 			if (PhotonNetwork.IsMasterClient) {
 				// should be fine here, but can be dangerous bc of networking
-				GlobalVars.CurrentLevelId += 1;
 				PhotonNetwork.LoadLevel(levelName);
 			}
 		}
 		[PunRPC]
 		private void LoadLevelRpc(string levelName) {
-			GlobalVars.SaveId = 0; // better here
+			Loading = true;
 			StartCoroutine(LoadAnimRpc(levelName));
 		}
+
 		#endregion
 		#region Photon Callbacks
 
 		public override void OnDisconnected(DisconnectCause cause) {
-			Debug.LogError("DISCONNECTED !!");
+			// Debug.LogError("DISCONNECTED !!");
 			if (PhotonNetwork.OfflineMode is true) {
-				Debug.LogError("Offline mode Activated, trying to reconnect ??");
+				// Debug.LogError("Offline mode Activated, trying to reconnect ??");
 				// do not Disconnect !!!
 				// idk if it works in offline mode
 				PhotonNetwork.ReconnectAndRejoin();
@@ -90,7 +99,7 @@ namespace PUN {
 		*/
 		public override void OnLeftRoom() {
 			WantToDisconnect = true;
-			Debug.LogError("OnLeftRoom : Disconnected");
+			// Debug.LogError("OnLeftRoom : Disconnected");
 			SceneManager.LoadScene(0);
 			global::Player.Player.LocalPlayerInstance = null;
 			Destroy(gameObject); // destroys this very game manager
@@ -98,16 +107,17 @@ namespace PUN {
 		/*
 		// are not being used ? idk
 		*/
+		/*
 		public override void OnPlayerEnteredRoom(Photon.PhotonRealtime.Code.Player other)
 		{
 			Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
-			NetworkStatusText.SetText(GenerateNetworkStatusText());
-		}
+			// NetworkStatusText.SetText(GenerateNetworkStatusText());
+		} */
 
 		public override void OnPlayerLeftRoom(Photon.PhotonRealtime.Code.Player other)
 		{
-			Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName); // seen when other disconnects
-			NetworkStatusText.SetText(GenerateNetworkStatusText()); // to comment at the end
+			//Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName); // seen when other disconnects
+			//NetworkStatusText.SetText(GenerateNetworkStatusText()); // to comment at the end
 			if (GlobalVars.PlayerList.Count != 0 && GlobalVars.PlayerList.TrueForAll(p => p.isDead)) {
 				PhotonNetwork.LoadLevel(GlobalVars.GameOverSceneName);
 			}
@@ -132,5 +142,14 @@ namespace PUN {
 		}
 
 		#endregion
+
+		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
+			if (stream.IsWriting) {
+				stream.SendNext(Loading);
+			}
+			else {
+				Loading = (bool)stream.ReceiveNext();
+			}
+		}
 	}
 }

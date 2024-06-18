@@ -66,7 +66,7 @@ namespace Ennemies{
             }
             else
             {
-                _attacks = new List<Attack> { FollowAttack };
+                _attacks = new List<Attack> { FollowAttack, MultipleSplit, TripleBasic, VortexAttack };
                 _animator = gameObject.GetComponentInChildren<Animator>();
                 InvokeRepeating(nameof(Refresh), .1f, .1f);
             }
@@ -83,7 +83,7 @@ namespace Ennemies{
         {
             var initialPos = (Vector2)transform.position + direction.normalized * projStartDist;
             var rot = Quaternion.Euler(0f, 0f,
-                Mathf.Atan(direction.y / direction.x) * 180 / Mathf.PI + (direction.x < 0 ? 90 : -90));
+                Mathf.Atan(direction.y / direction.x) * 180 / Mathf.PI + (direction.x < 0 ? 90 : -90) + 90);
             var arr = PhotonNetwork.Instantiate(name, initialPos, rot);
             var projectile = arr.GetComponent<Projectile>();
             projectile.SetVelocity(direction);
@@ -184,7 +184,7 @@ namespace Ennemies{
 
             if (player is null) return;
 
-            StartCoroutine(_attacks[_random.Next(0, _attacks.Count - 1)](player.gameObject));
+            StartCoroutine(_attacks[_random.Next(0, _attacks.Count)](player.gameObject));
         }
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Global {
 	public class GlobalVars : MonoBehaviourPunCallbacks, IPunObservable {
 		// to sync over network
-		public static float PlayerSpeed = 1f;
+		// public static float PlayerSpeed = 1f;
 		public static float EnnemySpeed = 1f;
 		public static float ProjectileSpeed = 1f;
 		public static float ProjectileRefreshTime = .1f;
@@ -23,9 +23,9 @@ namespace Global {
 			{ // level 0 -- TESTING VALUES, for the TUTORIAL
 				new [] {-15, -15}, // x pos
 				new [] {0, 0}, // y pos
-				new [] {20,20}, // Life
-				new [] {20,20}, // stamina
-				new [] {20,20}, // mana
+				new [] {30,30}, // Life
+				new [] {25,25}, // stamina
+				new [] {25,25}, // mana
 				new [] {0,1}, // sword unlocked
 				new [] {0,0}, // bow unlocked
 				new [] {0,0}, // poison
@@ -34,11 +34,11 @@ namespace Global {
 				new [] {0,0} // goBackInTime
 			},
 			{ // level 1 -- TESTING VALUES, for the FOREST // second save for unlocking the arc, positions should never be loaded
-				new [] {-16,-998}, // x pos
-				new [] {-3,-998}, // y pos
-				new [] {20,20}, // Life
-				new [] {20,20}, // stamina
-				new [] {20,20}, // mana
+				new [] {-16,-16}, // x pos
+				new [] {-5,-5}, // y pos
+				new [] {30,30}, // Life
+				new [] {25,25}, // stamina
+				new [] {25,25}, // mana
 				new [] {1,1}, // sword unlocked
 				new [] {0,1}, // bow unlocked
 				new [] {0,0}, // poison
@@ -47,11 +47,11 @@ namespace Global {
 				new [] {0,0} // goBackInTime
 			},
 			{ // level 1.5 -- TESTING VALUES, for the FOREST BOSS
-				new [] {5}, // x pos
-				new [] {-13}, // y pos
-				new [] {20}, // Life
-				new [] {20}, // stamina
-				new [] {20}, // mana
+				new [] {-17}, // x pos
+				new [] {0}, // y pos
+				new [] {30}, // Life
+				new [] {25}, // stamina
+				new [] {25}, // mana
 				new [] {1}, // sword unlocked
 				new [] {1}, // bow unlocked
 				new [] {0}, // poison
@@ -60,24 +60,24 @@ namespace Global {
 				new [] {0} // goBackInTime
 			},
 			{ // level 2 -- TESTING VALUES, for the MINE
-				new [] {-67,-67}, // x pos
-				new [] {30,-30}, // y pos
-				new [] {20,20}, // Life
-				new [] {20,20}, // stamina
-				new [] {20,20}, // mana
-				new [] {1,1}, // sword unlocked
-				new [] {1,1}, // bow unlocked
-				new [] {1,1}, // poison
-				new [] {1,1}, // dash
-				new [] {0,0}, // slowdown
-				new [] {1,1} // goBackInTime
+				new [] {-67}, // x pos
+				new [] {19}, // y pos
+				new [] {40}, // Life
+				new [] {35}, // stamina
+				new [] {35}, // mana
+				new [] {1}, // sword unlocked
+				new [] {1}, // bow unlocked
+				new [] {1}, // poison
+				new [] {1}, // dash
+				new [] {0}, // slowdown
+				new [] {1} // goBackInTime
 			},
 			{ // level 2.5 -- for the BOSS of the MINE
 				new [] {-4}, // x pos
-				new [] {46}, // y pos
-				new [] {20}, // Life
-				new [] {20}, // stamina
-				new [] {20}, // mana
+				new [] {44}, // y pos
+				new [] {40}, // Life
+				new [] {35}, // stamina
+				new [] {35}, // mana
 				new [] {1}, // sword unlocked
 				new [] {1}, // bow unlocked
 				new [] {1}, // poison
@@ -86,24 +86,24 @@ namespace Global {
 				new [] {1} // goBackInTime
 			},
 			{ // level 3 -- TESTING VALUES, for the GARDEN (of the castle)
-				new [] {-237,-237}, // x pos
-				new [] {-46,-46}, // y pos
-				new [] {20,20}, // Life
-				new [] {20,20}, // stamina
-				new [] {20,20}, // mana
-				new [] {1,1}, // sword unlocked
-				new [] {1,1}, // bow unlocked
-				new [] {1,1}, // poison
-				new [] {1,1}, // dash
-				new [] {0,0}, // slowdown
-				new [] {1,1} // goBackInTime
+				new [] {-237}, // x pos
+				new [] {-46}, // y pos
+				new [] {50}, // Life
+				new [] {45}, // stamina
+				new [] {45}, // mana
+				new [] {1}, // sword unlocked
+				new [] {1}, // bow unlocked
+				new [] {1}, // poison
+				new [] {1}, // dash
+				new [] {0}, // slowdown
+				new [] {1} // goBackInTime
 			},
 			{ // level 3.2 -- TESTING VALUES, for the CASTLE
 				new [] {-237}, // x pos
 				new [] {-48}, // y pos
-				new [] {20}, // Life
-				new [] {20}, // stamina
-				new [] {20}, // mana
+				new [] {50}, // Life
+				new [] {45}, // stamina
+				new [] {45}, // mana
 				new [] {1}, // sword unlocked
 				new [] {1}, // bow unlocked
 				new [] {1}, // poison
@@ -112,11 +112,11 @@ namespace Global {
 				new [] {1} // goBackInTime
 			},
 			{ // level 3.5 -- for the FINAL BOSS
-				new [] {-237}, // x pos
-				new [] {-48}, // y pos
-				new [] {6}, // Life
-				new [] {2}, // stamina
-				new [] {2}, // mana
+				new [] {0}, // x pos
+				new [] {-2}, // y pos
+				new [] {50}, // Life
+				new [] {45}, // stamina
+				new [] {45}, // mana
 				new [] {1}, // sword unlocked
 				new [] {1}, // bow unlocked
 				new [] {1}, // poison
@@ -149,7 +149,18 @@ namespace Global {
 		// 0 = en, 1 = fr, 2 = jp
 		public static byte Language = 0;
 		#endregion
+
+		public static void CleanUpVars() {
+			GlobalVars.SaveId = 0; // from the beginning
+			GlobalVars.DeathCount = 0;
+			GlobalVars.NbrOfPlayers = (byte)PhotonNetwork.CurrentRoom.PlayerCount;
+			GlobalVars.GameOverCount = 0;
+			GlobalVars.CurrentLevelId = 0;
+			GlobalVars.TimeStartedAt = null;
+
+		}
 		#region IPunObservable
+		// idk if enemy speed ever changes
 		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
 			if (stream.IsWriting) {
 				stream.SendNext(EnnemySpeed);

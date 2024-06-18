@@ -75,7 +75,7 @@ namespace Ennemies {
 			if (gameObject.TryGetComponent(out IAction action)) {
 				action.Activate();
 			}
-			if (this.photonView.IsMine && PhotonNetwork.IsConnected) {
+			if ((this.photonView.IsMine && PhotonNetwork.IsConnected) || (photonView.Owner.IsInactive && PhotonNetwork.IsMasterClient)) {
 				StartCoroutine(DestroyAfterSecs(deathDuration));
 			}
 		}

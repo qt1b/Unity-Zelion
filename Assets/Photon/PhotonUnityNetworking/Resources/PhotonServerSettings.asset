@@ -62,6 +62,9 @@ MonoBehaviour:
   - LoadLevelRpc
   - ChangeLightningRpc
   - HealthMaxLoadRpc
+  - SwordSetActiveRpc
+  - EndLevelLoading
+  - SetRightValues
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
