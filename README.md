@@ -1,21 +1,10 @@
-# Unity-Zelion
+### 注意 - THIS GAME IS NO LONGER SUPPORTED
+You are free to test it, post issues or contribute to it, but please don't expect anyone to actively work on it
 
-### working with photon :
-- [x] basic movements
-- [x] sword
-- [x] arrows
-- [x] poison bomb
+# What is ZELION ?
+This is a video game, made as a Second Semester Project at Epita.
 
-### working without photon :
-- time powers (will fix it soon)
-- helthbars (only individual, so players cannot damage other players yet)
+It is a zelda-like game, with multiple weapons and time travelling mechanics.
 
-### todo :
-- ennemies / AI
-- audio, sound effects
-- fix some menus, make them clean and intuitive (+ settings)
-- tutorial for new players
-- a windows installer + uninstaller
-- package (lol)
-- [x] make it impossible for new players to join while playing
-- [x] fixes for photon
+The game is made using Unity engine and PUN2 (Photon Unity Networking 2).
+The available languages are English, French and Japanese.
