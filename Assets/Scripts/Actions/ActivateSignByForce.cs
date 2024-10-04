@@ -8,6 +8,9 @@ using Objects;
 using TMPro;
 using UnityEngine.Serialization;
 
+// can have problems with changing scenes
+// is only used for the tutorial, should not be used anywhere else
+
 namespace Actions {
 	public class ActivateDialog : MonoBehaviour, IAction {
 		public string dialog;

@@ -29,7 +29,7 @@ namespace UI {
 						? res.Minutes + " " + TextValues.Minute +
 						  (res.Minutes > 1 && GlobalVars.Language != 2 ? "s" : "")
 						: "")
-					+ (res.Minutes > 0 || res.Hours > 0 ? TextValues.And + " " : "")
+					+ " " + (res.Minutes > 0 || res.Hours > 0 ? TextValues.And + " " : "")
 					+ (res.Seconds > 0
 						? res.Seconds + " " + TextValues.Second +
 						  (res.Seconds > 1 && GlobalVars.Language != 2 ? "s" : "")

@@ -1,3 +1,5 @@
+
+/*
 using System;
 using Bars;
 using Global;
@@ -5,6 +7,7 @@ using Photon.PhotonUnityNetworking.Code;
 using PUN;
 using Unity.VisualScripting;
 using UnityEngine;
+
 
 namespace Player {
 	public class DevCheat : MonoBehaviour {
@@ -46,7 +49,8 @@ namespace Player {
 				else if (Input.GetKeyDown(KeyCode.L)) { // level 1.5 (2) : forest_boss
 					GlobalVars.CurrentLevelId = 2;
 					GameManager.Instance.LoadLevel(GlobalVars.LevelsName[2]);
-				}
+				}*/
+				/*
 				else if (Input.GetKeyDown(KeyCode.Slash)) {
 					var (oldsave, oldcurrent) = (GlobalVars.SaveId, GlobalVars.CurrentLevelId);
 					GlobalVars.CurrentLevelId = 1;
@@ -54,7 +58,6 @@ namespace Player {
 					Player.LocalPlayerInstance.GetComponent<Player>().LoadSaveWithoutPos();
 					(GlobalVars.SaveId,GlobalVars.CurrentLevelId) = (oldsave,oldcurrent);
 				}
-				/*
 				else if (Input.GetKeyDown(KeyCode.Slash)) {
 					Player p = Player.LocalPlayerInstance.GetComponent<Player>();
 					p.GetComponentInChildren<HealthBar>().ChangeMaxValue((ushort)short.MaxValue);
@@ -74,7 +77,9 @@ namespace Player {
 	GameManager.Instance.LoadLevel(GlobalVars.LevelsName[0]);
 	GlobalVars.CurrentLevelId = 0; // may load the values of the level 1, DO NOT USE IT
 } */
+/*
 			}
 		}
 	}
 }
+*/

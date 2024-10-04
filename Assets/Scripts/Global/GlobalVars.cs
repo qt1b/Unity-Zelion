@@ -6,12 +6,10 @@ using UnityEngine;
 
 namespace Global {
 	public class GlobalVars : MonoBehaviourPunCallbacks, IPunObservable {
-		// to sync over network
-		// public static float PlayerSpeed = 1f;
 		public static float EnnemySpeed = 1f;
 		public static float ProjectileSpeed = 1f;
 		public static float ProjectileRefreshTime = .1f;
-		public static byte SaveId = 0; // useful for debugging, will be 0 in the end
+		public static byte SaveId = 0;
 		public static short DeathCount = 0;
 		public static short GameOverCount = 0;
 		// the INITIAL player count
@@ -126,23 +124,21 @@ namespace Global {
 			}
 		};
 		public static DateTime? TimeStartedAt = null;
-		// not to be synced, maybe to put in player ?
 		public static List<Player.Player> PlayerList = new List<Player.Player>();
 		public static byte PlayerId;
 		public static bool Continue = false;
 		#region Game Constants
-		public static string GameVersion = "0.1";
-		// 1st level : tuto, lore
-		// 2nd level : forest
-		// 3rd : Boss ?
+		public static string GameVersion = "0.2";
+		// 1st level : Tutorial
+		// 2nd : Forest
+		// 3rd : Boss
 		// 4th : Mine
-		// 5th : Boss, again ?
+		// 5th : Boss
 		// 6th : Castle
+		// 7th : Castle Part 2
 		// 7th : FinalBoss
-		//-public static string FirstLevelName = "Quentin6"; // will not delete it as it serves the same purpose and can be useful for debugging
-		public static string[] LevelsName = new[] {"QuentinFirstLevelIntro","LVL1_Finale","BossForet","Mine","BossMine", "Chateau", "vrai_chateau","FinalBoss"};
+		public static string[] LevelsName = new[] {"IntroLevel","Forest","BossForest","Mine","BossMine", "Castle", "LastCastle","FinalBoss"};
 		public static byte CurrentLevelId = 0;
-		// public static string SecondLevelName = ???; // if needed, maybe we'll keep everything into one scene
 		public static string GameOverSceneName = "GameOver";
 		public static string GameClearSceneName = "GameClear";
 		public static string LobbySceneName = "Lobby";
@@ -160,7 +156,6 @@ namespace Global {
 
 		}
 		#region IPunObservable
-		// idk if enemy speed ever changes
 		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
 			if (stream.IsWriting) {
 				stream.SendNext(EnnemySpeed);
