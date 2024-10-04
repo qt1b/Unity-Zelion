@@ -1,5 +1,5 @@
 
-/*
+
 using System;
 using Bars;
 using Global;
@@ -49,7 +49,7 @@ namespace Player {
 				else if (Input.GetKeyDown(KeyCode.L)) { // level 1.5 (2) : forest_boss
 					GlobalVars.CurrentLevelId = 2;
 					GameManager.Instance.LoadLevel(GlobalVars.LevelsName[2]);
-				}*/
+				}
 				/*
 				else if (Input.GetKeyDown(KeyCode.Slash)) {
 					var (oldsave, oldcurrent) = (GlobalVars.SaveId, GlobalVars.CurrentLevelId);
@@ -77,9 +77,8 @@ namespace Player {
 	GameManager.Instance.LoadLevel(GlobalVars.LevelsName[0]);
 	GlobalVars.CurrentLevelId = 0; // may load the values of the level 1, DO NOT USE IT
 } */
-/*
+
 			}
 		}
 	}
 }
-*/
